@@ -19,9 +19,7 @@ Template.signup.events({
     Meteor.call('validate_signup_form', email, username, password, confirm, function(error, validation_errors) {
       Session.set(FORM_ERRORS, validation_errors)
       if (!has_errors()) {
-        if (create_account(email, username, password)) {
-          Router.go('home')
-        }
+        create_account(email, username, password)
       }
     })
   }
@@ -44,10 +42,11 @@ function create_account(email, username, password) {
     }, function(error) {
       if (error) {
         Session.set(FORM_ERRORS, {'none': error.reason})
+      } else {
+        Router.go('/')
       }
     }
   )
-  return !has_errors()
 }
 
 function has_errors() {

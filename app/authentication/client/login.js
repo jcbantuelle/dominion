@@ -17,9 +17,7 @@ Template.login.events({
     let [email, password] = form_fields(template)
 
     if (validate_form(email, password)) {
-      if (login(email, password)) {
-        Router.go('home')
-      }
+      login(email, password)
     }
   }
 })
@@ -50,9 +48,10 @@ function login(email, password) {
   Meteor.loginWithPassword(email, password, function(error) {
     if (error) {
       Session.set(FORM_ERRORS, {'none': error.reason})
+    } else {
+      Router.go('/')
     }
   })
-  return !has_errors()
 }
 
 function has_errors() {
