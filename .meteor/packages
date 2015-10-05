@@ -18,5 +18,6 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 accounts-password
 iron:router
+fourseven:scss
 twbs:bootstrap
 ejson

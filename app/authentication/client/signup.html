@@ -1,0 +1,50 @@
+<template name="signup">
+  <h2>Sign Up</h2>
+  <br />
+
+  <form class="form-horizontal">
+    {{#if errorMessages}}
+      <ul class="list-errors">
+        {{#each errorMessages}}
+          <li class="list-item">{{this}}</li>
+        {{/each}}
+      </ul>
+    {{/if}}
+
+    <div class="form-group">
+      <label for="email" class="col-sm-2 control-label">Email</label>
+      <div class="col-sm-3">
+        <input type="email" name="email" class="form-control" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="username" class="col-sm-2 control-label">Username</label>
+      <div class="col-sm-3">
+        <input type="text" name="username" class="form-control" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password" class="col-sm-2 control-label">Password</label>
+      <div class="col-sm-3">
+        <input type="password" name="password" class="form-control" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirm" class="col-sm-2 control-label">Confirm Password</label>
+      <div class="col-sm-3">
+        <input type="password" name="confirm" class="form-control" />
+      </div>
+    </div>
+
+    <div class="col-sm-offset-2">
+      <button type="submit" class="btn btn-primary">Sign Up</button>
+    </div>
+  </form>
+
+  <br />
+  <a href="{{pathFor 'login'}}" class="link-auth-alt">Already have an account? Log in</a>
+
+</template>
