@@ -1,0 +1,98 @@
+$action: lightgrey;
+$victory: lightgreen;
+$reaction: lightblue;
+$treasure: gold;
+$curse: violet;
+$duration: orange;
+$shelter: red;
+$ruin: burlywood;
+$busy: grey;
+$player_margin: 25px;
+
+@mixin gradient($from, $to) {
+  background-image: linear-gradient(bottom, $to 50%, $from 50%);
+  background-image: -o-linear-gradient(bottom, $to 50%, $from 50%);
+  background-image: -moz-linear-gradient(bottom, $to 50%, $from 50%);
+  background-image: -webkit-linear-gradient(bottom, $to 50%, $from 50%);
+  background-image: -ms-linear-gradient(bottom, $to 50%, $from 50%);
+}
+
+#players label {
+  display: inline;
+  float: left;
+  margin-right: $player_margin;
+}
+
+#propose-game {
+  margin-top: 10px;
+}
+
+.busy {
+  color: $busy;
+  margin-right: $player_margin;
+}
+
+.lobby-card {
+  padding: 3px;
+}
+
+.action {
+  background-color: $action;
+}
+
+.victory {
+  background-color: $victory;
+}
+
+.reaction {
+  background-color: $reaction;
+}
+
+.duration {
+  background-color: $duration;
+}
+
+.treasure {
+  background-color: $treasure;
+}
+
+.curse {
+  background-color: $curse;
+}
+
+.ruin {
+  background-color: $ruin;
+}
+
+.action.victory {
+  @include gradient($action, $victory);
+}
+
+.treasure.victory {
+  @include gradient($treasure, $victory);
+}
+
+.shelter.reaction {
+  @include gradient($shelter, $reaction);
+}
+
+.treasure.reaction {
+  @include gradient($treasure, $reaction);
+}
+
+.action.shelter {
+  @include gradient($action, $shelter);
+}
+
+.shelter.victory {
+  @include gradient($shelter, $victory);
+}
+
+.victory.reaction {
+  @include gradient($victory, $reaction);
+}
+
+#lobby-chat {
+  height: 300px;
+  overflow: auto;
+}

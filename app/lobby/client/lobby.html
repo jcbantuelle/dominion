@@ -1,3 +1,23 @@
 <template name="lobby">
-  This is the lobby
+
+  <div id="players">
+    {{#each lobby_players}}
+      {{#if current_game}}
+        <span class="busy">{{username}}</span>
+      {{else}}
+        <label for="player_{{id}}" class="checkbox lobby-player">
+          <input type="checkbox" id="player_{{id}}" value="{{id}}" />
+          {{username}}
+        </label>
+      {{/if}}
+    {{/each}}
+  </div>
+  <br class="clear" />
+
+  <pre id="lobby-chat"></pre>
+
+  <form id="chat">
+    <input type="text" name="message" id="message" class="form-control" />
+  </form>
+
 </template>
