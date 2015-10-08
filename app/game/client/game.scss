@@ -1,0 +1,150 @@
+$card_height: 46px;
+
+body {
+  overflow-y: scroll;
+}
+
+#kingdom-cards {
+  width: 210px;
+}
+
+.card-container {
+  height: $card_height;
+  padding-bottom: 5px;
+}
+
+.card-container.empty-pile .card-name span {
+  text-decoration: line-through;
+}
+
+.card-container.empty-pile .remaining {
+  color: red;
+}
+
+.card-container.empty-pile img.card {
+  opacity: 0.4;
+}
+
+.card-container div {
+  float: right;
+}
+
+.card-name {
+  height: $card_height;
+}
+
+.card-name span {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 1px;
+}
+
+.card-details {
+  text-align: center;
+  padding-left: 8px;
+  padding-right: 5px;
+  line-height: 15px;
+  padding-top: 5px;
+}
+
+.card-tooltip {
+  display: none;
+  z-index: 10000;
+}
+
+.remaining {
+  color: lightblue;
+}
+
+#common-cards {
+  width: 140px;
+}
+
+#game-log {
+  height: 250px;
+  overflow: scroll;
+  width: 700px;
+}
+
+#action-response {
+  width: 700px;
+}
+
+#hand {
+  padding-top: 5px;
+}
+
+#hand ul {
+  float: left;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 10px;
+}
+
+#hand .hand-card li {
+  position: relative;
+  height: 20px;
+}
+
+#game-info {
+  font-size: 10pt;
+}
+
+#draw-pile .card {
+  background-color: grey;
+  color: grey;
+}
+
+#discard-pile .card {
+  background-color: grey;
+  color: grey;
+  padding: 2px;
+}
+
+#action-area div {
+  float: left;
+}
+
+#turn-status {
+  padding-right: 10px;
+}
+
+#turn-actions {
+  margin-left: 10px;
+}
+
+#game-area {
+  width: auto;
+}
+
+#game-chat {
+  height: 100px;
+  overflow: auto;
+}
+
+#response-form label {
+  display: inline;
+  float: left;
+  margin-right: 5px;
+}
+
+.ordered {
+  margin: 5px;
+}
+
+.bane {
+  background-color: plum;
+}
+
+.trade-token {
+  background-color: gold;
+}
+
+.embargo-token {
+  background-color: crimson;
+}
+
+.modal-body {
+  height: 600px;
+}
