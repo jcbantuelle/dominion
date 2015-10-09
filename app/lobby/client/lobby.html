@@ -1,18 +1,54 @@
 <template name="lobby">
 
-  <div id="players">
-    {{#each lobby_players}}
-      {{#if current_game}}
-        <span class="busy">{{username}}</span>
-      {{else}}
-        <label for="player_{{id}}" class="checkbox lobby-player">
-          <input type="checkbox" id="player_{{id}}" value="{{id}}" />
+  <div id="proposal">
+    {{#with proposal}}
+      <div>
+        {{#if is_proposer}}
+          You have
+        {{else}}
+          <strong>{{proposer.username}}</strong> has
+        {{/if}}
+        proposed a game.
+      </div>
+
+      <br />
+
+      <div>
+        <strong>Players:</strong>
+        {{#each players}}
           {{username}}
-        </label>
-      {{/if}}
-    {{/each}}
+        {{/each}}
+      </div>
+
+      <br />
+
+      <div id="proposal-form-container">
+        <form id="proposed-game">
+          <button id="decline" class="btn btn-small btn-danger" type="submit" value="Decline Game">Decline Game</button>
+          <button id="accept" class="btn btn-small btn-success" type="submit" value="Accept Game">Accept Game</button>
+        </form>
+      </div>
+    {{/with}}
   </div>
-  <br class="clear" />
+
+  <form id="lobby">
+    <div id="players" class="checkbox">
+      {{#each lobby_players}}
+        {{#if proposal}}
+          <span class="busy">{{username}}</span>
+        {{else}}
+          <label for="player_{{_id}}">
+            <input type="checkbox" class="lobby-player" id="player_{{_id}}" value="{{_id}}" />
+            {{username}}
+          </label>
+        {{/if}}
+      {{/each}}
+    </div>
+    <br class="clear" />
+    <button id="propose-game" class="btn btn-primary" type="submit" value="Start Game">Propose Game</button>
+  </form>
+
+  <br />
 
   <pre id="lobby-chat"></pre>
 
