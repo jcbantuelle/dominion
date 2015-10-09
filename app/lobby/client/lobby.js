@@ -1,7 +1,10 @@
 Meteor.subscribe('lobby_players')
 Meteor.subscribe('proposal')
 
-Template.lobby.onCreated(registerChatStream)
+Template.lobby.onCreated(function() {
+  let stream_register = new LobbyStreamRegister()
+  stream_register.register()
+})
 Template.lobby.onRendered(trackProposalStatus)
 
 Template.lobby.helpers({
@@ -10,23 +13,19 @@ Template.lobby.helpers({
   },
   proposal: function () {
     return Proposals.findOne({}, {
-      transform: isProposer
+      transform: function(proposal) {
+        proposal.is_proposer = proposal.proposer.id == Meteor.userId()
+        return proposal
+      }
     })
   }
 })
 
 Template.lobby.events({
   "submit #chat": sendMessage,
-  "submit #lobby": proposeGame
+  "submit #lobby": proposeGame,
+  "click #decline-proposal": declineProposal
 })
-
-function registerChatStream() {
-  Streamy.on('lobby_message', function(data) {
-    let chat_window = $('#lobby-chat')
-    chat_window.append(`<strong>${data.username}:</strong> ${data.message}\n`)
-    chat_window.scrollTop(chat_window[0].scrollHeight)
-  })
-}
 
 function trackProposalStatus() {
   Tracker.autorun(function () {
@@ -58,14 +57,10 @@ function proposeGame(event) {
   if (player_ids.count > 3)
     alert('Game can not have more than 4 players.')
 
-  Meteor.call('proposeGame', player_ids, function(error, result) {
-    if (error) {
-      console.log(error)
-    }
-  })
+  Meteor.call('proposeGame', player_ids)
 }
 
-function isProposer(proposal) {
-  proposal.is_proposer = proposal.proposer.id == Meteor.userId()
-  return proposal
+function declineProposal(event) {
+  event.preventDefault()
+  Meteor.call('declineProposal', $('#proposal_id').val())
 }

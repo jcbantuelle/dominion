@@ -11,23 +11,12 @@ Meteor.publish('proposal', function() {
 
 Meteor.methods({
   proposeGame: function(player_ids) {
-    proposal = Proposals.insert({
-      proposer: {
-        id: Meteor.userId(),
-        username: Meteor.user().username
-      },
-      players: proposal_players(player_ids)
-    })
+    let game_proposer = new GameProposer(player_ids)
+    game_proposer.propose()
+  },
+  declineProposal: function(proposal_id) {
+    let proposal_decliner = new ProposalDecliner(proposal_id)
+    proposal_decliner.decline()
   }
 })
 
-function proposal_players(player_ids) {
-  player_ids.push(Meteor.userId())
-  players = Meteor.users.find({_id: {$in: player_ids}})
-  return players.map(function(player) {
-    return {
-      id: player._id,
-      username: player.username
-    }
-  })
-}

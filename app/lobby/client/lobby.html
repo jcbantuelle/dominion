@@ -24,8 +24,9 @@
 
       <div id="proposal-form-container">
         <form id="proposed-game">
-          <button id="decline" class="btn btn-small btn-danger" type="submit" value="Decline Game">Decline Game</button>
-          <button id="accept" class="btn btn-small btn-success" type="submit" value="Accept Game">Accept Game</button>
+          <input type="hidden" id="proposal_id" value="{{_id}}" />
+          <button id="decline-proposal" class="btn btn-small btn-danger" type="submit" value="Decline Game">Decline Game</button>
+          <button id="accept-proposal" class="btn btn-small btn-success" type="submit" value="Accept Game">Accept Game</button>
         </form>
       </div>
     {{/with}}
