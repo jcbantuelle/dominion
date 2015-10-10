@@ -21,6 +21,6 @@ LobbyStreamRegister = class LobbyStreamRegister {
 
   update_decline_message(data) {
     let decliner = data.decliner.id == Meteor.userId() ? 'You have' : `<strong>${data.decliner.username}</strong> has`
-    $('#proposal').html(`${decliner} declined the game.`)
+    $('#proposal-message').html(`${decliner} declined the game.`)
   }
 }

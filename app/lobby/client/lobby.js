@@ -31,6 +31,7 @@ function trackProposalStatus() {
   Tracker.autorun(function () {
     let proposal = Proposals.findOne()
     if (proposal) {
+      $('#proposal-message').empty()
       $('#propose-game').hide()
     } else {
       $('#propose-game').show()
