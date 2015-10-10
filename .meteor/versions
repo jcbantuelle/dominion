@@ -42,6 +42,7 @@ iron:location@1.0.9
 iron:middleware-stack@1.0.9
 iron:router@1.0.9
 iron:url@1.0.9
+jcbantuelle:streamy@1.2.5
 jquery@1.11.4
 launch-screen@1.0.4
 livedata@1.0.15
@@ -85,4 +86,3 @@ underscore@1.0.4
 url@1.0.5
 webapp@1.2.2
 webapp-hashing@1.0.5
-yuukan:streamy@1.2.5
