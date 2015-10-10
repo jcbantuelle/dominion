@@ -4,21 +4,13 @@ ProposalDecliner = class ProposalDecliner {
     this.proposal = Proposals.findOne(proposal_id)
   }
 
-  decline() {
+  decline(decliners) {
     Proposals.remove(this.proposal._id)
-    this.notify_players()
+    this.notify_players(decliners)
   }
 
-  notify_players() {
-    Streamy.groupEmit('decline',
-      {
-        decliner: {
-          id: Meteor.userId(),
-          username: Meteor.user().username
-        }
-      },
-      Streamy.userSockets(this.player_ids())
-    )
+  notify_players(decliners) {
+    Streamy.groupEmit('decline', {decliners: decliners}, Streamy.userSockets(this.player_ids()))
   }
 
   player_ids() {
