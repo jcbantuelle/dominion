@@ -4,13 +4,25 @@ ProposalDecliner = class ProposalDecliner {
     this.proposal = Proposals.findOne(proposal_id)
   }
 
-  decline(decliners) {
-    Proposals.remove(this.proposal._id)
-    this.notify_players(decliners)
+  playerDecline() {
+    this.declined_players = [Meteor.user()]
+    this.decline()
   }
 
-  notify_players(decliners) {
-    Streamy.groupEmit('decline', {decliners: decliners}, Streamy.userSockets(this.player_ids()))
+  timeoutDecline() {
+    this.declined_players = _.filter(this.proposal.players, function(player) {
+      return !player.accepted
+    })
+    this.decline()
+  }
+
+  decline() {
+    Proposals.remove(this.proposal._id)
+    this.notify_players()
+  }
+
+  notify_players() {
+    Streamy.groupEmit('decline', {decliners: this.declined_players}, Streamy.userSockets(this.player_ids()))
   }
 
   player_ids() {
