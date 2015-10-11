@@ -23,7 +23,7 @@ GameProposer = class GameProposer {
     Meteor.setTimeout(function() {
       if (Proposals.findOne(proposal_id)) {
         let proposal_decliner = new ProposalDecliner(proposal_id)
-        proposal_decliner.timeoutDecline()
+        proposal_decliner.timeout_decline()
       }
     }, 30000)
   }

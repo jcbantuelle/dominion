@@ -16,7 +16,7 @@ Meteor.methods({
   },
   declineProposal: function(proposal_id) {
     let proposal_decliner = new ProposalDecliner(proposal_id)
-    proposal_decliner.playerDecline()
+    proposal_decliner.player_decline()
   }
 })
 

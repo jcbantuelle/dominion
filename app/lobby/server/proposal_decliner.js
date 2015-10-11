@@ -4,12 +4,12 @@ ProposalDecliner = class ProposalDecliner {
     this.proposal = Proposals.findOne(proposal_id)
   }
 
-  playerDecline() {
+  player_decline() {
     this.declined_players = [Meteor.user()]
     this.decline()
   }
 
-  timeoutDecline() {
+  timeout_decline() {
     this.declined_players = _.filter(this.proposal.players, function(player) {
       return !player.accepted
     })
