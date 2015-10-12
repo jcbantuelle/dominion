@@ -1,1 +1,1 @@
-Proposals = new Mongo.Collection("proposals");
+Proposals = new Mongo.Collection('proposals')
