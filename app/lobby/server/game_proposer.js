@@ -30,12 +30,6 @@ GameProposer = class GameProposer {
 
   find_players(player_ids) {
     player_ids.push(Meteor.userId())
-    let players = Meteor.users.find({_id: {$in: player_ids}})
-    return players.map(function(player) {
-      return {
-        id: player._id,
-        username: player.username
-      }
-    })
+    return Meteor.users.find({_id: {$in: player_ids}}).fetch()
   }
 }

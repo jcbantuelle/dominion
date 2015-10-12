@@ -27,7 +27,7 @@ ProposalDecliner = class ProposalDecliner {
 
   player_ids() {
     return _.map(this.proposal.players, function(player) {
-      return player.id
+      return player._id
     })
   }
 

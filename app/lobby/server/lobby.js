@@ -6,7 +6,8 @@ Meteor.publish('lobby_players', function() {
 })
 
 Meteor.publish('proposal', function() {
-  return Proposals.find({'players.id': this.userId})
+  return Proposals.find({'players._id': this.userId})
+})
 })
 
 Meteor.methods({
