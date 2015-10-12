@@ -1,5 +1,6 @@
 Meteor.subscribe('lobby_players')
 Meteor.subscribe('proposal')
+Meteor.subscribe('game')
 
 Template.lobby.onCreated(registerStreams)
 Template.lobby.onRendered(configureTracker)
@@ -12,6 +13,11 @@ Template.lobby.helpers({
     return Proposals.findOne({}, {
       transform: function(proposal) {
         proposal.is_proposer = proposal.proposer.id == Meteor.userId()
+        _.each(proposal.players, function(player) {
+          if (player._id == Meteor.userId() && player.accepted) {
+            proposal.accepted = true
+          }
+        })
         return proposal
       }
     })
@@ -28,6 +34,7 @@ Template.lobby.events({
 function configureTracker() {
   Tracker.autorun(function () {
     trackProposal()
+    trackGame()
   })
 }
 
@@ -42,6 +49,14 @@ function trackProposal() {
     $('#lobby').show()
   }
 }
+
+function trackGame() {
+  let game = Games.findOne()
+  if (game) {
+    Router.go('/game')
+  }
+}
+
 function registerStreams() {
   Streamy.on('lobby_message', updateChatWindow)
   Streamy.on('decline', updateDeclineMessage)
@@ -85,4 +100,9 @@ function proposeGame(event) {
 function declineProposal(event) {
   event.preventDefault()
   Meteor.call('declineProposal', $('#proposal_id').val())
+}
+
+function acceptProposal(event) {
+  event.preventDefault()
+  Meteor.call('acceptProposal', $('#proposal_id').val())
 }

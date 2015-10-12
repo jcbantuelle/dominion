@@ -8,6 +8,9 @@ Meteor.publish('lobby_players', function() {
 Meteor.publish('proposal', function() {
   return Proposals.find({'players._id': this.userId})
 })
+
+Meteor.publish('game', function() {
+  return Games.find({'players._id': this.userId})
 })
 
 Meteor.methods({
@@ -18,6 +21,10 @@ Meteor.methods({
   declineProposal: function(proposal_id) {
     let proposal_decliner = new ProposalDecliner(proposal_id)
     proposal_decliner.player_decline()
+  },
+  acceptProposal: function(proposal_id) {
+    let proposal_accepter = new ProposalAccepter(proposal_id)
+    proposal_accepter.accept_proposal()
   }
 })
 
