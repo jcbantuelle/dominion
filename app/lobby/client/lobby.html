@@ -37,7 +37,7 @@
   <form id="lobby">
     <div id="players" class="checkbox">
       {{#each lobby_players}}
-        {{#if proposal}}
+        {{#if has_proposal}}
           <span class="busy">{{username}}</span>
         {{else}}
           <label for="player_{{_id}}">

@@ -6,6 +6,7 @@ GameProposer = class GameProposer {
 
   propose() {
     proposal_id = this.create_proposal()
+    this.update_players()
     this.set_proposal_timeout(proposal_id)
   }
 
@@ -16,6 +17,14 @@ GameProposer = class GameProposer {
         username: Meteor.user().username
       },
       players: this.players
+    })
+  }
+
+  update_players() {
+    _.each(this.players, function(player) {
+      Meteor.users.update(player._id, {
+        $set: {has_proposal: true}
+      })
     })
   }
 

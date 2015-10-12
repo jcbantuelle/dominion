@@ -2,7 +2,7 @@ Meteor.subscribe('lobby_players')
 Meteor.subscribe('proposal')
 
 Template.lobby.onCreated(registerStreams)
-Template.lobby.onRendered(trackProposalStatus)
+Template.lobby.onRendered(configureTracker)
 
 Template.lobby.helpers({
   lobby_players: function () {
@@ -21,21 +21,27 @@ Template.lobby.helpers({
 Template.lobby.events({
   "submit #chat": sendMessage,
   "submit #lobby": proposeGame,
-  "click #decline-proposal": declineProposal
+  "click #decline-proposal": declineProposal,
+  "click #accept-proposal": acceptProposal
 })
 
-function trackProposalStatus() {
+function configureTracker() {
   Tracker.autorun(function () {
-    let proposal = Proposals.findOne()
-    if (proposal) {
-      $('#proposal-message').empty()
-      $('#propose-game').hide()
-    } else {
-      $('#propose-game').show()
-    }
+    trackProposal()
   })
 }
 
+function trackProposal() {
+  let proposal = Proposals.findOne()
+  if (proposal) {
+    $('#proposal-message').empty()
+    $('#propose-game').hide()
+    $('#lobby').hide()
+  } else {
+    $('#propose-game').show()
+    $('#lobby').show()
+  }
+}
 function registerStreams() {
   Streamy.on('lobby_message', updateChatWindow)
   Streamy.on('decline', updateDeclineMessage)
