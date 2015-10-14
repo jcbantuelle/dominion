@@ -2,6 +2,7 @@ ProposalDecliner = class ProposalDecliner {
 
   constructor(proposal_id) {
     this.proposal = Proposals.findOne(proposal_id)
+    this.player_ids = this.find_player_ids()
   }
 
   player_decline() {
@@ -23,18 +24,18 @@ ProposalDecliner = class ProposalDecliner {
   }
 
   notify_players() {
-    Streamy.groupEmit('decline', {decliners: this.declined_players}, Streamy.userSockets(this.player_ids()))
+    Streamy.sessionsForUsers(this.player_ids).emit('decline', {decliners: this.declined_players})
   }
 
   update_players() {
-    _.each(this.proposal.players, function(player) {
-      Meteor.users.update(player._id, {
+    _.each(this.player_ids, function(player_id) {
+      Meteor.users.update(player_id, {
         $unset: {has_proposal: ''}
       })
     })
   }
 
-  player_ids() {
+  find_player_ids() {
     return _.map(this.proposal.players, function(player) {
       return player._id
     })
