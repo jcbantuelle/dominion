@@ -53,7 +53,7 @@ function trackProposal() {
 function trackGame() {
   let game = Games.findOne()
   if (game) {
-    Router.go('/game')
+    Router.go(`/game/${game._id}`)
   }
 }
 
