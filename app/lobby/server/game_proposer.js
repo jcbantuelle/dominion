@@ -36,12 +36,12 @@ GameProposer = class GameProposer {
   }
 
   set_proposal_timeout() {
-    Meteor.setTimeout(function() {
+    Meteor.setTimeout(() => {
       if (Proposals.findOne(this.proposal_id)) {
         let proposal_decliner = new ProposalDecliner(this.proposal_id)
         proposal_decliner.timeout_decline()
       }
-    }.bind(this), 30000)
+    }, 30000)
   }
 
   find_players(player_ids) {
