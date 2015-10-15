@@ -22,6 +22,13 @@
         {{/each}}
       </div>
 
+      <div>
+        <strong>Cards:</strong>
+        {{#each cards}}
+          <span class="lobby-card {{types}}">{{name}}</span>
+        {{/each}}
+      </div>
+
       <br />
 
       {{#if accepted}}

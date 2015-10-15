@@ -5,19 +5,26 @@ GameProposer = class GameProposer {
   }
 
   propose() {
-    proposal_id = this.create_proposal()
+    this.select_cards()
+    this.proposal_id = this.create_proposal()
     this.update_players()
-    this.set_proposal_timeout(proposal_id)
+    this.set_proposal_timeout()
   }
 
-  create_proposal() {
+  create_proposal(proposal_cards) {
     return Proposals.insert({
       proposer: {
         id: Meteor.userId(),
         username: Meteor.user().username
       },
-      players: this.players
+      players: this.players,
+      cards: this.cards
     })
+  }
+
+  select_cards() {
+    card_list = new CardList()
+    this.cards = card_list.pull_set()
   }
 
   update_players() {
@@ -28,13 +35,13 @@ GameProposer = class GameProposer {
     })
   }
 
-  set_proposal_timeout(proposal_id) {
+  set_proposal_timeout() {
     Meteor.setTimeout(function() {
-      if (Proposals.findOne(proposal_id)) {
-        let proposal_decliner = new ProposalDecliner(proposal_id)
+      if (Proposals.findOne(this.proposal_id)) {
+        let proposal_decliner = new ProposalDecliner(this.proposal_id)
         proposal_decliner.timeout_decline()
       }
-    }, 30000)
+    }.bind(this), 30000)
   }
 
   find_players(player_ids) {
