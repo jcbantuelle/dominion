@@ -1,3 +1,80 @@
 <template name="game">
-It's a game!
+
+  <div class="row">
+
+    <!-- Kingdom Cards -->
+    <div class="span2" id="kingdom-cards">
+      {{#each game.cards}}
+        <div class="card-container {{#unless remaining}}empty-pile{{/unless}}">
+          <div>
+            <img src="/images/cards/{{name}}.jpg" width="29" height="46" class="card" data-card-id="{{id}}" />
+            <div class="card-tooltip">
+              <img src="/images/cards/{{name}}.jpg" width="176" height="273" />
+            </div>
+          </div>
+          <div class="card-details">
+            ${{coin_cost}}
+            {{#if potion_cost}}
+              {{#times potion_cost}}
+                &oplus;
+              {{/times}}
+            {{/if}}
+            <br />
+            <span class="remaining">({{remaining}})</span>
+          </div>
+          <div class="card-name">
+            {{#if bane}}
+              <span class="bane">&diams;</span>&nbsp;
+            {{/if}}
+            <span>{{name}}</span>
+            {{#if has_trade_route_token}}
+              <span class="trade-token">$</span>&nbsp;
+            {{/if}}
+            {{#if embargos}}
+              {{#times embargos}}
+                <span class="embargo-token">&oslash;</span>
+              {{/times}}
+            {{/if}}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+
+    <!-- Common Cards -->
+    <div class="span1" id="common-cards"></div>
+
+    <div id="game-area" class="span6">
+      <div id="game-log"></div>
+
+      <div id="action-area">
+        <div id="turn-status"></div>
+        <div id="game-info">
+          Draw Pile:
+          <span id="draw-pile"></span>
+          <br />
+          Discard Pile:
+          <span id="discard-pile"></span>
+        </div>
+        <div id="turn-actions"></div>
+      </div>
+      <br class="clear" />
+      <div id="action-response"></div>
+      <div id="hand"></div>
+    </div>
+  </div>
+
+  <br class="clear" />
+  <pre id="game-chat"></pre>
+  <form id="chat" action="">
+    <input id="message">
+  </form>
+
+  <div id='info-modal' class="modal hide">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Game Info</h3>
+    </div>
+    <div class="modal-body" id="extra-info"></div>
+  </div>
+
 </template>
