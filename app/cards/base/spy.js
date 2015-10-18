@@ -4,4 +4,8 @@ Spy = class Spy extends Card {
     return ['action', 'attack']
   }
 
+  coin_cost() {
+    return 4
+  }
+
 }

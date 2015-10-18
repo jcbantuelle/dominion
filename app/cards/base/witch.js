@@ -4,4 +4,8 @@ Witch = class Witch extends Card {
     return ['action', 'attack']
   }
 
+  coin_cost() {
+    return 5
+  }
+
 }

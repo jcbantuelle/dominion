@@ -4,4 +4,8 @@ CouncilRoom = class CouncilRoom extends Card {
     return ['action']
   }
 
+  coin_cost() {
+    return 5
+  }
+
 }

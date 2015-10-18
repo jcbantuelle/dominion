@@ -4,4 +4,8 @@ Militia = class Militia extends Card {
     return ['action', 'attack']
   }
 
+  coin_cost() {
+    return 4
+  }
+
 }

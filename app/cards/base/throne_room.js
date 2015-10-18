@@ -4,4 +4,8 @@ ThroneRoom = class ThroneRoom extends Card {
     return ['action']
   }
 
+  coin_cost() {
+    return 4
+  }
+
 }

@@ -4,4 +4,8 @@ Woodcutter = class Woodcutter extends Card {
     return ['action']
   }
 
+  coin_cost() {
+    return 3
+  }
+
 }

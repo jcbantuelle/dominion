@@ -4,4 +4,8 @@ Thief = class Thief extends Card {
     return ['action', 'attack']
   }
 
+  coin_cost() {
+    return 4
+  }
+
 }

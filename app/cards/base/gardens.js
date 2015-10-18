@@ -4,4 +4,8 @@ Gardens = class Gardens extends Card {
     return ['victory']
   }
 
+  coin_cost() {
+    return 4
+  }
+
 }

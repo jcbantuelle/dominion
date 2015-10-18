@@ -4,4 +4,8 @@ Feast = class Feast extends Card {
     return ['action']
   }
 
+  coin_cost() {
+    return 4
+  }
+
 }

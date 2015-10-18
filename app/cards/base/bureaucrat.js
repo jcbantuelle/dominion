@@ -4,4 +4,8 @@ Bureaucrat = class Bureaucrat extends Card {
     return ['action', 'attack']
   }
 
+  coin_cost() {
+    return 4
+  }
+
 }

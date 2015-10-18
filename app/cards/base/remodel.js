@@ -4,4 +4,8 @@ Remodel = class Remodel extends Card {
     return ['action']
   }
 
+  coin_cost() {
+    return 4
+  }
+
 }

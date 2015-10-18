@@ -4,4 +4,8 @@ Chancellor = class Chancellor extends Card {
     return ['action']
   }
 
+  coin_cost() {
+    return 3
+  }
+
 }

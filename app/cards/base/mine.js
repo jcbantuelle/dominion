@@ -4,4 +4,8 @@ Mine = class Mine extends Card {
     return ['action']
   }
 
+  coin_cost() {
+    return 5
+  }
+
 }

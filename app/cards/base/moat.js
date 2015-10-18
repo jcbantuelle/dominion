@@ -4,4 +4,8 @@ Moat = class Moat extends Card {
     return ['action', 'reaction']
   }
 
+  coin_cost() {
+    return 2
+  }
+
 }

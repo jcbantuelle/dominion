@@ -4,4 +4,8 @@ Workshop = class Workshop extends Card {
     return ['action']
   }
 
+  coin_cost() {
+    return 3
+  }
+
 }
