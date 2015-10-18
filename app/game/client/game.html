@@ -4,44 +4,17 @@
 
     <!-- Kingdom Cards -->
     <div class="span2" id="kingdom-cards">
-      {{#each game.cards}}
-        <div class="card-container {{#unless remaining}}empty-pile{{/unless}}">
-          <div>
-            <img src="/images/cards/{{name}}.jpg" width="29" height="46" class="card" data-card-id="{{id}}" />
-            <div class="card-tooltip">
-              <img src="/images/cards/{{name}}.jpg" width="176" height="273" />
-            </div>
-          </div>
-          <div class="card-details">
-            ${{coin_cost}}
-            {{#if potion_cost}}
-              {{#times potion_cost}}
-                &oplus;
-              {{/times}}
-            {{/if}}
-            <br />
-            <span class="remaining">({{remaining}})</span>
-          </div>
-          <div class="card-name">
-            {{#if bane}}
-              <span class="bane">&diams;</span>&nbsp;
-            {{/if}}
-            <span>{{name}}</span>
-            {{#if has_trade_route_token}}
-              <span class="trade-token">$</span>&nbsp;
-            {{/if}}
-            {{#if embargos}}
-              {{#times embargos}}
-                <span class="embargo-token">&oslash;</span>
-              {{/times}}
-            {{/if}}
-          </div>
-        </div>
+      {{#each game.kingdom_cards}}
+        {{> card}}
       {{/each}}
     </div>
 
     <!-- Common Cards -->
-    <div class="span1" id="common-cards"></div>
+    <div class="span1" id="common-cards">
+      {{#each game.common_cards}}
+        {{> card}}
+      {{/each}}
+    </div>
 
     <div id="game-area" class="span6">
       <div id="game-log"></div>

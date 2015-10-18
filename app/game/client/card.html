@@ -1,0 +1,32 @@
+<template name="card">
+  <div class="card-container {{#unless count}}empty-pile{{/unless}}">
+    <div>
+      <img src="/images/cards/{{top_card.image}}.jpg" width="29" height="46" class="card" />
+      <div class="card-tooltip">
+        <img src="/images/cards/{{top_card.image}}.jpg" width="176" height="273" />
+      </div>
+    </div>
+    <div class="card-details">
+      ${{top_card.coin_cost}}
+      {{#each times top_card.potion_cost}}
+        &oplus;
+      {{/each}}
+      <br />
+      <span class="remaining">({{count}})</span>
+    </div>
+    <div class="card-name">
+      {{#if bane}}
+        <span class="bane">&diams;</span>&nbsp;
+      {{/if}}
+      <span>{{name}}</span>
+      {{#if has_trade_route_token}}
+        <span class="trade-token">$</span>&nbsp;
+      {{/if}}
+      {{#if embargos}}
+        {{#times embargos}}
+          <span class="embargo-token">&oslash;</span>
+        {{/times}}
+      {{/if}}
+    </div>
+  </div>
+</template>

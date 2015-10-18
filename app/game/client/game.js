@@ -8,6 +8,14 @@ Template.game.helpers({
   }
 })
 
+Template.card.helpers({
+  times: function (times) {
+    return _.times(times, function(counter) {
+      return counter
+    })
+  }
+})
+
 Template.game.events({
   "submit #chat": sendMessage
 })
