@@ -4,7 +4,14 @@ Template.game.onCreated(registerStreams)
 
 Template.game.helpers({
   game: function () {
-    return Games.findOne()
+    return Games.findOne(Router.current().params.id, {
+      transform: function(game) {
+        game.kingdom_cards = _.sortBy(game.kingdom_cards, function(card) {
+          return card.top_card.coin_cost + (card.top_card.potion_cost * .1)
+        })
+        return game
+      }
+    })
   }
 })
 
