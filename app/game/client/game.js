@@ -1,7 +1,7 @@
 Meteor.subscribe('game')
 Meteor.subscribe('player_cards')
 
-Template.game.onCreated(registerStreams)
+Template.game.onCreated(pageSetup)
 
 Template.game.helpers({
   game: function () {
@@ -39,8 +39,24 @@ Template.game.events({
   "submit #chat": sendMessage
 })
 
+function pageSetup() {
+  registerStreams()
+  createPopovers()
+}
+
 function registerStreams() {
   Streamy.on('game_message', updateChatWindow)
+}
+
+function createPopovers() {
+  $('body').popover({
+    selector: '.card-container .card, .hand-card, .prize-card',
+    html: true,
+    content: function() {
+      return $(this).next('.card-tooltip').html()
+    },
+    trigger: 'hover'
+  })
 }
 
 function updateChatWindow(data) {
