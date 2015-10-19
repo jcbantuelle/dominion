@@ -1,4 +1,4 @@
-GameCreater = class GameCreater {
+GameCreator = class GameCreator {
 
   constructor(players, cards) {
     this.players = players
