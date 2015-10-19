@@ -24,40 +24,28 @@
       </div>
 
       <div id="action-area">
-        <div id="turn-status"></div>
-        <div id="game-info">
-          Draw Pile:
-          <span id="draw-pile">
-            {{#each times player_cards.deck}}
-              <img src="/images/deck_card.png" />
-            {{/each}}
-          </span>
-          <br />
-          Discard Pile:
-          <span id="discard-pile">
-            {{#each times player_cards.discard}}
-              <img src="/images/discard_card.png" />
-            {{/each}}
-          </span>
+        <div id="turn-status">
+          {{#with game.turn}}
+            {{> turn_status}}
+          {{/with}}
         </div>
-        <div id="turn-actions"></div>
+        <div id="game-info">
+          {{#with player_cards}}
+            {{> deck}}
+          {{/with}}
+        </div>
+        <div id="turn-actions">
+          {{#with game.turn}}
+            {{> turn_actions}}
+          {{/with}}
+        </div>
       </div>
       <br class="clear" />
       <div id="action-response"></div>
       <div id="hand">
         {{#each player_cards.hand}}
-          <ul class="hand-card">
-            {{#each times count}}
-              <li>
-                <img src="/images/cards/{{../image}}.jpg" width="64" height="103" class="kingdom-card card" />
-              </li>
-            {{/each}}
-          </ul>
-          <div class="card-tooltip">
-            <img src="/images/cards/{{image}}.jpg" width="176" height="273" class="full-size" />
-          </div>
+          {{> hand}}
         {{/each}}
-
       </div>
     </div>
   </div>

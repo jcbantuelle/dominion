@@ -1,0 +1,12 @@
+<template name="turn_status">
+  {{#if my_turn}}
+    Actions: <strong>{{actions}}</strong>
+    <br />
+    Buys: <strong>{{buys}}</strong>
+    <br />
+    To Spend: <strong>${{coins}}</strong>
+    {{#each times potions}}
+      &oplus;
+    {{/each}}
+  {{/if}}
+</template>

@@ -1,0 +1,12 @@
+<template name="hand">
+  <ul class="hand-card">
+    {{#each times count}}
+      <li>
+        <img src="/images/cards/{{../image}}.jpg" width="64" height="103" class="kingdom-card card" />
+      </li>
+    {{/each}}
+  </ul>
+  <div class="card-tooltip">
+    <img src="/images/cards/{{image}}.jpg" width="176" height="273" class="full-size" />
+  </div>
+</template>

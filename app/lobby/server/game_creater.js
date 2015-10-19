@@ -6,10 +6,13 @@ GameCreator = class GameCreator {
   }
 
   create() {
-    this.game_id = this.create_game()
+    let game_id = this.create_game()
+    this.game = Games.findOne(game_id)
     this.start_game_log()
+    this.create_turn()
     this.set_up_players()
     this.assign_game_to_players()
+    Games.update(this.game._id, this.game)
   }
 
   create_game() {
@@ -19,22 +22,30 @@ GameCreator = class GameCreator {
       common_cards: this.common_cards(),
       trash: [],
       log: [],
-      turn: 1
+      turn_number: 1
     })
   }
 
   start_game_log() {
-    let game = Games.findOne(this.game_id)
-    let turn_order =  _.map(game.players, function(player) {
+    let turn_order =  _.map(this.game.players, function(player) {
       return player.username
     })
 
-    game.log = [
+    this.game.log = [
       `Turn Order is: ${turn_order.join(', ')}`,
-      `<strong>- ${_.first(game.players).username}'s turn 1 -</strong>`
+      `<strong>- ${_.first(this.game.players).username}'s turn 1 -</strong>`
     ]
+  }
 
-    Games.update(this.game_id, game)
+  create_turn() {
+    this.game.turn = {
+      player_id: _.first(this.game.players)._id,
+      actions: 1,
+      buys: 1,
+      coins: 0,
+      potions: 0,
+      phase: 'action'
+    }
   }
 
   set_up_players() {
@@ -56,7 +67,7 @@ GameCreator = class GameCreator {
 
     PlayerCards.insert({
       player_id: player._id,
-      game_id: this.game_id,
+      game_id: this.game._id,
       deck: deck,
       discard: [],
       hand: hand
