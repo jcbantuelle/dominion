@@ -1,5 +1,9 @@
 Template.registerHelper('times', function (times) {
-  return _.times(times, function(counter) {
-    return counter
-  })
+  if (times !== undefined) {
+    return _.times(times, function(counter) {
+      return counter
+    })
+  } else {
+    return []
+  }
 })
