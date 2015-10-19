@@ -23,9 +23,9 @@
         <span class="trade-token">$</span>&nbsp;
       {{/if}}
       {{#if embargos}}
-        {{#times embargos}}
+        {{#each times embargos}}
           <span class="embargo-token">&oslash;</span>
-        {{/times}}
+        {{/each}}
       {{/if}}
     </div>
   </div>
