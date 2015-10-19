@@ -1,12 +1,12 @@
 <template name="turn_actions">
-  <a href="#info-modal" role="button" class="btn btn-mini btn-info" data-toggle="modal">Info</a>
+  <a href="#info-modal" role="button" class="btn btn-xs btn-info" data-toggle="modal">Info</a>
 
   {{#if my_turn}}
     {{#if treasure_in_hand}}
       {{#unless spend_all_coin}}
-        <button id="play-all-coin" class="btn btn-mini btn-warning">+{{{treasure_in_hand}}}</button>
+        <button id="play-all-coin" class="btn btn-xs btn-warning">+{{{treasure_in_hand}}}</button>
       {{/unless}}
     {{/if}}
-    <button id="end-turn" class="btn btn-danger btn-mini">End Turn</button>
+    <button id="end-turn" class="btn btn-danger btn-xs">End Turn</button>
   {{/if}}
 </template>
