@@ -1,4 +1,5 @@
 Meteor.subscribe('game')
+Meteor.subscribe('player_cards')
 
 Template.game.onCreated(registerStreams)
 
@@ -12,13 +13,24 @@ Template.game.helpers({
         return game
       }
     })
-  }
-})
-
-Template.card.helpers({
-  times: function (times) {
-    return _.times(times, function(counter) {
-      return counter
+  },
+  player_cards: function() {
+    return PlayerCards.findOne({
+      game_id: Router.current().params.id,
+      player_id: Meteor.userId()
+    }, {
+      transform: function(cards) {
+        cards.discard = _.size(cards.discard)
+        cards.deck = _.size(cards.deck)
+        cards.hand = _.chain(cards.hand).groupBy(function(card) {
+              return card.name
+          }).map(function(grouped_cards, name) {
+            let card = _.first(grouped_cards)
+            card.count = _.size(grouped_cards)
+            return card
+          }).value()
+        return cards
+      }
     })
   }
 })

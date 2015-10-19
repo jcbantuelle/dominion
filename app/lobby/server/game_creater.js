@@ -8,6 +8,7 @@ GameCreater = class GameCreater {
   create() {
     this.game_id = this.create_game()
     this.start_game_log()
+    this.set_up_players()
     this.assign_game_to_players()
   }
 
@@ -35,6 +36,30 @@ GameCreater = class GameCreater {
 
     Games.update(this.game_id, game)
   }
+
+  set_up_players() {
+    _.each(this.players, (player) => {
+      this.create_player_cards(player)
+    })
+  }
+
+  create_player_cards(player) {
+    let copper = new Copper()
+    let estate = new Estate()
+
+    coppers = _.times(7, function() { return copper.to_h() })
+    estates = _.times(3, function() { return estate.to_h() })
+
+    deck = _.shuffle(coppers.concat(estates))
+    hand = _.first(deck, 5)
+    deck = _.drop(deck, 5)
+
+    PlayerCards.insert({
+      player_id: player._id,
+      game_id: this.game_id,
+      deck: deck,
+      discard: [],
+      hand: hand
     })
   }
 
