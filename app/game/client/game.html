@@ -3,20 +3,20 @@
   <div class="row">
 
     <!-- Kingdom Cards -->
-    <div class="span2" id="kingdom-cards">
+    <div class="col-md-2" id="kingdom-cards">
       {{#each game.kingdom_cards}}
         {{> card}}
       {{/each}}
     </div>
 
     <!-- Common Cards -->
-    <div class="span1" id="common-cards">
+    <div class="col-md-1" id="common-cards">
       {{#each game.common_cards}}
         {{> card}}
       {{/each}}
     </div>
 
-    <div id="game-area" class="span6">
+    <div class="col-md-6" id="game-area">
       <div id="game-log">
         {{#each game.log}}
           {{{this}}}<br />
@@ -29,13 +29,14 @@
           Draw Pile:
           <span id="draw-pile">
             {{#each times player_cards.deck}}
-              <span class="card">|</span>
-            {{/each}}</span>
+              <img src="/images/deck_card.png" />
+            {{/each}}
+          </span>
           <br />
           Discard Pile:
           <span id="discard-pile">
             {{#each times player_cards.discard}}
-              <span class="card"></span>
+              <img src="/images/discard_card.png" />
             {{/each}}
           </span>
         </div>

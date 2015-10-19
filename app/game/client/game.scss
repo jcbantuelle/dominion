@@ -10,7 +10,7 @@ body {
 
 .card-container {
   height: $card_height;
-  padding-bottom: 5px;
+  padding-bottom: $card_height + 5px;
 }
 
 .card-container.empty-pile .card-name span {
@@ -57,7 +57,7 @@ body {
 }
 
 #common-cards {
-  width: 140px;
+  width: 160px;
 }
 
 #game-log {
@@ -91,15 +91,8 @@ body {
   font-size: 10pt;
 }
 
-#draw-pile .card {
-  background-color: grey;
-  color: grey;
-}
-
-#discard-pile .card {
-  background-color: grey;
-  color: grey;
-  padding: 2px;
+#draw-pile img {
+  margin-right: -5px;
 }
 
 #action-area div {
