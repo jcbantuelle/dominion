@@ -17,7 +17,11 @@
     </div>
 
     <div id="game-area" class="span6">
-      <div id="game-log"></div>
+      <div id="game-log">
+        {{#each game.log}}
+          {{{this}}}<br />
+        {{/each}}
+      </div>
 
       <div id="action-area">
         <div id="turn-status"></div>

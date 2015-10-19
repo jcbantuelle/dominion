@@ -6,22 +6,42 @@ GameCreater = class GameCreater {
   }
 
   create() {
-    game_id = this.create_game()
+    this.game_id = this.create_game()
+    this.start_game_log()
     this.assign_game_to_players()
   }
 
   create_game() {
     return Games.insert({
-      players: this.players,
+      players: _.shuffle(this.players),
       kingdom_cards: this.kingdom_cards(),
-      common_cards: this.common_cards()
+      common_cards: this.common_cards(),
+      trash: [],
+      log: [],
+      turn: 1
+    })
+  }
+
+  start_game_log() {
+    let game = Games.findOne(this.game_id)
+    let turn_order =  _.map(game.players, function(player) {
+      return player.username
+    })
+
+    game.log = [
+      `Turn Order is: ${turn_order.join(', ')}`,
+      `<strong>- ${_.first(game.players).username}'s turn 1 -</strong>`
+    ]
+
+    Games.update(this.game_id, game)
+  }
     })
   }
 
   assign_game_to_players() {
-    _.each(this.players, function(player) {
+    _.each(this.players, (player) => {
       Meteor.users.update(player._id, {
-        $set: {current_game: game_id}
+        $set: {current_game: this.game_id}
       })
     })
   }
