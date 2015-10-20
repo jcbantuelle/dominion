@@ -49,9 +49,15 @@ GameCreator = class GameCreator {
   }
 
   set_up_players() {
-    _.each(this.players, (player) => {
+    this.game.players = _.map(this.players, (player) => {
       this.create_player_cards(player)
+      player = this.add_victory_tokens(player)
+      return player
     })
+  }
+
+  add_victory_tokens(player) {
+    player.victory_tokens = 0
   }
 
   create_player_cards(player) {
