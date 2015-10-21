@@ -8,8 +8,8 @@ GameCreator = class GameCreator {
   create() {
     let game_id = this.create_game()
     this.game = Games.findOne(game_id)
-    this.start_game_log()
     this.create_turn()
+    this.start_game_log()
     this.set_up_players()
     this.assign_game_to_players()
     Games.update(this.game._id, this.game)
@@ -33,13 +33,13 @@ GameCreator = class GameCreator {
 
     this.game.log = [
       `Turn Order is: ${turn_order.join(', ')}`,
-      `<strong>- ${_.first(this.game.players).username}'s turn 1 -</strong>`
+      `<strong>- ${this.game.turn.player.username}'s turn 1 -</strong>`
     ]
   }
 
   create_turn() {
     this.game.turn = {
-      player_id: _.first(this.game.players)._id,
+      player: _.first(this.game.players),
       actions: 1,
       buys: 1,
       coins: 0,
@@ -58,6 +58,7 @@ GameCreator = class GameCreator {
 
   add_victory_tokens(player) {
     player.victory_tokens = 0
+    return player
   }
 
   create_player_cards(player) {
@@ -68,7 +69,7 @@ GameCreator = class GameCreator {
     estates = _.times(3, function() { return estate.to_h() })
 
     deck = _.shuffle(coppers.concat(estates))
-    hand = _.first(deck, 5)
+    hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
     PlayerCards.insert({
@@ -76,6 +77,7 @@ GameCreator = class GameCreator {
       game_id: this.game._id,
       deck: deck,
       discard: [],
+      in_play: [],
       hand: hand
     })
   }
@@ -83,7 +85,7 @@ GameCreator = class GameCreator {
   assign_game_to_players() {
     _.each(this.players, (player) => {
       Meteor.users.update(player._id, {
-        $set: {current_game: this.game_id}
+        $set: {current_game: this.game._id}
       })
     })
   }
@@ -96,8 +98,7 @@ GameCreator = class GameCreator {
 
   common_cards() {
     let cards = _.map(this.common_card_names(), function(card_name) {
-      let card = new this[card_name]
-      return card.to_h()
+      return ClassCreator.create(card_name).to_h()
     })
 
     return _.map(cards, (card) => {
