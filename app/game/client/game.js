@@ -2,6 +2,7 @@ Meteor.subscribe('game')
 Meteor.subscribe('player_cards')
 
 Template.game.onCreated(pageSetup)
+Template.game.onRendered(configureTracker)
 
 Template.game.helpers({
   game: function () {
@@ -42,14 +43,20 @@ Template.game.events({
 
 function pageSetup() {
   registerStreams()
-  createPopovers()
 }
 
 function registerStreams() {
   Streamy.on('game_message', updateChatWindow)
 }
 
-function createPopovers() {
+function configureTracker() {
+  Tracker.autorun(function () {
+    managePopovers()
+  })
+}
+
+function managePopovers() {
+  $('body').popover('destroy')
   $('body').popover({
     selector: '.card-container .card, .hand-card, .prize-card',
     html: true,
