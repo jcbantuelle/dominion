@@ -12,6 +12,10 @@ Meteor.methods({
       username: Meteor.user().username,
       message: message
     })
+  },
+  playCard: function(card_name) {
+    card_player = new CardPlayer(card_name)
+    card_player.play()
   }
 })
 

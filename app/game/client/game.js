@@ -36,7 +36,8 @@ Template.game.helpers({
 })
 
 Template.game.events({
-  "submit #chat": sendMessage
+  "submit #chat": sendMessage,
+  "click #hand .card": playCard
 })
 
 function pageSetup() {
@@ -69,4 +70,8 @@ function sendMessage(event) {
   event.preventDefault()
   Meteor.call('sendGameMessage', event.target.message.value)
   event.target.message.value = ''
+}
+
+function playCard(event) {
+  Meteor.call('playCard', $(event.target).data('name'))
 }
