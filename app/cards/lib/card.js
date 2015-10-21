@@ -1,5 +1,9 @@
 Card = class Card {
 
+  is_purchasable() {
+    return true
+  }
+
   potion_cost() {
     return 0
   }

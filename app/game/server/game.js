@@ -16,6 +16,10 @@ Meteor.methods({
   playCard: function(card_name) {
     card_player = new CardPlayer(card_name)
     card_player.play()
+  },
+  buyCard: function(card_name) {
+    card_buyer = new CardBuyer(card_name)
+    card_buyer.buy()
   }
 })
 
