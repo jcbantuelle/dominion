@@ -4,6 +4,10 @@ Card = class Card {
     return 0
   }
 
+  victory_points() {
+    return 0
+  }
+
   name() {
     return s.humanize(this.constructor.name)
   }

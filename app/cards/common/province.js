@@ -8,4 +8,8 @@ Province = class Province extends Card {
     return 8
   }
 
+  victory_points() {
+    return 6
+  }
+
 }

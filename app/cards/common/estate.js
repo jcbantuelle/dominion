@@ -8,4 +8,8 @@ Estate = class Estate extends Card {
     return 2
   }
 
+  victory_points() {
+    return 1
+  }
+
 }

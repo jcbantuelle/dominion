@@ -8,4 +8,8 @@ Duchy = class Duchy extends Card {
     return 5
   }
 
+  victory_points() {
+    return 3
+  }
+
 }
