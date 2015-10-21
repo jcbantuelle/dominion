@@ -6,8 +6,7 @@ CardList = class CardList {
 
   pull_set() {
     return _.chain(this.cards).sample(10).map(function(card_name) {
-      let card = new this[card_name]
-      return card.to_h()
+      return ClassCreator.create(card_name).to_h()
     }).value()
   }
 
