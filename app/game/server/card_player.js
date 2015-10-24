@@ -32,7 +32,7 @@ CardPlayer = class CardPlayer {
 
   put_card_in_play() {
     played_card = this.player_cards.hand.splice(this.card_index, 1)
-    this.player_cards.in_play.concat(played_card)
+    this.player_cards.in_play = this.player_cards.in_play.concat(played_card)
   }
 
   update_log() {
