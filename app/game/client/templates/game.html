@@ -19,7 +19,7 @@
     <div class="col-md-6" id="game-area">
       <div id="game-log">
         {{#each game.log}}
-          {{{this}}}<br />
+          {{> log}}
         {{/each}}
       </div>
 
@@ -44,7 +44,7 @@
       <div id="action-response"></div>
       <div id="hand">
         {{#each player_cards.hand}}
-          {{> hand}}
+          {{> hand_card}}
         {{/each}}
       </div>
     </div>
