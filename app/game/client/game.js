@@ -81,11 +81,11 @@ function sendMessage(event) {
 }
 
 function playCard(event) {
-  Meteor.call('playCard', $(event.target).data('name'))
   $('.popover').remove()
+  Meteor.call('playCard', $(event.target).attr('data-name'))
 }
 
 function buyCard(event) {
-  Meteor.call('buyCard', $(event.target).data('name'))
   $('.popover').remove()
+  Meteor.call('buyCard', $(event.target).attr('data-name'))
 }
