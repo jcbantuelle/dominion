@@ -20,6 +20,10 @@ Meteor.methods({
   buyCard: function(card_name) {
     card_buyer = new CardBuyer(card_name)
     card_buyer.buy()
+  },
+  endTurn: function() {
+    turn_ender = new TurnEnder()
+    turn_ender.end_turn()
   }
 })
 

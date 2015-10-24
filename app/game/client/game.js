@@ -41,7 +41,8 @@ Template.game.helpers({
 Template.game.events({
   "submit #chat": sendMessage,
   "click #hand .card": playCard,
-  "click .card-container .card": buyCard
+  "click .card-container .card": buyCard,
+  "click #end-turn": endTurn
 })
 
 function pageSetup() {
@@ -88,4 +89,8 @@ function playCard(event) {
 function buyCard(event) {
   $('.popover').remove()
   Meteor.call('buyCard', $(event.target).attr('data-name'))
+}
+
+function endTurn(event) {
+  Meteor.call('endTurn')
 }
