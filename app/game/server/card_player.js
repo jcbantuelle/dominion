@@ -36,7 +36,7 @@ CardPlayer = class CardPlayer {
   }
 
   update_log() {
-    this.game.log.push(`${Meteor.user().username} plays <span class="${this.card.type_class()}">${this.card.name()}</span>`)
+    this.game.log.push(`<strong>${Meteor.user().username}</strong> plays <span class="${this.card.type_class()}">${this.card.name()}</span>`)
   }
 
   is_player_turn() {
