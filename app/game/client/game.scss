@@ -62,7 +62,7 @@ body {
 
 #game-log {
   height: 250px;
-  overflow: scroll;
+  overflow: auto;
   width: 700px;
 }
 
@@ -93,6 +93,10 @@ body {
 
 #draw-pile img {
   margin-right: -3px;
+}
+
+#discard-pile img {
+  margin-right: -4px;
 }
 
 #action-area div {
