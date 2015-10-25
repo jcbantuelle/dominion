@@ -8,4 +8,8 @@ Curse = class Curse extends Card {
     return 0
   }
 
+  victory_points() {
+    return -1
+  }
+
 }
