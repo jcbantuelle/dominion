@@ -30,8 +30,8 @@ CardBuyer = class CardBuyer {
   buy() {
     if (this.can_buy()) {
       this.update_phase()
-      this.buy_card()
       this.update_log()
+      this.buy_card()
       Games.update(this.game._id, this.game)
       PlayerCards.update(this.player_cards._id, this.player_cards)
     }
@@ -62,7 +62,9 @@ CardBuyer = class CardBuyer {
     this.game_card.stack.shift()
     this.player_cards.discard.push(this.game_card.top_card)
     this.game_card.count -= 1
-    this.game_card.top_card = _.first(this.game_card.stack)
+    if (_.size(this.game_card.stack) > 0) {
+      this.game_card.top_card = _.first(this.game_card.stack)
+    }
     if (this.game_card_type === 'kingdom') {
       this.game.kingdom_cards.splice(this.game_card_index, 1, this.game_card)
     } else if (this.game_card_type === 'common') {
