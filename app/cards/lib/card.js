@@ -12,6 +12,10 @@ Card = class Card {
     return 0
   }
 
+  point_variable() {
+    return false
+  }
+
   name() {
     return s.humanize(this.constructor.name)
   }
