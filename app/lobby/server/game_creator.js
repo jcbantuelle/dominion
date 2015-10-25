@@ -111,11 +111,11 @@ GameCreator = class GameCreator {
   }
 
   victory_card_names() {
-    return ['Estate','Duchy','Province']
+    return ['Province','Duchy','Estate']
   }
 
   treasure_card_names() {
-    return ['Copper','Silver','Gold']
+    return ['Gold','Silver','Copper']
   }
 
   miscellaneous_card_names() {
