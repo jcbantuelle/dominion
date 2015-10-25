@@ -8,10 +8,9 @@ Silver = class Silver extends Card {
     return 3
   }
 
-  play() {
-    this.game = Games.findOne(Meteor.user().current_game)
-    this.game.turn.coins += 2
-    Games.update(this.game._id, this.game)
+  play(game, player_cards) {
+    game.turn.coins += 2
+    Games.update(game._id, game)
   }
 
 }

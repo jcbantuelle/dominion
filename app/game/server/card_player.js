@@ -16,7 +16,7 @@ CardPlayer = class CardPlayer {
       this.update_log()
       Games.update(this.game._id, this.game)
       PlayerCards.update(this.player_cards._id, this.player_cards)
-      this.card.play()
+      this.card.play(this.game, this.player_cards)
     }
   }
 

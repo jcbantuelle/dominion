@@ -8,10 +8,9 @@ Copper = class Copper extends Card {
     return 0
   }
 
-  play() {
-    this.game = Games.findOne(Meteor.user().current_game)
-    this.game.turn.coins += 1
-    Games.update(this.game._id, this.game)
+  play(game, player_cards) {
+    game.turn.coins += 1
+    Games.update(game._id, game)
   }
 
 }

@@ -8,13 +8,11 @@ Woodcutter = class Woodcutter extends Card {
     return 3
   }
 
-  play() {
-    this.game = Games.findOne(Meteor.user().current_game)
-
-    this.game.turn.buys += 1
-    this.game.turn.coins += 2
-    this.game.log.push(`&nbsp;&nbsp;<strong>${Meteor.user().username}</strong> gets +1 buy and +$2`)
-    Games.update(this.game._id, this.game)
+  play(game, player_cards) {
+    game.turn.buys += 1
+    game.turn.coins += 2
+    game.log.push(`&nbsp;&nbsp;<strong>${Meteor.user().username}</strong> gets +1 buy and +$2`)
+    Games.update(game._id, game)
   }
 
 }
