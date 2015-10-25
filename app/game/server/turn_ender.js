@@ -88,7 +88,7 @@ TurnEnder = class TurnEnder {
 
   no_more_provinces_or_colonies() {
     return _.find(this.empty_stacks(), function(game_card) {
-      game_card.name === 'Province' || game_card.name === 'Colony'
+      return game_card.name === 'Province' || game_card.name === 'Colony'
     }) !== undefined
   }
 
