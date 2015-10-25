@@ -25,7 +25,9 @@ Template.game.helpers({
       transform: function(cards) {
         cards.discard = _.size(cards.discard)
         cards.deck = _.size(cards.deck)
-        cards.hand = _.chain(cards.hand).groupBy(function(card) {
+        cards.hand = _.chain(cards.hand).sortBy(function(card) {
+            return card.name
+          }).groupBy(function(card) {
               return card.name
           }).map(function(grouped_cards, name) {
             let card = _.first(grouped_cards)
