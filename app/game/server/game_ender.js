@@ -80,6 +80,6 @@ GameEnder = class GameEnder {
       return score.points === this.top_score()
     }).map(function(score) {
       return score.username
-    }).value().join()
+    }).value().join(', ')
   }
 }
