@@ -76,6 +76,8 @@ TurnEnder = class TurnEnder {
   }
 
   end_game() {
+    let game_ender = new GameEnder(this.game)
+    this.game = game_ender.end_game()
   }
 
   game_over() {

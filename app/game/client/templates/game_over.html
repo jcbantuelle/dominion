@@ -1,0 +1,15 @@
+<template name="game_over">
+  <br />
+  <strong>Winner(s):</strong> {{winners}}
+  <br />
+  <br />
+  {{#each scores}}
+    <strong>{{username}}</strong>: &nbsp;&nbsp;{{points}} Points
+    <br />
+    {{#each point_cards}}
+      <strong>{{name}}</strong> x {{count}} {{#if point_variable}}({{point_variable}}){{/if}}
+      <br />
+    {{/each}}
+    <br />
+  {{/each}}
+</template>

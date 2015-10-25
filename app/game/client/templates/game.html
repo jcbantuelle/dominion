@@ -23,30 +23,38 @@
         {{/each}}
       </div>
 
-      <div id="action-area">
-        <div id="turn-status">
-          {{#with game.turn}}
-            {{> turn_status}}
+      {{#if game.finished}}
+        <div id="finished-game">
+          {{#with game}}
+            {{> game_over}}
           {{/with}}
         </div>
-        <div id="game-info">
-          {{#with player_cards}}
-            {{> deck}}
-          {{/with}}
+      {{else}}
+        <div id="action-area">
+          <div id="turn-status">
+            {{#with game.turn}}
+              {{> turn_status}}
+            {{/with}}
+          </div>
+          <div id="game-info">
+            {{#with player_cards}}
+              {{> deck}}
+            {{/with}}
+          </div>
+          <div id="turn-actions">
+            {{#with game.turn}}
+              {{> turn_actions}}
+            {{/with}}
+          </div>
         </div>
-        <div id="turn-actions">
-          {{#with game.turn}}
-            {{> turn_actions}}
-          {{/with}}
+        <br class="clear" />
+        <div id="action-response"></div>
+        <div id="hand">
+          {{#each player_cards.hand}}
+            {{> hand_card}}
+          {{/each}}
         </div>
-      </div>
-      <br class="clear" />
-      <div id="action-response"></div>
-      <div id="hand">
-        {{#each player_cards.hand}}
-          {{> hand_card}}
-        {{/each}}
-      </div>
+      {{/if}}
     </div>
   </div>
 
