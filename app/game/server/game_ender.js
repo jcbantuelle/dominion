@@ -77,11 +77,8 @@ GameEnder = class GameEnder {
 
   winners() {
     return _.chain(this.game.scores).filter((score) => {
-      console.log(score.points)
-      console.log(this.top_score())
       return score.points === this.top_score()
     }).map(function(score) {
-      console.log(score.username)
       return score.username
     }).value().join()
   }
