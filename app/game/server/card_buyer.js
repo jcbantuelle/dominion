@@ -3,7 +3,7 @@ CardBuyer = class CardBuyer {
   constructor(card_name) {
     this.game = Games.findOne(Meteor.user().current_game)
     this.find_game_card(card_name)
-    this.card = ClassCreator.create(this.game_card.top_card.name)
+    this.card = ClassCreator.create(this.card_class_name(this.game_card.top_card.name))
     this.player_cards = PlayerCards.findOne({
       player_id: Meteor.userId(),
       game_id: this.game._id
@@ -25,6 +25,10 @@ CardBuyer = class CardBuyer {
       this.game_card_type = 'kingdom'
       this.game_card = this.game.kingdom_cards[this.game_card_index]
     }
+  }
+
+  card_class_name(card_name) {
+    return _.startCase(card_name).replace(/ /g,'')
   }
 
   buy() {
