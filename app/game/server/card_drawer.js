@@ -37,8 +37,7 @@ CardDrawer = class CardDrawer {
   }
 
   update_log() {
-    let player = Meteor.users.findOne(this.player_cards.player_id)
-    this.game.log.push(`&nbsp;&nbsp;<strong>${player.username}</strong> draws ${this.drawn_card_count()} card(s)`)
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> draws ${this.drawn_card_count()} card(s)`)
   }
 
 }

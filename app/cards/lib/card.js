@@ -38,9 +38,10 @@ Card = class Card {
     }
   }
 
-  other_players(game) {
-    return _.filter(game.players, function(player) {
-      return player._id !== Meteor.userId()
+  other_players_cards(game, current_user) {
+    return PlayerCards.find({
+      game_id: game._id,
+      username: {$ne: current_user}
     })
   }
 }

@@ -13,7 +13,7 @@ Village = class Village extends Card {
     [player_cards, game] = card_drawer.draw(1, true)
 
     game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${Meteor.user().username}</strong> gets +1 actions`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 actions`)
     Games.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
   }

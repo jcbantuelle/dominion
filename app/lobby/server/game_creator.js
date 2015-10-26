@@ -75,6 +75,7 @@ GameCreator = class GameCreator {
     PlayerCards.insert({
       player_id: player._id,
       game_id: this.game._id,
+      username: player.username,
       deck: deck,
       discard: [],
       in_play: [],
