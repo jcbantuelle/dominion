@@ -1,7 +1,7 @@
 CardPlayer = class CardPlayer {
 
   constructor(card_name) {
-    this.card = ClassCreator.create(this.card_class_name(card_name))
+    this.card = ClassCreator.create(_.titleize(card_name))
     this.game = Games.findOne(Meteor.user().current_game)
     this.player_cards = PlayerCards.findOne({
       player_id: Meteor.userId(),
@@ -18,10 +18,6 @@ CardPlayer = class CardPlayer {
       PlayerCards.update(this.player_cards._id, this.player_cards)
       this.card.play(this.game, this.player_cards)
     }
-  }
-
-  card_class_name(card_name) {
-    return _.startCase(card_name).replace(/ /g,'')
   }
 
   can_play() {
