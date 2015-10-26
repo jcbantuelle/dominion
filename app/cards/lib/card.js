@@ -44,4 +44,16 @@ Card = class Card {
       username: {$ne: current_user}
     })
   }
+
+  shuffle_discard(player_cards) {
+    player_cards.deck = _.shuffle(player_cards.discard)
+    player_cards.discard = []
+    return player_cards
+  }
+
+  formatted_cards(cards) {
+    return _.map(cards, function(card) {
+      return `<span class="${card.types}">${card.name}</span>`
+    }).join(' ')
+  }
 }
