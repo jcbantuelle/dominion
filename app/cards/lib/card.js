@@ -37,4 +37,10 @@ Card = class Card {
       potion_cost: this.potion_cost()
     }
   }
+
+  other_players(game) {
+    return _.filter(game.players, function(player) {
+      return player._id !== Meteor.userId()
+    })
+  }
 }
