@@ -6,6 +6,13 @@ Template.game.onRendered(createPopovers)
 
 Template.log.onRendered(scrollGameLog)
 
+Template.turn_actions.helpers({
+  allow_treasures: function() {
+    let game = Games.findOne(Router.current().params.id)
+    return _.contains(['action', 'treasure'], game.turn.phase)
+  }
+})
+
 Template.game.helpers({
   game: function () {
     return Games.findOne(Router.current().params.id, {
@@ -44,7 +51,8 @@ Template.game.events({
   "submit #chat": sendMessage,
   "click #hand .card": playCard,
   "click .card-container .card": buyCard,
-  "click #end-turn": endTurn
+  "click #end-turn": endTurn,
+  "click #play-all-coin": playAllCoin
 })
 
 function pageSetup() {
@@ -95,4 +103,8 @@ function buyCard(event) {
 
 function endTurn(event) {
   Meteor.call('endTurn')
+}
+
+function playAllCoin(event) {
+  Meteor.call('playAllCoin')
 }
