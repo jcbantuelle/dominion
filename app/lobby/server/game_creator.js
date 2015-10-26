@@ -79,6 +79,7 @@ GameCreator = class GameCreator {
       deck: deck,
       discard: [],
       in_play: [],
+      revealed: [],
       hand: hand
     })
   }
