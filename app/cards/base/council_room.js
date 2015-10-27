@@ -10,11 +10,11 @@ CouncilRoom = class CouncilRoom extends Card {
 
   play(game, player_cards) {
     let card_drawer = new CardDrawer(player_cards, game);
-    [player_cards, game] = card_drawer.draw(4, true)
+    [player_cards, game] = card_drawer.draw(4)
 
     this.other_players_cards(game, player_cards.username).forEach(function(other_player_cards) {
       let other_player_card_drawer = new CardDrawer(other_player_cards, game);
-      [other_player_cards, game] = other_player_card_drawer.draw(1, true)
+      [other_player_cards, game] = other_player_card_drawer.draw(1)
       PlayerCards.update(other_player_cards._id, other_player_cards)
     })
 

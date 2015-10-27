@@ -10,7 +10,7 @@ Market = class Market extends Card {
 
   play(game, player_cards) {
     let card_drawer = new CardDrawer(player_cards, game);
-    [player_cards, game] = card_drawer.draw(1, true)
+    [player_cards, game] = card_drawer.draw(1)
 
     game.turn.actions += 1
     game.turn.buys += 1

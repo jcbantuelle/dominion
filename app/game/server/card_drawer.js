@@ -7,7 +7,7 @@ CardDrawer = class CardDrawer {
     this.original_hand_count = _.size(this.player_cards.hand)
   }
 
-  draw(to_draw_count, announce = false) {
+  draw(to_draw_count, announce = true) {
     this.draw_cards(to_draw_count)
 
     if (this.drawn_card_count() < to_draw_count) {
