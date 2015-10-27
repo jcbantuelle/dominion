@@ -11,20 +11,15 @@ CardBuyer = class CardBuyer {
   }
 
   find_game_card(card_name) {
-    this.game_card_index = _.findIndex(this.game.kingdom_cards, function(card) {
-      return card.name === card_name
-    })
-
-    if (this.game_card_index === -1) {
-      this.game_card_index = _.findIndex(this.game.common_cards, function(card) {
+    _.each(['kingdom', 'common'], (source) => {
+      let card_index = _.findIndex(this.game[`${source}_cards`], function(card) {
         return card.name === card_name
       })
-      this.game_card_type = 'common'
-      this.game_card = this.game.common_cards[this.game_card_index]
-    } else {
-      this.game_card_type = 'kingdom'
-      this.game_card = this.game.kingdom_cards[this.game_card_index]
-    }
+      if (card_index !== -1) {
+        this.game_card = this.game[`${source}_cards`][card_index]
+        this.game_card.source = source
+      }
+    })
   }
 
   buy() {
@@ -49,7 +44,7 @@ CardBuyer = class CardBuyer {
 
   buy_card() {
     this.update_turn()
-    this.move_card_to_discard()
+    this.gain_card()
   }
 
   update_turn() {
@@ -58,18 +53,9 @@ CardBuyer = class CardBuyer {
     this.game.turn.potions -= this.game_card.top_card.potion_cost
   }
 
-  move_card_to_discard() {
-    this.game_card.stack.shift()
-    this.player_cards.discard.push(this.game_card.top_card)
-    this.game_card.count -= 1
-    if (_.size(this.game_card.stack) > 0) {
-      this.game_card.top_card = _.first(this.game_card.stack)
-    }
-    if (this.game_card_type === 'kingdom') {
-      this.game.kingdom_cards.splice(this.game_card_index, 1, this.game_card)
-    } else if (this.game_card_type === 'common') {
-      this.game.common_cards.splice(this.game_card_index, 1, this.game_card)
-    }
+  gain_card() {
+    let card_gainer = new CardGainer(this.game, Meteor.user(), this.player_cards.discard, this.card.name());
+    [this.game, this.player_cards.discard] = card_gainer[`gain_${this.game_card.source}_card`](false)
   }
 
   update_log() {
