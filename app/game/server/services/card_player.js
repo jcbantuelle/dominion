@@ -16,8 +16,8 @@ CardPlayer = class CardPlayer {
       this.update_log()
       Games.update(this.game._id, this.game)
       PlayerCards.update(this.player_cards._id, this.player_cards)
-      //this.attack()
       this.card.play(this.game, this.player_cards)
+      this.attack()
     }
   }
 
@@ -74,16 +74,13 @@ CardPlayer = class CardPlayer {
     return this.card_index !== -1
   }
 
-  /*attack() {
-
+  attack() {
+    if (_.contains(this.card.types(), 'attack')) {
+      let turn_ordered_players = TurnOrderedPlayersQuery.turn_ordered_players(this.game, Meteor.user())
+      _.each(turn_ordered_players, (player) => {
+        this.card.attack(this.game, player)
+      })
+    }
   }
-
-  turn_ordered_players(game, current_player) {
-    let current_player_index = _.findIndex(game.players, function(player) {
-      player.username === current_player.username
-    })
-
-    return _.slice(game.players, current_player_index+1).concat(_.slice(game.players, 0, current_player_index))
-  }*/
 
 }
