@@ -22,13 +22,13 @@ TurnEnder = class TurnEnder {
   }
 
   clean_up_cards_in_play() {
-    this.player_cards.discard = this.player_cards.discard.concat(this.player_cards.in_play)
-    this.player_cards.in_play = []
+    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play');
+    [this.game, this.player_cards] = card_discarder.discard_all()
   }
 
   discard_hand() {
-    this.player_cards.discard = this.player_cards.discard.concat(this.player_cards.hand)
-    this.player_cards.hand = []
+    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'hand');
+    [this.game, this.player_cards] = card_discarder.discard_all()
   }
 
   draw_new_hand() {
