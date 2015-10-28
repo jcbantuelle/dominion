@@ -28,7 +28,7 @@ CardTrasher = class CardTrasher {
   }
 
   update_log(card) {
-    this.game.log.push(`<strong>${this.username}</strong> trashes <span class="${this.source[this.card_index].types}">${this.source[this.card_index].name}</span>`)
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.username}</strong> trashes <span class="${this.source[this.card_index].types}">${this.source[this.card_index].name}</span>`)
   }
 
 }
