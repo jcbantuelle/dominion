@@ -1,8 +1,8 @@
 CardGainer = class CardGainer {
 
-  constructor(game, player, destination, card_name) {
+  constructor(game, username, destination, card_name) {
     this.game = game
-    this.player = player
+    this.username = username
     this.destination = destination
     this.card_name = card_name
   }
@@ -40,7 +40,7 @@ CardGainer = class CardGainer {
   }
 
   update_log(card) {
-    this.game.log.push(`<strong>${this.player.username}</strong> gains <span class="${card.types}">${card.name}</span>`)
+    this.game.log.push(`<strong>${this.username}</strong> gains <span class="${card.types}">${card.name}</span>`)
   }
 
 }
