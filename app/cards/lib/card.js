@@ -46,8 +46,8 @@ Card = class Card {
   }
 
   shuffle_discard(player_cards) {
-    player_cards.deck = _.shuffle(player_cards.discard)
-    player_cards.discard = []
+    let deck_shuffler = new DeckShuffler(player_cards)
+    player_cards = deck_shuffler.shuffle()
     return player_cards
   }
 

@@ -28,8 +28,8 @@ CardDrawer = class CardDrawer {
   }
 
   shuffle_discard() {
-    this.player_cards.deck = _.shuffle(this.player_cards.discard)
-    this.player_cards.discard = []
+    let deck_shuffler = new DeckShuffler(this.player_cards)
+    this.player_cards = deck_shuffler.shuffle()
   }
 
   drawn_card_count() {
