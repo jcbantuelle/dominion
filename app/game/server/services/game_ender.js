@@ -45,7 +45,7 @@ GameEnder = class GameEnder {
 
   point_cards(player_cards) {
     return _.chain(player_cards).map(function(player_card) {
-      card = ClassCreator.create(player_card.name)
+      let card = ClassCreator.create(player_card.name)
       return {
         name: card.name(),
         points: card.victory_points(player_cards),

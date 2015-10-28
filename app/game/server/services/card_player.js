@@ -1,7 +1,7 @@
 CardPlayer = class CardPlayer {
 
   constructor(card_name) {
-    this.card = ClassCreator.create(_.titleize(card_name))
+    this.card = ClassCreator.create(card_name)
     this.game = Games.findOne(Meteor.user().current_game)
     this.player_cards = PlayerCards.findOne({
       player_id: Meteor.userId(),
@@ -16,6 +16,7 @@ CardPlayer = class CardPlayer {
       this.update_log()
       Games.update(this.game._id, this.game)
       PlayerCards.update(this.player_cards._id, this.player_cards)
+      //this.attack()
       this.card.play(this.game, this.player_cards)
     }
   }
@@ -72,5 +73,17 @@ CardPlayer = class CardPlayer {
     })
     return this.card_index !== -1
   }
+
+  /*attack() {
+
+  }
+
+  turn_ordered_players(game, current_player) {
+    let current_player_index = _.findIndex(game.players, function(player) {
+      player.username === current_player.username
+    })
+
+    return _.slice(game.players, current_player_index+1).concat(_.slice(game.players, 0, current_player_index))
+  }*/
 
 }
