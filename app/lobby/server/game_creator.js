@@ -94,7 +94,9 @@ GameCreator = class GameCreator {
 
   kingdom_cards() {
     return _.map(this.cards, (card) => {
-      return this.game_card(card)
+      card = this.game_card(card)
+      card.source = 'kingdom'
+      return card
     })
   }
 
@@ -104,7 +106,9 @@ GameCreator = class GameCreator {
     })
 
     return _.map(cards, (card) => {
-      return this.game_card(card)
+      card = this.game_card(card)
+      card.source = 'common'
+      return card
     })
   }
 

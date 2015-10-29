@@ -17,7 +17,6 @@ CardBuyer = class CardBuyer {
       })
       if (card_index !== -1) {
         this.game_card = this.game[`${source}_cards`][card_index]
-        this.game_card.source = source
       }
     })
   }
