@@ -1,5 +1,6 @@
 Meteor.subscribe('game')
 Meteor.subscribe('player_cards')
+Meteor.subscribe('turn_event')
 
 Template.game.onCreated(pageSetup)
 Template.game.onRendered(createPopovers)
@@ -44,6 +45,9 @@ Template.game.helpers({
         return cards
       }
     })
+  },
+  turn_event: function () {
+    return TurnEvents.findOne()
   }
 })
 
@@ -52,7 +56,8 @@ Template.game.events({
   "click #hand .card": playCard,
   "click .card-container .card": buyCard,
   "click #end-turn": endTurn,
-  "click #play-all-coin": playAllCoin
+  "click #play-all-coin": playAllCoin,
+  "submit #turn-event": turnEvent
 })
 
 function pageSetup() {
@@ -107,4 +112,24 @@ function endTurn(event) {
 
 function playAllCoin(event) {
   Meteor.call('playAllCoin')
+}
+
+function turnEvent(event) {
+  event.preventDefault()
+  let turn_event = TurnEvents.findOne()
+
+  let selected_checkboxes = $('#turn-event').find(':checked')
+  if (turn_event.maximum > 0 && selected_checkboxes.length > turn_event.maximum) {
+    alert(`You can select no more than ${turn_event.maximum} card(s)`)
+  } else if (turn_event.minimum > 0 && selected_checkboxes.length < turn_event.minimum) {
+    alert(`You must select at least ${turn_event.minimum} card(s)`)
+  } else {
+    let selected_cards = selected_checkboxes.map(function() {
+      let card_name = $(this).val()
+      return _.find(turn_event.cards, function(card) {
+        return card.top_card.name === card_name
+      })
+    }).get()
+    Meteor.call('turnEvent', selected_cards)
+  }
 }

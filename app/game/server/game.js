@@ -6,6 +6,10 @@ Meteor.publish('player_cards', function() {
   return PlayerCards.find({'player_id': this.userId})
 })
 
+Meteor.publish('turn_event', function() {
+  return TurnEvents.find({'player_id': this.userId})
+})
+
 const bulk_playable_treasures = ['Copper', 'Silver', 'Gold']
 
 Meteor.methods({
@@ -37,6 +41,14 @@ Meteor.methods({
     }).each(function(card) {
       play_card(card.name)
     }).value()
+  },
+  turnEvent: function(selected_cards) {
+    let turn_event = TurnEvents.findOne({
+      player_id: Meteor.userId()
+    })
+    turn_event.finished = true
+    TurnEvents.update(turn_event._id, turn_event)
+    TurnEventPromises[turn_event._id].resolve(selected_cards)
   }
 })
 

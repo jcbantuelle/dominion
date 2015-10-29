@@ -41,14 +41,24 @@
               {{> deck}}
             {{/with}}
           </div>
-          <div id="turn-actions">
-            {{#with game.turn}}
-              {{> turn_actions}}
-            {{/with}}
-          </div>
+          {{#unless turn_event}}
+            <div id="turn-actions">
+              {{#with game.turn}}
+                {{> turn_actions}}
+              {{/with}}
+            </div>
+          {{/unless}}
         </div>
         <br class="clear" />
-        <div id="action-response"></div>
+        <div id="action-response">
+          {{#with turn_event}}
+            {{#if finished}}
+              Waiting on Others...
+            {{else}}
+              {{> UI.dynamic template=type data=this}}
+            {{/if}}
+          {{/with}}
+        </div>
         <div id="hand">
           {{#each player_cards.hand}}
             {{> hand_card}}
