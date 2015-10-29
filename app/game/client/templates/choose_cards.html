@@ -3,8 +3,8 @@
   <form id="turn-event">
     <div class="checkbox">
       {{#each cards}}
-        <label for="card_{{name}}">
-          <input type="checkbox" id="card_{{name}}" value="{{name}}" />
+        <label for="card_{{@index}}">
+          <input type="checkbox" id="card_{{@index}}" value="{{name}}" />
           {{#if ../game_cards}}
             <span class="{{top_card.types}}">{{top_card.name}}</span>
           {{else}}
