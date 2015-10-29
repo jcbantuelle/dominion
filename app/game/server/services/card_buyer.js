@@ -1,13 +1,10 @@
 CardBuyer = class CardBuyer {
 
-  constructor(card_name) {
-    this.game = Games.findOne(Meteor.user().current_game)
+  constructor(game, player_cards, card_name) {
+    this.game = game
+    this.player_cards = player_cards
     this.find_game_card(card_name)
     this.card = ClassCreator.create(this.game_card.top_card.name)
-    this.player_cards = PlayerCards.findOne({
-      player_id: Meteor.userId(),
-      game_id: this.game._id
-    })
   }
 
   find_game_card(card_name) {

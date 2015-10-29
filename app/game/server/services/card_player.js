@@ -1,12 +1,9 @@
 CardPlayer = class CardPlayer {
 
-  constructor(card_name) {
+  constructor(game, player_cards, card_name) {
     this.card = ClassCreator.create(card_name)
-    this.game = Games.findOne(Meteor.user().current_game)
-    this.player_cards = PlayerCards.findOne({
-      player_id: Meteor.userId(),
-      game_id: this.game._id
-    })
+    this.game = game
+    this.player_cards = player_cards
   }
 
   play() {

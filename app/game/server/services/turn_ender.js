@@ -1,11 +1,8 @@
 TurnEnder = class TurnEnder {
 
-  constructor() {
-    this.game = Games.findOne(Meteor.user().current_game)
-    this.player_cards = PlayerCards.findOne({
-      player_id: Meteor.userId(),
-      game_id: this.game._id
-    })
+  constructor(game, player_cards) {
+    this.game = game
+    this.player_cards = player_cards
   }
 
   end_turn() {

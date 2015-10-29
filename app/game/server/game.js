@@ -20,14 +20,15 @@ Meteor.methods({
     })
   },
   playCard: function(card_name) {
-    play_card(card_name)
+    let card_player = new CardPlayer(game(), player_cards(), card_name)
+    card_player.play()
   },
   buyCard: function(card_name) {
-    let card_buyer = new CardBuyer(card_name)
+    let card_buyer = new CardBuyer(game(), player_cards(), card_name)
     card_buyer.buy()
   },
   endTurn: function() {
-    let turn_ender = new TurnEnder()
+    let turn_ender = new TurnEnder(game(), player_cards())
     turn_ender.end_turn()
   },
   playAllCoin: function() {
@@ -53,7 +54,7 @@ Meteor.methods({
 })
 
 function players() {
-  return Games.findOne(Meteor.user().current_game).players
+  return game().players
 }
 
 function player_ids() {
@@ -65,4 +66,13 @@ function player_ids() {
 function play_card(card_name) {
   let card_player = new CardPlayer(card_name)
   card_player.play()
+function player_cards() {
+  return PlayerCards.findOne({
+    game_id: Meteor.user().current_game,
+    player_id: Meteor.userId()
+  })
+}
+
+function game() {
+  return Games.findOne(Meteor.user().current_game)
 }
