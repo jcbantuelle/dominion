@@ -9,8 +9,8 @@ Village = class Village extends Card {
   }
 
   play(game, player_cards) {
-    let card_drawer = new CardDrawer(player_cards, game);
-    [player_cards, game] = card_drawer.draw(1)
+    let card_drawer = new CardDrawer(game, player_cards);
+    [game, player_cards] = card_drawer.draw(1)
 
     game.turn.actions += 2
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 actions`)

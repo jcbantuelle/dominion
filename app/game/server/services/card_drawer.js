@@ -1,8 +1,8 @@
 CardDrawer = class CardDrawer {
 
-  constructor(player_cards, game) {
-    this.player_cards = player_cards
+  constructor(game, player_cards) {
     this.game = game
+    this.player_cards = player_cards
     this.drawn_cards = 0
     this.original_hand_count = _.size(this.player_cards.hand)
   }
@@ -19,7 +19,7 @@ CardDrawer = class CardDrawer {
       this.update_log()
     }
 
-    return [this.player_cards, this.game]
+    return [this.game, this.player_cards]
   }
 
   draw_cards(count) {

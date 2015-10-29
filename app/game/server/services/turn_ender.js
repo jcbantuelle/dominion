@@ -29,8 +29,8 @@ TurnEnder = class TurnEnder {
   }
 
   draw_new_hand() {
-    let card_drawer = new CardDrawer(this.player_cards, this.game);
-    [this.player_cards, this.game] = card_drawer.draw(5, false)
+    let card_drawer = new CardDrawer(this.game, this.player_cards);
+    [this.game, this.player_cards] = card_drawer.draw(5, false)
   }
 
   set_next_turn() {

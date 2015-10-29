@@ -9,8 +9,8 @@ Witch = class Witch extends Card {
   }
 
   play(game, player_cards) {
-    let card_drawer = new CardDrawer(player_cards, game);
-    [player_cards, game] = card_drawer.draw(2)
+    let card_drawer = new CardDrawer(game, player_cards);
+    [game, player_cards] = card_drawer.draw(2)
 
     Games.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
