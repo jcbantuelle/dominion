@@ -10,8 +10,6 @@ Meteor.publish('turn_event', function() {
   return TurnEvents.find({'player_id': this.userId})
 })
 
-const bulk_playable_treasures = ['Copper', 'Silver', 'Gold']
-
 Meteor.methods({
   sendGameMessage: function(message) {
     Streamy.sessionsForUsers(player_ids()).emit('game_message', {
@@ -32,16 +30,8 @@ Meteor.methods({
     turn_ender.end_turn()
   },
   playAllCoin: function() {
-    let player_cards = PlayerCards.findOne({
-      game_id: Meteor.user().current_game,
-      player_id: Meteor.userId()
-    })
-
-    _.chain(player_cards.hand).filter(function(card) {
-      return _.contains(bulk_playable_treasures, card.name)
-    }).each(function(card) {
-      play_card(card.name)
-    }).value()
+    let all_coin_player = new AllCoinPlayer(game(), player_cards())
+    all_coin_player.play()
   },
   turnEvent: function(selected_cards) {
     let turn_event = TurnEvents.findOne({
@@ -63,9 +53,6 @@ function player_ids() {
   })
 }
 
-function play_card(card_name) {
-  let card_player = new CardPlayer(card_name)
-  card_player.play()
 function player_cards() {
   return PlayerCards.findOne({
     game_id: Meteor.user().current_game,

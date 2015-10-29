@@ -6,15 +6,20 @@ CardPlayer = class CardPlayer {
     this.player_cards = player_cards
   }
 
-  play() {
+  play(auto_update = true) {
     if (this.can_play()) {
       this.update_phase()
       this.put_card_in_play()
-      this.update_log()
-      Games.update(this.game._id, this.game)
-      PlayerCards.update(this.player_cards._id, this.player_cards)
+      if (auto_update) {
+        this.update_log()
+        Games.update(this.game._id, this.game)
+        PlayerCards.update(this.player_cards._id, this.player_cards)
+      }
       this.card.play(this.game, this.player_cards)
       this.attack()
+      if (!auto_update) {
+        return [this.game, this.player_cards]
+      }
     }
   }
 
