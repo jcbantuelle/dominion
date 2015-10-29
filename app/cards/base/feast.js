@@ -20,7 +20,8 @@ Feast = class Feast extends Card {
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
-        type: 'choose_game_cards',
+        type: 'choose_cards',
+        game_cards: true,
         instructions: 'Choose a card to gain:',
         cards: eligible_cards,
         minimum: 1,

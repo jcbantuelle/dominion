@@ -127,7 +127,7 @@ function turnEvent(event) {
     let selected_cards = selected_checkboxes.map(function() {
       let card_name = $(this).val()
       return _.find(turn_event.cards, function(card) {
-        return card.top_card.name === card_name
+        return card.name === card_name
       })
     }).get()
     Meteor.call('turnEvent', selected_cards)

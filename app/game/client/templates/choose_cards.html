@@ -1,0 +1,19 @@
+<template name="choose_cards">
+  <strong>{{{instructions}}}</strong>
+  <form id="turn-event">
+    <div class="checkbox">
+      {{#each cards}}
+        <label for="card_{{name}}">
+          <input type="checkbox" id="card_{{name}}" value="{{name}}" />
+          {{#if ../game_cards}}
+            <span class="{{top_card.types}}">{{top_card.name}}</span>
+          {{else}}
+            <span class="{{types}}">{{name}}</span>
+          {{/if}}
+        </label>
+      {{/each}}
+    </div>
+    <br class="clear" />
+    <button type="submit" id="turn-event-button" class="btn btn-primary btn-xs">Choose</button>
+  </form>
+</template>
