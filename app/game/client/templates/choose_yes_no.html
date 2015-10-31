@@ -1,0 +1,17 @@
+<template name="choose_yes_no">
+  <strong>{{{instructions}}}</strong>
+  <form id="turn-event">
+    <div class="checkbox">
+      <label for="yes-choice">
+        <input type="checkbox" id="yes-choice" value="yes" />
+        <span>Yes</span>
+      </label>
+      <label for="no-choice">
+        <input type="checkbox" id="no-choice" value="no" />
+        <span>No</span>
+      </label>
+    </div>
+    <br class="clear" />
+    <button type="submit" id="turn-event-button" class="btn btn-primary btn-xs">Choose</button>
+  </form>
+</template>
