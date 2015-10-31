@@ -1,7 +1,3 @@
-Meteor.subscribe('game')
-Meteor.subscribe('player_cards')
-Meteor.subscribe('turn_event')
-
 Template.game.onCreated(registerStreams)
 Template.game.onRendered(createPopovers)
 

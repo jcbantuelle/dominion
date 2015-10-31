@@ -1,7 +1,3 @@
-Meteor.subscribe('lobby_players')
-Meteor.subscribe('proposal')
-Meteor.subscribe('game')
-
 Template.lobby.onCreated(registerStreams)
 Template.lobby.onRendered(configureTracker)
 
@@ -34,7 +30,6 @@ Template.lobby.events({
 function configureTracker() {
   Tracker.autorun(function () {
     trackProposal()
-    trackGame()
   })
 }
 
@@ -47,13 +42,6 @@ function trackProposal() {
   } else {
     $('#propose-game').show()
     $('#lobby').show()
-  }
-}
-
-function trackGame() {
-  let game = Games.findOne({finished: {$exists: false}})
-  if (game) {
-    Router.go(`/game/${game._id}`)
   }
 }
 
