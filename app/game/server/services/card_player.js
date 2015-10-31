@@ -21,6 +21,32 @@ CardPlayer = class CardPlayer {
     }
   }
 
+  play_multiple_times(times) {
+    this.put_card_in_play()
+    let card_play_list = _.times(times, (count) => {
+      return Meteor.bindEnvironment(this.play_once.bind(this))
+    })
+
+    let start = Q.defer()
+
+    _.reduce(card_play_list, (defer, card_play_action) => {
+      let next_defer = Q.defer()
+      defer.promise.then(Meteor.bindEnvironment(() => {
+        card_play_action(next_defer)
+      }))
+      return next_defer
+    }, start)
+
+    start.resolve()
+  }
+
+  play_once(defer) {
+    this.update()
+    Q.when(this.play_card(), function() {
+      defer.resolve()
+    })
+  }
+
   play_card() {
     return Q.when(this.card.play(this.game, this.player_cards), Meteor.bindEnvironment((result) => {
       return this.attack()
