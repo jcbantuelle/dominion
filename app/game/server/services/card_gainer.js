@@ -21,7 +21,7 @@ CardGainer = class CardGainer {
     let card_index = this.find_card_index(source)
     if (source[card_index].count > 0) {
       source[card_index].stack.shift()
-      this.destination.push(source[card_index].top_card)
+      this.destination.unshift(source[card_index].top_card)
       if (announce) {
         this.update_log(source[card_index].top_card)
       }
