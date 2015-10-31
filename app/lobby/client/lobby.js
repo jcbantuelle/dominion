@@ -1,22 +1,4 @@
 Template.lobby.onCreated(registerStreams)
-Template.lobby.helpers({
-  lobby_players: function () {
-    return Meteor.users.find({_id: {$ne: Meteor.userId()}})
-  },
-  proposal: function () {
-    return Proposals.findOne({}, {
-      transform: function(proposal) {
-        proposal.is_proposer = proposal.proposer.id == Meteor.userId()
-        _.each(proposal.players, function(player) {
-          if (player._id == Meteor.userId() && player.accepted) {
-            proposal.accepted = true
-          }
-        })
-        return proposal
-      }
-    })
-  }
-})
 
 Template.lobby.events({
   "submit #chat": sendMessage,
