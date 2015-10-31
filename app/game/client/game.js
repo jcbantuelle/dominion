@@ -2,7 +2,7 @@ Meteor.subscribe('game')
 Meteor.subscribe('player_cards')
 Meteor.subscribe('turn_event')
 
-Template.game.onCreated(pageSetup)
+Template.game.onCreated(registerStreams)
 Template.game.onRendered(createPopovers)
 
 Template.log.onRendered(scrollGameLog)
@@ -60,10 +60,6 @@ Template.game.events({
   "click #play-all-coin": playAllCoin,
   "submit #turn-event": turnEvent
 })
-
-function pageSetup() {
-  registerStreams()
-}
 
 function registerStreams() {
   Streamy.on('game_message', updateChatWindow)
