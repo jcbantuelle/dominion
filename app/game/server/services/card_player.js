@@ -99,7 +99,7 @@ CardPlayer = class CardPlayer {
 
       return _.reduce(_.rest(attack_actions), (chain, attack_action) => {
         return chain.then(attack_action)
-      }, Q.when(_.first(attack_actions)))
+      }, Q.when(_.first(attack_actions)()))
     }
   }
 
