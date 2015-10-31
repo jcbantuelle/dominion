@@ -10,17 +10,21 @@ CardPlayer = class CardPlayer {
     if (this.can_play()) {
       this.update_phase()
       this.put_card_in_play()
+      this.use_action()
       if (auto_update) {
-        this.update_log()
-        Games.update(this.game._id, this.game)
-        PlayerCards.update(this.player_cards._id, this.player_cards)
+        this.update()
       }
-      this.card.play(this.game, this.player_cards)
-      this.attack()
+      this.play_card()
       if (!auto_update) {
         return [this.game, this.player_cards]
       }
     }
+  }
+
+  play_card() {
+    return Q.when(this.card.play(this.game, this.player_cards), Meteor.bindEnvironment((result) => {
+      return this.attack()
+    }))
   }
 
   can_play() {
@@ -36,9 +40,18 @@ CardPlayer = class CardPlayer {
   put_card_in_play() {
     played_card = this.player_cards.hand.splice(this.card_index, 1)
     this.player_cards.in_play = this.player_cards.in_play.concat(played_card)
+  }
+
+  use_action() {
     if (_.contains(this.card.types(), 'action')) {
       this.game.turn.actions -= 1
     }
+  }
+
+  update() {
+    this.update_log()
+    Games.update(this.game._id, this.game)
+    PlayerCards.update(this.player_cards._id, this.player_cards)
   }
 
   update_log() {
@@ -79,9 +92,9 @@ CardPlayer = class CardPlayer {
   attack() {
     if (_.contains(this.card.types(), 'attack')) {
       let turn_ordered_players = TurnOrderedPlayersQuery.turn_ordered_players(this.game, Meteor.user())
-      _.each(turn_ordered_players, (player) => {
-        this.card.attack(this.game, player)
-      })
+      return Q.all(_.map(turn_ordered_players, Meteor.bindEnvironment((player) => {
+        return this.card.attack(this.game, player)
+      })))
     }
   }
 

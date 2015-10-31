@@ -26,7 +26,7 @@ Workshop = class Workshop extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(this.gain_card)
+      return turn_event_processor.process(this.gain_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
       Games.update(game._id, game)

@@ -11,14 +11,14 @@ TurnEventProcessor = class TurnEventProcessor {
   }
 
   process(event_action) {
-    _.each(this.turn_event_ids, (turn_event_id) => {
+    return Q.all(_.map(this.turn_event_ids, (turn_event_id) => {
       TurnEventPromises[turn_event_id] = Q.defer()
-      TurnEventPromises[turn_event_id].promise.then(Meteor.bindEnvironment((response) => {
+      return TurnEventPromises[turn_event_id].promise.then(Meteor.bindEnvironment((response) => {
         event_action(this.game, this.player_cards, response)
         TurnEvents.remove(turn_event_id)
         delete TurnEventPromises[turn_event_id]
       }))
-    })
+    }))
   }
 
 }

@@ -17,6 +17,8 @@ Feast = class Feast extends Card {
     })
 
     if (_.size(eligible_cards) > 0) {
+      Games.update(game._id, game)
+      PlayerCards.update(player_cards._id, player_cards)
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -29,13 +31,12 @@ Feast = class Feast extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(this.gain_card)
+      return turn_event_processor.process(this.gain_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
+      Games.update(game._id, game)
+      PlayerCards.update(player_cards._id, player_cards)
     }
-
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
   }
 
   gain_card(game, player_cards, selected_cards) {
