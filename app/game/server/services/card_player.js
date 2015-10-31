@@ -4,6 +4,9 @@ CardPlayer = class CardPlayer {
     this.card = ClassCreator.create(card_name)
     this.game = game
     this.player_cards = player_cards
+    this.card_index = _.findIndex(this.player_cards.hand, (card) => {
+      return card.name === this.card.name()
+    })
   }
 
   play(auto_update = true) {
@@ -21,36 +24,9 @@ CardPlayer = class CardPlayer {
     }
   }
 
-  play_multiple_times(times) {
-    this.put_card_in_play()
-    let card_play_list = _.times(times, (count) => {
-      return Meteor.bindEnvironment(this.play_once.bind(this))
-    })
-
-    let start = Q.defer()
-
-    _.reduce(card_play_list, (defer, card_play_action) => {
-      let next_defer = Q.defer()
-      defer.promise.then(Meteor.bindEnvironment(() => {
-        card_play_action(next_defer)
-      }))
-      return next_defer
-    }, start)
-
-    start.resolve()
-  }
-
-  play_once(defer) {
-    this.update()
-    Q.when(this.play_card(), function() {
-      defer.resolve()
-    })
-  }
-
   play_card() {
-    return Q.when(this.card.play(this.game, this.player_cards), Meteor.bindEnvironment((result) => {
-      return this.attack()
-    }))
+    return Q.when(this.card.play(this.game, this.player_cards))
+      .then(Meteor.bindEnvironment(this.attack.bind(this)))
   }
 
   can_play() {
@@ -109,18 +85,21 @@ CardPlayer = class CardPlayer {
   }
 
   card_exists() {
-    this.card_index = _.findIndex(this.player_cards.hand, (card) => {
-      return card.name === this.card.name()
-    })
     return this.card_index !== -1
   }
 
   attack() {
     if (_.contains(this.card.types(), 'attack')) {
       let turn_ordered_players = TurnOrderedPlayersQuery.turn_ordered_players(this.game, Meteor.user())
-      return Q.all(_.map(turn_ordered_players, Meteor.bindEnvironment((player) => {
-        return this.card.attack(this.game, player)
-      })))
+      let attack_actions = _.map(turn_ordered_players, (player) => {
+        return Meteor.bindEnvironment(function() {
+          this.card.attack(this.game, player)
+        }.bind(this))
+      })
+
+      return _.reduce(_.rest(attack_actions), (chain, attack_action) => {
+        return chain.then(attack_action)
+      }, Q.when(_.first(attack_actions)))
     }
   }
 
