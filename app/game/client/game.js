@@ -118,19 +118,12 @@ function playAllCoin(event) {
 function turnEvent(event) {
   event.preventDefault()
   let turn_event = TurnEvents.findOne()
-
   let selected_checkboxes = $('#turn-event').find(':checked')
-  if (turn_event.maximum > 0 && selected_checkboxes.length > turn_event.maximum) {
-    alert(`You can select no more than ${turn_event.maximum} card(s)`)
-  } else if (turn_event.minimum > 0 && selected_checkboxes.length < turn_event.minimum) {
-    alert(`You must select at least ${turn_event.minimum} card(s)`)
+
+  let turn_event_submission = new TurnEventSubmission(turn_event, selected_checkboxes)
+  if (turn_event_submission.valid_selection()) {
+    Meteor.call('turnEvent', turn_event_submission.selected_values())
   } else {
-    let selected_cards = selected_checkboxes.map(function() {
-      let card_name = $(this).val()
-      return _.find(turn_event.cards, function(card) {
-        return card.name === card_name
-      })
-    }).get()
-    Meteor.call('turnEvent', selected_cards)
+    alert(turn_event_submission.error_message())
   }
 }
