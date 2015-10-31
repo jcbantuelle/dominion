@@ -1,6 +1,6 @@
 <template name="lobby">
 
-  <div id="proposal-message"></div>
+  <div id="proposal-message">{{{player.declined_proposal}}}</div>
 
   <div id="proposal">
     {{#with proposal}}
@@ -45,22 +45,24 @@
     {{/with}}
   </div>
 
-  <form id="lobby">
-    <div id="players" class="checkbox">
-      {{#each lobby_players}}
-        {{#if has_proposal}}
-          <span class="busy">{{username}}</span>
-        {{else}}
-          <label for="player_{{_id}}">
-            <input type="checkbox" class="lobby-player" id="player_{{_id}}" value="{{_id}}" />
-            {{username}}
-          </label>
-        {{/if}}
-      {{/each}}
-    </div>
-    <br class="clear" />
-    <button id="propose-game" class="btn btn-primary" type="submit" value="Start Game">Propose Game</button>
-  </form>
+  {{#unless proposal}}
+    <form id="lobby">
+      <div id="players" class="checkbox">
+        {{#each lobby_players}}
+          {{#if has_proposal}}
+            <span class="busy">{{username}}</span>
+          {{else}}
+            <label for="player_{{_id}}">
+              <input type="checkbox" class="lobby-player" id="player_{{_id}}" value="{{_id}}" />
+              {{username}}
+            </label>
+          {{/if}}
+        {{/each}}
+      </div>
+      <br class="clear" />
+      <button id="propose-game" class="btn btn-primary" type="submit" value="Start Game">Propose Game</button>
+    </form>
+  {{/unless}}
 
   <br />
 

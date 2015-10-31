@@ -30,7 +30,10 @@ ProposalAccepter = class ProposalAccepter {
   update_players() {
     _.each(this.proposal.players, function(player) {
       Meteor.users.update(player._id, {
-        $unset: {has_proposal: ''}
+        $unset: {
+          has_proposal: '',
+          declined_proposal: ''
+        }
       })
     })
   }

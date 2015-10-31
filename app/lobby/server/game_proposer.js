@@ -30,7 +30,8 @@ GameProposer = class GameProposer {
   update_players() {
     _.each(this.players, function(player) {
       Meteor.users.update(player._id, {
-        $set: {has_proposal: true}
+        $set: {has_proposal: true},
+        $unset: {declined_proposal: ''}
       })
     })
   }

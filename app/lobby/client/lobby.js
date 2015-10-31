@@ -9,20 +9,12 @@ Template.lobby.events({
 
 function registerStreams() {
   Streamy.on('lobby_message', updateChatWindow)
-  Streamy.on('decline', updateDeclineMessage)
 }
 
 function updateChatWindow(data) {
   let chat_window = $('#lobby-chat')
   chat_window.append(`<strong>${data.username}:</strong> ${data.message}\n`)
   chat_window.scrollTop(chat_window[0].scrollHeight)
-}
-
-function updateDeclineMessage(data) {
-  let decliners = _.map(data.decliners, function(decliner) {
-    return decliner._id == Meteor.userId() ? 'You' : decliner.username
-  }).join(' and ')
-  $('#proposal-message').html(`<strong>${decliners}</strong> declined the game.`)
 }
 
 function sendMessage(event) {

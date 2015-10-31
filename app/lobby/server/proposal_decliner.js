@@ -19,20 +19,23 @@ ProposalDecliner = class ProposalDecliner {
 
   decline() {
     Proposals.remove(this.proposal._id)
-    this.notify_players()
     this.update_players()
   }
 
-  notify_players() {
-    Streamy.sessionsForUsers(this.player_ids).emit('decline', {decliners: this.declined_players})
-  }
-
   update_players() {
-    _.each(this.player_ids, function(player_id) {
+    _.each(this.player_ids, (player_id) => {
       Meteor.users.update(player_id, {
-        $unset: {has_proposal: ''}
+        $unset: {has_proposal: ''},
+        $set: {declined_proposal: this.decline_message()}
       })
     })
+  }
+
+  decline_message() {
+    let decliners = _.map(this.declined_players, function(decliner) {
+      return decliner._id == Meteor.userId() ? 'You' : decliner.username
+    }).join(' and ')
+    return `<strong>${decliners}</strong> declined the game.`
   }
 
   find_player_ids() {
