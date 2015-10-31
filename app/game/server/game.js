@@ -1,15 +1,3 @@
-Meteor.publish('game', function() {
-  return Games.find({'players._id': this.userId})
-})
-
-Meteor.publish('player_cards', function() {
-  return PlayerCards.find({'player_id': this.userId})
-})
-
-Meteor.publish('turn_event', function() {
-  return TurnEvents.find({'player_id': this.userId})
-})
-
 Meteor.methods({
   sendGameMessage: function(message) {
     Streamy.sessionsForUsers(player_ids()).emit('game_message', {

@@ -1,14 +1,3 @@
-Meteor.publish('lobby_players', function() {
-  return Meteor.users.find({
-    'status.online': true,
-    current_game: {$exists: false}
-  })
-})
-
-Meteor.publish('proposal', function() {
-  return Proposals.find({'players._id': this.userId})
-})
-
 Meteor.methods({
   proposeGame: function(player_ids) {
     let game_proposer = new GameProposer(player_ids)
