@@ -36,8 +36,8 @@ ThroneRoom = class ThroneRoom extends Card {
   play_twice(game, player_cards, selected_cards) {
     selected_card = selected_cards[0]
 
-    let card_player = new CardPlayer(game, player_cards, selected_card.name)
-    card_player.play_multiple_times(2)
+    let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.name)
+    repeat_card_player.play(2)
   }
 
 }
