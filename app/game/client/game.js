@@ -5,8 +5,6 @@ Meteor.subscribe('turn_event')
 Template.game.onCreated(pageSetup)
 Template.game.onRendered(createPopovers)
 
-Template.log.onRendered(scrollGameLog)
-
 Template.turn_actions.helpers({
   allow_treasures: function() {
     let game = Games.findOne(Router.current().params.id)
@@ -21,6 +19,7 @@ Template.game.helpers({
         game.kingdom_cards = _.sortBy(game.kingdom_cards, function(card) {
           return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
         })
+        game.log.reverse()
         return game
       }
     })
@@ -77,11 +76,6 @@ function createPopovers() {
     },
     trigger: 'hover'
   })
-}
-
-function scrollGameLog() {
-  let game_log = $('#game-log')
-  game_log.scrollTop(game_log[0].scrollHeight)
 }
 
 function updateChatWindow(data) {
