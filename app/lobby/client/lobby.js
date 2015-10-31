@@ -1,6 +1,4 @@
 Template.lobby.onCreated(registerStreams)
-Template.lobby.onRendered(configureTracker)
-
 Template.lobby.helpers({
   lobby_players: function () {
     return Meteor.users.find({_id: {$ne: Meteor.userId()}})
@@ -26,24 +24,6 @@ Template.lobby.events({
   "click #decline-proposal": declineProposal,
   "click #accept-proposal": acceptProposal
 })
-
-function configureTracker() {
-  Tracker.autorun(function () {
-    trackProposal()
-  })
-}
-
-function trackProposal() {
-  let proposal = Proposals.findOne()
-  if (proposal) {
-    $('#proposal-message').empty()
-    $('#propose-game').hide()
-    $('#lobby').hide()
-  } else {
-    $('#propose-game').show()
-    $('#lobby').show()
-  }
-}
 
 function registerStreams() {
   Streamy.on('lobby_message', updateChatWindow)
