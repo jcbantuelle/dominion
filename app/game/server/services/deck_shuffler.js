@@ -7,7 +7,6 @@ DeckShuffler = class DeckShuffler {
   shuffle() {
     this.player_cards.deck = _.shuffle(this.player_cards.discard)
     this.player_cards.discard = []
-    return this.player_cards
   }
 
 }

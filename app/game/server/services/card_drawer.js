@@ -27,7 +27,7 @@ CardDrawer = class CardDrawer {
 
   shuffle_discard() {
     let deck_shuffler = new DeckShuffler(this.player_cards)
-    this.player_cards = deck_shuffler.shuffle()
+    deck_shuffler.shuffle()
   }
 
   drawn_card_count() {

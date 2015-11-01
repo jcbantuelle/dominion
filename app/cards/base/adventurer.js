@@ -15,7 +15,7 @@ Adventurer = class Adventurer extends Card {
     player_cards = this.reveal(player_cards)
 
     if (_.size(this.revealed_treasures) < 2 && _.size(player_cards.discard) > 0) {
-      player_cards = this.shuffle_discard(player_cards)
+      this.shuffle_discard(player_cards)
       player_cards = this.reveal(player_cards)
     }
 
