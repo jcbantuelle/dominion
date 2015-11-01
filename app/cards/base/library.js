@@ -11,7 +11,7 @@ Library = class Library extends Card {
   play(game, player_cards) {
     if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
       player_cards.aside = []
-      Library.draw_cards(game, player_cards)
+      return Library.draw_cards(game, player_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards to draw`)
       Games.update(game._id, game)
