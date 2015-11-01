@@ -88,9 +88,30 @@ CardPlayer = class CardPlayer {
   attack() {
     if (_.contains(this.card.types(), 'attack')) {
       let turn_ordered_players = TurnOrderedPlayersQuery.turn_ordered_players(this.game, Meteor.user())
+
       let attack_actions = _.map(turn_ordered_players, (player) => {
         return Meteor.bindEnvironment(function() {
-          this.card.attack(this.game, player)
+          let attacked_player_cards = PlayerCards.findOne({
+            game_id: this.game._id,
+            player_id: player._id
+          })
+
+          TurnReactionPromises[attacked_player_cards._id] = Q.defer()
+          let attack_promise = TurnReactionPromises[attacked_player_cards._id].promise.then(Meteor.bindEnvironment(function(response) {
+            delete TurnReactionPromises[attacked_player_cards._id]
+            if (attacked_player_cards.moat) {
+              delete attacked_player_cards.moat
+              this.game.log.push(`&nbsp;&nbsp;<strong>${attacked_player_cards.username}</strong> is immune to the attack`)
+              Games.update(this.game._id, this.game)
+            } else {
+              return this.card.attack(this.game, player)
+            }
+          }.bind(this)))
+
+          let reaction_processor = new ReactionProcessor(this.game, attacked_player_cards)
+          reaction_processor.process_attack_reactions()
+
+          return attack_promise
         }.bind(this))
       })
 
