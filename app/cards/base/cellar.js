@@ -17,6 +17,7 @@ Cellar = class Cellar extends Card {
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
+        username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
         instructions: 'Choose any number of cards to discard:',

@@ -34,6 +34,7 @@ Bureaucrat = class Bureaucrat extends Card {
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
         player_id: player._id,
+        username: player.username,
         type: 'choose_cards',
         player_cards: true,
         instructions: 'Choose a victory card to place on deck:',
