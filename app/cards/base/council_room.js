@@ -18,7 +18,7 @@ CouncilRoom = class CouncilRoom extends Card {
       PlayerCards.update(other_player_cards._id, other_player_cards)
     })
 
-    game.turn.buy += 1
+    game.turn.buys += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
     Games.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
