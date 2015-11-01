@@ -48,7 +48,7 @@ Spy = class Spy extends Card {
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
-        username: player_cards.username,
+        username: game.turn.player.username,
         type: 'choose_yes_no',
         instructions: `Make <strong>${player_cards.username}</strong> discard <span class="${revealed_card.types}">${revealed_card.name}</span>?`,
         minimum: 1,
