@@ -34,7 +34,8 @@ Card = class Card {
       image: this.image(),
       types: this.type_class(),
       coin_cost: this.coin_cost(),
-      potion_cost: this.potion_cost()
+      potion_cost: this.potion_cost(),
+      purchasable: this.is_purchasable()
     }
   }
 
