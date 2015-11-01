@@ -18,9 +18,6 @@ CardPlayer = class CardPlayer {
         this.update()
       }
       this.play_card()
-      if (!auto_update) {
-        return [this.game, this.player_cards]
-      }
     }
   }
 

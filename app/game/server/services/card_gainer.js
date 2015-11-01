@@ -9,12 +9,10 @@ CardGainer = class CardGainer {
 
   gain_common_card(announce = true) {
     this.game.common_cards = this.gain_game_card(this.game.common_cards, announce)
-    return [this.game, this.destination]
   }
 
   gain_kingdom_card(announce = true) {
     this.game.kingdom_cards = this.gain_game_card(this.game.kingdom_cards, announce)
-    return [this.game, this.destination]
   }
 
   gain_game_card(source, announce) {

@@ -8,8 +8,8 @@ AllCoinPlayer = class AllCoinPlayer {
 
   play() {
     let played_cards = _.map(this.find_playable_cards(), (card) => {
-      let card_player = new CardPlayer(this.game, this.player_cards, card.name);
-      [this.game, this.player_cards] = card_player.play(false)
+      let card_player = new CardPlayer(this.game, this.player_cards, card.name)
+      card_player.play(false)
       return `<span class="${card.types}">${card.name}</span>`
     }).join(' ')
     this.game.log.push(`<strong>${this.player_cards.username}</strong> plays ${played_cards}`)

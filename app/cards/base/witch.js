@@ -9,8 +9,8 @@ Witch = class Witch extends Card {
   }
 
   play(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards);
-    [game, player_cards] = card_drawer.draw(2)
+    let card_drawer = new CardDrawer(game, player_cards)
+    card_drawer.draw(2)
 
     Games.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
@@ -22,8 +22,8 @@ Witch = class Witch extends Card {
       game_id: game._id
     })
 
-    let card_gainer = new CardGainer(game, player.username, player_cards.discard, 'Curse');
-    [game, player_cards.discard] = card_gainer.gain_common_card()
+    let card_gainer = new CardGainer(game, player.username, player_cards.discard, 'Curse')
+    card_gainer.gain_common_card()
 
     PlayerCards.update(player_cards._id, player_cards)
     Games.update(game._id, game)

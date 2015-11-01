@@ -38,11 +38,11 @@ Cellar = class Cellar extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand');
-      [game, player_cards] = card_discarder.discard_some(selected_cards)
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand')
+      card_discarder.discard_some(selected_cards)
 
-      let card_drawer = new CardDrawer(game, player_cards);
-      [game, player_cards] = card_drawer.draw(_.size(selected_cards))
+      let card_drawer = new CardDrawer(game, player_cards)
+      card_drawer.draw(_.size(selected_cards))
     }
     Games.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)

@@ -34,8 +34,8 @@ Chancellor = class Chancellor extends Card {
   discard_deck(game, player_cards, response) {
     if (response === 'yes') {
       game.log.push(`&nbsp;&nbsp;and discards their deck`)
-      let card_discarder = new CardDiscarder(game, player_cards, 'deck');
-      [game, player_cards] = card_discarder.discard_all()
+      let card_discarder = new CardDiscarder(game, player_cards, 'deck')
+      card_discarder.discard_all()
       Games.update(game._id, game)
       PlayerCards.update(player_cards._id, player_cards)
     }

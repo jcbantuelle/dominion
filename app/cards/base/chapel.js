@@ -35,8 +35,8 @@ Chapel = class Chapel extends Card {
       game.log.push(`&nbsp;&nbsp;but does not trash anything`)
     } else {
       _.each(selected_cards, function(card) {
-        let card_trasher = new CardTrasher(game, player_cards.username, player_cards.hand, card.name);
-        [game, player_cards.hand] = card_trasher.trash()
+        let card_trasher = new CardTrasher(game, player_cards.username, player_cards.hand, card.name)
+        card_trasher.trash()
       })
     }
     Games.update(game._id, game)

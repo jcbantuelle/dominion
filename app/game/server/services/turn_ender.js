@@ -19,18 +19,18 @@ TurnEnder = class TurnEnder {
   }
 
   clean_up_cards_in_play() {
-    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play');
-    [this.game, this.player_cards] = card_discarder.discard_all()
+    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play')
+    card_discarder.discard_all()
   }
 
   discard_hand() {
-    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'hand');
-    [this.game, this.player_cards] = card_discarder.discard_all()
+    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'hand')
+    card_discarder.discard_all()
   }
 
   draw_new_hand() {
-    let card_drawer = new CardDrawer(this.game, this.player_cards);
-    [this.game, this.player_cards] = card_drawer.draw(5, false)
+    let card_drawer = new CardDrawer(this.game, this.player_cards)
+    card_drawer.draw(5, false)
   }
 
   set_next_turn() {

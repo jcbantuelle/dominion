@@ -36,8 +36,8 @@ Workshop = class Workshop extends Card {
 
   gain_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, selected_card.name);
-    [game, player_cards.discard] = card_gainer[`gain_${selected_card.source}_card`]()
+    let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, selected_card.name)
+    card_gainer[`gain_${selected_card.source}_card`]()
     Games.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
   }

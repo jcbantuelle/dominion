@@ -12,7 +12,6 @@ CardDiscarder = class CardDiscarder {
     }
     this.move_to_discard(this.player_cards[this.source])
     this.player_cards[this.source] = []
-    return [this.game, this.player_cards]
   }
 
   discard_some(cards, announce = true) {
@@ -21,7 +20,6 @@ CardDiscarder = class CardDiscarder {
     }
     this.move_to_discard(cards)
     this.remove_from_source(cards)
-    return [this.game, this.player_cards]
   }
 
   move_to_discard(cards) {

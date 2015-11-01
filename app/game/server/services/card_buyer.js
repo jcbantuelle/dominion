@@ -50,8 +50,8 @@ CardBuyer = class CardBuyer {
   }
 
   gain_card() {
-    let card_gainer = new CardGainer(this.game, this.player_cards.username, this.player_cards.discard, this.card.name());
-    [this.game, this.player_cards.discard] = card_gainer[`gain_${this.game_card.source}_card`](false)
+    let card_gainer = new CardGainer(this.game, this.player_cards.username, this.player_cards.discard, this.card.name())
+    card_gainer[`gain_${this.game_card.source}_card`](false)
   }
 
   update_log() {

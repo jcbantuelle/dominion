@@ -19,8 +19,8 @@ Adventurer = class Adventurer extends Card {
       player_cards = this.reveal(player_cards)
     }
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed');
-    [game, player_cards] = card_discarder.discard_all()
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
+    card_discarder.discard_all()
 
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${this.formatted_cards(this.revealed_cards)}`)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${this.formatted_cards(this.revealed_treasures)} in hand and discards the rest`)
@@ -30,7 +30,7 @@ Adventurer = class Adventurer extends Card {
 
   reveal(player_cards) {
     while(_.size(player_cards.deck) > 0 && _.size(this.revealed_treasures) < 2) {
-      card = player_cards.deck.shift()
+      let card = player_cards.deck.shift()
       this.revealed_cards.push(card)
       if (_.contains(card.types, 'treasure')) {
         this.revealed_treasures.push(card)

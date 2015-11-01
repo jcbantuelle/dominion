@@ -13,7 +13,6 @@ CardTrasher = class CardTrasher {
       this.update_log()
       this.trash_card()
     }
-    return [this.game, this.source]
   }
 
   find_card_index() {

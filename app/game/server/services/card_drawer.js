@@ -18,8 +18,6 @@ CardDrawer = class CardDrawer {
     if (announce) {
       this.update_log()
     }
-
-    return [this.game, this.player_cards]
   }
 
   draw_cards(count) {

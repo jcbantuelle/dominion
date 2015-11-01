@@ -10,8 +10,8 @@ Bureaucrat = class Bureaucrat extends Card {
 
   play(game, player_cards) {
     let original_deck_size = _.size(player_cards.deck)
-    let card_gainer = new CardGainer(game, player_cards.username, player_cards.deck, 'Silver');
-    [game, player_cards.deck] = card_gainer.gain_common_card()
+    let card_gainer = new CardGainer(game, player_cards.username, player_cards.deck, 'Silver')
+    card_gainer.gain_common_card()
     if (_.size(player_cards.deck) > original_deck_size) {
       game.log.push(`&nbsp;&nbsp;putting it on top of their deck`)
     }
@@ -60,7 +60,7 @@ Bureaucrat = class Bureaucrat extends Card {
       return card.name === selected_card.name
     })
 
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places <span class="${selected_card.type}">${selected_card.name}</span> on top of their deck`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places <span class="${selected_card.types}">${selected_card.name}</span> on top of their deck`)
 
     player_cards.deck.unshift(player_cards.hand[card_index])
     player_cards.hand.splice(card_index, 1)
