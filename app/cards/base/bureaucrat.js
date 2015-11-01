@@ -44,7 +44,7 @@ Bureaucrat = class Bureaucrat extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(this.return_card_to_deck)
+      return turn_event_processor.process(Bureaucrat.return_card_to_deck)
     } else {
       let hand_cards = _.map(player_cards.hand, function(card) {
         return `<span class="${card.types}">${card.name}</span>`
@@ -54,7 +54,7 @@ Bureaucrat = class Bureaucrat extends Card {
     }
   }
 
-  return_card_to_deck(game, player_cards, selected_cards) {
+  static return_card_to_deck(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
     let card_index = _.findIndex(player_cards.hand, function(card) {
       return card.name === selected_card.name

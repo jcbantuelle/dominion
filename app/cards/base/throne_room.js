@@ -27,14 +27,14 @@ ThroneRoom = class ThroneRoom extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(this.play_twice)
+      return turn_event_processor.process(ThroneRoom.play_twice)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no action cards in hand`)
       Games.update(game._id, game)
     }
   }
 
-  play_twice(game, player_cards, selected_cards) {
+  static play_twice(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
 
     let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.name)

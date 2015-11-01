@@ -27,14 +27,14 @@ Cellar = class Cellar extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(this.discard_cards)
+      return turn_event_processor.process(Cellar.discard_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
       Games.update(game._id, game)
     }
   }
 
-  discard_cards(game, player_cards, selected_cards) {
+  static discard_cards(game, player_cards, selected_cards) {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {

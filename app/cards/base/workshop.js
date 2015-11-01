@@ -27,14 +27,14 @@ Workshop = class Workshop extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(this.gain_card)
+      return turn_event_processor.process(Workshop.gain_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
       Games.update(game._id, game)
     }
   }
 
-  gain_card(game, player_cards, selected_cards) {
+  static gain_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, selected_card.name)
     card_gainer[`gain_${selected_card.source}_card`]()

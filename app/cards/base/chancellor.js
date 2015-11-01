@@ -24,14 +24,14 @@ Chancellor = class Chancellor extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(this.discard_deck)
+      return turn_event_processor.process(Chancellor.discard_deck)
     } else {
       game.log.push(`&nbsp;&nbsp;but the deck is empty`)
       Games.update(game._id, game)
     }
   }
 
-  discard_deck(game, player_cards, response) {
+  static discard_deck(game, player_cards, response) {
     if (response === 'yes') {
       game.log.push(`&nbsp;&nbsp;and discards their deck`)
       let card_discarder = new CardDiscarder(game, player_cards, 'deck')

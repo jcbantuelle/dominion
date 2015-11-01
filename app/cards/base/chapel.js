@@ -23,14 +23,14 @@ Chapel = class Chapel extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(this.trash_cards)
+      return turn_event_processor.process(Chapel.trash_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
       Games.update(game._id, game)
     }
   }
 
-  trash_cards(game, player_cards, selected_cards) {
+  static trash_cards(game, player_cards, selected_cards) {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not trash anything`)
     } else {

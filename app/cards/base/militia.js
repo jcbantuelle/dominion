@@ -36,14 +36,14 @@ Militia = class Militia extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(this.discard_from_hand)
+      return turn_event_processor.process(Militia.discard_from_hand)
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player.username}</strong> only has ${number_to_discard} cards in hand`)
       Games.update(game._id, game)
     }
   }
 
-  discard_from_hand(game, player_cards, selected_cards) {
+  static discard_from_hand(game, player_cards, selected_cards) {
     let card_discarder = new CardDiscarder(game, player_cards, 'hand')
     card_discarder.discard_some(selected_cards)
 
