@@ -15,6 +15,16 @@ CardGainer = class CardGainer {
     this.game.kingdom_cards = this.gain_game_card(this.game.kingdom_cards, announce)
   }
 
+  gain_trash_card(announce = true) {
+    let card_index = this.find_card_index(this.game.trash)
+    let gained_card = this.game.trash[card_index]
+    this.destination.unshift(gained_card)
+    this.game.trash.splice(card_index, 1)
+    if (announce) {
+      this.update_log(gained_card)
+    }
+  }
+
   gain_game_card(source, announce) {
     let card_index = this.find_card_index(source)
     if (source[card_index].count > 0) {
