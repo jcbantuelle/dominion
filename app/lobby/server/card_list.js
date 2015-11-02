@@ -11,6 +11,10 @@ CardList = class CardList {
   }
 
   card_list() {
+    return this.base().concat(this.seaside())
+  }
+
+  base() {
     return [
       'Cellar',
       'Chapel',
@@ -37,6 +41,12 @@ CardList = class CardList {
       'Mine',
       'Witch',
       'Adventurer'
+    ]
+  }
+
+  seaside() {
+    return [
+      'SeaHag'
     ]
   }
 }
