@@ -15,15 +15,17 @@ CardPlayer = class CardPlayer {
       this.put_card_in_play()
       this.use_action()
       if (auto_update) {
-        this.update()
+        this.update_log()
+        this.update_db()
       }
       this.play_card()
     }
   }
 
   play_card() {
-    return Q.when(this.card.play(this.game, this.player_cards))
-      .then(Meteor.bindEnvironment(this.attack.bind(this)))
+    this.card.play(this.game, this.player_cards)
+    this.update_db()
+    this.attack()
   }
 
   can_play() {
@@ -47,8 +49,7 @@ CardPlayer = class CardPlayer {
     }
   }
 
-  update() {
-    this.update_log()
+  update_db() {
     Games.update(this.game._id, this.game)
     PlayerCards.update(this.player_cards._id, this.player_cards)
   }
@@ -89,35 +90,23 @@ CardPlayer = class CardPlayer {
     if (_.contains(this.card.types(), 'attack')) {
       let turn_ordered_players = TurnOrderedPlayersQuery.turn_ordered_players(this.game, Meteor.user())
 
-      let attack_actions = _.map(turn_ordered_players, (player) => {
-        return Meteor.bindEnvironment(function() {
-          let attacked_player_cards = PlayerCards.findOne({
-            game_id: this.game._id,
-            player_id: player._id
-          })
+      _.each(turn_ordered_players, (player) => {
+        let attacked_player_cards = PlayerCards.findOne({
+          game_id: this.game._id,
+          player_id: player._id
+        })
 
-          TurnReactionPromises[attacked_player_cards._id] = Q.defer()
-          let attack_promise = TurnReactionPromises[attacked_player_cards._id].promise.then(Meteor.bindEnvironment(function(response) {
-            delete TurnReactionPromises[attacked_player_cards._id]
-            if (attacked_player_cards.moat) {
-              delete attacked_player_cards.moat
-              this.game.log.push(`&nbsp;&nbsp;<strong>${attacked_player_cards.username}</strong> is immune to the attack`)
-              Games.update(this.game._id, this.game)
-            } else {
-              return this.card.attack(this.game, player)
-            }
-          }.bind(this)))
+        let reaction_processor = new ReactionProcessor(this.game, attacked_player_cards)
+        reaction_processor.process_attack_reactions()
 
-          let reaction_processor = new ReactionProcessor(this.game, attacked_player_cards)
-          reaction_processor.process_attack_reactions()
-
-          return attack_promise
-        }.bind(this))
+        if (attacked_player_cards.moat) {
+          delete attacked_player_cards.moat
+          this.game.log.push(`&nbsp;&nbsp;<strong>${attacked_player_cards.username}</strong> is immune to the attack`)
+        } else {
+          this.card.attack(this.game, player)
+        }
+        this.update_db()
       })
-
-      return _.reduce(_.rest(attack_actions), (chain, attack_action) => {
-        return chain.then(attack_action)
-      }, Q.when(_.first(attack_actions)()))
     }
   }
 

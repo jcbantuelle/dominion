@@ -6,8 +6,10 @@ Meteor.methods({
     })
   },
   playCard: function(card_name) {
-    let card_player = new CardPlayer(game(), player_cards(), card_name)
-    card_player.play()
+    Future.task(Meteor.bindEnvironment(function() {
+      let card_player = new CardPlayer(game(), player_cards(), card_name)
+      card_player.play()
+    })).detach()
   },
   buyCard: function(card_name) {
     let card_buyer = new CardBuyer(game(), player_cards(), card_name)
@@ -25,9 +27,7 @@ Meteor.methods({
     let turn_event = TurnEvents.findOne({
       player_id: Meteor.userId()
     })
-    turn_event.finished = true
-    TurnEvents.update(turn_event._id, turn_event)
-    TurnEventPromises[turn_event._id].resolve(selected_cards)
+    TurnEventFutures[turn_event._id].return(selected_cards)
   }
 })
 

@@ -24,9 +24,7 @@ ReactionProcessor = class ReactionProcessor {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
-      return turn_event_processor.process(ReactionProcessor.attack_reaction)
-    } else {
-      TurnReactionPromises[this.player_cards._id].resolve()
+      turn_event_processor.process(ReactionProcessor.attack_reaction)
     }
   }
 
@@ -35,12 +33,9 @@ ReactionProcessor = class ReactionProcessor {
       let selected_card = ClassCreator.create(selected_cards[0].name)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals <span class="${selected_card.type_class()}">${selected_card.name()}</span>`)
       Games.update(game._id, game)
-      return Q.when(selected_card.attack_reaction(game, player_cards)).then(Meteor.bindEnvironment(function() {
-        let reaction_processor = new ReactionProcessor(game, player_cards)
-        return reaction_processor.process_attack_reactions()
-      }))
-    } else {
-      TurnReactionPromises[player_cards._id].resolve()
+      selected_card.attack_reaction(game, player_cards)
+      let reaction_processor = new ReactionProcessor(game, player_cards)
+      reaction_processor.process_attack_reactions()
     }
   }
 }
