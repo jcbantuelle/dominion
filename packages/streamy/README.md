@@ -39,10 +39,6 @@ Streamy.emit('hello', { data: 'world!' }, s);
 
 Send a message with associated data to a socket. On the client, you do not need to provide the socket arg since it will use the client socket. On the server, **you must provide it**. If you want to send a message to all connected clients, you must use `Streamy.broadcast` (See Broadcasting).
 
-### Streamy.groupEmit(message_name, data_object, sockets) Server-only
-
-Send a message with associated data to a group of sockets. This differs from `Streamy.broadcast` in that you are choosing a specific group to send your message to.
-
 ### Streamy.on(message_name, callback)
 
 Register a callback for a specific message. The callback will be called when a message of this type has been received. Callback are of the form:
@@ -134,16 +130,25 @@ Streamy.on('some_message', function(data, from) {
 });
 
 // On the client
+// You could also give it an array of sessions ids
 Streamy.sessions(other_guy_sid).emit('private', { body: 'This is a private message' });
 ```
 
 The server will add the property (client side) `data.__from` which contains the sender session id.
 
+### Streamy.sessionsForUsers(uid)
+
+This method behaves similarly to `sessions`, however it looks up the sessions based on user id(s). It returns a special object which contains one method: `emit` which works the same as the `core#emit` method.
+
 ## Utilities
 
 ### Streamy.sockets([sid]) Server-only
 
-If no parameter is given, returns all connected socket objects. Else it will try to retrieve the socket associated with the given sid.
+If no parameter is given, returns all connected socket objects. If a string or an array of strings is provided it will returns a special object with a `send` method and matched sockets in `_sockets`.
+
+### Streamy.socketsForUsers([uid]) Server-only
+
+Behave similarly to `sockets`, however it looks up the sockets based on user id(s).
 
 ### Streamy.id([socket])
 
@@ -166,7 +171,3 @@ Streamy.onConnect(function(socket) {
 ### Streamy.user([socket])
 
 Retrieve the meteor user. On the server, you should provide the socket object to retrieve the user associated.
-
-### Streamy.userSockets(user_ids) Server-only
-
-Retrieve sockets for a specific set of users. You should provide the desired users as an array of user ids.
