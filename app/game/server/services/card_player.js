@@ -51,9 +51,9 @@ CardPlayer = class CardPlayer {
     }
   }
 
-  update_db() {
+  update_db(player_cards = this.player_cards) {
     Games.update(this.game._id, this.game)
-    PlayerCards.update(this.player_cards._id, this.player_cards)
+    PlayerCards.update(player_cards._id, player_cards)
   }
 
   update_log() {
@@ -107,7 +107,7 @@ CardPlayer = class CardPlayer {
         } else {
           this.card.attack(this.game, attacked_player_cards)
         }
-        this.update_db()
+        this.update_db(attacked_player_cards)
       })
     }
   }
