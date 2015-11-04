@@ -13,7 +13,6 @@ Cellar = class Cellar extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
     if (_.size(player_cards.hand) > 0) {
-      Games.update(game._id, game)
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -23,14 +22,12 @@ Cellar = class Cellar extends Card {
         instructions: 'Choose any number of cards to discard:',
         cards: player_cards.hand,
         minimum: 0,
-        maximum: 0,
-        finished: false
+        maximum: 0
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(Cellar.discard_cards)
+      turn_event_processor.process(Cellar.discard_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
-      Games.update(game._id, game)
     }
   }
 
@@ -44,8 +41,6 @@ Cellar = class Cellar extends Card {
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(_.size(selected_cards))
     }
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
   }
 
 }
