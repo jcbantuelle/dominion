@@ -21,7 +21,7 @@ SeaHag = class SeaHag extends Card {
       }
       player_cards.revealed.push(player_cards.deck.shift())
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all(true)
+      card_discarder.discard_all()
     }
 
     let card_gainer = new CardGainer(game, player_cards.username, player_cards.deck, 'Curse')

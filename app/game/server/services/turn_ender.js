@@ -20,12 +20,12 @@ TurnEnder = class TurnEnder {
 
   clean_up_cards_in_play() {
     let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play')
-    card_discarder.discard_all()
+    card_discarder.discard_all(false)
   }
 
   discard_hand() {
     let card_discarder = new CardDiscarder(this.game, this.player_cards, 'hand')
-    card_discarder.discard_all()
+    card_discarder.discard_all(false)
   }
 
   draw_new_hand() {

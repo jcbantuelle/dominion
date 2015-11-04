@@ -21,7 +21,7 @@ Library = class Library extends Card {
     if (_.size(player_cards.hand) >= 7 || (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0)) {
       if (_.size(player_cards.aside) > 0) {
         let card_discarder = new CardDiscarder(game, player_cards, 'aside')
-        card_discarder.discard_all(true)
+        card_discarder.discard_all()
       }
       delete player_cards.aside
     } else {

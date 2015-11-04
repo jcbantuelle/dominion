@@ -33,7 +33,7 @@ Chancellor = class Chancellor extends Card {
     if (response === 'yes') {
       game.log.push(`&nbsp;&nbsp;and discards their deck`)
       let card_discarder = new CardDiscarder(game, player_cards, 'deck')
-      card_discarder.discard_all()
+      card_discarder.discard_all(false)
     }
   }
 

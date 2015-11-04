@@ -6,7 +6,7 @@ CardDiscarder = class CardDiscarder {
     this.source = source
   }
 
-  discard_all(announce = false) {
+  discard_all(announce = true) {
     if (announce) {
       this.update_log(this.player_cards[this.source])
     }
