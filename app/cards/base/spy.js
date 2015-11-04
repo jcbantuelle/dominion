@@ -15,25 +15,17 @@ Spy = class Spy extends Card {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
-    Games.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
-
-    return Spy.reveal_card(game, player_cards)
+    Spy.reveal_card(game, player_cards)
   }
 
-  attack(game, player) {
-    let player_cards = PlayerCards.findOne({
-      player_id: player._id,
-      game_id: game._id
-    })
-
-    return Spy.reveal_card(game, player_cards)
+  attack(game, player_cards) {
+    Spy.reveal_card(game, player_cards)
   }
 
   static reveal_card(game, player_cards) {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong>has no cards in deck`)
-      Games.update(game._id, game)
     } else {
       if (_.size(player_cards.deck) === 0) {
         let deck_shuffler = new DeckShuffler(player_cards)
@@ -43,7 +35,6 @@ Spy = class Spy extends Card {
       let revealed_card = player_cards.deck.shift()
       player_cards.revealed.push(revealed_card)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals <span class="${revealed_card.types}">${revealed_card.name}</span>`)
-      Games.update(game._id, game)
 
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
@@ -56,7 +47,7 @@ Spy = class Spy extends Card {
         finished: false
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(Spy.discard_card)
+      turn_event_processor.process(Spy.discard_card)
     }
   }
 
@@ -70,8 +61,6 @@ Spy = class Spy extends Card {
       player_cards.revealed = []
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts <span class="${card.types}">${card.name}</span> on top of deck`)
     }
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
   }
 
 }
