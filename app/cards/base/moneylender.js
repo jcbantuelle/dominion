@@ -18,9 +18,6 @@ Moneylender = class Moneylender extends Card {
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no copper to trash`)
     }
-
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
   }
 
 }
