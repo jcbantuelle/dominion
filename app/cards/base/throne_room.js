@@ -23,14 +23,12 @@ ThroneRoom = class ThroneRoom extends Card {
         instructions: 'Choose a card to play twice:',
         cards: eligible_cards,
         minimum: 1,
-        maximum: 1,
-        finished: false
+        maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(ThroneRoom.play_twice)
+      turn_event_processor.process(ThroneRoom.play_twice)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no action cards in hand`)
-      Games.update(game._id, game)
     }
   }
 
