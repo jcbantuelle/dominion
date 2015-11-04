@@ -16,8 +16,6 @@ Market = class Market extends Card {
     game.turn.buys += 1
     game.turn.coins += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action, +1 buy, and +$1`)
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
   }
 
 }
