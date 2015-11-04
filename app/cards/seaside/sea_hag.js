@@ -13,7 +13,7 @@ SeaHag = class SeaHag extends Card {
 
   attack(game, player_cards) {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong>has no cards in deck`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
       if (_.size(player_cards.deck) === 0) {
         let deck_shuffler = new DeckShuffler(player_cards)
