@@ -10,7 +10,6 @@ Silver = class Silver extends Card {
 
   play(game, player_cards) {
     game.turn.coins += 2
-    Games.update(game._id, game)
   }
 
 }

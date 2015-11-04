@@ -10,7 +10,6 @@ Gold = class Gold extends Card {
 
   play(game, player_cards) {
     game.turn.coins += 3
-    Games.update(game._id, game)
   }
 
 }
