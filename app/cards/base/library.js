@@ -39,8 +39,7 @@ Library = class Library extends Card {
           type: 'choose_yes_no',
           instructions: `Put <span class="${player_cards.pending.types}">${player_cards.pending.name}</span> in Hand?`,
           minimum: 1,
-          maximum: 1,
-          finished: false
+          maximum: 1
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Library.card_choice)
