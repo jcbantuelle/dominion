@@ -43,8 +43,7 @@ Spy = class Spy extends Card {
         type: 'choose_yes_no',
         instructions: `Make <strong>${player_cards.username}</strong> discard <span class="${revealed_card.types}">${revealed_card.name}</span>?`,
         minimum: 1,
-        maximum: 1,
-        finished: false
+        maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Spy.discard_card)
