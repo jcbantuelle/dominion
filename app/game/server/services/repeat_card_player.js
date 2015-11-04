@@ -12,7 +12,8 @@ RepeatCardPlayer = class RepeatCardPlayer extends CardPlayer {
   }
 
   play_once() {
-    this.update()
+    this.update_log()
+    this.update_db()
     return this.play_card()
   }
 
