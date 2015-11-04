@@ -19,14 +19,12 @@ Chapel = class Chapel extends Card {
         instructions: 'Choose up to 4 cards to trash:',
         cards: player_cards.hand,
         minimum: 0,
-        maximum: 4,
-        finished: false
+        maximum: 4
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(Chapel.trash_cards)
+      turn_event_processor.process(Chapel.trash_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
-      Games.update(game._id, game)
     }
   }
 
@@ -39,8 +37,6 @@ Chapel = class Chapel extends Card {
         card_trasher.trash()
       })
     }
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
   }
 
 }
