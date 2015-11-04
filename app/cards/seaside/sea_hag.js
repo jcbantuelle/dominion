@@ -11,12 +11,7 @@ SeaHag = class SeaHag extends Card {
   play(game, player_cards) {
   }
 
-  attack(game, player) {
-    let player_cards = PlayerCards.findOne({
-      player_id: player._id,
-      game_id: game._id
-    })
-
+  attack(game, player_cards) {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong>has no cards in deck`)
     } else {
@@ -29,11 +24,8 @@ SeaHag = class SeaHag extends Card {
       card_discarder.discard_all(true)
     }
 
-    let card_gainer = new CardGainer(game, player.username, player_cards.deck, 'Curse')
+    let card_gainer = new CardGainer(game, player_cards.username, player_cards.deck, 'Curse')
     card_gainer.gain_common_card()
-
-    PlayerCards.update(player_cards._id, player_cards)
-    Games.update(game._id, game)
   }
 
 }
