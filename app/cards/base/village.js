@@ -13,7 +13,7 @@ Village = class Village extends Card {
     card_drawer.draw(1)
 
     game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 actions`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
   }
 
 }
