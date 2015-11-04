@@ -24,8 +24,6 @@ Adventurer = class Adventurer extends Card {
 
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${this.formatted_cards(this.revealed_cards)}`)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${this.formatted_cards(this.revealed_treasures)} in hand and discards the rest`)
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
   }
 
   reveal(player_cards) {
