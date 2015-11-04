@@ -14,7 +14,6 @@ Library = class Library extends Card {
       return Library.draw_cards(game, player_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards to draw`)
-      Games.update(game._id, game)
     }
   }
 
@@ -25,8 +24,6 @@ Library = class Library extends Card {
         card_discarder.discard_all(true)
       }
       delete player_cards.aside
-      Games.update(game._id, game)
-      PlayerCards.update(player_cards._id, player_cards)
     } else {
       if (_.size(player_cards.deck) === 0) {
         let deck_shuffler = new DeckShuffler(player_cards)
@@ -46,7 +43,7 @@ Library = class Library extends Card {
           finished: false
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        return turn_event_processor.process(Library.card_choice)
+        turn_event_processor.process(Library.card_choice)
       } else {
         player_cards.hand.push(top_card)
         PlayerCards.update(player_cards._id, player_cards)
@@ -62,7 +59,6 @@ Library = class Library extends Card {
     } else {
       player_cards.aside.push(player_cards.pending)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside <span class="${player_cards.pending.types}">${player_cards.pending.name}</span>`)
-      Games.update(game._id, game)
     }
     delete player_cards.pending
     Library.draw_cards(game, player_cards)
