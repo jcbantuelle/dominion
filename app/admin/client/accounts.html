@@ -1,0 +1,36 @@
+<template name="accounts">
+  <h2>Unapproved Players</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Approve</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each unapproved_players}}
+        <tr>
+          <td>{{username}}</td>
+          <td><button type="submit" id="{{_id}}" class="btn btn-success">Approve</button></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <h2>Approved Players</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Unapprove</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each approved_players}}
+        <tr>
+          <td>{{username}}</td>
+          <td><button type="submit" id="{{_id}}" class="btn btn-danger">Unpprove</button></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
