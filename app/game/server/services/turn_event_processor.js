@@ -3,11 +3,7 @@ TurnEventProcessor = class TurnEventProcessor {
   constructor(game, player_cards, turn_event_ids) {
     this.game = game
     this.player_cards = player_cards
-    if (typeof turn_event_ids !== 'object') {
-      this.turn_event_ids = [turn_event_ids]
-    } else {
-      this.turn_event_ids = turn_event_ids
-    }
+    this.turn_event_ids = _.isArray(turn_event_ids) ? turn_event_ids : [turn_event_ids]
   }
 
   process(event_action) {
