@@ -48,7 +48,8 @@ CardList = class CardList {
     return [
       'SeaHag',
       'Warehouse',
-      'Bazaar'
+      'Bazaar',
+      'PearlDiver'
     ]
   }
 }
