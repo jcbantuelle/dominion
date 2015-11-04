@@ -22,6 +22,26 @@ CardDiscarder = class CardDiscarder {
     this.remove_from_source(cards)
   }
 
+  discard_by_name(card_name, announce = false) {
+    let card_index = _.findIndex(this.player_cards[this.source], function(card) {
+      return card.name === card_name
+    })
+
+    if (card_index !== -1) {
+      let cards = [this.player_cards[this.source][card_index]]
+      if (announce) {
+        this.update_log(cards)
+      }
+      this.move_to_discard(cards)
+      this.remove_from_source(cards)
+    } else {
+      if (announce) {
+        let card = ClassCreator.create(card_name)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no <span class="${card.type_class()}">${card.name()}</span> in ${this.source}`)
+      }
+    }
+  }
+
   move_to_discard(cards) {
     this.player_cards.discard = cards.concat(this.player_cards.discard)
   }
