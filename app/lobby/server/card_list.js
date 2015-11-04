@@ -46,7 +46,8 @@ CardList = class CardList {
 
   seaside() {
     return [
-      'SeaHag'
+      'SeaHag',
+      'Warehouse'
     ]
   }
 }
