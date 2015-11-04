@@ -3,7 +3,6 @@ CardDrawer = class CardDrawer {
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
-    this.drawn_cards = 0
     this.original_hand_count = _.size(this.player_cards.hand)
   }
 
