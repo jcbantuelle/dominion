@@ -19,14 +19,12 @@ Remodel = class Remodel extends Card {
         instructions: 'Choose a card to trash:',
         cards: player_cards.hand,
         minimum: 1,
-        maximum: 1,
-        finished: false
+        maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(Remodel.trash_card)
+      turn_event_processor.process(Remodel.trash_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are cards in hand`)
-      Games.update(game._id, game)
     }
   }
 
@@ -35,9 +33,6 @@ Remodel = class Remodel extends Card {
 
     let card_trasher = new CardTrasher(game, player_cards.username, player_cards.hand, selected_card.name)
     card_trasher.trash()
-
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
 
     let eligible_cards = _.filter(game.kingdom_cards.concat(game.common_cards), function(card) {
       return card.count > 0 && card.top_card.purchasable && card.top_card.coin_cost <= (selected_card.coin_cost + 2) && card.top_card.potion_cost <= selected_card.potion_cost
@@ -53,14 +48,12 @@ Remodel = class Remodel extends Card {
         instructions: 'Choose a card to gain:',
         cards: eligible_cards,
         minimum: 1,
-        maximum: 1,
-        finished: false
+        maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(Remodel.gain_card)
+      turn_event_processor.process(Remodel.gain_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
-      Games.update(game._id, game)
     }
   }
 
@@ -68,8 +61,6 @@ Remodel = class Remodel extends Card {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, selected_card.name)
     card_gainer[`gain_${selected_card.source}_card`]()
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
   }
 
 }
