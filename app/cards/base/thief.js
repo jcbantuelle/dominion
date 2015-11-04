@@ -11,15 +11,9 @@ Thief = class Thief extends Card {
   play(game, player_cards) {
   }
 
-  attack(game, player) {
-    let player_cards = PlayerCards.findOne({
-      player_id: player._id,
-      game_id: game._id
-    })
-
+  attack(game, player_cards) {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong>has no cards in deck`)
-      Games.update(game._id, game)
     } else {
       player_cards.revealed = _.take(player_cards.deck, 2)
       player_cards.deck = _.drop(player_cards.deck, 2)
@@ -34,8 +28,7 @@ Thief = class Thief extends Card {
       let revealed_cards = _.map(player_cards.revealed, function(card) {
         return `<span class="${card.types}">${card.name}</span>`
       }).join(' ')
-      game.log.push(`&nbsp;&nbsp;<strong>${player.username}</strong> reveals ${revealed_cards}`)
-      Games.update(game._id, game)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${revealed_cards}`)
 
       let revealed_treasures = _.filter(player_cards.revealed, function(card) {
         return _.contains(card.types, 'treasure')
@@ -44,8 +37,6 @@ Thief = class Thief extends Card {
         game.log.push(`&nbsp;&nbsp;but there are no treasures to trash`)
         let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
         card_discarder.discard_all(true)
-        Games.update(game._id, game)
-        PlayerCards.update(player_cards._id, player_cards)
       } else if (_.size(revealed_treasures) === 1) {
         return Thief.trash_treasure(game, player_cards, revealed_treasures[0])
       } else {
@@ -55,14 +46,13 @@ Thief = class Thief extends Card {
           username: game.turn.username,
           type: 'choose_cards',
           player_cards: true,
-          instructions: `Choose one of <strong>${player.username}'s</strong> treasures to trash:`,
+          instructions: `Choose one of <strong>${player_cards.username}'s</strong> treasures to trash:`,
           cards: revealed_treasures,
           minimum: 1,
-          maximum: 1,
-          finished: false
+          maximum: 1
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        return turn_event_processor.process(Thief.choose_trashed_treasure)
+        turn_event_processor.process(Thief.choose_trashed_treasure)
       }
     }
   }
@@ -81,7 +71,6 @@ Thief = class Thief extends Card {
     card_discarder.discard_all(true)
 
     Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
 
     let turn_event_id = TurnEvents.insert({
       game_id: game._id,
@@ -90,15 +79,14 @@ Thief = class Thief extends Card {
       type: 'choose_yes_no',
       instructions: `Gain <span class="${trashed_treasure.types}">${trashed_treasure.name}</span>?`,
       minimum: 1,
-      maximum: 1,
-      finished: false
+      maximum: 1
     })
     let attacker_player_cards = PlayerCards.findOne({
       player_id: game.turn.player._id,
       game_id: game._id
     })
     let turn_event_processor = new TurnEventProcessor(game, attacker_player_cards, turn_event_id)
-    return turn_event_processor.process(Thief.gain_trashed_treasure)
+    turn_event_processor.process(Thief.gain_trashed_treasure)
   }
 
   static gain_trashed_treasure(game, player_cards, response) {
@@ -107,8 +95,6 @@ Thief = class Thief extends Card {
       card_gainer.gain_trash_card()
     }
     delete game.turn.trashed_treasure
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
   }
 
 }
