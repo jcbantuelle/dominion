@@ -20,8 +20,7 @@ ReactionProcessor = class ReactionProcessor {
         instructions: 'Choose Attack Reaction (Or none to skip):',
         cards: reaction_cards,
         minimum: 0,
-        maximum: 1,
-        finished: false
+        maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
       turn_event_processor.process(ReactionProcessor.attack_reaction)
