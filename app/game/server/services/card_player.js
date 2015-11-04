@@ -18,13 +18,15 @@ CardPlayer = class CardPlayer {
         this.update_log()
         this.update_db()
       }
-      this.play_card()
+      this.play_card(auto_update)
     }
   }
 
-  play_card() {
+  play_card(auto_update = true) {
     this.card.play(this.game, this.player_cards)
-    this.update_db()
+    if (auto_update) {
+      this.update_db()
+    }
     this.attack()
   }
 
