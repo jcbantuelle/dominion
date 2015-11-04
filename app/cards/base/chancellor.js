@@ -20,14 +20,12 @@ Chancellor = class Chancellor extends Card {
         type: 'choose_yes_no',
         instructions: 'Put Deck In Discard?',
         minimum: 1,
-        maximum: 1,
-        finished: false
+        maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(Chancellor.discard_deck)
+      turn_event_processor.process(Chancellor.discard_deck)
     } else {
       game.log.push(`&nbsp;&nbsp;but the deck is empty`)
-      Games.update(game._id, game)
     }
   }
 
@@ -36,8 +34,6 @@ Chancellor = class Chancellor extends Card {
       game.log.push(`&nbsp;&nbsp;and discards their deck`)
       let card_discarder = new CardDiscarder(game, player_cards, 'deck')
       card_discarder.discard_all()
-      Games.update(game._id, game)
-      PlayerCards.update(player_cards._id, player_cards)
     }
   }
 
