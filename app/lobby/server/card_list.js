@@ -49,7 +49,8 @@ CardList = class CardList {
       'SeaHag',
       'Warehouse',
       'Bazaar',
-      'PearlDiver'
+      'PearlDiver',
+      'Cutpurse'
     ]
   }
 }
