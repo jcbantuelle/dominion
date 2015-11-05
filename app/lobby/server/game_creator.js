@@ -82,6 +82,7 @@ GameCreator = class GameCreator {
       in_play: [],
       revealed: [],
       duration: [],
+      haven: [],
       hand: hand
     })
   }

@@ -64,6 +64,11 @@ TurnEnder = class TurnEnder {
       this.next_player_cards.in_play.push(player_card)
     })
     this.next_player_cards.duration = []
+    if (_.size(this.next_player_cards.haven) > 0) {
+      this.next_player_cards.hand = this.next_player_cards.hand.concat(this.next_player_cards.haven)
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.next_player_cards.username}</strong> puts ${_.size(this.next_player_cards.haven)} cards in hand from ${CardView.card_html('action duration', 'Haven')}`)
+      this.next_player_cards.haven = []
+    }
   }
 
   next_player() {
