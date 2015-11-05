@@ -30,7 +30,7 @@ Meteor.methods({
     TurnEventFutures[turn_event._id].return(selected_cards)
   },
   destroyGame: function() {
-    if (Meteor.user().admin)
+    if (Meteor.user().admin) {
       PlayerCards.remove({})
       Games.remove({})
       TurnEvents.remove({})
