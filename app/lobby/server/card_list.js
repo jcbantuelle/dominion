@@ -51,7 +51,8 @@ CardList = class CardList {
       'Bazaar',
       'PearlDiver',
       'Cutpurse',
-      'MerchantShip'
+      'MerchantShip',
+      'FishingVillage'
     ]
   }
 }
