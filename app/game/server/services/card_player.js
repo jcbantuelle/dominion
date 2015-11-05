@@ -18,16 +18,23 @@ CardPlayer = class CardPlayer {
         this.update_log()
         this.update_db()
       }
-      this.play_card(auto_update)
+      if (this.play_card(auto_update) === 'duration') {
+        this.mark_played_card_as_duration()
+      }
+      this.resolve_played_cards()
+      if (auto_update) {
+        this.update_db()
+      }
     }
   }
 
   play_card(auto_update = true) {
-    this.card.play(this.game, this.player_cards)
+    let result = this.card.play(this.game, this.player_cards)
     if (auto_update) {
       this.update_db()
     }
     this.attack()
+    return result
   }
 
   can_play() {
@@ -42,7 +49,21 @@ CardPlayer = class CardPlayer {
 
   put_card_in_play() {
     played_card = this.player_cards.hand.splice(this.card_index, 1)
-    this.player_cards.in_play = this.player_cards.in_play.concat(played_card)
+    this.player_cards.playing.push(played_card[0])
+  }
+
+  resolve_played_cards() {
+    _.each(this.player_cards.playing, (card) => {
+      let destination = card.destination
+      delete card.processed
+      delete card.destination
+      if (destination) {
+        this.player_cards[destination].push(card)
+      } else {
+        this.player_cards.in_play.push(card)
+      }
+    })
+    this.player_cards.playing = []
   }
 
   use_action() {
@@ -110,6 +131,15 @@ CardPlayer = class CardPlayer {
         this.update_db(attacked_player_cards)
       })
     }
+  }
+
+  mark_played_card_as_duration(duration_count = 1) {
+    let duration_card_index = _.findIndex(this.player_cards.playing, (card) => {
+      return card.name === this.card.name() && !card.processed
+    })
+    this.player_cards.playing[duration_card_index].destination = 'duration'
+    this.player_cards.playing[duration_card_index].duration_effect_count = duration_count
+    this.player_cards.playing[duration_card_index].processed = true
   }
 
 }

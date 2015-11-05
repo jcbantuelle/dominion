@@ -78,8 +78,10 @@ GameCreator = class GameCreator {
       username: player.username,
       deck: deck,
       discard: [],
+      playing: [],
       in_play: [],
       revealed: [],
+      duration: [],
       hand: hand
     })
   }

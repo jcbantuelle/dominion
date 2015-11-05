@@ -6,16 +6,20 @@ TurnEnder = class TurnEnder {
   }
 
   end_turn() {
-    this.clean_up_cards_in_play()
     this.discard_hand()
+    this.clean_up_cards_in_play()
     this.draw_new_hand()
+    this.game.log.push(`<strong>${this.game.turn.player.username}</strong> ends their turn`)
     this.set_next_turn()
-    this.update_log()
     if (this.game_over()) {
       this.end_game()
+    } else {
+      this.game.log.push(`<strong>- ${this.game.turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
+      this.process_duration_cards()
     }
     Games.update(this.game._id, this.game)
     PlayerCards.update(this.player_cards._id, this.player_cards)
+    PlayerCards.update(this.next_player_cards._id, this.next_player_cards)
   }
 
   clean_up_cards_in_play() {
@@ -43,6 +47,23 @@ TurnEnder = class TurnEnder {
       phase: 'action'
     }
     this.game.turn_number += 1
+    this.next_player_cards = PlayerCards.findOne({
+      game_id: this.game._id,
+      player_id: this.game.turn.player._id
+    })
+  }
+
+  process_duration_cards() {
+    _.each(this.next_player_cards.duration, (player_card) => {
+      let card = ClassCreator.create(player_card.name)
+      if (typeof card.duration === 'function') {
+        _.times(player_card.duration_effect_count, () => {
+          card.duration(this.game, this.next_player_cards)
+        })
+      }
+      this.next_player_cards.in_play.push(player_card)
+    })
+    this.next_player_cards.duration = []
   }
 
   next_player() {
@@ -57,13 +78,6 @@ TurnEnder = class TurnEnder {
     return _.findIndex(this.game.players, function(player) {
       return player._id === Meteor.userId()
     })
-  }
-
-  update_log() {
-    this.game.log.push(`<strong>${Meteor.user().username}</strong> ends their turn`)
-    if (!this.game_over()) {
-      this.game.log.push(`<strong>- ${this.game.turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
-    }
   }
 
   player_turn_number() {
