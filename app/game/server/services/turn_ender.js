@@ -54,6 +54,13 @@ TurnEnder = class TurnEnder {
   }
 
   process_duration_cards() {
+    this.process_duration_effects()
+    if (_.size(this.next_player_cards.haven) > 0) {
+      this.process_haven()
+    }
+  }
+
+  process_duration_effects() {
     _.each(this.next_player_cards.duration, (player_card) => {
       let card = ClassCreator.create(player_card.name)
       if (typeof card.duration === 'function') {
@@ -64,11 +71,12 @@ TurnEnder = class TurnEnder {
       this.next_player_cards.in_play.push(player_card)
     })
     this.next_player_cards.duration = []
-    if (_.size(this.next_player_cards.haven) > 0) {
-      this.next_player_cards.hand = this.next_player_cards.hand.concat(this.next_player_cards.haven)
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.next_player_cards.username}</strong> puts ${_.size(this.next_player_cards.haven)} cards in hand from ${CardView.card_html('action duration', 'Haven')}`)
-      this.next_player_cards.haven = []
-    }
+  }
+
+  process_haven() {
+    this.next_player_cards.hand = this.next_player_cards.hand.concat(this.next_player_cards.haven)
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.next_player_cards.username}</strong> puts ${_.size(this.next_player_cards.haven)} cards in hand from ${CardView.card_html('action duration', 'Haven')}`)
+    this.next_player_cards.haven = []
   }
 
   next_player() {
