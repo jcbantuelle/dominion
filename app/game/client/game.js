@@ -17,7 +17,8 @@ Template.game.events({
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
   "submit #turn-event": turnEvent,
-  "click #destroy-game": destroyGame
+  "click #destroy-game": destroyGame,
+  "click": removePopover,
 })
 
 function registerStreams() {
@@ -53,20 +54,18 @@ function sendMessage(event) {
 }
 
 function playCard(event) {
-  $('.popover').remove()
   Meteor.call('playCard', $(event.target).attr('data-name'))
 }
 
 function buyCard(event) {
-  $('.popover').remove()
   Meteor.call('buyCard', $(event.target).attr('data-name'))
 }
 
-function endTurn(event) {
+function endTurn() {
   Meteor.call('endTurn')
 }
 
-function playAllCoin(event) {
+function playAllCoin() {
   Meteor.call('playAllCoin')
 }
 
@@ -85,4 +84,8 @@ function turnEvent(event) {
 
 function destroyGame() {
   Meteor.call('destroyGame')
+}
+
+function removePopover() {
+  $('.popover').remove()
 }
