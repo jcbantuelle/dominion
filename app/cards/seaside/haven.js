@@ -41,10 +41,11 @@ Haven = class Haven extends Card {
     let selected_card = selected_cards[0]
 
     let card_index = _.findIndex(player_cards.hand, function(card) {
-      selected_card.name === card.name
+      return selected_card.name === card.name
     })
 
     player_cards.haven = player_cards.haven.concat(player_cards.hand.splice(card_index, 1))
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside a card`)
   }
 
 }
