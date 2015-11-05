@@ -54,7 +54,8 @@ CardList = class CardList {
       'MerchantShip',
       'FishingVillage',
       'Caravan',
-      'Wharf'
+      'Wharf',
+      'Tactician'
     ]
   }
 }
