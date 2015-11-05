@@ -14,11 +14,17 @@ TurnEnder = class TurnEnder {
     if (this.game_over()) {
       this.end_game()
     } else {
-      this.game.log.push(`<strong>- ${this.game.turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
+      if (this.game.turn.outpost_turn) {
+        this.game.log.push(`<strong>- ${this.game.turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
+      } else {
+        this.game.log.push(`<strong>- ${this.game.turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
+      }
       this.process_duration_cards()
     }
     Games.update(this.game._id, this.game)
-    PlayerCards.update(this.player_cards._id, this.player_cards)
+    if (!this.game.turn.outpost_turn) {
+      PlayerCards.update(this.player_cards._id, this.player_cards)
+    }
     PlayerCards.update(this.next_player_cards._id, this.next_player_cards)
   }
 
@@ -33,24 +39,32 @@ TurnEnder = class TurnEnder {
   }
 
   draw_new_hand() {
+    let cards_to_draw = this.game.turn.outpost ? 3 : 5
     let card_drawer = new CardDrawer(this.game, this.player_cards)
-    card_drawer.draw(5, false)
+    card_drawer.draw(cards_to_draw, false)
   }
 
   set_next_turn() {
-    this.game.turn = {
-      player: this.next_player(),
+    let new_turn = {
       actions: 1,
       buys: 1,
       coins: 0,
       potions: 0,
       phase: 'action'
     }
-    this.game.turn_number += 1
-    this.next_player_cards = PlayerCards.findOne({
-      game_id: this.game._id,
-      player_id: this.game.turn.player._id
-    })
+    if (this.game.turn.outpost && !this.game.turn.outpost_turn) {
+      new_turn.outpost_turn = true
+      new_turn.player = this.game.turn.player
+      this.next_player_cards = this.player_cards
+    } else {
+      new_turn.player = this.next_player()
+      this.game.turn_number += 1
+      this.next_player_cards = PlayerCards.findOne({
+        game_id: this.game._id,
+        player_id: new_turn.player._id
+      })
+    }
+    this.game.turn = new_turn
   }
 
   process_duration_cards() {
@@ -68,6 +82,7 @@ TurnEnder = class TurnEnder {
           card.duration(this.game, this.next_player_cards)
         })
       }
+      delete player_card.duration_effect_count
       this.next_player_cards.in_play.push(player_card)
     })
     this.next_player_cards.duration = []
