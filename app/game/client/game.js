@@ -16,7 +16,8 @@ Template.game.events({
   "click .card-container .card": buyCard,
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
-  "submit #turn-event": turnEvent
+  "submit #turn-event": turnEvent,
+  "click #destroy-game": destroyGame
 })
 
 function registerStreams() {
@@ -80,4 +81,8 @@ function turnEvent(event) {
   } else {
     alert(turn_event_submission.error_message())
   }
+}
+
+function destroyGame() {
+  Meteor.call('destroyGame')
 }
