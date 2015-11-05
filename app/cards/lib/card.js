@@ -17,11 +17,11 @@ Card = class Card {
   }
 
   name() {
-    return s.humanize(this.constructor.name)
+    return _.startCase(this.constructor.name)
   }
 
   image() {
-    return s.underscored(this.constructor.name)
+    return _.snakeCase(this.constructor.name)
   }
 
   type_class() {

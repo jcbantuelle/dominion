@@ -22,7 +22,6 @@ fourseven:scss
 twbs:bootstrap
 ejson
 mizzao:user-status
-underscorestring:underscore.string
 mizzao:timesync
 stevezhu:lodash
 meteorhacks:kadira

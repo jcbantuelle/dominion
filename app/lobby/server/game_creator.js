@@ -147,7 +147,7 @@ GameCreator = class GameCreator {
   }
 
   stack_size(card) {
-    if (s.include(card.types, 'victory')) {
+    if (_.contains(card.types, 'victory')) {
       return _.size(this.players) < 3 ? 8 : 12
     } else if (card.name === 'Curse') {
       return _.size(this.players) === 1 ? 10 : _.size(this.players) * 10 - 10
