@@ -13,7 +13,7 @@ CardTrasher = class CardTrasher {
       let card_index = this.find_card_index(card_name)
       if (card_index !== -1) {
         this.update_card_log(card_index)
-        this.trash_card()
+        this.trash_card(card_index)
       }
     })
     this.update_log()
@@ -29,9 +29,9 @@ CardTrasher = class CardTrasher {
     this.card_log.push(`<span class="${this.source[card_index].types}">${this.source[card_index].name}</span>`)
   }
 
-  trash_card() {
-    this.game.trash.push(this.source[this.card_index])
-    this.source.splice(this.card_index, 1)
+  trash_card(card_index) {
+    this.game.trash.push(this.source[card_index])
+    this.source.splice(card_index, 1)
   }
 
   update_log() {
