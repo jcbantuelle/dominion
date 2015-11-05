@@ -53,7 +53,8 @@ CardList = class CardList {
       'Cutpurse',
       'MerchantShip',
       'FishingVillage',
-      'Caravan'
+      'Caravan',
+      'Wharf'
     ]
   }
 }
