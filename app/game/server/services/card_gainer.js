@@ -48,7 +48,7 @@ CardGainer = class CardGainer {
   }
 
   update_log(card) {
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.username}</strong> gains <span class="${card.types}">${card.name}</span>`)
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.username}</strong> gains ${CardView.render(card)}`)
   }
 
 }

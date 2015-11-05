@@ -55,7 +55,7 @@ CardBuyer = class CardBuyer {
   }
 
   update_log() {
-    this.game.log.push(`<strong>${Meteor.user().username}</strong> buys <span class="${this.game_card.top_card.types}">${this.game_card.top_card.name}</span>`)
+    this.game.log.push(`<strong>${Meteor.user().username}</strong> buys ${CardView.render(this.game_card.top_card)}`)
   }
 
   is_player_turn() {

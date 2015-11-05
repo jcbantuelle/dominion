@@ -37,7 +37,7 @@ CardDiscarder = class CardDiscarder {
     } else {
       if (announce) {
         let card = ClassCreator.create(card_name)
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no <span class="${card.type_class()}">${card.name()}</span> in ${this.source}`)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no ${CardView.render(card)} in ${this.source}`)
       }
     }
   }
@@ -56,10 +56,7 @@ CardDiscarder = class CardDiscarder {
   }
 
   update_log(cards) {
-    let card_list = _.map(cards, function(card) {
-      return `<span class="${card.types}">${card.name}</span>`
-    }).join(' ')
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${card_list}`)
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(cards)}`)
   }
 
 }

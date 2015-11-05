@@ -30,7 +30,7 @@ ReactionProcessor = class ReactionProcessor {
   static attack_reaction(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
       let selected_card = ClassCreator.create(selected_cards[0].name)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals <span class="${selected_card.type_class()}">${selected_card.name()}</span>`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(selected_card)}`)
       Games.update(game._id, game)
       selected_card.attack_reaction(game, player_cards)
       let reaction_processor = new ReactionProcessor(game, player_cards)
