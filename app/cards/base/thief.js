@@ -25,10 +25,7 @@ Thief = class Thief extends Card {
         player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 2 - revealed_count))
         player_cards.deck = _.drop(player_cards.deck, 2 - revealed_count)
       }
-      let revealed_cards = _.map(player_cards.revealed, function(card) {
-        return `<span class="${card.types}">${card.name}</span>`
-      }).join(' ')
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${revealed_cards}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
       let revealed_treasures = _.filter(player_cards.revealed, function(card) {
         return _.contains(card.types, 'treasure')
@@ -77,7 +74,7 @@ Thief = class Thief extends Card {
       player_id: game.turn.player._id,
       username: game.turn.player.username,
       type: 'choose_yes_no',
-      instructions: `Gain <span class="${trashed_treasure.types}">${trashed_treasure.name}</span>?`,
+      instructions: `Gain ${CardView.render(trashed_treasure)}?`,
       minimum: 1,
       maximum: 1
     })

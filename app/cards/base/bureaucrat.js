@@ -37,10 +37,7 @@ Bureaucrat = class Bureaucrat extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       return turn_event_processor.process(Bureaucrat.return_card_to_deck)
     } else {
-      let hand_cards = _.map(player_cards.hand, function(card) {
-        return `<span class="${card.types}">${card.name}</span>`
-      }).join(' ')
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${hand_cards}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
     }
   }
 
@@ -50,7 +47,7 @@ Bureaucrat = class Bureaucrat extends Card {
       return card.name === selected_card.name
     })
 
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places <span class="${selected_card.types}">${selected_card.name}</span> on top of their deck`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places ${CardView.render(selected_card)} on top of their deck`)
 
     player_cards.deck.unshift(player_cards.hand[card_index])
     player_cards.hand.splice(card_index, 1)

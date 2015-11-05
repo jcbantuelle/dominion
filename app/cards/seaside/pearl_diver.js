@@ -33,7 +33,7 @@ PearlDiver = class PearlDiver extends Card {
         player_id: game.turn.player._id,
         username: game.turn.player.username,
         type: 'choose_yes_no',
-        instructions: `Put <span class="${player_cards.look.types}">${player_cards.look.name}</span> on top of deck?`,
+        instructions: `Put ${CardView.render(player_cards.look)} on top of deck?`,
         minimum: 1,
         maximum: 1
       })

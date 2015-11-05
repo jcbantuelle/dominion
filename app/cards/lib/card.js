@@ -52,9 +52,4 @@ Card = class Card {
     return player_cards
   }
 
-  formatted_cards(cards) {
-    return _.map(cards, function(card) {
-      return `<span class="${card.types}">${card.name}</span>`
-    }).join(' ')
-  }
 }

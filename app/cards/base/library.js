@@ -37,7 +37,7 @@ Library = class Library extends Card {
           player_id: player_cards.player_id,
           username: player_cards.username,
           type: 'choose_yes_no',
-          instructions: `Put <span class="${player_cards.pending.types}">${player_cards.pending.name}</span> in Hand?`,
+          instructions: `Put ${CardView.render(player_cards.pending)} in Hand?`,
           minimum: 1,
           maximum: 1
         })
@@ -57,7 +57,7 @@ Library = class Library extends Card {
       PlayerCards.update(player_cards._id, player_cards)
     } else {
       player_cards.aside.push(player_cards.pending)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside <span class="${player_cards.pending.types}">${player_cards.pending.name}</span>`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(player_cards.pending)}`)
     }
     delete player_cards.pending
     Library.draw_cards(game, player_cards)

@@ -34,14 +34,14 @@ Spy = class Spy extends Card {
 
       let revealed_card = player_cards.deck.shift()
       player_cards.revealed.push(revealed_card)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals <span class="${revealed_card.types}">${revealed_card.name}</span>`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
 
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
         username: game.turn.player.username,
         type: 'choose_yes_no',
-        instructions: `Make <strong>${player_cards.username}</strong> discard <span class="${revealed_card.types}">${revealed_card.name}</span>?`,
+        instructions: `Make <strong>${player_cards.username}</strong> discard ${CardView.render(revealed_card)}?`,
         minimum: 1,
         maximum: 1
       })
@@ -58,7 +58,7 @@ Spy = class Spy extends Card {
       let card = player_cards.revealed[0]
       player_cards.deck.unshift(card)
       player_cards.revealed = []
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts <span class="${card.types}">${card.name}</span> on top of deck`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(card)} on top of deck`)
     }
   }
 

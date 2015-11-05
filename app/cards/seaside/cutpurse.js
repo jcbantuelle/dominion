@@ -20,12 +20,9 @@ Cutpurse = class Cutpurse extends Card {
     card_discarder.discard_by_name('Copper')
 
     if (_.size(player_cards.hand) < original_hand_size) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> discards <span class="treasure">Copper</span>`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> discards ${CardView.card_html('treasure', 'Copper')}`)
     } else {
-      let cards = _.map(player_cards.hand, function(card) {
-        return `<span class="${card.types}">${card.name}</span>`
-      }).join(' ')
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${cards}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
     }
   }
 
