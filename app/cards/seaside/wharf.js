@@ -21,7 +21,7 @@ Wharf = class Wharf extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2, false)
     game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 2 card and gets +1 buy from ${CardView.render(this)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 2 cards and gets +1 buy from ${CardView.render(this)}`)
   }
 
 }
