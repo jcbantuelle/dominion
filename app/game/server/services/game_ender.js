@@ -10,6 +10,7 @@ GameEnder = class GameEnder {
       player_cards.username = player.username
       return player_cards
     })
+    this.card_sources = ['discard', 'playing', 'in_play', 'revealed', 'duration', 'haven']
   }
 
   end_game() {
@@ -32,7 +33,10 @@ GameEnder = class GameEnder {
 
   calculate_scores() {
     return _.chain(this.players_cards).map((player_cards) => {
-      let point_cards = this.point_cards(player_cards.hand.concat(player_cards.discard).concat(player_cards.in_play).concat(player_cards.deck))
+      let all_cards = _.reduce(this.card_sources, function(all_cards, source) {
+        return all_cards.concat(player_cards[source])
+      }, [])
+      let point_cards = this.point_cards(all_cards)
       return {
         username: player_cards.username,
         point_cards: point_cards,
