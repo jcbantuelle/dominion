@@ -76,6 +76,7 @@ function turnEvent(event) {
 
   let turn_event_submission = new TurnEventSubmission(turn_event, selected_checkboxes)
   if (turn_event_submission.valid_selection()) {
+    $('#turn-event checkbox').prop('checked', false)
     Meteor.call('turnEvent', turn_event_submission.selected_values())
   } else {
     alert(turn_event_submission.error_message())
