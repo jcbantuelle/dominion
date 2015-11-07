@@ -12,9 +12,11 @@ AllCoinPlayer = class AllCoinPlayer {
       card_player.play(false)
       return card
     })
-    this.game.log.push(`<strong>${this.player_cards.username}</strong> plays ${CardView.render(played_cards)}`)
-    Games.update(this.game._id, this.game)
-    PlayerCards.update(this.player_cards._id, this.player_cards)
+    if (_.size(played_cards) > 0) {
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> plays ${CardView.render(played_cards)}`)
+      Games.update(this.game._id, this.game)
+      PlayerCards.update(this.player_cards._id, this.player_cards)
+    }
   }
 
   find_playable_cards() {
