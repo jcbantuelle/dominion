@@ -13,7 +13,7 @@ PearlDiver = class PearlDiver extends Card {
     card_drawer.draw(1)
 
     game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 actions`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
     PlayerCards.update(player_cards._id, player_cards)
 
