@@ -75,7 +75,7 @@
   <form id="chat" action="">
     <input id="message" class="form-control">
   </form>
-  {{#if self.admin}}
+  {{#if currentUser.admin}}
     <br />
     <button id="destroy-game" class="btn btn-danger btn-xs">Destroy Game!!</button>
   {{/if}}
