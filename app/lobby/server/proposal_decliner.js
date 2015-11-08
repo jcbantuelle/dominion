@@ -26,14 +26,14 @@ ProposalDecliner = class ProposalDecliner {
     _.each(this.player_ids, (player_id) => {
       Meteor.users.update(player_id, {
         $unset: {has_proposal: ''},
-        $set: {declined_proposal: this.decline_message()}
+        $set: {declined_proposal: this.decline_message(player_id)}
       })
     })
   }
 
-  decline_message() {
+  decline_message(player_id) {
     let decliners = _.map(this.declined_players, function(decliner) {
-      return decliner._id == Meteor.userId() ? 'You' : decliner.username
+      return decliner._id === player_id ? 'You' : decliner.username
     }).join(' and ')
     return `<strong>${decliners}</strong> declined the game.`
   }
