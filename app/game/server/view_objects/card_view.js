@@ -4,7 +4,8 @@ CardView = class CardView {
     if (_.isArray(cards)) {
       return CardView.card_list_html(cards)
     } else if (_.isPlainObject(cards)) {
-      return CardView.card_html(cards.types, cards.name)
+      let rendered_card = cards.top_card ? cards.top_card : cards
+      return CardView.card_html(rendered_card.types, rendered_card.name)
     } else {
       return CardView.card_html(cards.type_class(), cards.name())
     }
