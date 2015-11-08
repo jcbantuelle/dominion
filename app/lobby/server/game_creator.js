@@ -136,6 +136,7 @@ GameCreator = class GameCreator {
     return {
       name: card.name,
       count: _.size(card_stack),
+      embargos: 0,
       top_card: _.first(card_stack),
       stack: card_stack
     }

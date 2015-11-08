@@ -41,6 +41,7 @@ CardBuyer = class CardBuyer {
   buy_card() {
     this.update_turn()
     this.gain_card()
+    this.embargo()
   }
 
   update_turn() {
@@ -52,6 +53,13 @@ CardBuyer = class CardBuyer {
   gain_card() {
     let card_gainer = new CardGainer(this.game, this.player_cards.username, this.player_cards.discard, this.card.name())
     card_gainer[`gain_${this.game_card.source}_card`](false)
+  }
+
+  embargo() {
+    _.times(this.game_card.embargos, () => {
+      let card_gainer = new CardGainer(this.game, this.player_cards.username, this.player_cards.discard, 'Curse')
+      card_gainer.gain_common_card()
+    })
   }
 
   update_log() {

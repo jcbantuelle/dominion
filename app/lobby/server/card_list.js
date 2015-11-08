@@ -58,7 +58,8 @@ CardList = class CardList {
       'Tactician',
       'Lighthouse',
       'Haven',
-      'Outpost'
+      'Outpost',
+      'Embargo'
     ]
   }
 }
