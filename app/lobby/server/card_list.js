@@ -59,7 +59,8 @@ CardList = class CardList {
       'Lighthouse',
       'Haven',
       'Outpost',
-      'Embargo'
+      'Embargo',
+      'NativeVillage'
     ]
   }
 }

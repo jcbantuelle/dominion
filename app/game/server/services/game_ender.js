@@ -10,7 +10,7 @@ GameEnder = class GameEnder {
       player_cards.username = player.username
       return player_cards
     })
-    this.card_sources = ['hand', 'discard', 'deck', 'playing', 'in_play', 'revealed', 'duration', 'haven']
+    this.card_sources = ['hand', 'discard', 'deck', 'playing', 'in_play', 'revealed', 'duration', 'haven', 'native_village']
   }
 
   end_game() {
