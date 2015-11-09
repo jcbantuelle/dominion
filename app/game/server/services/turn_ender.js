@@ -10,22 +10,17 @@ TurnEnder = class TurnEnder {
     this.clean_up_cards_in_play()
     this.draw_new_hand()
     this.game.log.push(`<strong>${this.game.turn.player.username}</strong> ends their turn`)
-    this.set_next_turn()
     if (this.game_over()) {
       this.end_game()
     } else {
-      if (this.game.turn.outpost_turn) {
-        this.game.log.push(`<strong>- ${this.game.turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
-      } else {
-        this.game.log.push(`<strong>- ${this.game.turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
-      }
+      this.set_next_turn()
       this.process_duration_cards()
+      if (!this.game.turn.outpost_turn) {
+        PlayerCards.update(this.player_cards._id, this.player_cards)
+      }
+      PlayerCards.update(this.next_player_cards._id, this.next_player_cards)
     }
     Games.update(this.game._id, this.game)
-    if (!this.game.turn.outpost_turn) {
-      PlayerCards.update(this.player_cards._id, this.player_cards)
-    }
-    PlayerCards.update(this.next_player_cards._id, this.next_player_cards)
   }
 
   clean_up_cards_in_play() {
@@ -45,26 +40,40 @@ TurnEnder = class TurnEnder {
   }
 
   set_next_turn() {
-    let new_turn = {
+    this.new_turn = {
       actions: 1,
       buys: 1,
       coins: 0,
       potions: 0,
-      phase: 'action'
+      phase: 'action',
+      gained_cards: []
     }
+
     if (this.game.turn.outpost && !this.game.turn.outpost_turn) {
-      new_turn.outpost_turn = true
-      new_turn.player = this.game.turn.player
-      this.next_player_cards = this.player_cards
+      this.outpost_turn()
     } else {
-      new_turn.player = this.next_player()
-      this.game.turn_number += 1
-      this.next_player_cards = PlayerCards.findOne({
-        game_id: this.game._id,
-        player_id: new_turn.player._id
-      })
+      this.next_player_turn()
     }
-    this.game.turn = new_turn
+    this.game.turn = this.new_turn
+  }
+
+  outpost_turn() {
+    this.new_turn.outpost_turn = true
+    this.new_turn.player = this.game.turn.player
+    this.next_player_cards = this.player_cards
+    this.new_turn.last_player_gained_cards = this.game.turn.last_player_gained_cards
+    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
+  }
+
+  next_player_turn() {
+    this.new_turn.player = this.next_player()
+    this.new_turn.last_player_gained_cards = this.game.turn.gained_cards
+    this.game.turn_number += 1
+    this.next_player_cards = PlayerCards.findOne({
+      game_id: this.game._id,
+      player_id: this.new_turn.player._id
+    })
+    this.game.log.push(`<strong>- ${this.new_turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
   }
 
   process_duration_cards() {
