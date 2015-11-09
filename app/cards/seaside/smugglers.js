@@ -9,11 +9,11 @@ Smugglers = class Smugglers extends Card {
   }
 
   play(game, player_cards) {
-    let last_player_gained_card_names = _.uniq(_.map(game.turn.last_player_gained_cards, function(card) {
-      return card.name
-    }))
-    let eligible_cards = _.filter(game.cards, function(card) {
-      return card.top_card.coin_cost <= 6 && card.top_card.potion_cost === 0 && _.contains(last_player_gained_card_names, card.top_card.name)
+    let eligible_cards = _.filter(game.turn.last_player_gained_cards, function(gained_card) {
+      let game_stack = _.find(game.cards, function(stack) {
+        return stack.name === gained_card.stack_name
+      })
+      return game_stack.top_card.coin_cost <= 6 && game_stack.top_card.potion_cost === 0
     })
 
     if (_.size(eligible_cards) > 0) {
@@ -22,7 +22,7 @@ Smugglers = class Smugglers extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_cards',
-        game_cards: true,
+        player_cards: true,
         instructions: 'Choose a card to gain:',
         cards: eligible_cards,
         minimum: 1,
@@ -37,8 +37,18 @@ Smugglers = class Smugglers extends Card {
 
   static gain_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, selected_card.name)
-    card_gainer.gain_game_card()
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> selects ${CardView.render(selected_card)}`)
+
+    let game_stack = _.find(game.cards, function(stack) {
+      return stack.name === selected_card.stack_name
+    })
+
+    if (game_stack.count > 0 && game_stack.top_card.purchasable && game_stack.top_card.name === selected_card.name) {
+      let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, selected_card.name)
+      card_gainer.gain_game_card()
+    } else {
+      game.log.push(`&nbsp;&nbsp;but can not gain a copy of it`)
+    }
   }
 
 }
