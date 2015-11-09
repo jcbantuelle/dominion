@@ -21,8 +21,8 @@ NativeVillage = class NativeVillage extends Card {
       minimum: 1,
       maximum: 1,
       options: [
-        {text: 'Set aside card', value: 'set_aside'},
-        {text: 'Put cards in hand', value: 'gain'}
+        {text: 'Set Aside Card', value: 'set_aside'},
+        {text: 'Put Cards In Hand', value: 'gain'}
       ]
     })
     let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
