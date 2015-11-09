@@ -98,9 +98,7 @@ GameCreator = class GameCreator {
 
   kingdom_cards() {
     return _.map(this.cards, (card) => {
-      card = this.game_card(card)
-      card.source = 'kingdom'
-      return card
+      return this.game_card(card, 'kingdom')
     })
   }
 
@@ -110,9 +108,7 @@ GameCreator = class GameCreator {
     })
 
     return _.map(cards, (card) => {
-      card = this.game_card(card)
-      card.source = 'common'
-      return card
+      return this.game_card(card, 'common')
     })
   }
 
@@ -132,14 +128,15 @@ GameCreator = class GameCreator {
     return ['Curse']
   }
 
-  game_card(card) {
+  game_card(card, source) {
     let card_stack = this.create_card_stack(card)
     return {
       name: card.name,
       count: _.size(card_stack),
       embargos: 0,
       top_card: _.first(card_stack),
-      stack: card_stack
+      stack: card_stack,
+      source: source
     }
   }
 
