@@ -37,6 +37,10 @@ $player_margin: 25px;
   text-transform: capitalize;
 }
 
+.lobby-card.attack {
+  color: #BB0000;
+}
+
 .action {
   background-color: $action;
 }
