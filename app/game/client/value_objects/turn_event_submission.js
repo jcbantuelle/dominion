@@ -19,11 +19,19 @@ TurnEventSubmission = class TurnEventSubmission {
       return this.yes_no_selection()
     } else if (this.turn_event.type === 'choose_cards') {
       return this.card_selection()
+    } else if (this.turn_event.type === 'choose_options') {
+      return this.options_selection()
     }
   }
 
   yes_no_selection() {
     return this.selected_checkboxes.first().val()
+  }
+
+  options_selection() {
+    return this.selected_checkboxes.map(function() {
+      return $(this).val()
+    }).get()
   }
 
   card_selection() {

@@ -1,0 +1,15 @@
+<template name="choose_options">
+  <strong>{{{instructions}}}</strong>
+  <form id="turn-event">
+    <div class="checkbox">
+      {{#each options}}
+        <label for="{{value}}">
+          <input type="checkbox" id="{{value}}" value="{{value}}" />
+          <span>{{text}}</span>
+        </label>
+      {{/each}}
+    </div>
+    <br class="clear" />
+    <button type="submit" id="turn-event-button" class="btn btn-primary btn-xs">Choose</button>
+  </form>
+</template>
