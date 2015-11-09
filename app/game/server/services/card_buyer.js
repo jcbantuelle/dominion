@@ -3,18 +3,13 @@ CardBuyer = class CardBuyer {
   constructor(game, player_cards, card_name) {
     this.game = game
     this.player_cards = player_cards
-    this.find_game_card(card_name)
+    this.game_card = this.find_game_card(card_name)
     this.card = ClassCreator.create(this.game_card.top_card.name)
   }
 
   find_game_card(card_name) {
-    _.each(['kingdom', 'common'], (source) => {
-      let card_index = _.findIndex(this.game[`${source}_cards`], function(card) {
-        return card.name === card_name
-      })
-      if (card_index !== -1) {
-        this.game_card = this.game[`${source}_cards`][card_index]
-      }
+    return _.find(this.game.cards, function(card) {
+      return card.name === card_name
     })
   }
 
@@ -52,13 +47,13 @@ CardBuyer = class CardBuyer {
 
   gain_card() {
     let card_gainer = new CardGainer(this.game, this.player_cards.username, this.player_cards.discard, this.card.name(), true)
-    card_gainer[`gain_${this.game_card.source}_card`](false)
+    card_gainer.gain_game_card(false)
   }
 
   embargo() {
     _.times(this.game_card.embargos, () => {
       let card_gainer = new CardGainer(this.game, this.player_cards.username, this.player_cards.discard, 'Curse')
-      card_gainer.gain_common_card()
+      card_gainer.gain_game_card()
     })
   }
 

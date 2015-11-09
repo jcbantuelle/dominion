@@ -12,7 +12,7 @@ Smugglers = class Smugglers extends Card {
     let last_player_gained_card_names = _.uniq(_.map(game.turn.last_player_gained_cards, function(card) {
       return card.name
     }))
-    let eligible_cards = _.filter(game.kingdom_cards.concat(game.common_cards), function(card) {
+    let eligible_cards = _.filter(game.cards, function(card) {
       return card.top_card.coin_cost <= 6 && card.top_card.potion_cost === 0 && _.contains(last_player_gained_card_names, card.top_card.name)
     })
 
@@ -38,7 +38,7 @@ Smugglers = class Smugglers extends Card {
   static gain_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, selected_card.name)
-    card_gainer[`gain_${selected_card.source}_card`]()
+    card_gainer.gain_game_card()
   }
 
 }

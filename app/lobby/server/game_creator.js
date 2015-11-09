@@ -18,8 +18,7 @@ GameCreator = class GameCreator {
   create_game() {
     return Games.insert({
       players: _.shuffle(this.players),
-      kingdom_cards: this.kingdom_cards(),
-      common_cards: this.common_cards(),
+      cards: this.game_cards(),
       trash: [],
       log: [],
       turn_number: 1
@@ -98,10 +97,16 @@ GameCreator = class GameCreator {
     })
   }
 
+  game_cards() {
+    return this.kingdom_cards().concat(this.common_cards())
+  }
+
   kingdom_cards() {
-    return _.map(this.cards, (card) => {
+    return _.chain(this.cards).map((card) => {
       return this.game_card(card, 'kingdom')
-    })
+    }).sortBy(function(card) {
+      return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
+    }).value()
   }
 
   common_cards() {

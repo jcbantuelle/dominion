@@ -8,14 +8,6 @@ CardGainer = class CardGainer {
     this.buy = buy
   }
 
-  gain_common_card(announce = true) {
-    this.gain_game_card(this.game.common_cards, announce)
-  }
-
-  gain_kingdom_card(announce = true) {
-    this.gain_game_card(this.game.kingdom_cards, announce)
-  }
-
   gain_trash_card(announce = true) {
     let card_index = this.find_card_index(this.game.trash)
     let gained_card = this.game.trash[card_index]
@@ -27,20 +19,26 @@ CardGainer = class CardGainer {
     }
   }
 
-  gain_game_card(source, announce) {
-    let card_index = this.find_card_index(source)
-    if (source[card_index].count > 0) {
-      source[card_index].stack.shift()
-      this.destination.unshift(source[card_index].top_card)
+  gain_game_card(announce = true) {
+    let game_card = this.find_card(this.game.cards)
+    if (game_card.count > 0) {
+      game_card.stack.shift()
+      this.destination.unshift(game_card.top_card)
       if (announce) {
-        this.update_log(source[card_index].top_card)
+        this.update_log(game_card.top_card)
       }
-      this.track_gained_card(source[card_index].top_card)
-      source[card_index].count -= 1
-      if (source[card_index].count > 0) {
-        source[card_index].top_card = _.first(source[card_index].stack)
+      this.track_gained_card(game_card.top_card)
+      game_card.count -= 1
+      if (game_card.count > 0) {
+        game_card.top_card = _.first(game_card.stack)
       }
     }
+  }
+
+  find_card(source) {
+    return _.find(source, (card) => {
+      return card.name === this.card_name
+    })
   }
 
   find_card_index(source) {

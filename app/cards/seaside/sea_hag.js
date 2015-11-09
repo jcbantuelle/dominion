@@ -25,7 +25,7 @@ SeaHag = class SeaHag extends Card {
     }
 
     let card_gainer = new CardGainer(game, player_cards.username, player_cards.deck, 'Curse')
-    card_gainer.gain_common_card()
+    card_gainer.gain_game_card()
   }
 
 }

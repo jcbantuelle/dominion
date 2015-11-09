@@ -9,7 +9,7 @@ Workshop = class Workshop extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(game.kingdom_cards.concat(game.common_cards), function(card) {
+    let eligible_cards = _.filter(game.cards, function(card) {
       return card.count > 0 && card.top_card.purchasable && card.top_card.coin_cost <= 4 && card.top_card.potion_cost === 0
     })
 
@@ -35,7 +35,7 @@ Workshop = class Workshop extends Card {
   static gain_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, selected_card.name)
-    card_gainer[`gain_${selected_card.source}_card`]()
+    card_gainer.gain_game_card()
   }
 
 }

@@ -15,6 +15,10 @@ Embargo = class Embargo extends Card {
     let card_trasher = new CardTrasher(game, player_cards.username, player_cards.playing, 'Embargo')
     card_trasher.trash()
 
+    let eligible_cards = _.filter(game.cards, function(card) {
+      return card.top_card.purchasable
+    })
+
     let turn_event_id = TurnEvents.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
@@ -22,7 +26,7 @@ Embargo = class Embargo extends Card {
       type: 'choose_cards',
       game_cards: true,
       instructions: 'Choose a card to Embargo:',
-      cards: game.kingdom_cards.concat(game.common_cards),
+      cards: eligible_cards,
       minimum: 1,
       maximum: 1
     })
@@ -32,12 +36,11 @@ Embargo = class Embargo extends Card {
 
   static place_token(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
-    let game_card_source = `${selected_card.source}_cards`
-    let embargo_card_index = _.findIndex(game[game_card_source], function(card) {
+    let embargo_card = _.find(game.cards, function(card) {
       return card.name === selected_card.name
     })
 
-    game[game_card_source][embargo_card_index].embargos += 1
+    embargo_card.embargos += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts an embargo token on ${CardView.render(selected_card)}`)
   }
 
