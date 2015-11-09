@@ -34,6 +34,9 @@ CardPlayer = class CardPlayer {
       this.update_db()
     }
     this.attack()
+    if (typeof this.card.cleanup === 'function') {
+      this.card.cleanup(this.game, this.player_cards)
+    }
     return result
   }
 
