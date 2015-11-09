@@ -15,16 +15,13 @@ Thief = class Thief extends Card {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
-      player_cards.revealed = _.take(player_cards.deck, 2)
-      player_cards.deck = _.drop(player_cards.deck, 2)
-      let revealed_count = _.size(player_cards.revealed)
-
-      if (revealed_count < 2) {
+      if (_.size(player_cards.deck) < 2 && _.size(player_cards.discard) > 0) {
         let deck_shuffler = new DeckShuffler(player_cards)
         deck_shuffler.shuffle()
-        player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 2 - revealed_count))
-        player_cards.deck = _.drop(player_cards.deck, 2 - revealed_count)
       }
+      player_cards.revealed = _.take(player_cards.deck, 2)
+      player_cards.deck = _.drop(player_cards.deck, 2)
+
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
       let revealed_treasures = _.filter(player_cards.revealed, function(card) {
