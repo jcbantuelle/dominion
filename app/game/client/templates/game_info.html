@@ -29,6 +29,14 @@
     <br />
     <br />
   {{/if}}
+  {{#if player_cards.island}}
+    Island:
+    {{#each player_cards.island}}
+      <span class="{{types}}">{{name}}</span>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
   {{#each game.players}}
     <strong>{{username}}</strong><br />
     Victory Tokens: {{victory_tokens}}

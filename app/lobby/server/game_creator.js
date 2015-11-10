@@ -85,6 +85,7 @@ GameCreator = class GameCreator {
       duration: [],
       haven: [],
       native_village: [],
+      island: [],
       hand: hand
     })
   }
