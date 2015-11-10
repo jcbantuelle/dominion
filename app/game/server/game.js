@@ -18,21 +18,25 @@ Meteor.methods({
   },
   buyCard: function(card_name) {
     let current_game = game()
-    if (!ActionLock[current_game._id]) {
-      ActionLock[current_game._id] = true
-      let card_buyer = new CardBuyer(current_game, player_cards(), card_name)
-      card_buyer.buy()
-      ActionLock[current_game._id] = false
-    }
+    Future.task(Meteor.bindEnvironment(function() {
+      if (!ActionLock[current_game._id]) {
+        ActionLock[current_game._id] = true
+        let card_buyer = new CardBuyer(current_game, player_cards(), card_name)
+        card_buyer.buy()
+        ActionLock[current_game._id] = false
+      }
+    })).detach()
   },
   endTurn: function() {
     let current_game = game()
-    if (!ActionLock[current_game._id]) {
-      ActionLock[current_game._id] = true
-      let turn_ender = new TurnEnder(current_game, player_cards())
-      turn_ender.end_turn()
-      ActionLock[current_game._id] = false
-    }
+    Future.task(Meteor.bindEnvironment(function() {
+      if (!ActionLock[current_game._id]) {
+        ActionLock[current_game._id] = true
+        let turn_ender = new TurnEnder(current_game, player_cards())
+        turn_ender.end_turn()
+        ActionLock[current_game._id] = false
+      }
+    })).detach()
   },
   playAllCoin: function() {
     let current_game = game()
