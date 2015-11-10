@@ -86,7 +86,8 @@ GameCreator = class GameCreator {
       haven: [],
       native_village: [],
       island: [],
-      hand: hand
+      hand: hand,
+      pirate_ship_coins: 0
     })
   }
 

@@ -80,7 +80,8 @@ CardList = class CardList {
       'Ambassador',
       'Lookout',
       'Smugglers',
-      'Island'
+      'Island',
+      'PirateShip'
     ]
   }
 }
