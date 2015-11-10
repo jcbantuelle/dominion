@@ -24,7 +24,7 @@ Remodel = class Remodel extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Remodel.trash_card)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are cards in hand`)
+      game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
   }
 
