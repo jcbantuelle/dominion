@@ -68,7 +68,8 @@ CardList = class CardList {
       'Navigator',
       'PirateShip',
       'Salvager',
-      'TreasureMap'
+      'TreasureMap',
+      'Explorer'
     ]
   }
 }
