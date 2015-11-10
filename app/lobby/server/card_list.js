@@ -11,7 +11,7 @@ CardList = class CardList {
   }
 
   card_list() {
-    return this.base().concat(this.seaside())
+    return this.base().concat(this.seaside()).concat(this.hinterlands())
   }
 
   base() {
@@ -72,6 +72,37 @@ CardList = class CardList {
       'Explorer',
       'GhostShip',
       'Treasury'
+    ]
+  }
+
+  hinterlands() {
+    return [
+      'Crossroads'/*,
+      'Duchess',
+      'FoolsGold',
+      'Develop',
+      'Oasis',
+      'Oracle',
+      'Scheme',
+      'Tunnel',
+      'JackOfAllTrades',
+      'NobleBrigand',
+      'NomadCamp',
+      'SilkRoad',
+      'SpiceMerchant',
+      'Trader',
+      'Cache',
+      'Cartographer',
+      'Embassy',
+      'Haggler',
+      'Highway',
+      'IllGottenGains',
+      'Inn',
+      'Mandarin',
+      'Margrave',
+      'Stables',
+      'BorderVillage',
+      'Farmland'*/
     ]
   }
 }
