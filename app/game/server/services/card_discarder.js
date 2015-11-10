@@ -43,6 +43,10 @@ CardDiscarder = class CardDiscarder {
   }
 
   move_to_discard(cards) {
+    if (this.source === 'in_play') {
+      let discard_in_play_processor = new DiscardInPlayProcessor(this.game, this.player_cards)
+      discard_in_play_processor.process_cards()
+    }
     this.player_cards.discard = cards.concat(this.player_cards.discard)
   }
 
