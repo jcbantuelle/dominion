@@ -2,6 +2,7 @@ Template.game.onCreated(registerStreams)
 Template.game.onRendered(createPopovers)
 
 Template.log.onRendered(scrollGameLog)
+Template.sort_cards.onRendered(addSortable)
 
 Template.turn_actions.helpers({
   allow_treasures: function() {
@@ -41,6 +42,14 @@ function scrollGameLog() {
   game_log.scrollTop(game_log[0].scrollHeight)
 }
 
+function addSortable() {
+  sort_list = document.getElementById('sortable-cards')
+  Sortable.create(sort_list, {
+    draggable: '.ordered',
+    animation: 150
+  })
+}
+
 function updateChatWindow(data) {
   let chat_window = $('#game-chat')
   chat_window.append(`<strong>${data.username}:</strong> ${data.message}\n`)
@@ -71,16 +80,25 @@ function playAllCoin() {
 
 function turnEvent(event) {
   event.preventDefault()
-  let turn_event = TurnEvents.findOne()
-  let selected_checkboxes = $('#turn-event').find(':checked')
 
-  let turn_event_submission = new TurnEventSubmission(turn_event, selected_checkboxes)
+  let turn_event = TurnEvents.findOne()
+  let selection
+  if (turn_event.type === 'sort_cards') {
+    selection = $('#turn-event input').map(function() {
+      return $(this).val()
+    }).get()
+  } else {
+    selection = $('#turn-event').find(':checked')
+  }
+
+  let turn_event_submission = new TurnEventSubmission(turn_event, selection)
   if (turn_event_submission.valid_selection()) {
     $('#turn-event input:checkbox').prop('checked', false)
     Meteor.call('turnEvent', turn_event_submission.selected_values())
   } else {
     alert(turn_event_submission.error_message())
   }
+
 }
 
 function destroyGame() {
