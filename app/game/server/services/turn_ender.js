@@ -15,12 +15,12 @@ TurnEnder = class TurnEnder {
     } else {
       this.set_next_turn()
       this.process_duration_cards()
-      if (!this.game.turn.outpost_turn) {
-        PlayerCards.update(this.player_cards._id, this.player_cards)
-      }
-      PlayerCards.update(this.next_player_cards._id, this.next_player_cards)
     }
     Games.update(this.game._id, this.game)
+    if (!this.game.turn.outpost_turn) {
+      PlayerCards.update(this.player_cards._id, this.player_cards)
+    }
+    PlayerCards.update(this.next_player_cards._id, this.next_player_cards)
   }
 
   clean_up_cards_in_play() {
