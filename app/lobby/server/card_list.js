@@ -11,23 +11,7 @@ CardList = class CardList {
   }
 
   card_list() {
-    // return this.base().concat(this.seaside())
-    return this.test_set()
-  }
-
-  test_set() {
-    return [
-      'Navigator',
-      'Embargo',
-      'Ambassador',
-      'Workshop',
-      'Witch',
-      'Remodel',
-      'Mine',
-      'Feast',
-      'Bureaucrat',
-      'Adventurer'
-    ]
+    return this.base().concat(this.seaside())
   }
 
   base() {
