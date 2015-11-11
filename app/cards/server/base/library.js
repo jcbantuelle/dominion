@@ -26,8 +26,7 @@ Library = class Library extends Card {
       delete player_cards.aside
     } else {
       if (_.size(player_cards.deck) === 0) {
-        let deck_shuffler = new DeckShuffler(player_cards)
-        deck_shuffler.shuffle()
+        this.shuffle_discard(player_cards)
       }
       let top_card = player_cards.deck.shift()
       if (_.contains(top_card.types, 'action')) {
