@@ -12,10 +12,8 @@ Duchess = class Duchess extends Card {
     game.turn.coins += 2
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2`)
 
-    let all_player_cards = this.other_players_cards(game, player_cards.username)
-    all_player_cards.unshift(player_cards)
-
-    _.each(all_player_cards, function(cards) {
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
+    _.each(ordered_player_cards, function(cards) {
       Duchess.reveal_card(game, cards)
     })
   }

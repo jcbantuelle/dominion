@@ -44,13 +44,6 @@ Card = class Card {
     }
   }
 
-  other_players_cards(game, current_user) {
-    return PlayerCards.find({
-      game_id: game._id,
-      username: {$ne: current_user}
-    }).fetch()
-  }
-
   shuffle_discard(player_cards) {
     let deck_shuffler = new DeckShuffler(player_cards)
     deck_shuffler.shuffle()

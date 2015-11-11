@@ -114,14 +114,10 @@ CardPlayer = class CardPlayer {
 
   attack() {
     if (_.contains(this.card.types(), 'attack')) {
-      let turn_ordered_players = TurnOrderedPlayersQuery.turn_ordered_players(this.game, Meteor.user())
+      let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
+      ordered_player_cards.shift()
 
-      _.each(turn_ordered_players, (player) => {
-        let attacked_player_cards = PlayerCards.findOne({
-          game_id: this.game._id,
-          player_id: player._id
-        })
-
+      _.each(ordered_player_cards, (attacked_player_cards) => {
         let reaction_processor = new ReactionProcessor(this.game, attacked_player_cards)
         reaction_processor.process_attack_reactions()
 
