@@ -79,8 +79,8 @@ CardList = class CardList {
     return [
       'Crossroads',
       'Duchess',
-      /*'FoolsGold',
-      'Develop',
+      'FoolsGold',
+      /*'Develop',
       'Oasis',
       'Oracle',
       'Scheme',
