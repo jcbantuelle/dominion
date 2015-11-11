@@ -6,6 +6,7 @@ CardGainer = class CardGainer {
     this.destination = destination
     this.card_name = card_name
     this.buy = buy
+    this.gain_event_cards = ['Duchy']
   }
 
   gain_trash_card(announce = true) {
@@ -17,6 +18,7 @@ CardGainer = class CardGainer {
     if (announce) {
       this.update_log(gained_card)
     }
+    this.gain_event()
   }
 
   gain_game_card(announce = true) {
@@ -32,6 +34,7 @@ CardGainer = class CardGainer {
       if (game_card.count > 0) {
         game_card.top_card = _.first(game_card.stack)
       }
+      this.gain_event()
     }
   }
 
@@ -51,6 +54,13 @@ CardGainer = class CardGainer {
     let gained_card = _.clone(card)
     gained_card.from = this.buy ? 'buy' : 'gain'
     this.game.turn.gained_cards.push(gained_card)
+  }
+
+  gain_event() {
+    if (_.contains(this.gain_event_cards, this.card_name)) {
+      let gained_card = ClassCreator.create(this.card_name)
+      gained_card.gain_event(this)
+    }
   }
 
   update_log(card) {
