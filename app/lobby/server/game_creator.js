@@ -47,7 +47,8 @@ GameCreator = class GameCreator {
       potions: 0,
       phase: 'action',
       gained_cards: [],
-      last_player_gained_cards: []
+      last_player_gained_cards: [],
+      gain_reaction_stack: []
     }
   }
 

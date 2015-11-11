@@ -46,7 +46,8 @@ TurnEnder = class TurnEnder {
       coins: 0,
       potions: 0,
       phase: 'action',
-      gained_cards: []
+      gained_cards: [],
+      gain_reaction_stack: []
     }
 
     if (this.game.turn.outpost && !this.game.turn.outpost_turn) {

@@ -19,6 +19,7 @@ CardGainer = class CardGainer {
       this.update_log(gained_card)
     }
     this.gain_event()
+    this.gain_reactions()
   }
 
   gain_game_card(announce = true) {
@@ -35,6 +36,7 @@ CardGainer = class CardGainer {
         game_card.top_card = _.first(game_card.stack)
       }
       this.gain_event()
+      this.gain_reactions()
     }
   }
 
@@ -61,6 +63,17 @@ CardGainer = class CardGainer {
       let gained_card = ClassCreator.create(this.card_name)
       gained_card.gain_event(this)
     }
+  }
+
+  gain_reactions() {
+    this.game.turn.gain_reaction_stack.push(this.card_name)
+
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game, this.player_cards)
+    _.each(ordered_player_cards, (player_cards) => {
+      let reaction_processor = new ReactionProcessor(this.game, player_cards)
+      reaction_processor.process_gain_reactions()
+    })
+    this.game.turn.gain_reaction_stack.pop()
   }
 
   update_log(card) {
