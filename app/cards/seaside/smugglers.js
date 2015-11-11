@@ -44,7 +44,7 @@ Smugglers = class Smugglers extends Card {
     })
 
     if (game_stack.count > 0 && game_stack.top_card.purchasable && game_stack.top_card.name === selected_card.name) {
-      let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, selected_card.name)
+      let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
       card_gainer.gain_game_card()
     } else {
       game.log.push(`&nbsp;&nbsp;but can not gain a copy of it`)

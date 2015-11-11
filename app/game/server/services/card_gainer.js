@@ -1,8 +1,8 @@
 CardGainer = class CardGainer {
 
-  constructor(game, username, destination, card_name, buy = false) {
+  constructor(game, player_cards, destination, card_name, buy = false) {
     this.game = game
-    this.username = username
+    this.player_cards = player_cards
     this.destination = destination
     this.card_name = card_name
     this.buy = buy
@@ -13,7 +13,7 @@ CardGainer = class CardGainer {
     let card_index = this.find_card_index(this.game.trash)
     let gained_card = this.game.trash[card_index]
     this.track_gained_card(gained_card)
-    this.destination.unshift(gained_card)
+    this.player_cards[this.destination].unshift(gained_card)
     this.game.trash.splice(card_index, 1)
     if (announce) {
       this.update_log(gained_card)
@@ -25,7 +25,7 @@ CardGainer = class CardGainer {
     let game_card = this.find_card(this.game.cards)
     if (game_card.count > 0) {
       game_card.stack.shift()
-      this.destination.unshift(game_card.top_card)
+      this.player_cards[this.destination].unshift(game_card.top_card)
       if (announce) {
         this.update_log(game_card.top_card)
       }
@@ -64,7 +64,7 @@ CardGainer = class CardGainer {
   }
 
   update_log(card) {
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.username}</strong> gains ${CardView.render(card)}`)
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(card)}`)
   }
 
 }

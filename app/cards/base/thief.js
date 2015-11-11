@@ -64,6 +64,8 @@ Thief = class Thief extends Card {
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard_all()
 
+    Games.update(game._id, game)
+
     let turn_event_id = TurnEvents.insert({
       game_id: game._id,
       player_id: game.turn.player._id,
@@ -83,7 +85,7 @@ Thief = class Thief extends Card {
 
   static gain_trashed_treasure(game, player_cards, response) {
     if (response === 'yes') {
-      let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, game.turn.trashed_treasure.name)
+      let card_gainer = new CardGainer(game, player_cards, 'discard', game.turn.trashed_treasure.name)
       card_gainer.gain_trash_card()
     }
     delete game.turn.trashed_treasure

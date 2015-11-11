@@ -46,13 +46,13 @@ CardBuyer = class CardBuyer {
   }
 
   gain_card() {
-    let card_gainer = new CardGainer(this.game, this.player_cards.username, this.player_cards.discard, this.card.name(), true)
+    let card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
     card_gainer.gain_game_card(false)
   }
 
   embargo() {
     _.times(this.game_card.embargos, () => {
-      let card_gainer = new CardGainer(this.game, this.player_cards.username, this.player_cards.discard, 'Curse')
+      let card_gainer = new CardGainer(this.game, this.player_cards, 'discard', 'Curse')
       card_gainer.gain_game_card()
     })
   }

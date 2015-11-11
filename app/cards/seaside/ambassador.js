@@ -30,7 +30,7 @@ Ambassador = class Ambassador extends Card {
 
   attack(game, player_cards) {
     if (game.turn.ambassador_game_stack && game.turn.ambassador_game_stack.top_card.name === game.turn.ambassador_selected_card.name) {
-      let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, game.turn.ambassador_game_stack.name)
+      let card_gainer = new CardGainer(game, player_cards, 'discard', game.turn.ambassador_game_stack.name)
       card_gainer.gain_game_card()
     }
   }

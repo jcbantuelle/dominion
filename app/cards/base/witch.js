@@ -14,7 +14,7 @@ Witch = class Witch extends Card {
   }
 
   attack(game, player_cards) {
-    let card_gainer = new CardGainer(game, player_cards.username, player_cards.discard, 'Curse')
+    let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
     card_gainer.gain_game_card()
   }
 

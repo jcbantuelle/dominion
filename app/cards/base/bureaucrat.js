@@ -10,7 +10,7 @@ Bureaucrat = class Bureaucrat extends Card {
 
   play(game, player_cards) {
     let original_deck_size = _.size(player_cards.deck)
-    let card_gainer = new CardGainer(game, player_cards.username, player_cards.deck, 'Silver')
+    let card_gainer = new CardGainer(game, player_cards, 'deck', 'Silver')
     card_gainer.gain_game_card()
     if (_.size(player_cards.deck) > original_deck_size) {
       game.log.push(`&nbsp;&nbsp;putting it on top of their deck`)
