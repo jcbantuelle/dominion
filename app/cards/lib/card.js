@@ -48,7 +48,7 @@ Card = class Card {
     return PlayerCards.find({
       game_id: game._id,
       username: {$ne: current_user}
-    })
+    }).fetch()
   }
 
   shuffle_discard(player_cards) {
