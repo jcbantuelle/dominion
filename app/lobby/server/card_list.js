@@ -77,9 +77,9 @@ CardList = class CardList {
 
   hinterlands() {
     return [
-      'Crossroads'/*,
+      'Crossroads',
       'Duchess',
-      'FoolsGold',
+      /*'FoolsGold',
       'Develop',
       'Oasis',
       'Oracle',

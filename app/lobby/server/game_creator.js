@@ -16,12 +16,14 @@ GameCreator = class GameCreator {
   }
 
   create_game() {
+    let cards = this.game_cards()
     return Games.insert({
       players: _.shuffle(this.players),
-      cards: this.game_cards(),
+      cards: cards,
       trash: [],
       log: [],
-      turn_number: 1
+      turn_number: 1,
+      duchess: this.has_duchess(cards)
     })
   }
 
@@ -169,6 +171,12 @@ GameCreator = class GameCreator {
     } else {
       return 10
     }
+  }
+
+  has_duchess(cards) {
+    return _.find(cards, function(card) {
+      return card.name === 'Duchess'
+    }) !== -1
   }
 
 }
