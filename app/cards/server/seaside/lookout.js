@@ -29,7 +29,7 @@ Lookout = class Lookout extends Card {
         let turn_event_id = TurnEvents.insert({
           game_id: game._id,
           player_id: game.turn.player._id,
-          username: game.turn.username,
+          username: game.turn.player.username,
           type: 'choose_cards',
           player_cards: true,
           instructions: `Choose a card to trash:`,
@@ -55,7 +55,7 @@ Lookout = class Lookout extends Card {
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
-        username: game.turn.username,
+        username: game.turn.player.username,
         type: 'choose_cards',
         player_cards: true,
         instructions: `Choose a card to discard:`,
