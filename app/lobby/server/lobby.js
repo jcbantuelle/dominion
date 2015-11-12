@@ -10,6 +10,12 @@ Meteor.methods({
   acceptProposal: function(proposal_id) {
     let proposal_accepter = new ProposalAccepter(proposal_id)
     proposal_accepter.accept_proposal()
+  },
+  setLobbyStatus: function() {
+    Meteor.users.update(Meteor.userId(), {$set: {lobby: true}})
+  },
+  unsetLobbyStatus: function() {
+    Meteor.users.update(Meteor.userId(), {$unset: {lobby: ''}})
   }
 })
 
