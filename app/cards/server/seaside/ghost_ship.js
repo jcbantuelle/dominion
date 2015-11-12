@@ -11,6 +11,9 @@ GhostShip = class GhostShip extends Card {
   play(game, player_cards) {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
+
+    let player_attacker = new PlayerAttacker(game, this)
+    player_attacker.attack()
   }
 
   attack(game, player_cards) {

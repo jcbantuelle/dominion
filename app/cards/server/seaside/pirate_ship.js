@@ -24,6 +24,9 @@ PirateShip = class PirateShip extends Card {
     })
     let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
     turn_event_processor.process(PirateShip.process_response)
+
+    let player_attacker = new PlayerAttacker(game, this)
+    player_attacker.attack()
   }
 
   static process_response(game, player_cards, response) {

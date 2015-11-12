@@ -26,6 +26,9 @@ Ambassador = class Ambassador extends Card {
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
+
+    let player_attacker = new PlayerAttacker(game, this)
+    player_attacker.attack()
   }
 
   attack(game, player_cards) {

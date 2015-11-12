@@ -17,6 +17,9 @@ Spy = class Spy extends Card {
 
     PlayerCards.update(player_cards._id, player_cards)
     Spy.reveal_card(game, player_cards)
+
+    let player_attacker = new PlayerAttacker(game, this)
+    player_attacker.attack()
   }
 
   attack(game, player_cards) {

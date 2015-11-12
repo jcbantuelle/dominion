@@ -11,6 +11,9 @@ Oracle = class Oracle extends Card {
   play(game, player_cards) {
     Oracle.reveal_cards(game, player_cards)
 
+    let player_attacker = new PlayerAttacker(game, this)
+    player_attacker.attack()
+
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
   }

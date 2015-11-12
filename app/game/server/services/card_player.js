@@ -33,7 +33,6 @@ CardPlayer = class CardPlayer {
     if (auto_update) {
       this.update_db()
     }
-    this.attack()
     if (typeof this.card.cleanup === 'function') {
       this.card.cleanup(this.game, this.player_cards)
     }
@@ -75,9 +74,9 @@ CardPlayer = class CardPlayer {
     }
   }
 
-  update_db(player_cards = this.player_cards) {
+  update_db() {
     Games.update(this.game._id, this.game)
-    PlayerCards.update(player_cards._id, player_cards)
+    PlayerCards.update(this.player_cards._id, this.player_cards)
   }
 
   update_log() {
@@ -112,26 +111,6 @@ CardPlayer = class CardPlayer {
     return this.card_index !== -1
   }
 
-  attack() {
-    if (_.contains(this.card.types(), 'attack')) {
-      let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
-      ordered_player_cards.shift()
-
-      _.each(ordered_player_cards, (attacked_player_cards) => {
-        let reaction_processor = new ReactionProcessor(this.game, attacked_player_cards)
-        reaction_processor.process_attack_reactions()
-
-        if (attacked_player_cards.moat || this.lighthouse_in_play(attacked_player_cards)) {
-          delete attacked_player_cards.moat
-          this.game.log.push(`&nbsp;&nbsp;<strong>${attacked_player_cards.username}</strong> is immune to the attack`)
-        } else {
-          this.card.attack(this.game, attacked_player_cards)
-        }
-        this.update_db(attacked_player_cards)
-      })
-    }
-  }
-
   mark_played_card_as_duration(duration_count = 1) {
     let duration_card_index = _.findIndex(this.player_cards.playing, (card) => {
       return card.name === this.card.name() && !card.processed
@@ -139,12 +118,6 @@ CardPlayer = class CardPlayer {
     this.player_cards.playing[duration_card_index].destination = 'duration'
     this.player_cards.playing[duration_card_index].duration_effect_count = duration_count
     this.player_cards.playing[duration_card_index].processed = true
-  }
-
-  lighthouse_in_play(player_cards) {
-    return _.any(player_cards.duration, function(card) {
-      return card.name === 'Lighthouse'
-    })
   }
 
 }

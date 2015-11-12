@@ -15,6 +15,9 @@ Bureaucrat = class Bureaucrat extends Card {
     if (_.size(player_cards.deck) > original_deck_size) {
       game.log.push(`&nbsp;&nbsp;putting it on top of their deck`)
     }
+
+    let player_attacker = new PlayerAttacker(game, this)
+    player_attacker.attack()
   }
 
   attack(game, player_cards) {
