@@ -74,4 +74,11 @@ ReactionProcessor = class ReactionProcessor {
   allow_fools_gold(reaction_card) {
     return reaction_card.name !== 'Fools Gold' || (this.player_cards.player_id !== this.game.turn.player._id && _.last(this.game.turn.gain_reaction_stack) === 'Province')
   }
+
+  static discard_reaction(game, player_cards, card) {
+    let reaction_card = ClassCreator.create(card.name)
+    reaction_card.discard_reaction(game, player_cards)
+    Games.update(game._id, game)
+    PlayerCards.update(player_cards._id, player_cards)
+  }
 }

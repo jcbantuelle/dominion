@@ -4,12 +4,14 @@ CardDiscarder = class CardDiscarder {
     this.game = game
     this.player_cards = player_cards
     this.source = source
+    this.discard_reaction_cards = ['Tunnel']
   }
 
   discard_all(announce = true) {
     if (announce) {
       this.update_log(this.player_cards[this.source])
     }
+    this.discard_reactions(this.player_cards[this.source])
     this.move_to_discard(this.player_cards[this.source])
     this.player_cards[this.source] = []
   }
@@ -18,6 +20,7 @@ CardDiscarder = class CardDiscarder {
     if (announce) {
       this.update_log(cards)
     }
+    this.discard_reactions(cards)
     this.move_to_discard(cards)
     this.remove_from_source(cards)
   }
@@ -32,6 +35,7 @@ CardDiscarder = class CardDiscarder {
       if (announce) {
         this.update_log(cards)
       }
+      this.discard_reactions(cards)
       this.move_to_discard(cards)
       this.remove_from_source(cards)
     } else {
@@ -40,6 +44,15 @@ CardDiscarder = class CardDiscarder {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no ${CardView.render(card)} in ${this.source}`)
       }
     }
+  }
+
+  discard_reactions(cards) {
+    let discard_reactions = _.filter(cards, (card) => {
+      return _.contains(this.discard_reaction_cards, card.name)
+    })
+    _.each(discard_reactions, (card) => {
+      ReactionProcessor.discard_reaction(this.game, this.player_cards, card)
+    })
   }
 
   move_to_discard(cards) {
