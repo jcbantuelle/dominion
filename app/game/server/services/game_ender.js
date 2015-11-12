@@ -2,33 +2,27 @@ GameEnder = class GameEnder {
 
   constructor(game) {
     this.game = game
-    this.players_cards = _.map(this.game.players, (player) => {
-      let player_cards = PlayerCards.findOne({
-        game_id: this.game._id,
-        player_id: player._id
-      })
-      player_cards.username = player.username
-      return player_cards
-    })
+    this.players_cards = PlayerCards.find({
+      game_id: this.game._id
+    }).fetch()
     this.card_sources = ['hand', 'discard', 'deck', 'playing', 'in_play', 'revealed', 'duration', 'haven', 'native_village', 'island']
   }
 
   end_game() {
     this.update_game()
     this.update_players()
-    return this.game
   }
 
   update_game() {
     this.game.scores = this.calculate_scores()
     this.game.finished = true
     this.game.winners = this.winners()
+    Games.update(this.game._id, this.game)
   }
 
   update_players() {
-    _.each(this.game.players, function(player) {
-      Meteor.users.update(player._id, {$unset: {current_game: ''}})
-    })
+    let player_ids = _.pluck(this.game.players, '_id')
+    Meteor.users.update({_id: {$in: player_ids}}, {$unset: {current_game: ''}}, {multi: true})
   }
 
   calculate_scores() {
@@ -43,8 +37,8 @@ GameEnder = class GameEnder {
         points: this.card_score(point_cards)
       }
     }).sortBy(function(score) {
-      return score.points
-    }).value().reverse()
+      return -score.points
+    }).value()
   }
 
   point_cards(player_cards) {

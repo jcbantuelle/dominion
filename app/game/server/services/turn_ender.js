@@ -15,7 +15,11 @@ TurnEnder = class TurnEnder {
     } else {
       this.set_next_turn()
       this.process_duration_cards()
+      this.update_db()
     }
+  }
+
+  update_db() {
     Games.update(this.game._id, this.game)
     if (!this.game.turn.outpost_turn) {
       PlayerCards.update(this.player_cards._id, this.player_cards)
@@ -124,7 +128,7 @@ TurnEnder = class TurnEnder {
 
   end_game() {
     let game_ender = new GameEnder(this.game)
-    this.game = game_ender.end_game()
+    game_ender.end_game()
   }
 
   game_over() {
