@@ -28,6 +28,10 @@ TurnEnder = class TurnEnder {
   }
 
   clean_up_cards_in_play() {
+    if (this.game.turn.schemes > 0) {
+      let scheme_resolver = new SchemeResolver(this.game, this.player_cards)
+      scheme_resolver.resolve()
+    }
     let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play')
     card_discarder.discard_all(false)
   }
@@ -51,7 +55,8 @@ TurnEnder = class TurnEnder {
       potions: 0,
       phase: 'action',
       gained_cards: [],
-      gain_reaction_stack: []
+      gain_reaction_stack: [],
+      schemes: 0
     }
 
     if (this.game.turn.outpost && !this.game.turn.outpost_turn) {
