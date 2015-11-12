@@ -23,8 +23,8 @@ Oracle = class Oracle extends Card {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
-      if (_.size(player_cards.deck) === 0) {
-        this.shuffle_discard(player_cards)
+      if (_.size(player_cards.deck) < 2) {
+        DeckShuffler.shuffle(player_cards)
       }
 
       player_cards.revealed = _.take(player_cards.deck, 2)

@@ -16,7 +16,7 @@ Navigator = class Navigator extends Card {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
     } else {
       if (_.size(player_cards.deck) < 5 && _.size(player_cards.discard) > 0) {
-        this.shuffle_discard(player_cards)
+        DeckShuffler.shuffle(player_cards)
       }
       player_cards.revealed = _.take(player_cards.deck, 5)
       player_cards.deck = _.drop(player_cards.deck, 5)

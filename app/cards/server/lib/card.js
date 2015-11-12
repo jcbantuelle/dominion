@@ -44,9 +44,4 @@ Card = class Card {
     }
   }
 
-  shuffle_discard(player_cards) {
-    let deck_shuffler = new DeckShuffler(player_cards)
-    deck_shuffler.shuffle()
-  }
-
 }

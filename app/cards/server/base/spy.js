@@ -28,7 +28,7 @@ Spy = class Spy extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
       if (_.size(player_cards.deck) === 0) {
-        this.shuffle_discard(player_cards)
+        DeckShuffler.shuffle(player_cards)
       }
 
       let revealed_card = player_cards.deck.shift()

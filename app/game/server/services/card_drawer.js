@@ -10,7 +10,7 @@ CardDrawer = class CardDrawer {
     this.draw_cards(to_draw_count)
 
     if (this.drawn_card_count() < to_draw_count) {
-      this.shuffle_discard()
+      DeckShuffler.shuffle(this.player_cards)
       this.draw_cards(to_draw_count - this.drawn_card_count())
     }
 
@@ -22,11 +22,6 @@ CardDrawer = class CardDrawer {
   draw_cards(count) {
     this.player_cards.hand = this.player_cards.hand.concat(_.take(this.player_cards.deck, count))
     this.player_cards.deck = _.drop(this.player_cards.deck, count)
-  }
-
-  shuffle_discard() {
-    let deck_shuffler = new DeckShuffler(this.player_cards)
-    deck_shuffler.shuffle()
   }
 
   drawn_card_count() {

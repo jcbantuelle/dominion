@@ -21,7 +21,7 @@ PearlDiver = class PearlDiver extends Card {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
     } else {
       if (_.size(player_cards.deck) === 0) {
-        this.shuffle_discard(player_cards)
+        DeckShuffler.shuffle(player_cards)
       }
 
       player_cards.look = player_cards.deck.pop()
