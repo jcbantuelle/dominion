@@ -178,7 +178,7 @@ GameCreator = class GameCreator {
   has_duchess(cards) {
     return _.find(cards, function(card) {
       return card.name === 'Duchess'
-    }) !== -1
+    }) !== undefined
   }
 
 }
