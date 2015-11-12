@@ -1,57 +1,52 @@
 Meteor.methods({
-  sendGameMessage: function(message) {
-    Streamy.sessionsForUsers(player_ids()).emit('game_message', {
+  sendGameMessage: function(message, game_id) {
+    let player_ids = _.pluck(game(game_id).players, '_id')
+    Streamy.sessionsForUsers(player_ids).emit('game_message', {
       username: Meteor.user().username,
       message: message
     })
   },
-  playCard: function(card_name) {
-    let current_game = game()
+  playCard: function(card_name, game_id) {
     Future.task(Meteor.bindEnvironment(function() {
-      if (!ActionLock[current_game._id]) {
-        ActionLock[current_game._id] = true
-        let card_player = new CardPlayer(current_game, player_cards(), card_name)
+      if (!ActionLock[game_id]) {
+        ActionLock[game_id] = true
+        let card_player = new CardPlayer(game(game_id), player_cards(game_id), card_name)
         card_player.play()
-        ActionLock[current_game._id] = false
+        ActionLock[game_id] = false
       }
     })).detach()
   },
-  buyCard: function(card_name) {
-    let current_game = game()
+  buyCard: function(card_name, game_id) {
     Future.task(Meteor.bindEnvironment(function() {
-      if (!ActionLock[current_game._id]) {
-        ActionLock[current_game._id] = true
-        let card_buyer = new CardBuyer(current_game, player_cards(), card_name)
+      if (!ActionLock[game_id]) {
+        ActionLock[game_id] = true
+        let card_buyer = new CardBuyer(game(game_id), player_cards(game_id), card_name)
         card_buyer.buy()
-        ActionLock[current_game._id] = false
+        ActionLock[game_id] = false
       }
     })).detach()
   },
-  endTurn: function() {
-    let current_game = game()
+  endTurn: function(game_id) {
     Future.task(Meteor.bindEnvironment(function() {
-      if (!ActionLock[current_game._id]) {
-        ActionLock[current_game._id] = true
-        let turn_ender = new TurnEnder(current_game, player_cards())
+      if (!ActionLock[game_id]) {
+        ActionLock[game_id] = true
+        let turn_ender = new TurnEnder(game(game_id), player_cards(game_id))
         turn_ender.end_turn()
-        ActionLock[current_game._id] = false
+        ActionLock[game_id] = false
       }
     })).detach()
   },
-  playAllCoin: function() {
+  playAllCoin: function(game_id) {
     let current_game = game()
-    if (!ActionLock[current_game._id]) {
-      ActionLock[current_game._id] = true
-      let all_coin_player = new AllCoinPlayer(current_game, player_cards())
+    if (!ActionLock[game_id]) {
+      ActionLock[game_id] = true
+      let all_coin_player = new AllCoinPlayer(game(game_id), player_cards(game_id))
       all_coin_player.play()
-      ActionLock[current_game._id] = false
+      ActionLock[game_id] = false
     }
   },
-  turnEvent: function(selected_cards) {
-    let turn_event = TurnEvents.findOne({
-      player_id: Meteor.userId()
-    })
-    TurnEventFutures[turn_event._id].return(selected_cards)
+  turnEvent: function(selected_cards, turn_event_id) {
+    TurnEventFutures[turn_event_id].return(selected_cards)
   },
   destroyGame: function() {
     if (Meteor.user().admin) {
@@ -63,23 +58,13 @@ Meteor.methods({
   }
 })
 
-function players() {
-  return game().players
-}
-
-function player_ids() {
-  return _.map(players(), function(player) {
-    return player._id
-  })
-}
-
-function player_cards() {
+function player_cards(game_id) {
   return PlayerCards.findOne({
-    game_id: Meteor.user().current_game,
+    game_id: game_id,
     player_id: Meteor.userId()
   })
 }
 
-function game() {
-  return Games.findOne(Meteor.user().current_game)
+function game(game_id) {
+  return Games.findOne(game_id)
 }

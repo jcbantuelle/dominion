@@ -58,24 +58,24 @@ function updateChatWindow(data) {
 
 function sendMessage(event) {
   event.preventDefault()
-  Meteor.call('sendGameMessage', event.target.message.value)
+  Meteor.call('sendGameMessage', event.target.message.value, Router.current().params.id)
   event.target.message.value = ''
 }
 
 function playCard(event) {
-  Meteor.call('playCard', $(event.target).attr('data-name'))
+  Meteor.call('playCard', $(event.target).attr('data-name'), Router.current().params.id)
 }
 
 function buyCard(event) {
-  Meteor.call('buyCard', $(event.target).attr('data-name'))
+  Meteor.call('buyCard', $(event.target).attr('data-name'), Router.current().params.id)
 }
 
 function endTurn() {
-  Meteor.call('endTurn')
+  Meteor.call('endTurn', Router.current().params.id)
 }
 
 function playAllCoin() {
-  Meteor.call('playAllCoin')
+  Meteor.call('playAllCoin', Router.current().params.id)
 }
 
 function turnEvent(event) {
@@ -94,7 +94,7 @@ function turnEvent(event) {
   let turn_event_submission = new TurnEventSubmission(turn_event, selection)
   if (turn_event_submission.valid_selection()) {
     $('#turn-event input:checkbox').prop('checked', false)
-    Meteor.call('turnEvent', turn_event_submission.selected_values())
+    Meteor.call('turnEvent', turn_event_submission.selected_values(), turn_event._id)
   } else {
     alert(turn_event_submission.error_message())
   }

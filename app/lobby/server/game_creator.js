@@ -48,7 +48,8 @@ GameCreator = class GameCreator {
       phase: 'action',
       gained_cards: [],
       last_player_gained_cards: [],
-      gain_reaction_stack: []
+      gain_reaction_stack: [],
+      schemes: 0
     }
   }
 
