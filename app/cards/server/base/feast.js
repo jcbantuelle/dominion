@@ -9,7 +9,7 @@ Feast = class Feast extends Card {
   }
 
   play(game, player_cards) {
-    let card_trasher = new CardTrasher(game, player_cards.username, player_cards.playing, 'Feast')
+    let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Feast')
     card_trasher.trash()
 
     let eligible_cards = _.filter(game.cards, function(card) {

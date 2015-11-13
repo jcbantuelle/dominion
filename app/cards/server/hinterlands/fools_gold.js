@@ -35,7 +35,7 @@ FoolsGold = class FoolsGold extends Card {
 
   static trash_for_gold(game, player_cards, response) {
     if (response === 'yes') {
-      let card_trasher = new CardTrasher(game, player_cards.username, player_cards.hand, 'Fools Gold')
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', 'Fools Gold')
       card_trasher.trash()
 
       let original_deck_size = _.size(player_cards.deck)

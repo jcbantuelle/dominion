@@ -10,7 +10,7 @@ Moneylender = class Moneylender extends Card {
 
   play(game, player_cards) {
     let original_hand_size = _.size(player_cards.hand)
-    let card_trasher = new CardTrasher(game, player_cards.username, player_cards.hand, 'Copper')
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', 'Copper')
     card_trasher.trash()
     if (_.size(player_cards.hand) < original_hand_size) {
       game.turn.coins += 3

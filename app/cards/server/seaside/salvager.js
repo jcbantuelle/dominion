@@ -34,7 +34,7 @@ Salvager = class Salvager extends Card {
   static trash_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
 
-    let card_trasher = new CardTrasher(game, player_cards.username, player_cards.hand, selected_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
     card_trasher.trash()
 
     let card_value = _.find(game.cards, function(card_stack) {

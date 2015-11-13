@@ -9,7 +9,7 @@ TreasureMap = class TreasureMap extends Card {
   }
 
   play(game, player_cards) {
-    let card_trasher = new CardTrasher(game, player_cards.username, player_cards.playing, 'Treasure Map')
+    let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Treasure Map')
     card_trasher.trash()
 
     let map_in_hand = _.find(player_cards.hand, function(card) {
@@ -17,7 +17,7 @@ TreasureMap = class TreasureMap extends Card {
     })
 
     if (map_in_hand) {
-      let card_trasher = new CardTrasher(game, player_cards.username, player_cards.hand, 'Treasure Map')
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', 'Treasure Map')
       card_trasher.trash()
 
       let original_deck_size = _.size(player_cards.deck)
