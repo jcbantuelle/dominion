@@ -5,6 +5,7 @@ CardBuyer = class CardBuyer {
     this.player_cards = player_cards
     this.game_card = this.find_game_card(card_name)
     this.card = ClassCreator.create(this.game_card.top_card.name)
+    this.buy_event_cards = ['Noble Brigand']
   }
 
   find_game_card(card_name) {
@@ -35,6 +36,7 @@ CardBuyer = class CardBuyer {
 
   buy_card() {
     this.update_turn()
+    this.buy_event()
     this.gain_card()
     this.embargo()
   }
@@ -43,6 +45,12 @@ CardBuyer = class CardBuyer {
     this.game.turn.buys -= 1
     this.game.turn.coins -= this.game_card.top_card.coin_cost
     this.game.turn.potions -= this.game_card.top_card.potion_cost
+  }
+
+  buy_event() {
+    if (_.contains(this.buy_event_cards, this.card.name())) {
+      this.card.buy_event(this)
+    }
   }
 
   gain_card() {
