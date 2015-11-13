@@ -46,32 +46,32 @@ CardList = class CardList {
 
   seaside() {
     return [
-      'SeaHag',
-      'Warehouse',
-      'Bazaar',
-      'PearlDiver',
-      'Cutpurse',
-      'MerchantShip',
-      'FishingVillage',
-      'Caravan',
-      'Wharf',
-      'Tactician',
-      'Lighthouse',
-      'Haven',
-      'Outpost',
       'Embargo',
+      'Haven',
+      'Lighthouse',
       'NativeVillage',
+      'PearlDiver',
       'Ambassador',
+      'FishingVillage',
       'Lookout',
       'Smugglers',
+      'Warehouse',
+      'Caravan',
+      'Cutpurse',
       'Island',
       'Navigator',
       'PirateShip',
       'Salvager',
+      'SeaHag',
       'TreasureMap',
+      'Bazaar',
       'Explorer',
       'GhostShip',
-      'Treasury'
+      'MerchantShip',
+      'Outpost',
+      'Tactician',
+      'Treasury',
+      'Wharf'
     ]
   }
 
