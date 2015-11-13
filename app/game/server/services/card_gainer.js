@@ -11,7 +11,6 @@ CardGainer = class CardGainer {
   }
 
   gain_trash_card() {
-    this.gain_destination()
     let card_index = this.find_card_index(this.game.trash)
     let gained_card = this.game.trash[card_index]
     this.track_gained_card(gained_card)
@@ -23,7 +22,6 @@ CardGainer = class CardGainer {
   }
 
   gain_game_card() {
-    this.gain_destination()
     let game_card = this.find_card(this.game.cards)
     if (game_card.count > 0) {
       game_card.stack.shift()
