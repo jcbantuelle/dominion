@@ -15,7 +15,9 @@ CardTrasher = class CardTrasher {
         this.trash_card(card_index)
       }
     })
-    this.update_log()
+    if (!_.isEmpty(this.trashed_cards)) {
+      this.update_log()
+    }
   }
 
   find_card_index(card_name) {
