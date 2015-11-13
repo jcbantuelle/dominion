@@ -21,8 +21,9 @@ SeaHag = class SeaHag extends Card {
         DeckShuffler.shuffle(player_cards)
       }
       player_cards.revealed.push(player_cards.deck.shift())
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> discards ${CardView.render(player_cards.revealed)} from the top of their deck`)
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all()
+      card_discarder.discard_all(false)
     }
 
     let card_gainer = new CardGainer(game, player_cards, 'deck', 'Curse')

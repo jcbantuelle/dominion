@@ -65,7 +65,6 @@ Mine = class Mine extends Card {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards, 'hand', selected_card.name)
     card_gainer.gain_game_card()
-    game.log.push(`&nbsp;&nbsp;putting it in hand`)
   }
 
 }

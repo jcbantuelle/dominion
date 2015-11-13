@@ -9,27 +9,23 @@ CardGainer = class CardGainer {
     this.gain_event_cards = ['Duchy']
   }
 
-  gain_trash_card(announce = true) {
+  gain_trash_card() {
     let card_index = this.find_card_index(this.game.trash)
     let gained_card = this.game.trash[card_index]
     this.track_gained_card(gained_card)
     this.player_cards[this.destination].unshift(gained_card)
     this.game.trash.splice(card_index, 1)
-    if (announce) {
-      this.update_log(gained_card)
-    }
+    this.update_log(gained_card)
     this.gain_event()
     this.gain_reactions()
   }
 
-  gain_game_card(announce = true) {
+  gain_game_card() {
     let game_card = this.find_card(this.game.cards)
     if (game_card.count > 0) {
       game_card.stack.shift()
       this.player_cards[this.destination].unshift(game_card.top_card)
-      if (announce) {
-        this.update_log(game_card.top_card)
-      }
+      this.update_log(game_card.top_card)
       this.track_gained_card(game_card.top_card)
       game_card.count -= 1
       if (game_card.count > 0) {
@@ -77,7 +73,13 @@ CardGainer = class CardGainer {
   }
 
   update_log(card) {
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(card)}`)
+    let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> ${this.buy ? 'buys' : 'gains'} ${CardView.render(card)}`
+    if (this.destination === 'hand') {
+      log_message += ', placing it in hand'
+    } else if (this.destination === 'deck') {
+      log_message += ', placing it on top of their deck'
+    }
+    this.game.log.push(log_message)
   }
 
 }

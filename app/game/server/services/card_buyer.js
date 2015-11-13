@@ -17,7 +17,6 @@ CardBuyer = class CardBuyer {
   buy() {
     if (this.can_buy()) {
       this.update_phase()
-      this.update_log()
       this.buy_card()
       Games.update(this.game._id, this.game)
       PlayerCards.update(this.player_cards._id, this.player_cards)
@@ -54,8 +53,8 @@ CardBuyer = class CardBuyer {
   }
 
   gain_card() {
-    let card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
-    card_gainer.gain_game_card(false)
+    this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
+    this.card_gainer.gain_game_card()
   }
 
   embargo() {
@@ -63,10 +62,6 @@ CardBuyer = class CardBuyer {
       let card_gainer = new CardGainer(this.game, this.player_cards, 'discard', 'Curse')
       card_gainer.gain_game_card()
     })
-  }
-
-  update_log() {
-    this.game.log.push(`<strong>${Meteor.user().username}</strong> buys ${CardView.render(this.game_card.top_card)}`)
   }
 
   is_player_turn() {

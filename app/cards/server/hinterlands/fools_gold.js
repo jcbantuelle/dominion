@@ -38,12 +38,8 @@ FoolsGold = class FoolsGold extends Card {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', 'Fools Gold')
       card_trasher.trash()
 
-      let original_deck_size = _.size(player_cards.deck)
       let card_gainer = new CardGainer(game, player_cards, 'deck', 'Gold')
       card_gainer.gain_game_card()
-      if (_.size(player_cards.deck) > original_deck_size) {
-        game.log.push(`&nbsp;&nbsp;putting it on top of their deck`)
-      }
     }
   }
 

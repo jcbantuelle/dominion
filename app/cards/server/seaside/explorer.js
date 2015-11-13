@@ -42,7 +42,6 @@ Explorer = class Explorer extends Card {
   static gain_card(game, player_cards, card_name) {
     let card_gainer = new CardGainer(game, player_cards, 'hand', card_name)
     card_gainer.gain_game_card()
-    game.log.push(`&nbsp;&nbsp;putting it in hand`)
   }
 
 }

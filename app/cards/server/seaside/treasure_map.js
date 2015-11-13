@@ -20,14 +20,10 @@ TreasureMap = class TreasureMap extends Card {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', 'Treasure Map')
       card_trasher.trash()
 
-      let original_deck_size = _.size(player_cards.deck)
       let card_gainer = new CardGainer(game, player_cards, 'deck', 'Gold')
       _.times(4, function() {
         card_gainer.gain_game_card()
       })
-      if (_.size(player_cards.deck) > original_deck_size) {
-        game.log.push(`&nbsp;&nbsp;putting them on top of their deck`)
-      }
     }
   }
 
