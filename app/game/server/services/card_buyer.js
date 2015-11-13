@@ -5,6 +5,7 @@ CardBuyer = class CardBuyer {
     this.player_cards = player_cards
     this.game_card = this.find_game_card(card_name)
     this.card = ClassCreator.create(this.game_card.top_card.name)
+    this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
     this.buy_event_cards = ['Noble Brigand']
   }
 
@@ -35,6 +36,7 @@ CardBuyer = class CardBuyer {
 
   buy_card() {
     this.update_turn()
+    this.update_log()
     this.buy_event()
     this.gain_card()
     this.embargo()
@@ -48,12 +50,12 @@ CardBuyer = class CardBuyer {
 
   buy_event() {
     if (_.contains(this.buy_event_cards, this.card.name())) {
+      Games.update(this.game._id, this.game)
       this.card.buy_event(this)
     }
   }
 
   gain_card() {
-    this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
     this.card_gainer.gain_game_card()
   }
 
@@ -86,6 +88,16 @@ CardBuyer = class CardBuyer {
 
   has_enough_money() {
     return this.game.turn.coins >= this.game_card.top_card.coin_cost && this.game.turn.potions >= this.game_card.top_card.potion_cost
+  }
+
+  update_log() {
+    let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> buys ${CardView.render(this.card)}`
+    if (this.card_gainer.destination === 'hand') {
+      log_message += ', placing it in hand'
+    } else if (this.card_gainer.destination === 'deck') {
+      log_message += ', placing it on top of their deck'
+    }
+    this.game.log.push(log_message)
   }
 
 }

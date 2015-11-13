@@ -3,7 +3,7 @@ CardGainer = class CardGainer {
   constructor(game, player_cards, destination, card_name, buy = false) {
     this.game = game
     this.player_cards = player_cards
-    this.destination = destination
+    this.destination = this.gain_destination(destination)
     this.card_name = card_name
     this.buy = buy
     this.gain_event_cards = ['Duchy']
@@ -57,10 +57,12 @@ CardGainer = class CardGainer {
     this.game.turn.gained_cards.push(gained_card)
   }
 
-  gain_destination() {
+  gain_destination(destination) {
     if (_.contains(this.gain_destination_cards, this.card_name)) {
       let gained_card = ClassCreator.create(this.card_name)
-      this.destination = gained_card.destination()
+      return gained_card.destination()
+    } else {
+      return destination
     }
   }
 
@@ -83,13 +85,15 @@ CardGainer = class CardGainer {
   }
 
   update_log(card) {
-    let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> ${this.buy ? 'buys' : 'gains'} ${CardView.render(card)}`
-    if (this.destination === 'hand') {
-      log_message += ', placing it in hand'
-    } else if (this.destination === 'deck') {
-      log_message += ', placing it on top of their deck'
+    if (!this.buy) {
+      let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(card)}`
+      if (this.destination === 'hand') {
+        log_message += ', placing it in hand'
+      } else if (this.destination === 'deck') {
+        log_message += ', placing it on top of their deck'
+      }
+      this.game.log.push(log_message)
     }
-    this.game.log.push(log_message)
   }
 
 }

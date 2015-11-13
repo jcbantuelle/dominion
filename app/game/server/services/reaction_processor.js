@@ -44,6 +44,7 @@ ReactionProcessor = class ReactionProcessor {
       return _.contains(this.gain_reaction_cards, card.name) && this.allow_fools_gold(card)
     })
     if (!_.isEmpty(reaction_cards)) {
+      Games.update(this.game._id, this.game)
       let turn_event_id = TurnEvents.insert({
         game_id: this.game._id,
         player_id: this.player_cards.player_id,
