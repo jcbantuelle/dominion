@@ -11,11 +11,9 @@ FoolsGold = class FoolsGold extends Card {
   play(game, player_cards) {
     if (game.turn.fools_gold) {
       game.turn.coins += 4
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$4`)
     } else {
       game.turn.fools_gold = true
       game.turn.coins += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$1`)
     }
   }
 
