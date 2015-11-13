@@ -80,7 +80,7 @@ CardPlayer = class CardPlayer {
   }
 
   update_log() {
-    this.game.log.push(`<strong>${Meteor.user().username}</strong> plays ${CardView.render(this.card)}`)
+    this.game.log.push(`<strong>${this.player_cards.username}</strong> plays ${CardView.render(this.card)}`)
   }
 
   is_player_turn() {
