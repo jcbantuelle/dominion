@@ -37,6 +37,7 @@ CardBuyer = class CardBuyer {
   buy_card() {
     this.update_turn()
     this.update_log()
+    this.track_bought_card()
     this.buy_event()
     this.gain_card()
     this.embargo()
@@ -46,6 +47,11 @@ CardBuyer = class CardBuyer {
     this.game.turn.buys -= 1
     this.game.turn.coins -= this.game_card.top_card.coin_cost
     this.game.turn.potions -= this.game_card.top_card.potion_cost
+  }
+
+  track_bought_card(card) {
+    let bought_card = _.clone(this.game_card.top_card)
+    this.game.turn.bought_cards.push(bought_card)
   }
 
   buy_event() {

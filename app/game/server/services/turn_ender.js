@@ -56,6 +56,7 @@ TurnEnder = class TurnEnder {
       potions: 0,
       phase: 'action',
       gained_cards: [],
+      bought_cards: [],
       gain_reaction_stack: [],
       schemes: 0
     }
@@ -73,12 +74,14 @@ TurnEnder = class TurnEnder {
     this.new_turn.player = this.game.turn.player
     this.next_player_cards = this.player_cards
     this.new_turn.last_player_gained_cards = this.game.turn.last_player_gained_cards
+    this.new_turn.last_player_bought_cards = this.game.turn.last_player_bought_cards
     this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
   }
 
   next_player_turn() {
     this.new_turn.player = this.next_player()
     this.new_turn.last_player_gained_cards = this.game.turn.gained_cards
+    this.new_turn.last_player_bought_cards = this.game.turn.bought_cards
     this.game.turn_number += 1
     this.next_player_cards = PlayerCards.findOne({
       game_id: this.game._id,

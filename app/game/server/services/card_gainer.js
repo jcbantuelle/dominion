@@ -51,7 +51,6 @@ CardGainer = class CardGainer {
 
   track_gained_card(card) {
     let gained_card = _.clone(card)
-    gained_card.from = this.buy ? 'buy' : 'gain'
     this.game.turn.gained_cards.push(gained_card)
   }
 

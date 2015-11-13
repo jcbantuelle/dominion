@@ -18,8 +18,8 @@ Treasury = class Treasury extends Card {
   }
 
   discard_from_play(game, player_cards) {
-    let victory_cards = _.filter(game.turn.gained_cards, function(card) {
-      return card.from === 'buy' && _.contains(card.types, 'victory')
+    let victory_cards = _.filter(game.turn.bought_cards, function(card) {
+      return _.contains(card.types, 'victory')
     })
     if (_.isEmpty(victory_cards)) {
       let turn_event_id = TurnEvents.insert({

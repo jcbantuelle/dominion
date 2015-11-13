@@ -46,7 +46,9 @@ GameCreator = class GameCreator {
       coins: 0,
       potions: 0,
       phase: 'action',
+      bought_cards: [],
       gained_cards: [],
+      last_player_bought_cards: [],
       last_player_gained_cards: [],
       gain_reaction_stack: [],
       schemes: 0
