@@ -1,7 +1,8 @@
 TurnEventProcessor = class TurnEventProcessor {
 
-  constructor(game, player_cards, turn_event_ids) {
+  constructor(game, player_cards, turn_event_ids, source) {
     this.game = game
+    this.source = source
     this.player_cards = player_cards
     this.turn_event_ids = _.isArray(turn_event_ids) ? turn_event_ids : [turn_event_ids]
   }
@@ -16,7 +17,7 @@ TurnEventProcessor = class TurnEventProcessor {
       let response = TurnEventFutures[turn_event_id].get()
       TurnEvents.remove(turn_event_id)
       delete TurnEventFutures[turn_event_id]
-      event_action(this.game, this.player_cards, response)
+      event_action(this.game, this.player_cards, response, this.source)
     })
   }
 

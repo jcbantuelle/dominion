@@ -5,6 +5,39 @@ ReactionProcessor = class ReactionProcessor {
     this.player_cards = player_cards
     this.attack_reaction_cards = ['Moat']
     this.gain_reaction_cards = ['Fools Gold']
+    this.would_gain_reaction_cards = ['Trader']
+  }
+
+  process_would_gain_reactions(gainer) {
+    let reaction_cards = _.filter(this.player_cards.hand, (card) => {
+      return _.contains(this.would_gain_reaction_cards, card.name)
+    })
+    if (!_.isEmpty(reaction_cards)) {
+      Games.update(this.game._id, this.game)
+      let turn_event_id = TurnEvents.insert({
+        game_id: this.game._id,
+        player_id: this.player_cards.player_id,
+        username: this.player_cards.username,
+        type: 'choose_cards',
+        player_cards: true,
+        instructions: 'Choose Would Gain Reaction (Or none to skip):',
+        cards: reaction_cards,
+        minimum: 0,
+        maximum: 1
+      })
+      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, gainer)
+      turn_event_processor.process(ReactionProcessor.would_gain_reaction)
+    }
+  }
+
+  static would_gain_reaction(game, player_cards, selected_cards, gainer) {
+    if (!_.isEmpty(selected_cards)) {
+      let selected_card = ClassCreator.create(selected_cards[0].name)
+      selected_card.would_gain_reaction(game, player_cards, gainer)
+      Games.update(game._id, game)
+      let reaction_processor = new ReactionProcessor(game, player_cards)
+      reaction_processor.process_would_gain_reactions(gainer)
+    }
   }
 
   process_attack_reactions() {

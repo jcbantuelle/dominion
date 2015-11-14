@@ -11,17 +11,25 @@ CardGainer = class CardGainer {
   }
 
   gain_trash_card() {
-    let card_index = this.find_card_index(this.game.trash)
-    let gained_card = this.game.trash[card_index]
-    this.track_gained_card(gained_card)
-    this.player_cards[this.destination].unshift(gained_card)
-    this.game.trash.splice(card_index, 1)
-    this.update_log(gained_card)
-    this.gain_event()
-    this.gain_reactions()
+    this.would_gain_reactions()
+    if (this.gain_from_game_cards) {
+      this.gain_game_card()
+    } else {
+      let card_index = this.find_card_index(this.game.trash)
+      let gained_card = this.game.trash[card_index]
+      this.track_gained_card(gained_card)
+      this.player_cards[this.destination].unshift(gained_card)
+      this.game.trash.splice(card_index, 1)
+      this.update_log(gained_card)
+      this.gain_event()
+      this.gain_reactions()
+    }
   }
 
   gain_game_card() {
+    if (!this.gain_from_game_cards) {
+      this.would_gain_reactions()
+    }
     let game_card = this.find_card(this.game.cards)
     if (game_card.count > 0) {
       game_card.stack.shift()
@@ -70,6 +78,11 @@ CardGainer = class CardGainer {
     }
   }
 
+  would_gain_reactions() {
+    let reaction_processor = new ReactionProcessor(this.game, this.player_cards)
+    reaction_processor.process_would_gain_reactions(this)
+  }
+
   gain_reactions() {
     this.game.turn.gain_reaction_stack.push(this.card_name)
 
@@ -82,7 +95,7 @@ CardGainer = class CardGainer {
   }
 
   update_log(card) {
-    if (!this.buy) {
+    if (!this.buy || this.gain_from_game_cards) {
       let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(card)}`
       if (this.destination === 'hand') {
         log_message += ', placing it in hand'
