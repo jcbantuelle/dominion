@@ -13,14 +13,14 @@ ReactionProcessor = class ReactionProcessor {
       return _.contains(this.would_gain_reaction_cards, card.name)
     })
     if (!_.isEmpty(reaction_cards)) {
-      Games.update(this.game._id, this.game)
+      let gained_card = ClassCreator.create(gainer.card_name)
       let turn_event_id = TurnEvents.insert({
         game_id: this.game._id,
         player_id: this.player_cards.player_id,
         username: this.player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose Would Gain Reaction (Or none to skip):',
+        instructions: `Choose Reaction To Gaining ${CardView.render(gained_card)} (Or none to skip):`,
         cards: reaction_cards,
         minimum: 0,
         maximum: 1
