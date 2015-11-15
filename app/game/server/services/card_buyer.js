@@ -97,7 +97,7 @@ CardBuyer = class CardBuyer {
   }
 
   update_log() {
-    let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> buys ${CardView.render(this.card)}`
+    let log_message = `<strong>${this.player_cards.username}</strong> buys ${CardView.render(this.card)}`
     if (this.card_gainer.destination === 'hand') {
       log_message += ', placing it in hand'
     } else if (this.card_gainer.destination === 'deck') {
