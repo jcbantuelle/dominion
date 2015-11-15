@@ -9,40 +9,51 @@ Meteor.methods({
   playCard: function(card_name, game_id) {
     Future.task(Meteor.bindEnvironment(function() {
       if (!ActionLock[game_id]) {
-        ActionLock[game_id] = true
-        let card_player = new CardPlayer(game(game_id), player_cards(game_id), card_name)
-        card_player.play()
-        ActionLock[game_id] = false
+        let current_game = game(game_id)
+        if (Meteor.userId() === current_game.turn.player._id) {
+          ActionLock[game_id] = true
+          let card_player = new CardPlayer(current_game, player_cards(game_id), card_name)
+          card_player.play()
+          ActionLock[game_id] = false
+        }
       }
     })).detach()
   },
   buyCard: function(card_name, game_id) {
     Future.task(Meteor.bindEnvironment(function() {
       if (!ActionLock[game_id]) {
-        ActionLock[game_id] = true
-        let card_buyer = new CardBuyer(game(game_id), player_cards(game_id), card_name)
-        card_buyer.buy()
-        ActionLock[game_id] = false
+        let current_game = game(game_id)
+        if (Meteor.userId() === current_game.turn.player._id) {
+          ActionLock[game_id] = true
+          let card_buyer = new CardBuyer(current_game, player_cards(game_id), card_name)
+          card_buyer.buy()
+          ActionLock[game_id] = false
+        }
       }
     })).detach()
   },
   endTurn: function(game_id) {
     Future.task(Meteor.bindEnvironment(function() {
       if (!ActionLock[game_id]) {
-        ActionLock[game_id] = true
-        let turn_ender = new TurnEnder(game(game_id), player_cards(game_id))
-        turn_ender.end_turn()
-        ActionLock[game_id] = false
+        let current_game = game(game_id)
+        if (Meteor.userId() === current_game.turn.player._id) {
+          ActionLock[game_id] = true
+          let turn_ender = new TurnEnder(current_game, player_cards(game_id))
+          turn_ender.end_turn()
+          ActionLock[game_id] = false
+        }
       }
     })).detach()
   },
   playAllCoin: function(game_id) {
-    let current_game = game()
     if (!ActionLock[game_id]) {
-      ActionLock[game_id] = true
-      let all_coin_player = new AllCoinPlayer(game(game_id), player_cards(game_id))
-      all_coin_player.play()
-      ActionLock[game_id] = false
+      let current_game = game(game_id)
+      if (Meteor.userId() === current_game.turn.player._id) {
+        ActionLock[game_id] = true
+        let all_coin_player = new AllCoinPlayer(current_game, player_cards(game_id))
+        all_coin_player.play()
+        ActionLock[game_id] = false
+      }
     }
   },
   turnEvent: function(selected_cards, turn_event_id) {
