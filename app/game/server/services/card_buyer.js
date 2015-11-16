@@ -19,6 +19,7 @@ CardBuyer = class CardBuyer {
     if (this.can_buy()) {
       this.update_phase()
       this.buy_card()
+      this.haggler()
       Games.update(this.game._id, this.game)
       PlayerCards.update(this.player_cards._id, this.player_cards)
     }
@@ -41,6 +42,15 @@ CardBuyer = class CardBuyer {
     this.buy_event()
     this.gain_card()
     this.embargo()
+  }
+
+  haggler() {
+    let haggler_count = _.size(_.filter(this.player_cards.in_play, function(card) {
+      return card.name === 'Haggler'
+    }))
+    if (haggler_count > 0) {
+      HagglerProcessor.process(this.game, this.player_cards, this.card, haggler_count)
+    }
   }
 
   update_turn() {
