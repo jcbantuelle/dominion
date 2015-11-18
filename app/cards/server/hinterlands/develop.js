@@ -55,17 +55,14 @@ Develop = class Develop extends Card {
 
   static process_response(game, player_cards, response) {
     response = response[0]
-    if (response === 'gain_more') {
-      var first_cost = game.turn.develop_card.coin_cost + 1
-      var second_cost = game.turn.develop_card.coin_cost - 1
-    } else if (response === 'gain_less') {
-      var first_cost = game.turn.develop_card.coin_cost - 1
-      var second_cost = game.turn.develop_card.coin_cost + 1
-    }
+    let coin_cost = CostCalculator.calculate(game, player_cards, game.turn.develop_card)
 
-    Develop.choose_card(game, player_cards, first_cost, game.turn.develop_card.potion_cost)
+    let first_cost = response === 'gain_more' ? 1 : -1
+    let second_cost = response === 'gain_more' ? -1 : 1
+
+    Develop.choose_card(game, player_cards, coin_cost + first_cost, game.turn.develop_card.potion_cost)
     Games.update(game._id, game)
-    Develop.choose_card(game, player_cards, second_cost, game.turn.develop_card.potion_cost)
+    Develop.choose_card(game, player_cards, coin_cost + second_cost, game.turn.develop_card.potion_cost)
   }
 
   static choose_card(game, player_cards, coin_cost, potion_cost) {

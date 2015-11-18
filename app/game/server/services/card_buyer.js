@@ -55,7 +55,7 @@ CardBuyer = class CardBuyer {
 
   update_turn() {
     this.game.turn.buys -= 1
-    this.game.turn.coins -= this.game_card.top_card.coin_cost
+    this.game.turn.coins -= CostCalculator.calculate(this.game, this.player_cards, this.game_card.top_card)
     this.game.turn.potions -= this.game_card.top_card.potion_cost
   }
 
@@ -103,7 +103,8 @@ CardBuyer = class CardBuyer {
   }
 
   has_enough_money() {
-    return this.game.turn.coins >= this.game_card.top_card.coin_cost && this.game.turn.potions >= this.game_card.top_card.potion_cost
+    let coin_cost = CostCalculator.calculate(this.game, this.player_cards, this.game_card.top_card)
+    return this.game.turn.coins >= coin_cost && this.game.turn.potions >= this.game_card.top_card.potion_cost
   }
 
   update_log() {

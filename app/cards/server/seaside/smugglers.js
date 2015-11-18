@@ -13,7 +13,8 @@ Smugglers = class Smugglers extends Card {
       let game_stack = _.find(game.cards, function(stack) {
         return stack.name === gained_card.stack_name
       })
-      return game_stack.top_card.coin_cost <= 6 && game_stack.top_card.potion_cost === 0
+      let coin_cost = CostCalculator.calculate(game, player_cards, game_stack.top_card)
+      return coin_cost <= 6 && game_stack.top_card.potion_cost === 0
     })
 
     if (_.size(eligible_cards) > 0) {

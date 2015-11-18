@@ -30,16 +30,13 @@ Trader = class Trader extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
+    let coin_cost = CostCalculator.calculate(game, player_cards, selected_card)
 
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
     card_trasher.trash()
 
-    let card_value = _.find(game.cards, function(card_stack) {
-      return card_stack.name === selected_card.stack_name
-    }).top_card.coin_cost
-
-    let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-    _.times(card_value, function() {
+    _.times(coin_cost, function() {
+      let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
       card_gainer.gain_game_card()
     })
   }

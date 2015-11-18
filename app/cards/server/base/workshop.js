@@ -10,7 +10,8 @@ Workshop = class Workshop extends Card {
 
   play(game, player_cards) {
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && card.top_card.coin_cost <= 4 && card.top_card.potion_cost === 0
+      let coin_cost = CostCalculator.calculate(game, player_cards, card.top_card)
+      return card.count > 0 && card.top_card.purchasable && coin_cost <= 4 && card.top_card.potion_cost === 0
     })
 
     if (_.size(eligible_cards) > 0) {

@@ -1,10 +1,11 @@
 HagglerProcessor = class HagglerProcessor {
 
   static process(game, player_cards, bought_card, haggler_count) {
-    let coin_value = bought_card.coin_cost()
+    let coin_value = CostCalculator.calculate(game, player_cards, bought_card)
     let potion_value = bought_card.potion_cost()
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && ((card.top_card.coin_cost < coin_value && card.top_card.potion_cost <= potion_value) || (card.top_card.coin_cost === coin_value && card.top_card.potion_cost < potion_value))
+      let coin_cost = CostCalculator.calculate(game, player_cards, card.top_card)
+      return card.count > 0 && card.top_card.purchasable && ((coin_cost < coin_value && card.top_card.potion_cost <= potion_value) || (coin_cost === coin_value && card.top_card.potion_cost < potion_value))
     })
     _.times(haggler_count, () => {
       if (_.size(eligible_cards) > 0) {
