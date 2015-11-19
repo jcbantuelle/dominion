@@ -99,8 +99,8 @@ CardList = class CardList {
       'IllGottenGains',
       'Inn',
       'Mandarin',
-      /*'Margrave',
-      'Stables',
+      'Margrave',
+      /*'Stables',
       'BorderVillage',
       'Farmland'*/
     ]
