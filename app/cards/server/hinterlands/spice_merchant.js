@@ -19,7 +19,7 @@ SpiceMerchant = class SpiceMerchant extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a card to trash (Or none to skip):',
+        instructions: 'Choose a treasure to trash (Or none to skip):',
         cards: eligible_cards,
         minimum: 0,
         maximum: 1
