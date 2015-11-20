@@ -101,8 +101,8 @@ CardList = class CardList {
       'Mandarin',
       'Margrave',
       'Stables',
-      /*'BorderVillage',
-      'Farmland'*/
+      'BorderVillage',
+      /*'Farmland'*/
     ]
   }
 }

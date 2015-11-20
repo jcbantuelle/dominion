@@ -6,7 +6,7 @@ CardGainer = class CardGainer {
     this.destination = this.gain_destination(destination)
     this.card_name = card_name
     this.buy = buy
-    this.gain_event_cards = ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin']
+    this.gain_event_cards = ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village']
     this.gain_destination_cards = ['Nomad Camp']
   }
 
