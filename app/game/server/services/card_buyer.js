@@ -6,7 +6,7 @@ CardBuyer = class CardBuyer {
     this.game_card = this.find_game_card(card_name)
     this.card = ClassCreator.create(this.game_card.top_card.name)
     this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
-    this.buy_event_cards = ['Noble Brigand']
+    this.buy_event_cards = ['Noble Brigand', 'Farmland']
   }
 
   find_game_card(card_name) {

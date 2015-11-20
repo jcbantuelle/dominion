@@ -102,7 +102,7 @@ CardList = class CardList {
       'Margrave',
       'Stables',
       'BorderVillage',
-      /*'Farmland'*/
+      'Farmland'
     ]
   }
 }
