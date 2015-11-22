@@ -11,7 +11,10 @@
     <br />
   {{/if}}
   {{#if game.trade_route_tokens}}
-    Trade Route Tokens: {{game.trade_route_tokens}}
+    Trade Route Tokens:
+    {{#each times game.trade_route_tokens}}
+      <span class="trade-token">$</span>
+    {{/each}}
     <br />
     <br />
   {{/if}}

@@ -42,6 +42,7 @@ CardGainer = class CardGainer {
       }
       this.gain_event()
       this.gain_reactions()
+      this.trade_route_token(game_card)
     }
   }
 
@@ -92,6 +93,13 @@ CardGainer = class CardGainer {
       reaction_processor.process_gain_reactions()
     })
     this.game.turn.gain_reaction_stack.pop()
+  }
+
+  trade_route_token(game_card) {
+    if (game_card.has_trade_route_token) {
+      game_card.has_trade_route_token = false
+      this.game.trade_route_tokens += 1
+    }
   }
 
   update_log(card) {

@@ -21,6 +21,7 @@ GameCreator = class GameCreator {
       players: _.shuffle(this.players),
       cards: cards,
       trash: [],
+      trade_route_tokens: 0,
       log: [],
       turn_number: 1,
       duchess: this.has_duchess(cards)
@@ -101,6 +102,7 @@ GameCreator = class GameCreator {
     this.selected_kingdom_cards = this.kingdom_cards()
     this.use_prosperity_cards = this.prosperity_game()
     this.selected_common_cards = this.common_cards()
+    this.trade_route_game()
     return this.selected_kingdom_cards.concat(this.selected_common_cards)
   }
 
@@ -193,7 +195,22 @@ GameCreator = class GameCreator {
     let count = _.size(_.filter(this.selected_kingdom_cards, function(card) {
       return _.contains(card_names, _.titleize(card.name))
     }))
-    return count >= this.random_number(0, _.size(this.selected_kingdom_cards))
+    return count <= this.random_number(0, _.size(this.selected_kingdom_cards))
+  }
+
+  trade_route_game() {
+    let card_names = _.pluck(this.selected_kingdom_cards, 'name')
+    if (_.contains(card_names, 'Trade Route')) {
+      this.selected_kingdom_cards = _.map(this.selected_kingdom_cards, this.set_trade_route_tokens)
+      this.selected_common_cards = _.map(this.selected_common_cards, this.set_trade_route_tokens)
+    }
+  }
+
+  set_trade_route_tokens(card) {
+    if (card.name != 'Knights' && _.contains(card.top_card.types, 'victory')) {
+      card.has_trade_route_token = true
+    }
+    return card
   }
 
   random_number(min, max) {
