@@ -29,21 +29,28 @@
     <br />
     <br />
   {{/if}}
-  {{#if player_cards.island}}
-    Island:
-    {{#each player_cards.island}}
-      <span class="{{types}}">{{name}}</span>
-    {{/each}}
-    <br />
-    <br />
-  {{/if}}
-  Pirate Ship Coins: {{player_cards.pirate_ship_coins}}
-  <br />
-  <br />
-  {{#each game.players}}
+  {{#each public_info}}
     <strong>{{username}}</strong><br />
-    Victory Tokens: {{victory_tokens}}
+    Score: {{points}}
     <br />
     <br />
+    {{#if victory_tokens}}
+      Victory Tokens: {{victory_tokens}}
+      <br />
+      <br />
+    {{/if}}
+    {{#if pirate_ship_coins}}
+      Pirate Ship Coins: {{player_cards.pirate_ship_coins}}
+      <br />
+      <br />
+    {{/if}}
+    {{#if island}}
+      Island:
+      {{#each island}}
+        <span class="{{types}}">{{name}}</span>
+      {{/each}}
+      <br />
+      <br />
+    {{/if}}
   {{/each}}
 </template>

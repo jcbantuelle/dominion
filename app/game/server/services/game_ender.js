@@ -34,7 +34,7 @@ GameEnder = class GameEnder {
       return {
         username: player_cards.username,
         point_cards: point_cards,
-        points: this.card_score(point_cards)
+        points: this.card_score(point_cards) + player_cards.victory_tokens
       }
     }).sortBy(function(score) {
       return -score.points

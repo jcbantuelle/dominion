@@ -56,16 +56,7 @@ GameCreator = class GameCreator {
   }
 
   set_up_players() {
-    this.game.players = _.map(this.players, (player) => {
-      this.create_player_cards(player)
-      player = this.add_victory_tokens(player)
-      return player
-    })
-  }
-
-  add_victory_tokens(player) {
-    player.victory_tokens = 0
-    return player
+    _.each(this.game.players, this.create_player_cards.bind(this))
   }
 
   create_player_cards(player) {
@@ -93,7 +84,8 @@ GameCreator = class GameCreator {
       native_village: [],
       island: [],
       hand: hand,
-      pirate_ship_coins: 0
+      pirate_ship_coins: 0,
+      victory_tokens: 0
     })
   }
 
