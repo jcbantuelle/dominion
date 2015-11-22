@@ -110,8 +110,8 @@ CardList = class CardList {
     return [
       'Loan',
       'TradeRoute',
-      /*'Watchtower',
-      'Bishop',
+      'Watchtower',
+      /*'Bishop',
       'Monument',
       'Quarry',
       'Talisman',

@@ -90,7 +90,7 @@ CardGainer = class CardGainer {
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game, this.player_cards)
     _.each(ordered_player_cards, (player_cards) => {
       let reaction_processor = new ReactionProcessor(this.game, player_cards)
-      reaction_processor.process_gain_reactions()
+      reaction_processor.process_gain_reactions(this)
     })
     this.game.turn.gain_reaction_stack.pop()
   }
