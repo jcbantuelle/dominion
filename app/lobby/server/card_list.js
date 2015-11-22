@@ -108,8 +108,8 @@ CardList = class CardList {
 
   static prosperity() {
     return [
-      /*'Loan',
-      'TradeRoute',
+      'Loan',
+      /*'TradeRoute',
       'Watchtower',
       'Bishop',
       'Monument',
