@@ -9,35 +9,32 @@ Adventurer = class Adventurer extends Card {
   }
 
   play(game, player_cards) {
-    this.revealed_cards = []
-    this.revealed_treasures = []
-
-    player_cards = this.reveal(player_cards)
-
-    if (_.size(this.revealed_treasures) < 2 && _.size(player_cards.discard) > 0) {
-      DeckShuffler.shuffle(player_cards)
-      player_cards = this.reveal(player_cards)
-    }
+    player_cards.revealed_treasures = []
+    this.reveal(game, player_cards)
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard_all(false)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed_treasures)} in hand and discards the rest`)
 
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(this.revealed_cards)}`)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(this.revealed_treasures)} in hand and discards the rest`)
+    delete player_cards.revealed_treasures
   }
 
-  reveal(player_cards) {
-    while(_.size(player_cards.deck) > 0 && _.size(this.revealed_treasures) < 2) {
+  reveal(game, player_cards) {
+    revealed_cards = []
+    while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && _.size(player_cards.revealed_treasures) < 2) {
+      if (_.size(player_cards.deck) === 0) {
+        DeckShuffler.shuffle(player_cards)
+      }
       let card = player_cards.deck.shift()
-      this.revealed_cards.push(card)
+      revealed_cards.push(card)
       if (_.contains(card.types, 'treasure')) {
-        this.revealed_treasures.push(card)
         player_cards.hand.push(card)
+        player_cards.revealed_treasures.push(card)
       } else {
         player_cards.revealed.push(card)
       }
     }
-    return player_cards
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_cards)}`)
   }
 
 }
