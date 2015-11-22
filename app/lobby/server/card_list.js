@@ -11,10 +11,10 @@ CardList = class CardList {
   }
 
   card_list() {
-    return this.base().concat(this.seaside()).concat(this.hinterlands())
+    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity())
   }
 
-  base() {
+  static base() {
     return [
       'Cellar',
       'Chapel',
@@ -44,7 +44,7 @@ CardList = class CardList {
     ]
   }
 
-  seaside() {
+  static seaside() {
     return [
       'Embargo',
       'Haven',
@@ -75,7 +75,7 @@ CardList = class CardList {
     ]
   }
 
-  hinterlands() {
+  static hinterlands() {
     return [
       'Crossroads',
       'Duchess',
@@ -103,6 +103,36 @@ CardList = class CardList {
       'Stables',
       'BorderVillage',
       'Farmland'
+    ]
+  }
+
+  static prosperity() {
+    return [
+      /*'Loan',
+      'TradeRoute',
+      'Watchtower',
+      'Bishop',
+      'Monument',
+      'Quarry',
+      'Talisman',
+      'WorkersVillage',
+      'City',
+      'Contraband',
+      'CountingHouse',
+      'Mint',
+      'Mountebank',
+      'Rabble',
+      'RoyalSeal',
+      'Vault',
+      'Venture',
+      'Goons',
+      'GrandMarket',
+      'Hoard',
+      'Bank',
+      'Expand',
+      'Forge',
+      'KingsCourt',
+      'Peddler'*/
     ]
   }
 }

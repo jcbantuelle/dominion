@@ -106,7 +106,10 @@ GameCreator = class GameCreator {
   }
 
   game_cards() {
-    return this.kingdom_cards().concat(this.common_cards())
+    this.selected_kingdom_cards = this.kingdom_cards()
+    this.use_prosperity_cards = this.prosperity_game()
+    this.selected_common_cards = this.common_cards()
+    return this.selected_kingdom_cards.concat(this.selected_common_cards)
   }
 
   kingdom_cards() {
@@ -127,16 +130,24 @@ GameCreator = class GameCreator {
     })
   }
 
-  common_card_names() {
+  common_card_names(kingdom_cards) {
     return this.victory_card_names().concat(this.treasure_card_names()).concat(this.miscellaneous_card_names())
   }
 
   victory_card_names() {
-    return ['Province','Duchy','Estate']
+    let victory_cards = ['Province','Duchy','Estate']
+    if (this.use_prosperity_cards) {
+      victory_cards.unshift('Colony')
+    }
+    return victory_cards
   }
 
   treasure_card_names() {
-    return ['Gold','Silver','Copper']
+    let treasure_cards = ['Gold','Silver','Copper']
+    if (this.use_prosperity_cards) {
+      treasure_cards.unshift('Platinum')
+    }
+    return treasure_cards
   }
 
   miscellaneous_card_names() {
@@ -172,6 +183,8 @@ GameCreator = class GameCreator {
       return 40
     } else if (card.name === 'Gold') {
       return 30
+    } else if (card.name === 'Platinum') {
+      return 12
     } else {
       return 10
     }
@@ -181,6 +194,18 @@ GameCreator = class GameCreator {
     return _.find(cards, function(card) {
       return card.name === 'Duchess'
     }) !== undefined
+  }
+
+  prosperity_game() {
+    let card_names = CardList.prosperity()
+    let count = _.size(_.filter(this.selected_kingdom_cards, function(card) {
+      return _.contains(card_names, _.titleize(card.name))
+    }))
+    return count >= this.random_number(0, _.size(this.selected_kingdom_cards))
+  }
+
+  random_number(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min
   }
 
 }

@@ -1,0 +1,15 @@
+Platinum = class Platinum extends Card {
+
+  types() {
+    return ['treasure']
+  }
+
+  coin_cost() {
+    return 9
+  }
+
+  play(game, player_cards) {
+    game.turn.coins += 5
+  }
+
+}
