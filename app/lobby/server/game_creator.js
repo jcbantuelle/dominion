@@ -192,10 +192,11 @@ GameCreator = class GameCreator {
 
   prosperity_game() {
     let card_names = CardList.prosperity()
-    let count = _.size(_.filter(this.selected_kingdom_cards, function(card) {
+    let prosperity_count = _.size(_.filter(this.selected_kingdom_cards, function(card) {
       return _.contains(card_names, _.titleize(card.name))
     }))
-    return count >= this.random_number(1, _.size(this.selected_kingdom_cards))
+    let random_number = this.random_number(1, _.size(this.selected_kingdom_cards))
+    return prosperity_count >= random_number
   }
 
   trade_route_game() {
