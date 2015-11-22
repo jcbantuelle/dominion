@@ -73,7 +73,9 @@ CardDiscarder = class CardDiscarder {
   }
 
   update_log(cards) {
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(cards)}`)
+    if (!_.isEmpty(cards)) {
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(cards)}`)
+    }
   }
 
 }
