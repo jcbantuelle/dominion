@@ -6,6 +6,11 @@
   {{#each scores}}
     <strong>{{username}}</strong>: &nbsp;&nbsp;{{points}} Points
     <br />
+    <br />
+    {{#if victory_tokens}}
+      <strong>Victory Tokens:</strong> {{victory_tokens}}
+      <br />
+    {{/if}}
     {{#each point_cards}}
       <strong>{{name}}</strong> x {{count}} {{#if point_variable}}({{point_variable}}){{/if}}
       <br />

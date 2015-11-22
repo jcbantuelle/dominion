@@ -31,11 +31,15 @@ GameEnder = class GameEnder {
         return all_cards.concat(player_cards[source])
       }, [])
       let point_cards = this.point_cards(all_cards)
-      return {
+      let player_score = {
         username: player_cards.username,
         point_cards: point_cards,
         points: this.card_score(point_cards) + player_cards.victory_tokens
       }
+      if (player_cards.victory_tokens > 0) {
+        player_score.victory_tokens = player_cards.victory_tokens
+      }
+      return player_score
     }).sortBy(function(score) {
       return -score.points
     }).value()
