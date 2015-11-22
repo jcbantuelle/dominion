@@ -39,20 +39,20 @@ SpiceMerchant = class SpiceMerchant extends Card {
       card_trasher.trash()
 
       let turn_event_id = TurnEvents.insert({
-      game_id: game._id,
-      player_id: player_cards.player_id,
-      username: player_cards.username,
-      type: 'choose_options',
-      instructions: `Choose One:`,
-      minimum: 1,
-      maximum: 1,
-      options: [
-        {text: '+2 cards and +1 action', value: 'cards'},
-        {text: '+$2 and +1 buy', value: 'coins'}
-      ]
-    })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-    turn_event_processor.process(SpiceMerchant.process_response)
+        game_id: game._id,
+        player_id: player_cards.player_id,
+        username: player_cards.username,
+        type: 'choose_options',
+        instructions: `Choose One:`,
+        minimum: 1,
+        maximum: 1,
+        options: [
+          {text: '+2 cards and +1 action', value: 'cards'},
+          {text: '+$2 and +1 buy', value: 'coins'}
+        ]
+      })
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      turn_event_processor.process(SpiceMerchant.process_response)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not trash anything`)
     }
