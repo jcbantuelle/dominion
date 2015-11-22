@@ -195,7 +195,7 @@ GameCreator = class GameCreator {
     let count = _.size(_.filter(this.selected_kingdom_cards, function(card) {
       return _.contains(card_names, _.titleize(card.name))
     }))
-    return count <= this.random_number(0, _.size(this.selected_kingdom_cards))
+    return count >= this.random_number(1, _.size(this.selected_kingdom_cards))
   }
 
   trade_route_game() {
@@ -214,7 +214,7 @@ GameCreator = class GameCreator {
   }
 
   random_number(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min
+    return Math.floor(Math.random() * (max - min + 1)) + min
   }
 
 }
