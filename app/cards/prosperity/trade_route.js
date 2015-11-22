@@ -33,8 +33,7 @@ TradeRoute = class TradeRoute extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let selected_card_names = _.pluck(selected_cards, 'name')
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card_names)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
     card_trasher.trash()
   }
 
