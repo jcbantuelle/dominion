@@ -59,15 +59,17 @@ Bishop = class Bishop extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     let trashed_card = selected_cards[0]
-    let coin_cost = CostCalculator.calculate(game, player_cards, trashed_card)
+    if (trashed_card) {
+      let coin_cost = CostCalculator.calculate(game, player_cards, trashed_card)
 
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
-    card_trasher.trash()
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
+      card_trasher.trash()
 
-    if (game.turn.player._id === player_cards.player_id) {
-      let victory_tokens = Math.floor(coin_cost / 2)
-      player_cards.victory_tokens += victory_tokens
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
+      if (game.turn.player._id === player_cards.player_id) {
+        let victory_tokens = Math.floor(coin_cost / 2)
+        player_cards.victory_tokens += victory_tokens
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
+      }
     }
   }
 
