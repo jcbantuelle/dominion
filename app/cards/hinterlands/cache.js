@@ -14,7 +14,7 @@ Cache = class Cache extends Card {
 
   gain_event(gainer) {
     _.times(2, function() {
-      let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'deck', 'Copper')
+      let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'discard', 'Copper')
       card_gainer.gain_game_card()
     })
   }
