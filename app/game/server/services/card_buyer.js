@@ -24,7 +24,7 @@ CardBuyer = class CardBuyer {
   }
 
   can_buy() {
-    return this.is_player_turn() && this.is_purchasable() && this.is_valid_buy()
+    return this.is_player_turn() && this.is_purchasable() && this.is_valid_buy() && !this.is_contraband()
   }
 
   update_phase() {
@@ -79,6 +79,10 @@ CardBuyer = class CardBuyer {
 
   is_valid_buy() {
     return this.has_remaining_stock() && this.has_enough_buys() && this.has_enough_money()
+  }
+
+  is_contraband() {
+    return _.contains(this.game.turn.contraband, this.card.name())
   }
 
   has_remaining_stock() {
