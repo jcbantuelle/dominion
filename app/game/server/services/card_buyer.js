@@ -6,7 +6,6 @@ CardBuyer = class CardBuyer {
     this.game_card = this.find_game_card(card_name)
     this.card = ClassCreator.create(this.game_card.top_card.name)
     this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
-    this.buy_event_cards = ['Noble Brigand', 'Farmland']
   }
 
   find_game_card(card_name) {
@@ -19,7 +18,6 @@ CardBuyer = class CardBuyer {
     if (this.can_buy()) {
       this.update_phase()
       this.buy_card()
-      this.haggler()
       Games.update(this.game._id, this.game)
       PlayerCards.update(this.player_cards._id, this.player_cards)
     }
@@ -39,18 +37,9 @@ CardBuyer = class CardBuyer {
     this.update_turn()
     this.update_log()
     this.track_bought_card()
-    this.buy_event()
+    this.buy_events()
     this.gain_card()
     this.embargo()
-  }
-
-  haggler() {
-    let haggler_count = _.size(_.filter(this.player_cards.in_play, function(card) {
-      return card.name === 'Haggler'
-    }))
-    if (haggler_count > 0) {
-      HagglerProcessor.process(this.game, this.player_cards, this.card, haggler_count)
-    }
   }
 
   update_turn() {
@@ -64,11 +53,9 @@ CardBuyer = class CardBuyer {
     this.game.turn.bought_cards.push(bought_card)
   }
 
-  buy_event() {
-    if (_.contains(this.buy_event_cards, this.card.name())) {
-      Games.update(this.game._id, this.game)
-      this.card.buy_event(this)
-    }
+  buy_events() {
+    let buy_event_processor = new BuyEventProcessor(this)
+    buy_event_processor.process()
   }
 
   gain_card() {
