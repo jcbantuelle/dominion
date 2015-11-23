@@ -3,11 +3,11 @@ CardGainer = class CardGainer {
   constructor(game, player_cards, destination, card_name, buy = false) {
     this.game = game
     this.player_cards = player_cards
-    this.destination = this.gain_destination(destination)
+    this.gain_destination_cards = ['Nomad Camp']
     this.card_name = card_name
+    this.destination = this.gain_destination(destination)
     this.buy = buy
     this.gain_event_cards = ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village']
-    this.gain_destination_cards = ['Nomad Camp']
   }
 
   gain_trash_card() {
