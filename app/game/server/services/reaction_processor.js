@@ -4,7 +4,6 @@ ReactionProcessor = class ReactionProcessor {
     this.game = game
     this.player_cards = player_cards
     this.attack_reaction_cards = ['Moat']
-    this.gain_reaction_cards = ['Fools Gold', 'Watchtower']
     this.would_gain_reaction_cards = ['Trader']
   }
 
@@ -70,55 +69,6 @@ ReactionProcessor = class ReactionProcessor {
       let reaction_processor = new ReactionProcessor(game, player_cards)
       reaction_processor.process_attack_reactions()
     }
-  }
-
-  process_gain_reactions(gainer) {
-    let reaction_cards = _.filter(this.player_cards.hand, (card) => {
-      return _.contains(this.gain_reaction_cards, card.name) && this.allowed_gain_reaction(gainer, card)
-    })
-    if (!_.isEmpty(reaction_cards)) {
-      Games.update(this.game._id, this.game)
-      let turn_event_id = TurnEvents.insert({
-        game_id: this.game._id,
-        player_id: this.player_cards.player_id,
-        username: this.player_cards.username,
-        type: 'choose_cards',
-        player_cards: true,
-        instructions: 'Choose Gain Reaction (Or none to skip):',
-        cards: reaction_cards,
-        minimum: 0,
-        maximum: 1
-      })
-      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, gainer)
-      turn_event_processor.process(ReactionProcessor.gain_reaction)
-    }
-  }
-
-  static gain_reaction(game, player_cards, selected_cards, gainer) {
-    if (!_.isEmpty(selected_cards)) {
-      let selected_card = ClassCreator.create(selected_cards[0].name)
-      selected_card.gain_reaction(game, player_cards, gainer)
-      Games.update(game._id, game)
-      PlayerCards.update(player_cards._id, player_cards)
-      let reaction_processor = new ReactionProcessor(game, player_cards)
-      reaction_processor.process_gain_reactions(gainer)
-    }
-  }
-
-  allowed_gain_reaction(gainer, card) {
-    if (card.name === 'Fools Gold') {
-      return this.allow_fools_gold()
-    } else if (card.name === 'Watchtower') {
-      return this.allow_watchtower(gainer)
-    }
-  }
-
-  allow_fools_gold() {
-    return this.player_cards.player_id !== this.game.turn.player._id && _.last(this.game.turn.gain_reaction_stack) === 'Province'
-  }
-
-  allow_watchtower(gainer) {
-    return this.player_cards.player_id === gainer.player_cards.player_id && !_.isEmpty(this.player_cards[gainer.destination]) && _.first(this.player_cards[gainer.destination]).name === gainer.card_name
   }
 
   static discard_reaction(game, player_cards, card) {

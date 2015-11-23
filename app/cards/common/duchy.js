@@ -13,19 +13,17 @@ Duchy = class Duchy extends Card {
   }
 
   gain_event(gainer) {
-    if (gainer.game.duchess) {
-      let turn_event_id = TurnEvents.insert({
-        game_id: gainer.game._id,
-        player_id: gainer.player_cards.player_id,
-        username: gainer.player_cards.username,
-        type: 'choose_yes_no',
-        instructions: `Gain a ${CardView.card_html('action', 'Duchess')}?`,
-        minimum: 1,
-        maximum: 1
-      })
-      let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id)
-      turn_event_processor.process(Duchy.gain_duchess)
-    }
+    let turn_event_id = TurnEvents.insert({
+      game_id: gainer.game._id,
+      player_id: gainer.player_cards.player_id,
+      username: gainer.player_cards.username,
+      type: 'choose_yes_no',
+      instructions: `Gain a ${CardView.card_html('action', 'Duchess')}?`,
+      minimum: 1,
+      maximum: 1
+    })
+    let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id)
+    turn_event_processor.process(Duchy.gain_duchess)
   }
 
   static gain_duchess(game, player_cards, response) {

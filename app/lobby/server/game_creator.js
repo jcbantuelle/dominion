@@ -51,7 +51,7 @@ GameCreator = class GameCreator {
       gained_cards: [],
       last_player_bought_cards: [],
       last_player_gained_cards: [],
-      gain_reaction_stack: [],
+      gain_event_stack: [],
       schemes: 0
     }
   }

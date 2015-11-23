@@ -57,7 +57,7 @@ TurnEnder = class TurnEnder {
       phase: 'action',
       gained_cards: [],
       bought_cards: [],
-      gain_reaction_stack: [],
+      gain_event_stack: [],
       schemes: 0
     }
 

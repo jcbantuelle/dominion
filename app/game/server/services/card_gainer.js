@@ -7,7 +7,6 @@ CardGainer = class CardGainer {
     this.card_name = card_name
     this.destination = this.gain_destination(destination)
     this.buy = buy
-    this.gain_event_cards = ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village']
   }
 
   gain_trash_card() {
@@ -16,13 +15,12 @@ CardGainer = class CardGainer {
       this.gain_game_card()
     } else {
       let card_index = this.find_card_index(this.game.trash)
-      let gained_card = this.game.trash[card_index]
-      this.track_gained_card(gained_card)
+      this.gained_card = this.game.trash[card_index]
+      this.track_gained_card()
       this.player_cards[this.destination].unshift(gained_card)
       this.game.trash.splice(card_index, 1)
-      this.update_log(gained_card)
-      this.gain_event()
-      this.gain_reactions()
+      this.update_log()
+      this.gain_events()
     }
   }
 
@@ -34,14 +32,14 @@ CardGainer = class CardGainer {
     if (game_card.count > 0) {
       game_card.stack.shift()
       this.player_cards[this.destination].unshift(game_card.top_card)
-      this.update_log(game_card.top_card)
-      this.track_gained_card(game_card.top_card)
+      this.gained_card = _.clone(game_card.top_card)
+      this.update_log()
+      this.track_gained_card()
       game_card.count -= 1
       if (game_card.count > 0) {
         game_card.top_card = _.first(game_card.stack)
       }
-      this.gain_event()
-      this.gain_reactions()
+      this.gain_events()
       this.trade_route_token(game_card)
     }
   }
@@ -58,9 +56,8 @@ CardGainer = class CardGainer {
     })
   }
 
-  track_gained_card(card) {
-    let gained_card = _.clone(card)
-    this.game.turn.gained_cards.push(gained_card)
+  track_gained_card(gained_card) {
+    this.game.turn.gained_cards.push(this.gained_card)
   }
 
   gain_destination(destination) {
@@ -72,27 +69,21 @@ CardGainer = class CardGainer {
     }
   }
 
-  gain_event() {
-    if (_.contains(this.gain_event_cards, this.card_name)) {
-      let gained_card = ClassCreator.create(this.card_name)
-      gained_card.gain_event(this)
-    }
+  gain_events() {
+    this.game.turn.gain_event_stack.push(this.card_name)
+
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game, this.player_cards)
+    _.each(ordered_player_cards, (player_cards) => {
+      let gain_event_processor = new GainEventProcessor(this, player_cards)
+      gain_event_processor.process()
+    })
+
+    this.game.turn.gain_event_stack.pop()
   }
 
   would_gain_reactions() {
     let reaction_processor = new ReactionProcessor(this.game, this.player_cards)
     reaction_processor.process_would_gain_reactions(this)
-  }
-
-  gain_reactions() {
-    this.game.turn.gain_reaction_stack.push(this.card_name)
-
-    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game, this.player_cards)
-    _.each(ordered_player_cards, (player_cards) => {
-      let reaction_processor = new ReactionProcessor(this.game, player_cards)
-      reaction_processor.process_gain_reactions(this)
-    })
-    this.game.turn.gain_reaction_stack.pop()
   }
 
   trade_route_token(game_card) {
@@ -102,9 +93,9 @@ CardGainer = class CardGainer {
     }
   }
 
-  update_log(card) {
+  update_log() {
     if (!this.buy || this.gain_from_game_cards) {
-      let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(card)}`
+      let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(this.gained_card)}`
       if (this.destination === 'hand') {
         log_message += ', placing it in hand'
       } else if (this.destination === 'deck') {
