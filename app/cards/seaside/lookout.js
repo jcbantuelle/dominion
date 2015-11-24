@@ -15,11 +15,15 @@ Lookout = class Lookout extends Card {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
     } else {
-      if (_.size(player_cards.deck) < 3 && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(player_cards)
-      }
       player_cards.revealed = _.take(player_cards.deck, 3)
       player_cards.deck = _.drop(player_cards.deck, 3)
+
+      let revealed_card_count = _.size(player_cards.revealed)
+      if (revealed_card_count < 3 && _.size(player_cards.discard) > 0) {
+        DeckShuffler.shuffle(player_cards)
+        player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 3 - revealed_card_count))
+        player_cards.deck = _.drop(player_cards.deck, 3 - revealed_card_count)
+      }
 
       if (_.size(player_cards.revealed) === 1) {
         let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.revealed[0].name)

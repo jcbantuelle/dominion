@@ -15,11 +15,15 @@ Navigator = class Navigator extends Card {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
     } else {
-      if (_.size(player_cards.deck) < 5 && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(player_cards)
-      }
       player_cards.revealed = _.take(player_cards.deck, 5)
       player_cards.deck = _.drop(player_cards.deck, 5)
+
+      let revealed_card_count = _.size(player_cards.revealed)
+      if (revealed_card_count < 5 && _.size(player_cards.discard) > 0) {
+        DeckShuffler.shuffle(player_cards)
+        player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 5 - revealed_card_count))
+        player_cards.deck = _.drop(player_cards.deck, 5 - revealed_card_count)
+      }
 
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> looks at the top ${_.size(player_cards.revealed)} cards of their deck`)
 
