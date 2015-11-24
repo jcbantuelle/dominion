@@ -17,8 +17,8 @@ CardList = class CardList {
     return [
       'Transmute',
       'Vineyard',
-      /*'Apothecary',
-      'Herbalist',
+      'Apothecary',
+      /*'Herbalist',
       'ScryingPool',
       'University',
       'Alchemist',
