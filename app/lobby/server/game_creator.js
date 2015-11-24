@@ -140,7 +140,7 @@ GameCreator = class GameCreator {
 
   treasure_card_names() {
     let treasure_cards = ['Gold','Silver','Copper']
-    if (this.potion_game) {
+    if (this.use_potions) {
       treasure_cards.splice(1, 0, 'Potion')
     }
     if (this.use_prosperity_cards) {
@@ -207,10 +207,9 @@ GameCreator = class GameCreator {
   }
 
   potion_game() {
-    let potion_cards = _.filter(this.selected_kingdom_cards, function(card) {
-      return card.potion_cost > 0
+    return _.any(this.selected_kingdom_cards, function(card) {
+      return card.top_card.potion_cost > 0
     })
-    return !_.isEmpty(potion_cards)
   }
 
   trade_route_game() {
