@@ -23,8 +23,8 @@ CardList = class CardList {
       'University',
       'Alchemist',
       'Familiar',
-      /*'PhilosophersStone',
-      'Golem',
+      'PhilosophersStone',
+      /*'Golem',
       'Apprentice',
       'Possession'*/
     ]
