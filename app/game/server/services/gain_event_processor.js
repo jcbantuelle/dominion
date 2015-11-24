@@ -8,6 +8,10 @@ GainEventProcessor = class GainEventProcessor {
     return ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village']
   }
 
+  static in_play_event_cards() {
+    return ['Royal Seal']
+  }
+
   constructor(gainer, player_cards) {
     this.gainer = gainer
     this.player_cards = player_cards
@@ -40,12 +44,24 @@ GainEventProcessor = class GainEventProcessor {
         }
       }
     })
+
+    _.each(this.player_cards.in_play, (card) => {
+      if (_.contains(GainEventProcessor.in_play_event_cards(), card.name)) {
+        if (card.name === 'Royal Seal') {
+          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.first(this.player_cards[this.gainer.destination]).name === this.gainer.card_name) {
+            this.gain_events.push(card)
+          }
+        } else {
+          this.gain_events.push(card)
+        }
+      }
+    })
   }
 
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, function(event) {
-        return _.contains(GainEventProcessor.event_cards(), event.name)
+        return _.contains(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.gainer.player_cards, this.gain_events, this)
@@ -89,7 +105,7 @@ GainEventProcessor = class GainEventProcessor {
 
       if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.first(player_cards[gain_event_processor.gainer.destination]).name !== gain_event_processor.gainer.card_name) {
         gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
-          return event.name !== 'Watchtower'
+          return event.name !== 'Watchtower' && event.name !== 'Royal Seal'
         })
       }
 
