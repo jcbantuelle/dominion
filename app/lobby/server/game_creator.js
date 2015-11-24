@@ -184,6 +184,8 @@ GameCreator = class GameCreator {
       return 30
     } else if (card.name === 'Platinum') {
       return 12
+    } else if (card.name === 'Potion') {
+      return 16
     } else {
       return 10
     }
