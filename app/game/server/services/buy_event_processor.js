@@ -3,7 +3,7 @@ BuyEventProcessor = class BuyEventProcessor {
   constructor(buyer) {
     this.buyer = buyer
     this.buy_event_cards = ['Noble Brigand', 'Farmland', 'Mint']
-    this.in_play_buy_events = ['Haggler', 'Talisman']
+    this.in_play_buy_events = ['Haggler', 'Talisman', 'Hoard']
     this.find_buy_events()
   }
 
@@ -19,6 +19,10 @@ BuyEventProcessor = class BuyEventProcessor {
         if (card.name === 'Talisman') {
           let cost = CostCalculator.calculate(this.buyer.game, this.buyer.player_cards, this.buyer.card)
           if (cost <= 4 && this.buyer.card.potion_cost() === 0 && !_.contains(this.buyer.card.type_class(), 'victory')) {
+            this.buy_events.push(card)
+          }
+        } else if (card.name === 'Hoard') {
+          if (_.contains(this.buyer.card.type_class(), 'victory')) {
             this.buy_events.push(card)
           }
         } else {
