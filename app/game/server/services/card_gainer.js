@@ -17,7 +17,7 @@ CardGainer = class CardGainer {
       let card_index = this.find_card_index(this.game.trash)
       this.gained_card = this.game.trash[card_index]
       this.track_gained_card()
-      this.player_cards[this.destination].unshift(gained_card)
+      this.player_cards[this.destination].unshift(this.gained_card)
       this.game.trash.splice(card_index, 1)
       this.update_log()
       this.gain_events()
