@@ -34,13 +34,15 @@ Herbalist = class Herbalist extends Card {
   }
 
   static put_on_deck(game, player_cards, selected_cards) {
-    let card_index = _.findIndex(player_cards.in_play, function(card) {
-      return card.name === selected_cards[0].name
-    })
+    if (!_.isEmpty(selected_cards)) {
+      let card_index = _.findIndex(player_cards.in_play, function(card) {
+        return card.name === selected_cards[0].name
+      })
 
-    let card = player_cards.in_play.splice(card_index, 1)[0]
-    player_cards.deck.unshift(card)
-    game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(card)} on top of their deck`)
+      let card = player_cards.in_play.splice(card_index, 1)[0]
+      player_cards.deck.unshift(card)
+      game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(card)} on top of their deck`)
+    }
   }
 
 }
