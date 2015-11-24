@@ -40,6 +40,7 @@ CardBuyer = class CardBuyer {
     this.buy_events()
     this.gain_card()
     this.embargo()
+    this.goons()
   }
 
   update_turn() {
@@ -67,6 +68,16 @@ CardBuyer = class CardBuyer {
       let card_gainer = new CardGainer(this.game, this.player_cards, 'discard', 'Curse')
       card_gainer.gain_game_card()
     })
+  }
+
+  goons() {
+    let goon_count = _.size(_.filter(this.player_cards.in_play, function(card) {
+      return card.name === 'Goons'
+    }))
+    if (goon_count > 0) {
+      this.player_cards.victory_tokens += goon_count
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
+    }
   }
 
   is_player_turn() {
