@@ -131,8 +131,8 @@ CardList = class CardList {
       'Bank',
       'Expand',
       'Forge',
-      /*'KingsCourt',
-      'Peddler'*/
+      'KingsCourt',
+      /*'Peddler'*/
     ]
   }
 }
