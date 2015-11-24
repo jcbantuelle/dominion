@@ -13,7 +13,7 @@ Bank = class Bank extends Card {
       return _.contains(card.types, 'treasure')
     }))
     game.turn.coins += treasure_count
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${treasure_count} from ${CardView.render(this)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${treasure_count}`)
   }
 
 }
