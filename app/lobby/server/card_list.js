@@ -11,7 +11,23 @@ CardList = class CardList {
   }
 
   card_list() {
-    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity())
+    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy())
+
+  static alchemy() {
+    return [
+      /*'Transmute',
+      'Vineyard',
+      'Apothecary',
+      'Herbalist',
+      'ScryingPool',
+      'University',
+      'Alchemist',
+      'Familiar',
+      'PhilosophersStone',
+      'Golem',
+      'Apprentice',
+      'Possession'*/
+    ]
   }
 
   static base() {
