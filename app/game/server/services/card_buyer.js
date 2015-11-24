@@ -85,7 +85,14 @@ CardBuyer = class CardBuyer {
   }
 
   is_purchasable() {
-    return this.card.is_purchasable()
+    return this.card.is_purchasable() && (this.card.name() !== 'Grand Market' || this.allow_grand_market())
+  }
+
+  allow_grand_market() {
+    let coppers = _.filter(this.player_cards.in_play, function(card) {
+      return card.name === 'Copper'
+    })
+    return _.isEmpty(coppers)
   }
 
   is_valid_buy() {
