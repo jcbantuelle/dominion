@@ -2,7 +2,7 @@ BuyEventProcessor = class BuyEventProcessor {
 
   constructor(buyer) {
     this.buyer = buyer
-    this.buy_event_cards = ['Noble Brigand', 'Farmland']
+    this.buy_event_cards = ['Noble Brigand', 'Farmland', 'Mint']
     this.in_play_buy_events = ['Haggler', 'Talisman']
     this.find_buy_events()
   }
