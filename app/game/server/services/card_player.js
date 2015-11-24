@@ -1,16 +1,17 @@
 CardPlayer = class CardPlayer {
 
-  constructor(game, player_cards, card_name) {
+  constructor(game, player_cards, card_name, free_play = false) {
     this.card = ClassCreator.create(card_name)
     this.game = game
     this.player_cards = player_cards
+    this.free_play = free_play
     this.card_index = _.findIndex(this.player_cards.hand, (card) => {
       return card.name === this.card.name()
     })
   }
 
   play(auto_update = true) {
-    if (this.can_play()) {
+    if (this.free_play || this.can_play()) {
       this.update_phase()
       this.put_card_in_play()
       this.use_action()
@@ -44,8 +45,10 @@ CardPlayer = class CardPlayer {
   }
 
   update_phase() {
-    if (this.game.turn.phase == 'action' && _.contains(this.card.types(), 'treasure')) {
-      this.game.turn.phase = 'treasure'
+    if (!this.free_play) {
+      if (this.game.turn.phase == 'action' && _.contains(this.card.types(), 'treasure')) {
+        this.game.turn.phase = 'treasure'
+      }
     }
   }
 
@@ -69,8 +72,10 @@ CardPlayer = class CardPlayer {
   }
 
   use_action() {
-    if (_.contains(this.card.types(), 'action')) {
-      this.game.turn.actions -= 1
+    if (!this.free_play) {
+      if (_.contains(this.card.types(), 'action')) {
+        this.game.turn.actions -= 1
+      }
     }
   }
 
