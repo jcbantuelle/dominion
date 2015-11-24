@@ -24,8 +24,8 @@ CardList = class CardList {
       'Alchemist',
       'Familiar',
       'PhilosophersStone',
-      /*'Golem',
-      'Apprentice',
+      'Golem',
+      /*'Apprentice',
       'Possession'*/
     ]
   }
