@@ -102,6 +102,7 @@ GameCreator = class GameCreator {
   game_cards() {
     this.selected_kingdom_cards = this.kingdom_cards()
     this.use_prosperity_cards = this.prosperity_game()
+    this.use_potions = this.potion_game()
     this.selected_common_cards = this.common_cards()
     this.trade_route_game()
     return this.selected_kingdom_cards.concat(this.selected_common_cards)
@@ -139,6 +140,9 @@ GameCreator = class GameCreator {
 
   treasure_card_names() {
     let treasure_cards = ['Gold','Silver','Copper']
+    if (this.potion_game) {
+      treasure_cards.splice(1, 0, 'Potion')
+    }
     if (this.use_prosperity_cards) {
       treasure_cards.unshift('Platinum')
     }
@@ -198,6 +202,13 @@ GameCreator = class GameCreator {
     }))
     let random_number = this.random_number(1, _.size(this.selected_kingdom_cards))
     return prosperity_count >= random_number
+  }
+
+  potion_game() {
+    let potion_cards = _.filter(this.selected_kingdom_cards, function(card) {
+      return card.potion_cost > 0
+    })
+    return !_.isEmpty(potion_cards)
   }
 
   trade_route_game() {

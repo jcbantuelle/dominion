@@ -3,7 +3,7 @@ AllCoinPlayer = class AllCoinPlayer {
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
-    this.bulk_playable_treasures = ['Copper', 'Silver', 'Gold', 'Platinum', 'Fools Gold', 'Cache']
+    this.bulk_playable_treasures = ['Copper', 'Silver', 'Gold', 'Platinum', 'Fools Gold', 'Cache', 'Potion']
   }
 
   play() {
