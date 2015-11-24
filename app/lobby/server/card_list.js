@@ -128,8 +128,8 @@ CardList = class CardList {
       'Goons',
       'GrandMarket',
       'Hoard',
-      /*'Bank',
-      'Expand',
+      'Bank',
+      /*'Expand',
       'Forge',
       'KingsCourt',
       'Peddler'*/
