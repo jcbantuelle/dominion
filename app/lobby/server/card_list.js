@@ -12,6 +12,7 @@ CardList = class CardList {
 
   card_list() {
     return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy())
+  }
 
   static alchemy() {
     return [
