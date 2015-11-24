@@ -25,8 +25,13 @@ Meteor.methods({
         let current_game = game(game_id)
         if (Meteor.userId() === current_game.turn.player._id) {
           ActionLock[game_id] = true
-          let card_buyer = new CardBuyer(current_game, player_cards(game_id), card_name)
+          let current_player_cards = player_cards(game_id)
+          let card_buyer = new CardBuyer(current_game, current_player_cards, card_name)
           card_buyer.buy()
+          if (current_game.turn.buys === 0) {
+            let turn_ender = new TurnEnder(current_game, current_player_cards)
+            turn_ender.end_turn()
+          }
           ActionLock[game_id] = false
         }
       }
