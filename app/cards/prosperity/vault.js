@@ -85,7 +85,7 @@ Vault = class Vault extends Card {
         turn_event_processor.process(Vault.discard_cards_for_draw)
       }
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${cards.username} chooses not to discard`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to discard`)
     }
   }
 
