@@ -30,8 +30,10 @@ RepeatCardPlayer = class RepeatCardPlayer extends CardPlayer {
     let source_card_index = _.findIndex(this.player_cards.playing, function(card) {
       return card.name === source && !card.processed
     })
-    this.player_cards.playing[source_card_index].destination = 'duration'
-    this.player_cards.playing[source_card_index].processed = true
+    if (source_card_index !== -1) {
+      this.player_cards.playing[source_card_index].destination = 'duration'
+      this.player_cards.playing[source_card_index].processed = true
+    }
   }
 
   play_once() {
