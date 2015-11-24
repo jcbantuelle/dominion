@@ -3,22 +3,30 @@ DiscardInPlayProcessor = class DiscardInPlayProcessor {
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
-    this.event_cards = ['Treasury', 'Herbalist']
+    this.event_cards = ['Treasury', 'Herbalist', 'Alchemist']
     this.find_discard_events()
   }
 
   find_discard_events() {
     this.discard_events = _.filter(this.player_cards.in_play, (card) => {
-      if (card.name === 'Treasury') {
-        let victory_cards = _.filter(this.game.turn.bought_cards, function(card) {
-          return _.contains(card.types, 'victory')
-        })
-        return _.isEmpty(victory_cards)
-      } else if (card.name === 'Herbalist') {
-        let treasures = _.filter(this.player_cards.in_play, function(card) {
-          return _.contains(card.types, 'treasure')
-        })
-        return !_.isEmpty(treasures)
+      if (_.contains(this.event_cards, card.name)) {
+        if (card.name === 'Treasury') {
+          return !_.any(this.game.turn.bought_cards, function(card) {
+            return _.contains(card.types, 'victory')
+          })
+        } else if (card.name === 'Herbalist') {
+          return _.any(this.player_cards.in_play, function(card) {
+            return _.contains(card.types, 'treasure')
+          })
+        } else if (card.name === 'Alchemist') {
+          return _.any(this.player_cards.in_play, function(card) {
+            return card.name === 'Potion'
+          })
+        } else {
+          return true
+        }
+      } else {
+        return false
       }
     })
   }
@@ -62,15 +70,29 @@ DiscardInPlayProcessor = class DiscardInPlayProcessor {
     player_cards.discard = player_cards.discard.concat(player_cards.discarding)
     player_cards.discarding = []
 
-    let treasures = _.filter(player_cards.in_play, function(card) {
+    DiscardInPlayProcessor.purge_invalid_discard_events(game, player_cards, discard_in_play_processor)
+
+    Games.update(game._id, game)
+    discard_in_play_processor.process_cards()
+  }
+
+  static purge_invalid_discard_events(game, player_cards, discard_in_play_processor) {
+    let treasures = _.any(player_cards.in_play, function(card) {
       return _.contains(card.types, 'treasure')
     })
-    if(_.isEmpty(treasures)) {
+    if (!treasures) {
       discard_in_play_processor.discard_events = _.filter(discard_in_play_processor.discard_events, function(event) {
         return event.name !== 'Herbalist'
       })
     }
-    Games.update(game._id, game)
-    discard_in_play_processor.process_cards()
+
+    let potions = _.any(player_cards.in_play, function(card) {
+      return card.name === 'Potion'
+    })
+    if (!potions) {
+      discard_in_play_processor.discard_events = _.filter(discard_in_play_processor.discard_events, function(event) {
+        return event.name !== 'Alchemist'
+      })
+    }
   }
 }
