@@ -15,8 +15,8 @@ CardList = class CardList {
 
   static alchemy() {
     return [
-      /*'Transmute',
-      'Vineyard',
+      'Transmute',
+      /*'Vineyard',
       'Apothecary',
       'Herbalist',
       'ScryingPool',
