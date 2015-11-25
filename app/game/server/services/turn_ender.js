@@ -59,7 +59,8 @@ TurnEnder = class TurnEnder {
       bought_cards: [],
       gain_event_stack: [],
       contraband: [],
-      schemes: 0
+      schemes: 0,
+      previous_player: this.game.turn.player
     }
 
     if (this.game.turn.outpost && !this.game.turn.outpost_turn) {
