@@ -22,7 +22,7 @@ TurnEnder = class TurnEnder {
 
   update_db() {
     Games.update(this.game._id, this.game)
-    if (!this.game.turn.outpost_turn) {
+    if (this.player_cards._id !== this.next_player_cards._id) {
       PlayerCards.update(this.player_cards._id, this.player_cards)
     }
     PlayerCards.update(this.next_player_cards._id, this.next_player_cards)
@@ -63,7 +63,7 @@ TurnEnder = class TurnEnder {
       previous_player: this.game.turn.player
     }
 
-    if (this.game.turn.outpost && !this.game.turn.outpost_turn) {
+    if (this.game.turn.outpost && this.game.turn.previous_player._id !== this.game.turn.player._id) {
       this.outpost_turn()
     } else {
       this.next_player_turn()
@@ -72,7 +72,6 @@ TurnEnder = class TurnEnder {
   }
 
   outpost_turn() {
-    this.new_turn.outpost_turn = true
     this.new_turn.player = this.game.turn.player
     this.next_player_cards = this.player_cards
     this.new_turn.last_player_gained_cards = this.game.turn.last_player_gained_cards

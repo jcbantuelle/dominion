@@ -10,7 +10,7 @@ Outpost = class Outpost extends Card {
 
   play(game, player_cards) {
     game.turn.outpost = true
-    if (!game.turn.outpost_turn) {
+    if (game.turn.previous_player._id !== game.turn.player._id) {
       return 'duration'
     }
   }
