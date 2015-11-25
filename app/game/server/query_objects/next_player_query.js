@@ -10,7 +10,8 @@ NextPlayerQuery = class NextPlayerQuery {
   }
 
   next_player_index() {
-    return (this.current_player_index() + 1) % _.size(this.game.players)
+    let player_index = this.current_player_index() + 1
+    return player_index === _.size(this.game.players) ? 0 : player_index
   }
 
   current_player_index() {
