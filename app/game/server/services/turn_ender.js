@@ -10,6 +10,7 @@ TurnEnder = class TurnEnder {
     this.discard_hand()
     this.clean_up_cards_in_play()
     this.draw_new_hand()
+    this.track_gained_cards()
     this.game.log.push(`<strong>${this.game.turn.player.username}</strong> ends their turn`)
     if (this.game_over()) {
       this.end_game()
@@ -48,6 +49,10 @@ TurnEnder = class TurnEnder {
     card_drawer.draw(cards_to_draw, false)
   }
 
+  track_gained_cards() {
+    this.player_cards.last_turn_gained_cards = this.game.turn.gained_cards
+  }
+
   set_next_turn() {
     this.new_turn = {
       actions: 1,
@@ -74,14 +79,12 @@ TurnEnder = class TurnEnder {
   outpost_turn() {
     this.new_turn.player = this.game.turn.player
     this.next_player_cards = this.player_cards
-    this.new_turn.last_player_gained_cards = this.game.turn.last_player_gained_cards
     this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
   }
 
   next_player_turn() {
     let next_player_query = new NextPlayerQuery(this.game, Meteor.userId())
     this.new_turn.player = next_player_query.next_player()
-    this.new_turn.last_player_gained_cards = this.game.turn.gained_cards
     this.game.turn_number += 1
     this.next_player_cards = PlayerCards.findOne({
       game_id: this.game._id,

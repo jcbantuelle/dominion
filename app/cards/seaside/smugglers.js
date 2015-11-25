@@ -9,7 +9,13 @@ Smugglers = class Smugglers extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(game.turn.last_player_gained_cards, function(gained_card) {
+    let previous_player_query = new PreviousPlayerQuery(game, player_cards.player_id)
+    let previous_player_cards = PlayerCards.findOne({
+      game_id: game._id,
+      player_id: previous_player_query.previous_player()._id
+    })
+
+    let eligible_cards = _.filter(previous_player_cards.last_turn_gained_cards, function(gained_card) {
       let game_stack = _.find(game.cards, function(stack) {
         return stack.name === gained_card.stack_name
       })
