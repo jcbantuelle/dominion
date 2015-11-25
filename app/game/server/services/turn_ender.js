@@ -80,7 +80,8 @@ TurnEnder = class TurnEnder {
   }
 
   next_player_turn() {
-    this.new_turn.player = this.next_player()
+    let next_player_query = new NextPlayerQuery(this.game, Meteor.userId())
+    this.new_turn.player = next_player_query.next_player()
     this.new_turn.last_player_gained_cards = this.game.turn.gained_cards
     this.new_turn.last_player_bought_cards = this.game.turn.bought_cards
     this.game.turn_number += 1
@@ -116,20 +117,6 @@ TurnEnder = class TurnEnder {
     this.next_player_cards.hand = this.next_player_cards.hand.concat(this.next_player_cards.haven)
     this.game.log.push(`&nbsp;&nbsp;<strong>${this.next_player_cards.username}</strong> puts ${_.size(this.next_player_cards.haven)} cards in hand from ${CardView.card_html('action duration', 'Haven')}`)
     this.next_player_cards.haven = []
-  }
-
-  next_player() {
-    return this.game.players[this.next_player_index()]
-  }
-
-  next_player_index() {
-    return (this.current_player_index() + 1) % _.size(this.game.players)
-  }
-
-  current_player_index() {
-    return _.findIndex(this.game.players, function(player) {
-      return player._id === Meteor.userId()
-    })
   }
 
   player_turn_number() {
