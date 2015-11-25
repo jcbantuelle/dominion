@@ -49,7 +49,6 @@ GameCreator = class GameCreator {
       phase: 'action',
       bought_cards: [],
       gained_cards: [],
-      last_player_bought_cards: [],
       last_player_gained_cards: [],
       gain_event_stack: [],
       contraband: [],
