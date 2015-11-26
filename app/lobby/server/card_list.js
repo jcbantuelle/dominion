@@ -11,7 +11,37 @@ CardList = class CardList {
   }
 
   card_list() {
-    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy())
+    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue())
+  }
+
+  static intrigue() {
+    return [
+      /*'Courtyard',
+      'Pawn',
+      'SecretChamber',
+      'GreatHall',
+      'Masquerade',
+      'ShantyTown',
+      'Steward',
+      'Swindler',
+      'WishingWell',
+      'Baron',
+      'Bridge',
+      'Conspirator',
+      'Coppersmith',
+      'Ironworks',
+      'MiningVillage',
+      'Scout',
+      'Duke',
+      'Minion',
+      'Saboteur',
+      'Torturer',
+      'TradingPost',
+      'Tribute',
+      'Upgrade',
+      'Harem',
+      'Nobles'*/
+    ]
   }
 
   static alchemy() {
