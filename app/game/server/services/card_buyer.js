@@ -24,7 +24,7 @@ CardBuyer = class CardBuyer {
   }
 
   can_buy() {
-    return this.is_player_turn() && this.is_purchasable() && this.is_valid_buy() && !this.is_contraband()
+    return this.is_purchasable() && this.is_valid_buy() && !this.is_contraband()
   }
 
   update_phase() {
@@ -78,10 +78,6 @@ CardBuyer = class CardBuyer {
       this.player_cards.victory_tokens += goon_count
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
     }
-  }
-
-  is_player_turn() {
-    return this.game.turn.player._id == Meteor.userId()
   }
 
   is_purchasable() {

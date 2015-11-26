@@ -41,7 +41,7 @@ CardPlayer = class CardPlayer {
   }
 
   can_play() {
-    return this.is_player_turn() && this.is_playable() && this.is_valid_play() && this.card_exists()
+    return this.is_playable() && this.is_valid_play() && this.card_exists()
   }
 
   update_phase() {
@@ -86,10 +86,6 @@ CardPlayer = class CardPlayer {
 
   update_log() {
     this.game.log.push(`<strong>${this.player_cards.username}</strong> plays ${CardView.render(this.card)}`)
-  }
-
-  is_player_turn() {
-    return this.game.turn.player._id == Meteor.userId()
   }
 
   is_playable() {
