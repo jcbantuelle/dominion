@@ -27,12 +27,20 @@ CardTrasher = class CardTrasher {
   }
 
   trash_card(card_index) {
-    this.game.trash.push(this.player_cards[this.source][card_index])
+    if (this.game.turn.possessed) {
+      this.player_cards.possession_trash.push(this.player_cards[this.source][card_index])
+    } else {
+      this.game.trash.push(this.player_cards[this.source][card_index])
+    }
     this.trashed_cards = this.trashed_cards.concat(this.player_cards[this.source].splice(card_index, 1))
   }
 
   update_log() {
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> trashes ${CardView.render(this.trashed_cards)}`)
+    let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> trashes ${CardView.render(this.trashed_cards)}`
+    if (this.game.turn.possessed) {
+      log_message += ', setting the cards aside'
+    }
+    this.game.log.push(log_message)
   }
 
 }

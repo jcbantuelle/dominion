@@ -17,10 +17,12 @@ CardGainer = class CardGainer {
       let card_index = this.find_card_index(this.game.trash)
       this.gained_card = this.game.trash[card_index]
       this.track_gained_card()
+      this.possessed()
       this.player_cards[this.destination].unshift(this.gained_card)
       this.game.trash.splice(card_index, 1)
       this.update_log()
       this.gain_events()
+      this.update_cards()
     }
   }
 
@@ -31,6 +33,7 @@ CardGainer = class CardGainer {
     let game_card = this.find_card(this.game.cards)
     if (game_card.count > 0) {
       game_card.stack.shift()
+      this.possessed()
       this.player_cards[this.destination].unshift(game_card.top_card)
       this.gained_card = _.clone(game_card.top_card)
       this.update_log()
@@ -41,6 +44,24 @@ CardGainer = class CardGainer {
       }
       this.gain_events()
       this.trade_route_token(game_card)
+      this.update_cards()
+    }
+  }
+
+  update_cards() {
+    if (this.game.turn.possessed) {
+      PlayerCards.update(this.player_cards._id, this.player_cards)
+    }
+  }
+
+  possessed() {
+    if (this.game.turn.possessed) {
+      this.possessed_player = this.player_cards.username
+      this.player_cards = PlayerCards.findOne({
+        game_id: this.game._id,
+        player_id: this.game.turn.possessed._id
+      })
+      this.destination = 'discard'
     }
   }
 
@@ -57,7 +78,9 @@ CardGainer = class CardGainer {
   }
 
   track_gained_card(gained_card) {
-    this.game.turn.gained_cards.push(this.gained_card)
+    if (!this.game.turn.possessed) {
+      this.game.turn.gained_cards.push(this.gained_card)
+    }
   }
 
   gain_destination(destination) {
@@ -96,6 +119,9 @@ CardGainer = class CardGainer {
   update_log() {
     if (!this.buy || this.gain_from_game_cards) {
       let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(this.gained_card)}`
+      if (this.game.turn.possessed) {
+        log_message += ` instead of ${this.possessed_player}`
+      }
       if (this.destination === 'hand') {
         log_message += ', placing it in hand'
       } else if (this.destination === 'deck') {

@@ -36,6 +36,12 @@ TurnEnder = class TurnEnder {
     }
     let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play')
     card_discarder.discard_all(false)
+
+    if (this.game.turn.possessed && !_.isEmpty(this.player_cards.possession_trash)) {
+      this.player_cards.discard = this.player_cards.discard.concat(this.player_cards.possession_trash)
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> puts ${CardView.render(this.player_cards.possession_trash)} in their discard`)
+      this.player_cards.possession_trash = []
+    }
   }
 
   discard_hand() {
@@ -65,7 +71,13 @@ TurnEnder = class TurnEnder {
       gain_event_stack: [],
       contraband: [],
       schemes: 0,
+      possessions: 0,
       previous_player: this.game.turn.player
+    }
+
+    if (this.game.turn.possessed) {
+      delete this.game.turn.possessed
+      Games.update(this.game._id, this.game)
     }
 
     this.set_up_extra_turns()
@@ -81,12 +93,68 @@ TurnEnder = class TurnEnder {
   }
 
   set_up_extra_turns() {
+    this.set_up_outpost_turn()
+    this.set_up_possession_turns()
+    this.set_player_after_extra_turns(this.game.turn.player)
+  }
+
+  set_up_outpost_turn() {
     if (this.game.turn.outpost && this.game.turn.previous_player._id !== this.game.turn.player._id) {
-      if (_.isEmpty(this.game.extra_turns)) {
-        let next_player_query = new NextPlayerQuery(this.game, this.game.turn.player._id)
-        this.game.player_after_extra_turns = next_player_query.next_player()
+      if (this.is_possessed_next_turn()) {
+        this.choose_outpost_or_possession()
+      } else {
+        this.game.extra_turns.push({type: 'Outpost', player: this.game.turn.player})
       }
-      this.game.extra_turns.push({type: 'Outpost', player: this.game.turn.player})
+    }
+  }
+
+  set_up_possession_turns() {
+    _.times(this.game.turn.possessions, () => {
+      this.game.extra_turns.push({type: 'Possession', player: this.game.turn.player})
+    })
+  }
+
+  is_possessed_next_turn() {
+    let next_extra_turn = _.first(this.game.extra_turns)
+    if (next_extra_turn && next_extra_turn.type === 'Possession') {
+      let next_player_query = new NextPlayerQuery(this.game, next_extra_turn.player._id)
+      return next_player_query.next_player()._id === this.game.turn.player._id
+    } else {
+      return false
+    }
+  }
+
+  choose_outpost_or_possession() {
+    let turn_event_id = TurnEvents.insert({
+      game_id: this.game._id,
+      player_id: this.player_cards.player_id,
+      username: this.player_cards.username,
+      type: 'choose_options',
+      instructions: 'Take your outpost turn or get possessed first?',
+      minimum: 1,
+      maximum: 1,
+      options: [
+        {text: `${CardView.card_html('action duration', 'Outpost')}`, value: 'outpost'},
+        {text: `${CardView.card_html('action', 'Possession')}`, value: 'possession'}
+      ]
+    })
+    let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+    turn_event_processor.process(TurnEnder.process_outpost_or_possession)
+  }
+
+  static process_outpost_or_possession(game, player_cards, response) {
+    response = response[0]
+    if (response === 'outpost') {
+      game.extra_turns.unshift({type: 'Outpost', player: game.turn.player})
+    } else if (response === 'possession') {
+      game.extra_turns.splice(1, 0, {type: 'Outpost', player: game.turn.player})
+    }
+  }
+
+  set_player_after_extra_turns(player) {
+    if (!_.isEmpty(this.game.extra_turns) && !this.game.player_after_extra_turns) {
+      let next_player_query = new NextPlayerQuery(this.game, player._id)
+      this.game.player_after_extra_turns = next_player_query.next_player()
     }
   }
 
@@ -94,6 +162,8 @@ TurnEnder = class TurnEnder {
     let extra_turn = this.game.extra_turns.shift()
     if (extra_turn.type === 'Outpost') {
       this.outpost_turn(extra_turn.player)
+    } else if (extra_turn.type === 'Possession') {
+      this.possession_turn(extra_turn.player)
     }
   }
 
@@ -111,6 +181,13 @@ TurnEnder = class TurnEnder {
   outpost_turn(player) {
     this.new_turn.player = player
     this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
+  }
+
+  possession_turn(player) {
+    let next_player_query = new NextPlayerQuery(this.game, player._id)
+    this.new_turn.player = next_player_query.next_player()
+    this.new_turn.possessed = player
+    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn possessed by ${this.new_turn.possessed.username} -</strong>`)
   }
 
   next_player_turn() {

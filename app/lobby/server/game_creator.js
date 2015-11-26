@@ -52,7 +52,8 @@ GameCreator = class GameCreator {
       gained_cards: [],
       gain_event_stack: [],
       contraband: [],
-      schemes: 0
+      schemes: 0,
+      possessions: 0
     }
   }
 
@@ -87,7 +88,8 @@ GameCreator = class GameCreator {
       hand: hand,
       pirate_ship_coins: 0,
       victory_tokens: 0,
-      last_turn_gained_cards: []
+      last_turn_gained_cards: [],
+      possession_trash: []
     })
   }
 
