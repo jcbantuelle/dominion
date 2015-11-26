@@ -89,6 +89,9 @@ TurnEnder = class TurnEnder {
     }
 
     this.next_player_cards = this.find_next_player_cards()
+    if (!this.new_turn.extra_turn) {
+      this.next_player_cards.turns += 1
+    }
     this.game.turn = this.new_turn
   }
 
@@ -180,6 +183,7 @@ TurnEnder = class TurnEnder {
 
   outpost_turn(player) {
     this.new_turn.player = player
+    this.new_turn.extra_turn = true
     this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
   }
 
@@ -187,6 +191,7 @@ TurnEnder = class TurnEnder {
     let next_player_query = new NextPlayerQuery(this.game, player._id)
     this.new_turn.player = next_player_query.next_player()
     this.new_turn.possessed = player
+    this.new_turn.extra_turn = true
     this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn possessed by ${this.new_turn.possessed.username} -</strong>`)
   }
 
@@ -198,6 +203,7 @@ TurnEnder = class TurnEnder {
       let next_player_query = new NextPlayerQuery(this.game, this.game.turn.player._id)
       this.new_turn.player = next_player_query.next_player()
     }
+    this.new_turn.extra_turn = false
     this.game.turn_number += 1
     this.game.log.push(`<strong>- ${this.new_turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
   }

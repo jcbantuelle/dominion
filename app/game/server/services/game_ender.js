@@ -34,7 +34,8 @@ GameEnder = class GameEnder {
       let player_score = {
         username: player_cards.username,
         point_cards: point_cards,
-        points: this.card_score(point_cards) + player_cards.victory_tokens
+        points: this.card_score(point_cards) + player_cards.victory_tokens,
+        turns: player_cards.turns
       }
       if (player_cards.victory_tokens > 0) {
         player_score.victory_tokens = player_cards.victory_tokens
@@ -78,10 +79,23 @@ GameEnder = class GameEnder {
   }
 
   winners() {
-    return _.chain(this.game.scores).filter((score) => {
+    let winners = _.filter(this.game.scores, (score) => {
       return score.points === this.top_score()
-    }).map(function(score) {
-      return score.username
-    }).value().join(', ')
+    })
+    if (_.size(winners) > 1) {
+      winners = this.tiebreaker(winners)
+    }
+    return _.pluck(winners, 'username').join(', ')
+  }
+
+  tiebreaker(top_scorers) {
+    return _.reduce(top_scorers, function(winners, top_scorer) {
+      if (_.isEmpty(winners) || top_scorer.turns === winners[0].turns) {
+        winners.push(top_scorer)
+      } else if (top_scorer.turns < winners[0].turns) {
+        winners = [top_scorer]
+      }
+      return winners
+    }, [])
   }
 }

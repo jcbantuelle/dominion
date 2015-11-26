@@ -89,7 +89,8 @@ GameCreator = class GameCreator {
       pirate_ship_coins: 0,
       victory_tokens: 0,
       last_turn_gained_cards: [],
-      possession_trash: []
+      possession_trash: [],
+      turns: (this.game.turn.player._id === player._id) ? 1 : 0
     })
   }
 
