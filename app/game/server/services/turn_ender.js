@@ -68,28 +68,60 @@ TurnEnder = class TurnEnder {
       previous_player: this.game.turn.player
     }
 
-    if (this.game.turn.outpost && this.game.turn.previous_player._id !== this.game.turn.player._id) {
-      this.outpost_turn()
+    this.set_up_extra_turns()
+
+    if (!_.isEmpty(this.game.extra_turns)) {
+      this.process_extra_turns()
     } else {
       this.next_player_turn()
     }
+
+    this.next_player_cards = this.find_next_player_cards()
     this.game.turn = this.new_turn
   }
 
-  outpost_turn() {
-    this.new_turn.player = this.game.turn.player
-    this.next_player_cards = this.player_cards
+  set_up_extra_turns() {
+    if (this.game.turn.outpost && this.game.turn.previous_player._id !== this.game.turn.player._id) {
+      if (_.isEmpty(this.game.extra_turns)) {
+        let next_player_query = new NextPlayerQuery(this.game, this.game.turn.player._id)
+        this.game.player_after_extra_turns = next_player_query.next_player()
+      }
+      this.game.extra_turns.push({type: 'Outpost', player: this.game.turn.player})
+    }
+  }
+
+  process_extra_turns() {
+    let extra_turn = this.game.extra_turns.shift()
+    if (extra_turn.type === 'Outpost') {
+      this.outpost_turn(extra_turn.player)
+    }
+  }
+
+  find_next_player_cards() {
+    if (this.new_turn.player._id === this.player_cards.player_id) {
+      return this.player_cards
+    } else {
+      return PlayerCards.findOne({
+        game_id: this.game._id,
+        player_id: this.new_turn.player._id
+      })
+    }
+  }
+
+  outpost_turn(player) {
+    this.new_turn.player = player
     this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
   }
 
   next_player_turn() {
-    let next_player_query = new NextPlayerQuery(this.game, Meteor.userId())
-    this.new_turn.player = next_player_query.next_player()
+    if (this.game.player_after_extra_turns) {
+      this.new_turn.player = this.game.player_after_extra_turns
+      delete this.game.player_after_extra_turns
+    } else {
+      let next_player_query = new NextPlayerQuery(this.game, this.game.turn.player._id)
+      this.new_turn.player = next_player_query.next_player()
+    }
     this.game.turn_number += 1
-    this.next_player_cards = PlayerCards.findOne({
-      game_id: this.game._id,
-      player_id: this.new_turn.player._id
-    })
     this.game.log.push(`<strong>- ${this.new_turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
   }
 

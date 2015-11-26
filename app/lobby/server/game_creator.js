@@ -24,7 +24,8 @@ GameCreator = class GameCreator {
       trade_route_tokens: 0,
       log: [],
       turn_number: 1,
-      duchess: this.has_duchess(cards)
+      duchess: this.has_duchess(cards),
+      extra_turns: []
     })
   }
 
