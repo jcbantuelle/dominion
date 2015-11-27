@@ -18,8 +18,8 @@ CardList = class CardList {
     return [
       'Courtyard',
       'Pawn',
-      /*'SecretChamber',
-      'GreatHall',
+      'SecretChamber',
+      /*'GreatHall',
       'Masquerade',
       'ShantyTown',
       'Steward',
