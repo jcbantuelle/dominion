@@ -38,10 +38,4 @@ ReactionProcessor = class ReactionProcessor {
     }
   }
 
-  static discard_reaction(game, player_cards, card) {
-    let reaction_card = ClassCreator.create(card.name)
-    reaction_card.discard_reaction(game, player_cards)
-    Games.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
-  }
 }

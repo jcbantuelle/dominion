@@ -51,7 +51,10 @@ CardDiscarder = class CardDiscarder {
       return _.contains(this.discard_reaction_cards, card.name)
     })
     _.each(discard_reactions, (card) => {
-      ReactionProcessor.discard_reaction(this.game, this.player_cards, card)
+      let reaction_card = ClassCreator.create(card.name)
+      reaction_card.discard_reaction(this.game, this.player_cards)
+      Games.update(this.game._id, this.game)
+      PlayerCards.update(this.player_cards._id, this.player_cards)
     })
   }
 
