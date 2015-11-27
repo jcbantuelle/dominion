@@ -13,7 +13,8 @@ Moat = class Moat extends Card {
     card_drawer.draw(2)
   }
 
-  attack_reaction(game, player_cards) {
+  attack_event(game, player_cards) {
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(this)}`)
     player_cards.moat = true
   }
 
