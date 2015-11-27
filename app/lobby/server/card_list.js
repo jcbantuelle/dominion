@@ -16,8 +16,8 @@ CardList = class CardList {
 
   static intrigue() {
     return [
-      /*'Courtyard',
-      'Pawn',
+      'Courtyard',
+      /*'Pawn',
       'SecretChamber',
       'GreatHall',
       'Masquerade',
