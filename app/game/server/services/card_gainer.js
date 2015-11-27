@@ -105,8 +105,8 @@ CardGainer = class CardGainer {
   }
 
   would_gain_reactions() {
-    let reaction_processor = new ReactionProcessor(this.game, this.player_cards)
-    reaction_processor.process_would_gain_reactions(this)
+    let would_gain_reaction_processor = new WouldGainReactionProcessor(this)
+    would_gain_reaction_processor.process()
   }
 
   trade_route_token(game_card) {
