@@ -32,10 +32,7 @@ Chapel = class Chapel extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not trash anything`)
     } else {
-      let selected_card_names = _.map(selected_cards, function(card) {
-        return card.name
-      })
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card_names)
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
       card_trasher.trash()
     }
   }
