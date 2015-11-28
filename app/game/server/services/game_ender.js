@@ -5,7 +5,6 @@ GameEnder = class GameEnder {
     this.players_cards = PlayerCards.find({
       game_id: this.game._id
     }).fetch()
-    this.card_sources = ['hand', 'discard', 'deck', 'playing', 'in_play', 'revealed', 'duration', 'haven', 'native_village', 'island']
   }
 
   end_game() {
@@ -27,9 +26,7 @@ GameEnder = class GameEnder {
 
   calculate_scores() {
     return _.chain(this.players_cards).map((player_cards) => {
-      let all_cards = _.reduce(this.card_sources, function(all_cards, source) {
-        return all_cards.concat(player_cards[source])
-      }, [])
+      let all_cards = AllPlayerCardsQuery.find(player_cards)
       let point_cards = this.point_cards(all_cards)
       let player_score = {
         username: player_cards.username,
