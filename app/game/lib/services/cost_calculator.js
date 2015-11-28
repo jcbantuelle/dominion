@@ -32,6 +32,7 @@ CostCalculator = class CostCalculator {
       cost -= (action_count * 2)
     }
 
+    cost -= game.turn.coin_discount
     if (cost < 0) cost = 0
     return cost
   }

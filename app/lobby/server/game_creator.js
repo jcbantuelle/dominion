@@ -53,7 +53,8 @@ GameCreator = class GameCreator {
       gain_event_stack: [],
       contraband: [],
       schemes: 0,
-      possessions: 0
+      possessions: 0,
+      coin_discount: 0
     }
   }
 
