@@ -3,14 +3,15 @@ TurnEventSubmission = class TurnEventSubmission {
   constructor(turn_event, selection) {
     this.turn_event = turn_event
     this.selection = selection
+    this.error_text = turn_event.type === 'choose_cards' ? 'card(s)' : 'option(s)'
   }
 
   valid_selection() {
     if (this.turn_event.type !== 'sort_cards') {
       if (this.turn_event.maximum > 0 && this.selection.length > this.turn_event.maximum) {
-        this.error = `You can select no more than ${this.turn_event.maximum} card(s)`
+        this.error = `You can select no more than ${this.turn_event.maximum} ${this.error_text}`
       } else if (this.turn_event.minimum > 0 && this.selection.length < this.turn_event.minimum) {
-        this.error = `You must select at least ${this.turn_event.minimum} card(s)`
+        this.error = `You must select at least ${this.turn_event.minimum} ${this.error_text}`
       }
     }
     return this.error === undefined
