@@ -73,6 +73,7 @@ TurnEnder = class TurnEnder {
       schemes: 0,
       possessions: 0,
       coin_discount: 0,
+      played_actions: 0,
       previous_player: this.game.turn.player
     }
 
