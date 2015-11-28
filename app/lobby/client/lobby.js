@@ -33,10 +33,13 @@ function proposeGame(event) {
     return $(this).val()
   }).get()
 
-  if (player_ids.count > 3)
+  if (player_ids.length > 3) {
     alert('Game can not have more than 4 players.')
-
-  Meteor.call('proposeGame', player_ids)
+  } else if (player_ids.length < 1) {
+    alert('Game must have at least 2 players.')
+  } else {
+    Meteor.call('proposeGame', player_ids)
+  }
 }
 
 function declineProposal(event) {
