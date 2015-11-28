@@ -34,8 +34,12 @@ Remodel = class Remodel extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
     card_trasher.trash()
 
+    let all_player_cards = PlayerCards.find({
+      game_id: game._id
+    }).fetch()
+
     let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, player_cards, card.top_card)
+      let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
       return card.count > 0 && card.top_card.purchasable && coin_cost <= (selected_card.coin_cost + 2) && card.top_card.potion_cost <= selected_card.potion_cost
     })
 

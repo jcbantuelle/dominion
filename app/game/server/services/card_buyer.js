@@ -6,6 +6,9 @@ CardBuyer = class CardBuyer {
     this.game_card = this.find_game_card(card_name)
     this.card = ClassCreator.create(this.game_card.top_card.name)
     this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
+    this.all_player_cards = PlayerCards.find({
+      game_id: game._id
+    }).fetch()
   }
 
   find_game_card(card_name) {
@@ -45,7 +48,7 @@ CardBuyer = class CardBuyer {
 
   update_turn() {
     this.game.turn.buys -= 1
-    this.game.turn.coins -= CostCalculator.calculate(this.game, this.player_cards, this.game_card.top_card, true)
+    this.game.turn.coins -= CostCalculator.calculate(this.game, this.game_card.top_card, this.all_player_cards, true)
     this.game.turn.potions -= this.game_card.top_card.potion_cost
   }
 
@@ -108,7 +111,7 @@ CardBuyer = class CardBuyer {
   }
 
   has_enough_money() {
-    let coin_cost = CostCalculator.calculate(this.game, this.player_cards, this.game_card.top_card, true)
+    let coin_cost = CostCalculator.calculate(this.game, this.game_card.top_card, this.all_player_cards, true)
     return this.game.turn.coins >= coin_cost && this.game.turn.potions >= this.game_card.top_card.potion_cost
   }
 

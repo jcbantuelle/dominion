@@ -29,15 +29,19 @@ Forge = class Forge extends Card {
   }
 
   static trash_cards(game, player_cards, selected_cards) {
+    let all_player_cards = PlayerCards.find({
+      game_id: game._id
+    }).fetch()
+
     let cost = _.reduce(selected_cards, function(total_cost, card) {
-      return total_cost + CostCalculator.calculate(game, player_cards, card)
+      return total_cost + CostCalculator.calculate(game, card, all_player_cards)
     }, 0)
 
     let card_trasher = new CardTrasher(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
     card_trasher.trash()
 
     let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, player_cards, card.top_card)
+      let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
       return card.count > 0 && card.top_card.purchasable && coin_cost === cost && card.top_card.potion_cost === 0
     })
 

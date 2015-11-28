@@ -30,7 +30,7 @@ Trader = class Trader extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
-    let coin_cost = CostCalculator.calculate(game, player_cards, selected_card)
+    let coin_cost = CostCalculator.calculate(game, selected_card)
 
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
     card_trasher.trash()

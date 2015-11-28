@@ -60,7 +60,7 @@ Bishop = class Bishop extends Card {
   static trash_card(game, player_cards, selected_cards) {
     let trashed_card = selected_cards[0]
     if (trashed_card) {
-      let coin_cost = CostCalculator.calculate(game, player_cards, trashed_card)
+      let coin_cost = CostCalculator.calculate(game, trashed_card)
 
       let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
       card_trasher.trash()

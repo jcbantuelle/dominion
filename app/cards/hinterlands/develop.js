@@ -55,7 +55,7 @@ Develop = class Develop extends Card {
 
   static process_response(game, player_cards, response) {
     response = response[0]
-    let coin_cost = CostCalculator.calculate(game, player_cards, game.turn.develop_card)
+    let coin_cost = CostCalculator.calculate(game, game.turn.develop_card)
 
     let first_cost = response === 'gain_more' ? 1 : -1
     let second_cost = response === 'gain_more' ? -1 : 1

@@ -17,9 +17,13 @@ BorderVillage = class BorderVillage extends Card {
   }
 
   gain_event(gainer) {
-    let coin_value = CostCalculator.calculate(gainer.game, gainer.player_cards, this)
+    let all_player_cards = PlayerCards.find({
+      game_id: gainer.game._id
+    }).fetch()
+
+    let coin_value = CostCalculator.calculate(gainer.game, this, all_player_cards)
     let eligible_cards = _.filter(gainer.game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(gainer.game, gainer.player_cards, card.top_card)
+      let coin_cost = CostCalculator.calculate(gainer.game, card.top_card, all_player_cards)
       return card.count > 0 && card.top_card.purchasable && coin_cost < coin_value && card.top_card.potion_cost === 0
     })
     if (_.size(eligible_cards) > 0) {

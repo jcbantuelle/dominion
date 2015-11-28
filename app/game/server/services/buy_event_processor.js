@@ -17,7 +17,7 @@ BuyEventProcessor = class BuyEventProcessor {
     _.each(this.buyer.player_cards.in_play, (card) => {
       if (_.contains(this.in_play_buy_events, card.name)) {
         if (card.name === 'Talisman') {
-          let cost = CostCalculator.calculate(this.buyer.game, this.buyer.player_cards, this.buyer.card)
+          let cost = CostCalculator.calculate(this.buyer.game, this.buyer.card)
           if (cost <= 4 && this.buyer.card.potion_cost() === 0 && !_.contains(this.buyer.card.type_class(), 'victory')) {
             this.buy_events.push(card)
           }

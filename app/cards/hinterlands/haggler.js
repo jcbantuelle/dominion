@@ -14,10 +14,14 @@ Haggler = class Haggler extends Card {
   }
 
   buy_event(buyer) {
-    let coin_value = CostCalculator.calculate(buyer.game, buyer.player_cards, buyer.card)
+    let all_player_cards = PlayerCards.find({
+      game_id: buyer.game._id
+    }).fetch()
+
+    let coin_value = CostCalculator.calculate(buyer.game, buyer.card, all_player_cards)
     let potion_value = buyer.card.potion_cost()
     let eligible_cards = _.filter(buyer.game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(buyer.game, buyer.player_cards, card.top_card)
+      let coin_cost = CostCalculator.calculate(buyer.game, card.top_card, all_player_cards)
       return card.count > 0 && card.top_card.purchasable && ((coin_cost < coin_value && card.top_card.potion_cost <= potion_value) || (coin_cost === coin_value && card.top_card.potion_cost < potion_value))
     })
     if (_.size(eligible_cards) > 0) {

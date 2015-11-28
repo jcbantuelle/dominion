@@ -33,7 +33,7 @@ Apprentice = class Apprentice extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
-    let coin_cost = CostCalculator.calculate(game, player_cards, selected_card)
+    let coin_cost = CostCalculator.calculate(game, selected_card)
 
     if (selected_card.potion_cost > 0) {
       coin_cost += 2

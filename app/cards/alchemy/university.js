@@ -17,8 +17,8 @@ University = class University extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
 
     let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, player_cards, card.top_card)
-      return card.count > 0 && card.top_card.purchasable && coin_cost <= 5 && card.top_card.potion_cost === 0
+      let coin_cost = CostCalculator.calculate(game, card.top_card)
+      return card.count > 0 && card.top_card.purchasable && coin_cost <= 5 && card.top_card.potion_cost === 0 && _.contains(card.top_card.types, 'action')
     })
 
     if (_.size(eligible_cards) > 0) {
