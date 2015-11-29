@@ -66,8 +66,13 @@ Develop = class Develop extends Card {
   }
 
   static choose_card(game, player_cards, coin_cost, potion_cost) {
+    let all_player_cards = PlayerCards.find({
+      game_id: game._id
+    }).fetch()
+
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && card.top_card.coin_cost === coin_cost && card.top_card.potion_cost === potion_cost
+      let game_card_coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
+      return card.count > 0 && card.top_card.purchasable && game_card_coin_cost === coin_cost && card.top_card.potion_cost === 0
     })
 
     let potion_symbols = _.times(potion_cost, function() {
@@ -94,8 +99,7 @@ Develop = class Develop extends Card {
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
+    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
     card_gainer.gain_game_card()
   }
 
