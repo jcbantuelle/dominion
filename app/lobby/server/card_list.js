@@ -39,8 +39,8 @@ CardList = class CardList {
       'TradingPost',
       'Tribute',
       'Upgrade',
-      /*'Harem',
-      'Nobles'*/
+      'Harem',
+      /*'Nobles'*/
     ]
   }
 
