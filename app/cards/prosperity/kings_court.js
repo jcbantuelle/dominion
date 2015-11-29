@@ -20,9 +20,9 @@ KingsCourt = class KingsCourt extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a card to play three times:',
+        instructions: 'Choose a card to play three times: (Or none to skip)',
         cards: eligible_cards,
-        minimum: 1,
+        minimum: 0,
         maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
@@ -33,8 +33,10 @@ KingsCourt = class KingsCourt extends Card {
   }
 
   static play_thrice(game, player_cards, selected_cards) {
-    let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_cards[0].name)
-    repeat_card_player.play(3, 'Kings Court')
+    if (!_.isEmpty(selected_cards)) {
+      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_cards[0].name)
+      repeat_card_player.play(3, 'Kings Court')
+    }
   }
 
 }
