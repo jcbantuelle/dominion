@@ -27,6 +27,12 @@ PirateShip = class PirateShip extends Card {
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack()
+
+    if (game.turn.pirate_ship_trashed) {
+      player_cards.pirate_ship_coins += 1
+    }
+    delete game.turn.pirate_ship_trashed
+    delete game.turn.pirate_ship_attack
   }
 
   static process_response(game, player_cards, response) {
@@ -82,14 +88,6 @@ PirateShip = class PirateShip extends Card {
         }
       }
     }
-  }
-
-  cleanup(game, player_cards) {
-    if (game.turn.pirate_ship_trashed) {
-      player_cards.pirate_ship_coins += 1
-    }
-    delete game.turn.pirate_ship_trashed
-    delete game.turn.pirate_ship_attack
   }
 
   static choose_trashed_treasure(game, player_cards, selected_cards) {

@@ -37,9 +37,6 @@ CardPlayer = class CardPlayer {
     if (auto_update) {
       this.update_db()
     }
-    if (typeof this.card.cleanup === 'function') {
-      this.card.cleanup(this.game, this.player_cards)
-    }
     return result
   }
 

@@ -29,6 +29,9 @@ Ambassador = class Ambassador extends Card {
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack()
+
+    delete game.turn.ambassador_selected_card
+    delete game.turn.ambassador_game_stack
   }
 
   attack(game, player_cards) {
@@ -36,11 +39,6 @@ Ambassador = class Ambassador extends Card {
       let card_gainer = new CardGainer(game, player_cards, 'discard', game.turn.ambassador_game_stack.name)
       card_gainer.gain_game_card()
     }
-  }
-
-  cleanup(game, player_cards) {
-    delete game.turn.ambassador_selected_card
-    delete game.turn.ambassador_game_stack
   }
 
   static reveal_card(game, player_cards, selected_cards) {
