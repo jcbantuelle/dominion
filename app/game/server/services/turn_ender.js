@@ -74,6 +74,7 @@ TurnEnder = class TurnEnder {
       possessions: 0,
       coin_discount: 0,
       played_actions: 0,
+      coppersmiths: 0,
       previous_player: this.game.turn.player
     }
 

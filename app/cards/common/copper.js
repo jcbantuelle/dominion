@@ -9,7 +9,7 @@ Copper = class Copper extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 1
+    game.turn.coins += (1 + game.turn.coppersmiths)
   }
 
 }
