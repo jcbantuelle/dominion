@@ -11,7 +11,25 @@ CardList = class CardList {
   }
 
   card_list() {
-    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue())
+    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue()).concat(CardList.cornucopia())
+  }
+
+  static cornucopia() {
+    return [
+      /*'Hamlet',
+      'FortuneTeller',
+      'Menagerie',
+      'FarmingVillage',
+      'HorseTraders',
+      'Remake',
+      'Tournament',
+      'YoungWitch',
+      'Harvest',
+      'HornOfPlenty',
+      'HuntingParty',
+      'Jester',
+      'Fairgrounds'*/
+    ]
   }
 
   static intrigue() {
