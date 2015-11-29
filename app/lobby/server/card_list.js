@@ -37,8 +37,8 @@ CardList = class CardList {
       'Saboteur',
       'Torturer',
       'TradingPost',
-      /*'Tribute',
-      'Upgrade',
+      'Tribute',
+      /*'Upgrade',
       'Harem',
       'Nobles'*/
     ]
