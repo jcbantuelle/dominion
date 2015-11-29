@@ -40,7 +40,7 @@ CardList = class CardList {
       'Tribute',
       'Upgrade',
       'Harem',
-      /*'Nobles'*/
+      'Nobles'
     ]
   }
 
