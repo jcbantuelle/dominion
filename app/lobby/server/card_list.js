@@ -18,8 +18,8 @@ CardList = class CardList {
     return [
       'Hamlet',
       'FortuneTeller',
-      /*'Menagerie',
-      'FarmingVillage',
+      'Menagerie',
+      /*'FarmingVillage',
       'HorseTraders',
       'Remake',
       'Tournament',
