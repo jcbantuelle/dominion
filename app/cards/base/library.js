@@ -44,7 +44,7 @@ Library = class Library extends Card {
         turn_event_processor.process(Library.card_choice)
       } else {
         player_cards.hand.push(top_card)
-        PlayerCards.update(player_cards._id, player_cards)
+        PlayerCardsModel.update(player_cards._id, player_cards)
         Library.draw_cards(game, player_cards)
       }
     }
@@ -53,7 +53,7 @@ Library = class Library extends Card {
   static card_choice(game, player_cards, response) {
     if (response === 'yes') {
       player_cards.hand.push(player_cards.pending)
-      PlayerCards.update(player_cards._id, player_cards)
+      PlayerCardsModel.update(player_cards._id, player_cards)
     } else {
       player_cards.aside.push(player_cards.pending)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(player_cards.pending)}`)

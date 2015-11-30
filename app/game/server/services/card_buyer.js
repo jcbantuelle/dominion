@@ -6,7 +6,7 @@ CardBuyer = class CardBuyer {
     this.game_card = this.find_game_card(card_name)
     this.card = ClassCreator.create(this.game_card.top_card.name)
     this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
-    this.all_player_cards = PlayerCards.find({
+    this.all_player_cards = PlayerCardsModel.find({
       game_id: game._id
     }).fetch()
   }
@@ -22,7 +22,7 @@ CardBuyer = class CardBuyer {
       this.update_phase()
       this.buy_card()
       GameModel.update(this.game._id, this.game)
-      PlayerCards.update(this.player_cards._id, this.player_cards)
+      PlayerCardsModel.update(this.player_cards._id, this.player_cards)
     }
   }
 

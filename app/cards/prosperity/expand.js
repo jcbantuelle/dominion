@@ -34,7 +34,7 @@ Expand = class Expand extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
     card_trasher.trash()
 
-    let all_player_cards = PlayerCards.find({
+    let all_player_cards = PlayerCardsModel.find({
       game_id: game._id
     }).fetch()
 

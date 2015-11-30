@@ -13,7 +13,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
     card_gainer.gain_game_card()
 
     GameModel.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(player_cards._id, player_cards)
 
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
@@ -39,7 +39,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
     }
 
     GameModel.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(player_cards._id, player_cards)
 
     if (_.size(player_cards.hand) >= 5) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has 5 or more cards in hand`)
@@ -50,7 +50,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
     }
 
     GameModel.update(game._id, game)
-    PlayerCards.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(player_cards._id, player_cards)
 
     if (_.size(player_cards.hand) === 0) {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)

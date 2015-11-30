@@ -80,7 +80,7 @@ Thief = class Thief extends Card {
       minimum: 1,
       maximum: 1
     })
-    let attacker_player_cards = PlayerCards.findOne({
+    let attacker_player_cards = PlayerCardsModel.findOne({
       player_id: game.turn.player._id,
       game_id: game._id
     })

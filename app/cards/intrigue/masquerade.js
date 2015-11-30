@@ -12,7 +12,7 @@ Masquerade = class Masquerade extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
-    PlayerCards.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(player_cards._id, player_cards)
 
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)
     ordered_player_cards.splice(0, 1, player_cards)
@@ -52,7 +52,7 @@ Masquerade = class Masquerade extends Card {
     })
 
     _.each(ordered_player_cards, function(other_player_cards) {
-      PlayerCards.update(other_player_cards._id, other_player_cards)
+      PlayerCardsModel.update(other_player_cards._id, other_player_cards)
     })
 
     if (_.size(player_cards.hand) > 0) {

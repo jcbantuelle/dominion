@@ -16,7 +16,7 @@ Upgrade = class Upgrade extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
     if (_.size(player_cards.hand) > 0) {
-      PlayerCards.update(player_cards._id, player_cards)
+      PlayerCardsModel.update(player_cards._id, player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -39,7 +39,7 @@ Upgrade = class Upgrade extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
     card_trasher.trash()
 
-    let all_player_cards = PlayerCards.find({
+    let all_player_cards = PlayerCardsModel.find({
       game_id: game._id
     }).fetch()
 

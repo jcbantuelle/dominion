@@ -46,7 +46,7 @@ AttackEventProcessor = class AttackEventProcessor {
       selected_card.attack_event(game, player_cards)
 
       GameModel.update(game._id, game)
-      PlayerCards.update(player_cards._id, player_cards)
+      PlayerCardsModel.update(player_cards._id, player_cards)
       attack_event_processor.process()
     }
   }

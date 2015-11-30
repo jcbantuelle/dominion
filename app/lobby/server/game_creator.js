@@ -70,24 +70,12 @@ GameCreator = class GameCreator {
     hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
-    PlayerCards.insert({
+    PlayerCardsModel.insert({
       player_id: player._id,
       game_id: this.game._id,
       username: player.username,
       deck: deck,
-      discard: [],
-      playing: [],
-      in_play: [],
-      revealed: [],
-      duration: [],
-      haven: [],
-      native_village: [],
-      island: [],
       hand: hand,
-      pirate_ship_coins: 0,
-      victory_tokens: 0,
-      last_turn_gained_cards: [],
-      possession_trash: [],
       turns: (this.game.turn.player._id === player._id) ? 1 : 0
     })
   }

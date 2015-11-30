@@ -15,7 +15,7 @@ Haven = class Haven extends Card {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
-    PlayerCards.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(player_cards._id, player_cards)
 
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({

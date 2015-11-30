@@ -16,7 +16,7 @@ Hamlet = class Hamlet extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
     if (_.size(player_cards.hand) > 0) {
-      PlayerCards.update(player_cards._id, player_cards)
+      PlayerCardsModel.update(player_cards._id, player_cards)
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -58,7 +58,7 @@ Hamlet = class Hamlet extends Card {
       game.turn.actions += 1
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
-      PlayerCards.update(player_cards._id, player_cards)
+      PlayerCardsModel.update(player_cards._id, player_cards)
     }
   }
 

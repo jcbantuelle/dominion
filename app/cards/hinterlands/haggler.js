@@ -14,7 +14,7 @@ Haggler = class Haggler extends Card {
   }
 
   buy_event(buyer) {
-    let all_player_cards = PlayerCards.find({
+    let all_player_cards = PlayerCardsModel.find({
       game_id: buyer.game._id
     }).fetch()
 

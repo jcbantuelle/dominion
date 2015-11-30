@@ -17,7 +17,7 @@ BorderVillage = class BorderVillage extends Card {
   }
 
   gain_event(gainer) {
-    let all_player_cards = PlayerCards.find({
+    let all_player_cards = PlayerCardsModel.find({
       game_id: gainer.game._id
     }).fetch()
 

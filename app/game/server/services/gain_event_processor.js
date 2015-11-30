@@ -110,7 +110,7 @@ GainEventProcessor = class GainEventProcessor {
       }
 
       GameModel.update(game._id, game)
-      PlayerCards.update(player_cards._id, player_cards)
+      PlayerCardsModel.update(player_cards._id, player_cards)
       gain_event_processor.process()
     }
   }

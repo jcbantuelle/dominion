@@ -66,7 +66,7 @@ Meteor.methods({
   },
   destroyGame: function() {
     if (Meteor.user().admin) {
-      PlayerCards.remove({})
+      PlayerCardsModel.remove()
       GameModel.remove()
       TurnEventModel.remove()
       Meteor.users.update({}, {$unset: {current_game: ''}}, {multi: true})
@@ -75,7 +75,7 @@ Meteor.methods({
 })
 
 function player_cards(game) {
-  return PlayerCards.findOne({
+  return PlayerCardsModel.findOne({
     game_id: game._id,
     player_id: game.turn.player._id
   })

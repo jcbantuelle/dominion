@@ -20,7 +20,7 @@ CouncilRoom = class CouncilRoom extends Card {
     _.each(ordered_player_cards, function(other_player_cards) {
       let other_player_card_drawer = new CardDrawer(game, other_player_cards)
       other_player_card_drawer.draw(1)
-      PlayerCards.update(other_player_cards._id, other_player_cards)
+      PlayerCardsModel.update(other_player_cards._id, other_player_cards)
     })
   }
 

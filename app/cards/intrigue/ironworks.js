@@ -9,7 +9,7 @@ Ironworks = class Ironworks extends Card {
   }
 
   play(game, player_cards) {
-    let all_player_cards = PlayerCards.find({
+    let all_player_cards = PlayerCardsModel.find({
       game_id: game._id
     }).fetch()
 

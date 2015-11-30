@@ -11,7 +11,7 @@ Tribute = class Tribute extends Card {
   play(game, player_cards) {
     let next_player_query = new NextPlayerQuery(game, player_cards.player_id)
     let next_player = next_player_query.next_player()
-    let next_player_cards = PlayerCards.findOne({
+    let next_player_cards = PlayerCardsModel.findOne({
       game_id: game._id,
       player_id: next_player._id
     })
@@ -33,7 +33,7 @@ Tribute = class Tribute extends Card {
     })
     let card_discarder = new CardDiscarder(game, next_player_cards, 'revealed')
     card_discarder.discard_all()
-    PlayerCards.update(next_player_cards._id, next_player_cards)
+    PlayerCardsModel.update(next_player_cards._id, next_player_cards)
 
     let coins = 0
     let cards = 0

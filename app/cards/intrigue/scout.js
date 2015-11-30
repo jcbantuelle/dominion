@@ -43,7 +43,7 @@ Scout = class Scout extends Card {
 
       if (!_.isEmpty(player_cards.revealed)) {
         GameModel.update(game._id, game)
-        PlayerCards.update(player_cards._id, player_cards)
+        PlayerCardsModel.update(player_cards._id, player_cards)
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,

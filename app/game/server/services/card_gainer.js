@@ -50,14 +50,14 @@ CardGainer = class CardGainer {
 
   update_cards() {
     if (this.game.turn.possessed) {
-      PlayerCards.update(this.player_cards._id, this.player_cards)
+      PlayerCardsModel.update(this.player_cards._id, this.player_cards)
     }
   }
 
   possessed() {
     if (this.game.turn.possessed) {
       this.possessed_player = this.player_cards.username
-      this.player_cards = PlayerCards.findOne({
+      this.player_cards = PlayerCardsModel.findOne({
         game_id: this.game._id,
         player_id: this.game.turn.possessed._id
       })

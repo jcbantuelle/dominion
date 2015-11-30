@@ -9,7 +9,7 @@ Saboteur = class Saboteur extends Card {
   }
 
   play(game, player_cards) {
-    this.all_player_cards = PlayerCards.find({
+    this.all_player_cards = PlayerCardsModel.find({
       game_id: game._id
     }).fetch()
 

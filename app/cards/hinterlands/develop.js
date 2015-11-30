@@ -66,7 +66,7 @@ Develop = class Develop extends Card {
   }
 
   static choose_card(game, player_cards, coin_cost, potion_cost) {
-    let all_player_cards = PlayerCards.find({
+    let all_player_cards = PlayerCardsModel.find({
       game_id: game._id
     }).fetch()
 

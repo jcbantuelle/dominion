@@ -3,7 +3,7 @@ TurnOrderedPlayerCardsQuery = class TurnOrderedPlayerCardsQuery {
   static turn_ordered_player_cards(game, player_cards) {
     let ordered_players = TurnOrderedPlayersQuery.turn_ordered_players(game)
 
-    let unordered_player_cards = PlayerCards.find({
+    let unordered_player_cards = PlayerCardsModel.find({
       game_id: game._id
     }).fetch()
 

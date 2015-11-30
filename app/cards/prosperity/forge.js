@@ -29,7 +29,7 @@ Forge = class Forge extends Card {
   }
 
   static trash_cards(game, player_cards, selected_cards) {
-    let all_player_cards = PlayerCards.find({
+    let all_player_cards = PlayerCardsModel.find({
       game_id: game._id
     }).fetch()
 
