@@ -12,7 +12,7 @@ GameProposer = class GameProposer {
   }
 
   create_proposal(proposal_cards) {
-    return Proposals.insert({
+    return ProposalModel.insert({
       proposer: {
         id: Meteor.userId(),
         username: Meteor.user().username
@@ -38,7 +38,7 @@ GameProposer = class GameProposer {
 
   set_proposal_timeout() {
     Meteor.setTimeout(() => {
-      if (Proposals.findOne(this.proposal_id)) {
+      if (ProposalModel.findOne(this.proposal_id)) {
         let proposal_decliner = new ProposalDecliner(this.proposal_id)
         proposal_decliner.timeout_decline()
       }

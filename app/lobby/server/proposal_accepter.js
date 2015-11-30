@@ -10,7 +10,7 @@ ProposalAccepter = class ProposalAccepter {
   }
 
   player_accept() {
-    Proposals.update({_id: this.proposal_id, 'players._id': Meteor.userId()},
+    ProposalModel.update({_id: this.proposal_id, 'players._id': Meteor.userId()},
       {
         $set: {'players.$.accepted': true}
       }
@@ -18,12 +18,12 @@ ProposalAccepter = class ProposalAccepter {
   }
 
   start_game() {
-    this.proposal = Proposals.findOne(this.proposal_id)
+    this.proposal = ProposalModel.findOne(this.proposal_id)
     if (this.all_players_have_accepted()) {
       this.update_players()
       game_creator = new GameCreator(this.proposal.players, this.proposal.cards)
       game_creator.create()
-      Proposals.remove(this.proposal._id)
+      ProposalModel.remove(this.proposal._id)
     }
   }
 

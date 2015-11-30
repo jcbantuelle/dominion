@@ -1,7 +1,7 @@
 ProposalDecliner = class ProposalDecliner {
 
   constructor(proposal_id) {
-    this.proposal = Proposals.findOne(proposal_id)
+    this.proposal = ProposalModel.findOne(proposal_id)
     this.player_ids = this.find_player_ids()
   }
 
@@ -18,7 +18,7 @@ ProposalDecliner = class ProposalDecliner {
   }
 
   decline() {
-    Proposals.remove(this.proposal._id)
+    ProposalModel.remove(this.proposal._id)
     this.update_players()
   }
 
