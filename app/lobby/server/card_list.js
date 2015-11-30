@@ -17,8 +17,8 @@ CardList = class CardList {
   static cornucopia() {
     return [
       'Hamlet',
-      /*'FortuneTeller',
-      'Menagerie',
+      'FortuneTeller',
+      /*'Menagerie',
       'FarmingVillage',
       'HorseTraders',
       'Remake',
