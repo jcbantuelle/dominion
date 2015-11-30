@@ -19,7 +19,7 @@ Apothecary = class Apothecary extends Card {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
 
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
@@ -51,7 +51,7 @@ Apothecary = class Apothecary extends Card {
       }
 
       if (!_.isEmpty(player_cards.revealed)) {
-        Games.update(game._id, game)
+        GameModel.update(game._id, game)
         let turn_event_id = TurnEvents.insert({
           game_id: game._id,
           player_id: player_cards.player_id,

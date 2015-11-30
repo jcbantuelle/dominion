@@ -37,7 +37,7 @@ Swindler = class Swindler extends Card {
       let card_trasher = new CardTrasher(game, player_cards, 'revealed', top_card.name)
       card_trasher.trash()
 
-      Games.update(game._id, game)
+      GameModel.update(game._id, game)
 
       let eligible_cards = _.filter(game.cards, function(card) {
         let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)

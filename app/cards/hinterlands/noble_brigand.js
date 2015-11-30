@@ -87,7 +87,7 @@ NobleBrigand = class NobleBrigand extends Card {
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard_all()
 
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
   }
 
 }

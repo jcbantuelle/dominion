@@ -72,7 +72,7 @@ DiscardInPlayProcessor = class DiscardInPlayProcessor {
 
     DiscardInPlayProcessor.purge_invalid_discard_events(game, player_cards, discard_in_play_processor)
 
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
     discard_in_play_processor.process_cards()
   }
 

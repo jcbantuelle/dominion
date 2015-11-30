@@ -80,7 +80,7 @@ CardPlayer = class CardPlayer {
   }
 
   update_db() {
-    Games.update(this.game._id, this.game)
+    GameModel.update(this.game._id, this.game)
     PlayerCards.update(this.player_cards._id, this.player_cards)
   }
 

@@ -37,7 +37,7 @@ BuyEventProcessor = class BuyEventProcessor {
       if (_.size(this.buy_events) === 1) {
         BuyEventProcessor.buy_event(this.buyer.game, this.buyer.player_cards, this.buy_events, this)
       } else {
-        Games.update(this.buyer.game._id, this.buyer.game)
+        GameModel.update(this.buyer.game._id, this.buyer.game)
         let turn_event_id = TurnEvents.insert({
           game_id: this.buyer.game._id,
           player_id: this.buyer.player_cards.player_id,
@@ -58,7 +58,7 @@ BuyEventProcessor = class BuyEventProcessor {
   static buy_event(game, player_cards, selected_cards, buy_event_processor) {
     let selected_card = ClassCreator.create(selected_cards[0].name)
     selected_card.buy_event(buy_event_processor.buyer)
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
     let buy_event_index = _.findIndex(buy_event_processor.buy_events, function(event) {
       return event.name === selected_cards[0].name

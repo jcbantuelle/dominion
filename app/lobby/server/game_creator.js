@@ -7,25 +7,20 @@ GameCreator = class GameCreator {
 
   create() {
     let game_id = this.create_game()
-    this.game = Games.findOne(game_id)
+    this.game = GameModel.findOne(game_id)
     this.create_turn()
     this.start_game_log()
     this.set_up_players()
     this.assign_game_to_players()
-    Games.update(this.game._id, this.game)
+    GameModel.update(this.game._id, this.game)
   }
 
   create_game() {
     let cards = this.game_cards()
-    return Games.insert({
+    return GameModel.insert({
       players: _.shuffle(this.players),
       cards: cards,
-      trash: [],
-      trade_route_tokens: 0,
-      log: [],
-      turn_number: 1,
-      duchess: this.has_duchess(cards),
-      extra_turns: []
+      duchess: this.has_duchess(cards)
     })
   }
 

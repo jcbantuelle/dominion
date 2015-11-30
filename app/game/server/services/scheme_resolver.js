@@ -27,7 +27,7 @@ SchemeResolver = class SchemeResolver {
       } else {
         game.log.push(`There are no action cards in play for ${CardView.card_html('action', 'Scheme')}`)
       }
-      Games.update(this.game._id, this.game)
+      GameModel.update(this.game._id, this.game)
     })
   }
 

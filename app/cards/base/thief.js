@@ -69,7 +69,7 @@ Thief = class Thief extends Card {
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard_all()
 
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
 
     let turn_event_id = TurnEvents.insert({
       game_id: game._id,

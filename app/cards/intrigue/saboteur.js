@@ -23,7 +23,7 @@ Saboteur = class Saboteur extends Card {
     if (player_cards.trashed_card) {
       let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.trashed_card.name)
       card_trasher.trash()
-      Games.update(game._id, game)
+      GameModel.update(game._id, game)
 
       let eligible_cards = _.filter(game.cards, function(card) {
         let coin_cost = CostCalculator.calculate(game, card.top_card, this.all_player_cards)

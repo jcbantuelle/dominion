@@ -31,7 +31,7 @@ Bishop = class Bishop extends Card {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
 
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
 
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)
     ordered_player_cards.shift()

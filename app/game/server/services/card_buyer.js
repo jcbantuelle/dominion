@@ -21,7 +21,7 @@ CardBuyer = class CardBuyer {
     if (this.can_buy()) {
       this.update_phase()
       this.buy_card()
-      Games.update(this.game._id, this.game)
+      GameModel.update(this.game._id, this.game)
       PlayerCards.update(this.player_cards._id, this.player_cards)
     }
   }

@@ -16,7 +16,7 @@ GameEnder = class GameEnder {
     this.game.scores = this.calculate_scores()
     this.game.finished = true
     this.game.winners = this.winners()
-    Games.update(this.game._id, this.game)
+    GameModel.update(this.game._id, this.game)
   }
 
   update_players() {

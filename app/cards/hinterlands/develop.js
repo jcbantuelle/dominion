@@ -61,7 +61,7 @@ Develop = class Develop extends Card {
     let second_cost = response === 'gain_more' ? -1 : 1
 
     Develop.choose_card(game, player_cards, coin_cost + first_cost, game.turn.develop_card.potion_cost)
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
     Develop.choose_card(game, player_cards, coin_cost + second_cost, game.turn.develop_card.potion_cost)
   }
 

@@ -19,7 +19,7 @@ PlayerAttacker = class PlayerAttacker {
       } else {
         this.card.attack(this.game, attacked_player_cards)
       }
-      Games.update(this.game._id, this.game)
+      GameModel.update(this.game._id, this.game)
       PlayerCards.update(attacked_player_cards._id, attacked_player_cards)
     })
   }

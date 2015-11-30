@@ -31,7 +31,7 @@ WouldGainReactionProcessor = class WouldGainReactionProcessor {
     if (!_.isEmpty(selected_cards)) {
       let selected_card = ClassCreator.create(selected_cards[0].name)
       selected_card.would_gain_reaction(game, player_cards, would_gain_reaction_processor.gainer)
-      Games.update(game._id, game)
+      GameModel.update(game._id, game)
       would_gain_reaction_processor.process()
     }
   }

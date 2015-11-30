@@ -22,7 +22,7 @@ TurnEnder = class TurnEnder {
   }
 
   update_db() {
-    Games.update(this.game._id, this.game)
+    GameModel.update(this.game._id, this.game)
     if (this.player_cards._id !== this.next_player_cards._id) {
       PlayerCards.update(this.player_cards._id, this.player_cards)
     }
@@ -80,7 +80,7 @@ TurnEnder = class TurnEnder {
 
     if (this.game.turn.possessed) {
       delete this.game.turn.possessed
-      Games.update(this.game._id, this.game)
+      GameModel.update(this.game._id, this.game)
     }
 
     this.set_up_extra_turns()

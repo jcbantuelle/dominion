@@ -12,7 +12,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
     card_gainer.gain_game_card()
 
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
 
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
@@ -38,7 +38,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
       turn_event_processor.process(JackOfAllTrades.discard_card)
     }
 
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
 
     if (_.size(player_cards.hand) >= 5) {
@@ -49,7 +49,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
       this.draw_to_five(game, player_cards)
     }
 
-    Games.update(game._id, game)
+    GameModel.update(game._id, game)
     PlayerCards.update(player_cards._id, player_cards)
 
     if (_.size(player_cards.hand) === 0) {

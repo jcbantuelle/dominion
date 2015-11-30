@@ -14,7 +14,7 @@ Loan = class Loan extends Card {
     this.reveal(game, player_cards)
 
     if (player_cards.revealed_treasure) {
-      Games.update(game._id, game)
+      GameModel.update(game._id, game)
       let turn_event_id = TurnEvents.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
