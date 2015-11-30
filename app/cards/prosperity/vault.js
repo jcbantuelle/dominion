@@ -15,7 +15,7 @@ Vault = class Vault extends Card {
     PlayerCards.update(player_cards._id, player_cards)
 
     if (_.size(player_cards.hand) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
@@ -36,7 +36,7 @@ Vault = class Vault extends Card {
     ordered_player_cards.shift()
     _.each(ordered_player_cards, function(cards) {
       if (!_.isEmpty(cards.hand)) {
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: cards.player_id,
           username: cards.username,
@@ -70,7 +70,7 @@ Vault = class Vault extends Card {
       if (_.size(player_cards.hand) < 3) {
         Vault.discard_cards_for_draw(game, player_cards, player_cards.hand)
       } else {
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
           username: player_cards.username,

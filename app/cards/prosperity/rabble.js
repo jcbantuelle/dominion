@@ -40,7 +40,7 @@ Rabble = class Rabble extends Card {
       card_discarder.discard_some(discarded_cards)
 
       if (!_.isEmpty(player_cards.revealed)) {
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
           username: player_cards.username,

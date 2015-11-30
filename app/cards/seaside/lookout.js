@@ -30,7 +30,7 @@ Lookout = class Lookout extends Card {
         card_trasher.trash()
         game.log.push(`&nbsp;&nbsp;but has no cards left to continue`)
       } else {
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: game.turn.player._id,
           username: game.turn.player.username,
@@ -56,7 +56,7 @@ Lookout = class Lookout extends Card {
       card_discarder.discard_all()
       game.log.push(`&nbsp;&nbsp;but has no cards left to continue`)
     } else {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
         username: game.turn.player.username,

@@ -13,7 +13,7 @@ IllGottenGains = class IllGottenGains extends Card {
 
     GameModel.update(game._id, game)
 
-    let turn_event_id = TurnEvents.insert({
+    let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
       username: player_cards.username,

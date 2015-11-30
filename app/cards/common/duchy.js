@@ -13,7 +13,7 @@ Duchy = class Duchy extends Card {
   }
 
   gain_event(gainer) {
-    let turn_event_id = TurnEvents.insert({
+    let turn_event_id = TurnEventModel.insert({
       game_id: gainer.game._id,
       player_id: gainer.player_cards.player_id,
       username: gainer.player_cards.username,

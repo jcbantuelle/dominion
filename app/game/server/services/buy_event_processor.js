@@ -38,7 +38,7 @@ BuyEventProcessor = class BuyEventProcessor {
         BuyEventProcessor.buy_event(this.buyer.game, this.buyer.player_cards, this.buy_events, this)
       } else {
         GameModel.update(this.buyer.game._id, this.buyer.game)
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: this.buyer.game._id,
           player_id: this.buyer.player_cards.player_id,
           username: this.buyer.player_cards.username,

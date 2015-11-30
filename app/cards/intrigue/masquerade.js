@@ -20,7 +20,7 @@ Masquerade = class Masquerade extends Card {
       if (_.size(other_player_cards.hand) > 0) {
         let next_player_query = new NextPlayerQuery(game, other_player_cards.player_id)
         let next_player = next_player_query.next_player()
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: other_player_cards.player_id,
           username: other_player_cards.username,
@@ -56,7 +56,7 @@ Masquerade = class Masquerade extends Card {
     })
 
     if (_.size(player_cards.hand) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,

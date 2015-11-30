@@ -62,7 +62,7 @@ ScryingPool = class ScryingPool extends Card {
       player_cards.revealed.push(revealed_card)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
 
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
         username: game.turn.player.username,

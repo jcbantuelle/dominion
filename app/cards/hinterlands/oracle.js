@@ -38,7 +38,7 @@ Oracle = class Oracle extends Card {
 
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
         username: game.turn.player.username,
@@ -57,7 +57,7 @@ Oracle = class Oracle extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard_all()
     } else {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,

@@ -9,7 +9,7 @@ PirateShip = class PirateShip extends Card {
   }
 
   play(game, player_cards) {
-    let turn_event_id = TurnEvents.insert({
+    let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
       username: player_cards.username,
@@ -72,7 +72,7 @@ PirateShip = class PirateShip extends Card {
         } else if (_.size(revealed_treasures) === 1) {
           return PirateShip.trash_treasure(game, player_cards, revealed_treasures[0])
         } else {
-          let turn_event_id = TurnEvents.insert({
+          let turn_event_id = TurnEventModel.insert({
             game_id: game._id,
             player_id: game.turn.player._id,
             username: game.turn.player.username,

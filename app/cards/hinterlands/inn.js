@@ -18,7 +18,7 @@ Inn = class Inn extends Card {
     PlayerCards.update(player_cards._id, player_cards)
 
     if (_.size(player_cards.hand) > 2) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
@@ -50,7 +50,7 @@ Inn = class Inn extends Card {
     })
 
     if (_.size(eligible_cards) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: gainer.game._id,
         player_id: gainer.player_cards.player_id,
         username: gainer.player_cards.username,

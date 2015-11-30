@@ -68,7 +68,7 @@ Meteor.methods({
     if (Meteor.user().admin) {
       PlayerCards.remove({})
       GameModel.remove()
-      TurnEvents.remove({})
+      TurnEventModel.remove()
       Meteor.users.update({}, {$unset: {current_game: ''}}, {multi: true})
     }
   }

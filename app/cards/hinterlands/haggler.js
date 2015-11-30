@@ -25,7 +25,7 @@ Haggler = class Haggler extends Card {
       return card.count > 0 && card.top_card.purchasable && ((coin_cost < coin_value && card.top_card.potion_cost <= potion_value) || (coin_cost === coin_value && card.top_card.potion_cost < potion_value))
     })
     if (_.size(eligible_cards) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: buyer.game._id,
         player_id: buyer.player_cards.player_id,
         username: buyer.player_cards.username,

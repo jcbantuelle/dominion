@@ -73,7 +73,7 @@ GainEventProcessor = class GainEventProcessor {
           instructions += ' (Or none to skip)'
           minimum = 0
         }
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: this.gainer.game._id,
           player_id: this.player_cards.player_id,
           username: this.player_cards.username,

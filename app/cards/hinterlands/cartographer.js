@@ -32,7 +32,7 @@ Cartographer = class Cartographer extends Card {
 
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> looks at the top ${_.size(player_cards.revealed)} cards of their deck`)
 
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
@@ -56,7 +56,7 @@ Cartographer = class Cartographer extends Card {
       card_discarder.discard_some(selected_cards)
 
       if (_.size(player_cards.revealed) > 0) {
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
           username: player_cards.username,

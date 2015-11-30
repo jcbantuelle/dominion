@@ -45,7 +45,7 @@ Swindler = class Swindler extends Card {
       })
 
       if (_.size(eligible_cards) > 0) {
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: game.turn.player._id,
           username: game.turn.player.username,

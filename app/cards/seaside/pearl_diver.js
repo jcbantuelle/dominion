@@ -27,7 +27,7 @@ PearlDiver = class PearlDiver extends Card {
       player_cards.look = player_cards.deck.pop()
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> looks at the bottom card of their deck`)
 
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
         username: game.turn.player.username,

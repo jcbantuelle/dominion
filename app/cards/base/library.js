@@ -31,7 +31,7 @@ Library = class Library extends Card {
       let top_card = player_cards.deck.shift()
       if (_.contains(top_card.types, 'action')) {
         player_cards.pending = top_card
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
           username: player_cards.username,

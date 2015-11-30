@@ -10,7 +10,7 @@ Develop = class Develop extends Card {
 
   play(game, player_cards) {
     if (_.size(player_cards.hand) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
@@ -34,7 +34,7 @@ Develop = class Develop extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', game.turn.develop_card.name)
     card_trasher.trash()
 
-    let turn_event_id = TurnEvents.insert({
+    let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
       username: player_cards.username,
@@ -80,7 +80,7 @@ Develop = class Develop extends Card {
     }).join('')
 
     if (_.size(eligible_cards) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,

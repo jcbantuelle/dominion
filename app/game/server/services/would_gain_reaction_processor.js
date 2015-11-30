@@ -11,7 +11,7 @@ WouldGainReactionProcessor = class WouldGainReactionProcessor {
     })
     if (!_.isEmpty(reaction_cards)) {
       let gained_card = ClassCreator.create(this.gainer.card_name)
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: this.gainer.game._id,
         player_id: this.gainer.player_cards.player_id,
         username: this.gainer.player_cards.username,

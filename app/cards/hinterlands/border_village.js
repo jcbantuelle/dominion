@@ -27,7 +27,7 @@ BorderVillage = class BorderVillage extends Card {
       return card.count > 0 && card.top_card.purchasable && coin_cost < coin_value && card.top_card.potion_cost === 0
     })
     if (_.size(eligible_cards) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: gainer.game._id,
         player_id: gainer.player_cards.player_id,
         username: gainer.player_cards.username,

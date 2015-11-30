@@ -30,7 +30,7 @@ Saboteur = class Saboteur extends Card {
         return card.count > 0 && card.top_card.purchasable && coin_cost <= (player_cards.trashed_card_coin_cost - 2) && card.top_card.potion_cost <= player_cards.trashed_card.potion_cost
       })
       if (_.size(eligible_cards) > 0) {
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
           username: player_cards.username,

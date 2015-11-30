@@ -57,7 +57,7 @@ NobleBrigand = class NobleBrigand extends Card {
       } else if (_.size(revealed_treasures) === 1) {
         return NobleBrigand.trash_treasure(game, player_cards, revealed_treasures[0])
       } else {
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: game.turn.player._id,
           username: game.turn.player.username,

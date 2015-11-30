@@ -14,7 +14,7 @@ Bishop = class Bishop extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$1 and +1 &nabla;`)
 
     if (_.size(player_cards.hand) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
@@ -37,7 +37,7 @@ Bishop = class Bishop extends Card {
     ordered_player_cards.shift()
     _.each(ordered_player_cards, function(other_player_cards) {
       if (_.size(other_player_cards.hand) > 0) {
-        let turn_event_id = TurnEvents.insert({
+        let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: other_player_cards.player_id,
           username: other_player_cards.username,

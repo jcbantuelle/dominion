@@ -24,7 +24,7 @@ AttackEventProcessor = class AttackEventProcessor {
   process() {
     let attack_events = AttackEventProcessor.find_attack_events(this.player_cards)
     if (!_.isEmpty(attack_events)) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: this.game._id,
         player_id: this.player_cards.player_id,
         username: this.player_cards.username,

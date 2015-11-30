@@ -14,7 +14,7 @@ Farmland = class Farmland extends Card {
 
   buy_event(buyer) {
     if (_.size(buyer.player_cards.hand) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: buyer.game._id,
         player_id: buyer.player_cards.player_id,
         username: buyer.player_cards.username,
@@ -48,7 +48,7 @@ Farmland = class Farmland extends Card {
     })
 
     if (_.size(eligible_cards) > 0) {
-      let turn_event_id = TurnEvents.insert({
+      let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
