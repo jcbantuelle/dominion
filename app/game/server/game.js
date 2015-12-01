@@ -95,14 +95,11 @@ function allowed_to_play(game) {
 }
 
 function snapshot() {
-  // GamesSnapshot.remove({}, function() {
-  //   GamesSnapshot.insert(Games.all())
-  // })
-  // PlayerCardsSnapshot.remove({}, function() {
-  //   let player_card_snapshot = _.reduce(PlayerCards, function(snapshot, card_set, game_id) {
-  //     snapshot[game_id] = card_set.all()
-  //     return snapshot
-  //   }, {})
-  //   PlayerCardsSnapshot.insert({games: player_card_snapshot})
-  // })
+  GamesSnapshot.upsert('games_snapshot', {_id: 'games_snapshot', games: Games.all()}, {}, function() {
+    let player_card_snapshot = _.reduce(PlayerCards, function(snapshot, card_set, game_id) {
+      snapshot[game_id] = card_set.all()
+      return snapshot
+    }, {})
+    PlayerCardsSnapshot.upsert('player_cards_snapshot', {_id: 'player_cards_snapshot', games: player_card_snapshot})
+  })
 }
