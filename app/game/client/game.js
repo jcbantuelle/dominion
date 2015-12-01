@@ -52,7 +52,11 @@ function addSortable() {
 
 function updateChatWindow(data) {
   let chat_window = $('#game-chat')
-  chat_window.append(`<strong>${data.username}:</strong> ${data.message}\n`)
+  let message = `${data.message}\n`
+  if (data.username) {
+    message = `<strong>${data.username}:</strong> ${message}`
+  }
+  chat_window.append(message)
   chat_window.scrollTop(chat_window[0].scrollHeight)
 }
 

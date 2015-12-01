@@ -1,3 +1,10 @@
+UserStatus.events.on('connectionLogout', function(player) {
+  let user = Meteor.users.findOne(player.userId)
+  if (user.current_game) {
+    player_connection_message(user.current_game, user.username, 'left')
+  }
+})
+
 Meteor.methods({
   sendGameMessage: function(message, game_id) {
     let player_ids = _.pluck(game(game_id).players, '_id')
@@ -5,6 +12,16 @@ Meteor.methods({
       username: Meteor.user().username,
       message: message
     })
+  },
+  joinGame: function(game_id) {
+    if (Meteor.user()) {
+      player_connection_message(game_id, Meteor.user().username, 'joined')
+    }
+  },
+  leftGame: function(game_id) {
+    if (Meteor.user()) {
+      player_connection_message(game_id, Meteor.user().username, 'left')
+    }
   },
   playCard: function(card_name, game_id) {
     Future.task(Meteor.bindEnvironment(function() {
@@ -102,4 +119,14 @@ function snapshot() {
     }, {})
     PlayerCardsSnapshot.upsert('player_cards_snapshot', {_id: 'player_cards_snapshot', games: player_card_snapshot})
   })
+}
+
+function player_connection_message(game_id, username, direction) {
+  let game = GameModel.findOne(game_id)
+  if (game) {
+    let player_ids = _.pluck(game.players, '_id')
+    Streamy.sessionsForUsers(player_ids).emit('game_message', {
+      message: `<em>${username} has ${direction} the game</em>`
+    })
+  }
 }
