@@ -50,10 +50,15 @@ NobleBrigand = class NobleBrigand extends Card {
         return _.contains(['Silver', 'Gold'], card.name)
       })
       if (_.isEmpty(revealed_treasures)) {
+        let any_treasures = _.any(player_cards.revealed, function(card) {
+          return _.contains(card.types, 'treasure')
+        })
         let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
         card_discarder.discard_all()
-        let card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
-        card_gainer.gain_game_card()
+        if (!any_treasures) {
+          let card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
+          card_gainer.gain_game_card()
+        }
       } else if (_.size(revealed_treasures) === 1) {
         return NobleBrigand.trash_treasure(game, player_cards, revealed_treasures[0])
       } else {
