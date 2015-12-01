@@ -16,6 +16,7 @@ TurnEnder = class TurnEnder {
       this.end_game()
     } else {
       this.set_next_turn()
+      this.process_horse_traders()
       this.process_duration_cards()
       this.update_db()
     }
@@ -206,6 +207,19 @@ TurnEnder = class TurnEnder {
     this.new_turn.extra_turn = false
     this.game.turn_number += 1
     this.game.log.push(`<strong>- ${this.new_turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
+  }
+
+  process_horse_traders() {
+    let horse_trader_count = _.size(this.next_player_cards.horse_traders)
+    if (horse_trader_count > 0) {
+      this.next_player_cards.hand = this.next_player_cards.hand.concat(this.next_player_cards.horse_traders)
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.next_player_cards.username}</strong> puts ${CardView.render(this.next_player_cards.horse_traders)} in hand`)
+
+      let card_drawer = new CardDrawer(this.game, this.next_player_cards)
+      card_drawer.draw(horse_trader_count)
+
+      this.next_player_cards.horse_traders = []
+    }
   }
 
   process_duration_cards() {
