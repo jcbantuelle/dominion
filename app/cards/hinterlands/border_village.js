@@ -17,9 +17,7 @@ BorderVillage = class BorderVillage extends Card {
   }
 
   gain_event(gainer) {
-    let all_player_cards = PlayerCardsModel.find({
-      game_id: gainer.game._id
-    }).fetch()
+    let all_player_cards = PlayerCardsModel.find(gainer.game._id)
 
     let coin_value = CostCalculator.calculate(gainer.game, this, all_player_cards)
     let eligible_cards = _.filter(gainer.game.cards, function(card) {
