@@ -75,10 +75,7 @@ Meteor.methods({
 })
 
 function player_cards(game) {
-  return PlayerCardsModel.findOne({
-    game_id: game._id,
-    player_id: game.turn.player._id
-  })
+  return PlayerCardsModel.findOne(game._id, game.turn.player._id)
 }
 
 function game(game_id) {

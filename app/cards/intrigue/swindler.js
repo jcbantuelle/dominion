@@ -24,9 +24,7 @@ Swindler = class Swindler extends Card {
         DeckShuffler.shuffle(player_cards)
       }
 
-      let all_player_cards = PlayerCardsModel.find({
-        game_id: game._id
-      }).fetch()
+      let all_player_cards = PlayerCardsModel.find(game._id)
 
       let top_card = player_cards.deck.shift()
       player_cards.revealed.push(top_card)

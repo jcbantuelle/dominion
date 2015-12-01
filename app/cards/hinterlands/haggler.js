@@ -14,9 +14,7 @@ Haggler = class Haggler extends Card {
   }
 
   buy_event(buyer) {
-    let all_player_cards = PlayerCardsModel.find({
-      game_id: buyer.game._id
-    }).fetch()
+    let all_player_cards = PlayerCardsModel.find(buyer.game._id)
 
     let coin_value = CostCalculator.calculate(buyer.game, buyer.card, all_player_cards)
     let potion_value = buyer.card.potion_cost()

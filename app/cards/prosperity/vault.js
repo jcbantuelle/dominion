@@ -12,7 +12,7 @@ Vault = class Vault extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
-    PlayerCardsModel.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(game._id, player_cards)
 
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({
@@ -99,7 +99,7 @@ Vault = class Vault extends Card {
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(1)
     }
-    PlayerCardsModel.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(game._id, player_cards)
   }
 
 }

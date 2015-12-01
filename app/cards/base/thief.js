@@ -80,10 +80,7 @@ Thief = class Thief extends Card {
       minimum: 1,
       maximum: 1
     })
-    let attacker_player_cards = PlayerCardsModel.findOne({
-      player_id: game.turn.player._id,
-      game_id: game._id
-    })
+    let attacker_player_cards = PlayerCardsModel.findOne(game._id, game.turn.player._id)
     let turn_event_processor = new TurnEventProcessor(game, attacker_player_cards, turn_event_id)
     turn_event_processor.process(Thief.gain_trashed_treasure)
   }

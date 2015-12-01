@@ -23,7 +23,7 @@ Margrave = class Margrave extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    PlayerCardsModel.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(game._id, player_cards)
 
     let number_to_discard = _.size(player_cards.hand) - 3
 

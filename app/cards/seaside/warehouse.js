@@ -15,7 +15,7 @@ Warehouse = class Warehouse extends Card {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
-    PlayerCardsModel.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(game._id, player_cards)
 
     if (_.size(player_cards.hand) > 3) {
       let turn_event_id = TurnEventModel.insert({

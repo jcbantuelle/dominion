@@ -81,7 +81,7 @@ CardPlayer = class CardPlayer {
 
   update_db() {
     GameModel.update(this.game._id, this.game)
-    PlayerCardsModel.update(this.player_cards._id, this.player_cards)
+    PlayerCardsModel.update(this.game._id, this.player_cards)
   }
 
   update_log() {

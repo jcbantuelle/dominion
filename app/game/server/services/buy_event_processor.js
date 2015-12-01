@@ -59,7 +59,7 @@ BuyEventProcessor = class BuyEventProcessor {
     let selected_card = ClassCreator.create(selected_cards[0].name)
     selected_card.buy_event(buy_event_processor.buyer)
     GameModel.update(game._id, game)
-    PlayerCardsModel.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(game._id, player_cards)
     let buy_event_index = _.findIndex(buy_event_processor.buy_events, function(event) {
       return event.name === selected_cards[0].name
     })

@@ -2,9 +2,7 @@ GameEnder = class GameEnder {
 
   constructor(game) {
     this.game = game
-    this.players_cards = PlayerCardsModel.find({
-      game_id: this.game._id
-    }).fetch()
+    this.players_cards = PlayerCardsModel.find(this.game._id)
   }
 
   end_game() {

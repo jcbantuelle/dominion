@@ -53,7 +53,7 @@ Bishop = class Bishop extends Card {
       } else {
         game.log.push(`&nbsp;&nbsp;<strong>${other_player_cards.username}</strong> does not trash a card`)
       }
-      PlayerCardsModel.update(other_player_cards._id, other_player_cards)
+      PlayerCardsModel.update(game._id, other_player_cards)
     })
   }
 

@@ -54,7 +54,7 @@ CardDiscarder = class CardDiscarder {
       let reaction_card = ClassCreator.create(card.name)
       reaction_card.discard_reaction(this.game, this.player_cards)
       GameModel.update(this.game._id, this.game)
-      PlayerCardsModel.update(this.player_cards._id, this.player_cards)
+      PlayerCardsModel.update(this.game._id, this.player_cards)
     })
   }
 

@@ -56,6 +56,7 @@ GameCreator = class GameCreator {
   }
 
   set_up_players() {
+    PlayerCards[this.game._id] = new ReactiveDict()
     _.each(this.game.players, this.create_player_cards.bind(this))
   }
 

@@ -6,9 +6,7 @@ CostCalculator = class CostCalculator {
     let name = _.isPlainObject(card) ? card.name : card.name()
 
     if (!player_cards) {
-      player_cards = PlayerCardsModel.find({
-        game_id: game._id
-      }).fetch()
+      player_cards = PlayerCardsModel.find(game._id)
     }
 
     let in_play_cards = _.flatten(_.pluck(player_cards, 'in_play').concat(_.pluck(player_cards, 'duration')))

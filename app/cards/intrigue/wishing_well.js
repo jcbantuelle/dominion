@@ -16,7 +16,7 @@ WishingWell = class WishingWell extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
     if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
-      PlayerCardsModel.update(player_cards._id, player_cards)
+      PlayerCardsModel.update(game._id, player_cards)
 
       let unique_cards = _.uniq(AllPlayerCardsQuery.find(player_cards), function(card) {
         return card.name

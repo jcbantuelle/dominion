@@ -15,7 +15,7 @@ Spy = class Spy extends Card {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
-    PlayerCardsModel.update(player_cards._id, player_cards)
+    PlayerCardsModel.update(game._id, player_cards)
     Spy.reveal_card(game, player_cards)
 
     let player_attacker = new PlayerAttacker(game, this)

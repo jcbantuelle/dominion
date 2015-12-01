@@ -29,9 +29,7 @@ Forge = class Forge extends Card {
   }
 
   static trash_cards(game, player_cards, selected_cards) {
-    let all_player_cards = PlayerCardsModel.find({
-      game_id: game._id
-    }).fetch()
+    let all_player_cards = PlayerCardsModel.find(game._id)
 
     let cost = _.reduce(selected_cards, function(total_cost, card) {
       return total_cost + CostCalculator.calculate(game, card, all_player_cards)

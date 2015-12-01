@@ -20,7 +20,7 @@ PlayerAttacker = class PlayerAttacker {
         this.card.attack(this.game, attacked_player_cards)
       }
       GameModel.update(this.game._id, this.game)
-      PlayerCardsModel.update(attacked_player_cards._id, attacked_player_cards)
+      PlayerCardsModel.update(this.game._id, attacked_player_cards)
     })
   }
 

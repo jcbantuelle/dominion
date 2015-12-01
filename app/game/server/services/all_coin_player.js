@@ -15,7 +15,7 @@ AllCoinPlayer = class AllCoinPlayer {
     if (_.size(played_cards) > 0) {
       this.game.log.push(`<strong>${this.player_cards.username}</strong> plays ${CardView.render(played_cards)}`)
       GameModel.update(this.game._id, this.game)
-      PlayerCardsModel.update(this.player_cards._id, this.player_cards)
+      PlayerCardsModel.update(this.game._id, this.player_cards)
     }
   }
 

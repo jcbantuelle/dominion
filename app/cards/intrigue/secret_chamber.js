@@ -53,7 +53,7 @@ SecretChamber = class SecretChamber extends Card {
 
     let cards_in_hand = _.size(player_cards.hand)
     if (cards_in_hand > 2) {
-      PlayerCardsModel.update(player_cards._id, player_cards)
+      PlayerCardsModel.update(game._id, player_cards)
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,

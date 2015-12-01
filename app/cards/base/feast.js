@@ -12,9 +12,7 @@ Feast = class Feast extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Feast')
     card_trasher.trash()
 
-    let all_player_cards = PlayerCardsModel.find({
-      game_id: game._id
-    }).fetch()
+    let all_player_cards = PlayerCardsModel.find(game._id)
 
     let eligible_cards = _.filter(game.cards, function(card) {
       let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)

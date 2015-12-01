@@ -66,9 +66,7 @@ Develop = class Develop extends Card {
   }
 
   static choose_card(game, player_cards, coin_cost, potion_cost) {
-    let all_player_cards = PlayerCardsModel.find({
-      game_id: game._id
-    }).fetch()
+    let all_player_cards = PlayerCardsModel.find(game._id)
 
     let eligible_cards = _.filter(game.cards, function(card) {
       let game_card_coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)

@@ -24,9 +24,9 @@ TurnEnder = class TurnEnder {
   update_db() {
     GameModel.update(this.game._id, this.game)
     if (this.player_cards._id !== this.next_player_cards._id) {
-      PlayerCardsModel.update(this.player_cards._id, this.player_cards)
+      PlayerCardsModel.update(this.game._id, this.player_cards)
     }
-    PlayerCardsModel.update(this.next_player_cards._id, this.next_player_cards)
+    PlayerCardsModel.update(this.game._id, this.next_player_cards)
   }
 
   clean_up_cards_in_play() {
@@ -177,10 +177,7 @@ TurnEnder = class TurnEnder {
     if (this.new_turn.player._id === this.player_cards.player_id) {
       return this.player_cards
     } else {
-      return PlayerCardsModel.findOne({
-        game_id: this.game._id,
-        player_id: this.new_turn.player._id
-      })
+      return PlayerCardsModel.findOne(this.game._id, this.new_turn.player._id)
     }
   }
 
