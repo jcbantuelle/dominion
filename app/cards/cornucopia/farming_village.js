@@ -9,6 +9,9 @@ FarmingVillage = class FarmingVillage extends Card {
   }
 
   play(game, player_cards) {
+    game.actions += 2
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+
     this.reveal(game, player_cards)
 
     if (player_cards.revealed_card) {
