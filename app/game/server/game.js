@@ -14,6 +14,7 @@ Meteor.methods({
           ActionLock[game_id] = true
           let card_player = new CardPlayer(current_game, player_cards(current_game), card_name)
           card_player.play()
+          snapshot()
           ActionLock[game_id] = false
         }
       }
@@ -32,6 +33,7 @@ Meteor.methods({
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
           }
+          snapshot()
           ActionLock[game_id] = false
         }
       }
@@ -45,6 +47,7 @@ Meteor.methods({
           ActionLock[game_id] = true
           let turn_ender = new TurnEnder(current_game, player_cards(current_game))
           turn_ender.end_turn()
+          snapshot()
           ActionLock[game_id] = false
         }
       }
@@ -57,6 +60,7 @@ Meteor.methods({
         ActionLock[game_id] = true
         let all_coin_player = new AllCoinPlayer(current_game, player_cards(current_game))
         all_coin_player.play()
+        snapshot()
         ActionLock[game_id] = false
       }
     }
@@ -66,10 +70,10 @@ Meteor.methods({
   },
   destroyGame: function() {
     if (Meteor.user().admin) {
+      Meteor.users.update({}, {$unset: {current_game: ''}}, {multi: true})
       PlayerCardsModel.remove()
       GameModel.remove()
       TurnEventModel.remove()
-      Meteor.users.update({}, {$unset: {current_game: ''}}, {multi: true})
     }
   }
 })
@@ -88,4 +92,17 @@ function allowed_to_play(game) {
   } else {
     return Meteor.userId() === game.turn.player._id
   }
+}
+
+function snapshot() {
+  // GamesSnapshot.remove({}, function() {
+  //   GamesSnapshot.insert(Games.all())
+  // })
+  // PlayerCardsSnapshot.remove({}, function() {
+  //   let player_card_snapshot = _.reduce(PlayerCards, function(snapshot, card_set, game_id) {
+  //     snapshot[game_id] = card_set.all()
+  //     return snapshot
+  //   }, {})
+  //   PlayerCardsSnapshot.insert({games: player_card_snapshot})
+  // })
 }
