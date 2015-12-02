@@ -31,8 +31,8 @@ CardList = class CardList {
       'Harvest',
       'HornOfPlenty',
       'HuntingParty',
-      /*'Jester',
-      'Fairgrounds'*/
+      'Jester',
+      /*'Fairgrounds'*/
     ]
   }
 
