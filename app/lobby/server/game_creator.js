@@ -66,12 +66,22 @@ GameCreator = class GameCreator {
 
   create_player_cards(player) {
     let copper = new Copper()
-    let estate = new Estate()
-
     coppers = _.times(7, function() { return copper.to_h() })
-    estates = _.times(3, function() { return estate.to_h() })
 
-    deck = _.shuffle(coppers.concat(estates))
+    var victory_cards
+    if (this.use_dark_ages_cards) {
+      let shelters = [
+        new Hovel(),
+        new Necropolis(),
+        new OvergrownEstate()
+      ]
+      victory_cards = _.map(shelters, function(shelter) { return shelter.to_h() })
+    } else {
+      let estate = new Estate()
+      victory_cards = _.times(3, function() { return estate.to_h() })
+    }
+
+    deck = _.shuffle(coppers.concat(victory_cards))
     hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
@@ -96,6 +106,7 @@ GameCreator = class GameCreator {
   game_cards() {
     this.selected_kingdom_cards = this.kingdom_cards()
     this.use_prosperity_cards = this.prosperity_game()
+    this.use_dark_ages_cards = this.dark_ages_game()
     this.use_potions = this.potion_game()
     this.selected_common_cards = this.common_cards()
     this.trade_route_game()
@@ -234,6 +245,15 @@ GameCreator = class GameCreator {
     }))
     let random_number = this.random_number(1, _.size(this.selected_kingdom_cards))
     return prosperity_count >= random_number
+  }
+
+  dark_ages_game() {
+    let card_names = CardList.dark_ages()
+    let dark_ages_count = _.size(_.filter(this.selected_kingdom_cards, function(card) {
+      return _.contains(card_names, _.titleize(card.name))
+    }))
+    let random_number = this.random_number(1, _.size(this.selected_kingdom_cards))
+    return dark_ages_count >= random_number
   }
 
   potion_game() {
