@@ -16,6 +16,11 @@ CostCalculator = class CostCalculator {
     }))
     cost -= highways
 
+    let princesses = _.size(_.filter(in_play_cards, function(player_card) {
+      return player_card.name === 'Princess'
+    }))
+    cost -= (princesses * 2)
+
     if (_.contains(type, 'action')) {
       let quarries = _.size(_.filter(in_play_cards, function(player_card) {
         return player_card.name === 'Quarry'
