@@ -26,6 +26,23 @@ CardGainer = class CardGainer {
     }
   }
 
+  gain_prize_card() {
+    this.would_gain_reactions()
+    if (this.gain_from_game_cards) {
+      this.gain_game_card()
+    } else {
+      let card_index = this.find_card_index(this.game.prizes)
+      this.gained_card = this.game.prizes[card_index]
+      this.track_gained_card()
+      this.possessed()
+      this.player_cards[this.destination].unshift(this.gained_card)
+      this.game.prizes.splice(card_index, 1)
+      this.update_log()
+      this.gain_events()
+      this.update_cards()
+    }
+  }
+
   gain_game_card() {
     if (!this.gain_from_game_cards) {
       this.would_gain_reactions()

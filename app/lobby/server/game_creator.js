@@ -20,7 +20,8 @@ GameCreator = class GameCreator {
     return GameModel.insert({
       players: _.shuffle(this.players),
       cards: cards,
-      duchess: this.has_duchess(cards)
+      duchess: this.has_duchess(cards),
+      prizes: this.prizes(cards)
     })
   }
 
@@ -185,6 +186,25 @@ GameCreator = class GameCreator {
     return _.find(cards, function(card) {
       return card.name === 'Duchess'
     }) !== undefined
+  }
+
+  prizes(cards) {
+    let tournament = _.find(cards, function(card) {
+      return card.name === 'Tournament'
+    })
+
+    if (tournament) {
+      let prizes = [
+        new BagOfGold(),
+        new Diadem(),
+        new Followers(),
+        new Princess(),
+        new TrustySteed()
+      ]
+      return _.map(prizes, function(prize) {
+        return prize.to_h()
+      })
+    }
   }
 
   prosperity_game() {
