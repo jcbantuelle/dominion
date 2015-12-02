@@ -1,7 +1,7 @@
 CardList = class CardList {
 
   constructor() {
-    this.cards = this.card_list()
+    this.cards = CardList.full_list()
   }
 
   pull_set() {
@@ -10,7 +10,11 @@ CardList = class CardList {
     }).value()
   }
 
-  card_list() {
+  static pull_one() {
+    return ClassCreator.create(_.sample(CardList.full_list(), 1)).to_h()
+  }
+
+  static full_list() {
     return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue()).concat(CardList.cornucopia())
   }
 
