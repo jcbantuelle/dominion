@@ -15,7 +15,47 @@ CardList = class CardList {
   }
 
   static full_list() {
-    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue()).concat(CardList.cornucopia())
+    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue()).concat(CardList.cornucopia()).concat(CardList.dark_ages())
+  }
+
+  static dark_ages() {
+    return [
+      /*'PoorHouse',
+      'Beggar',
+      'Squire',
+      'Vagrant',
+      'Forager',
+      'Hermit',
+      'MarketSquare',
+      'Sage',
+      'Storeroom',
+      'Urchin',
+      'Armory',
+      'DeathCart',
+      'Feodum',
+      'Fortress',
+      'Ironmonger',
+      'Marauder',
+      'Procession',
+      'Rats',
+      'Scavenger',
+      'Knights',
+      'WanderingMinstrel',
+      'BandOfMisfits',
+      'BanditCamp',
+      'Catacombs',
+      'Count',
+      'Counterfeit',
+      'Cultist',
+      'Graverobber',
+      'JunkDealer',
+      'Mystic',
+      'Pillage',
+      'Rebuild',
+      'Rogue',
+      'Altar',
+      'HuntingGrounds'*/
+    ]
   }
 
   static cornucopia() {
