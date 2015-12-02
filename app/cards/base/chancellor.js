@@ -31,9 +31,9 @@ Chancellor = class Chancellor extends Card {
 
   static discard_deck(game, player_cards, response) {
     if (response === 'yes') {
-      game.log.push(`&nbsp;&nbsp;and discards their deck`)
-      let card_discarder = new CardDiscarder(game, player_cards, 'deck')
-      card_discarder.discard_all(false)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts their deck into their discard pile`)
+      player_cards.discard = player_cards.discard.concat(player_cards.deck)
+      player_cards.deck = []
     }
   }
 
