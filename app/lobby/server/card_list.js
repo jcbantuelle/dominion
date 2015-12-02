@@ -20,8 +20,8 @@ CardList = class CardList {
 
   static dark_ages() {
     return [
-      /*'PoorHouse',
-      'Beggar',
+      'PoorHouse',
+      /*'Beggar',
       'Squire',
       'Vagrant',
       'Forager',
