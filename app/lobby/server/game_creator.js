@@ -17,6 +17,9 @@ GameCreator = class GameCreator {
 
   create_game() {
     let cards = this.game_cards()
+    if (this.has_young_witch(cards)) {
+      cards.push(this.bane_card(cards))
+    }
     return GameModel.insert({
       players: _.shuffle(this.players),
       cards: cards,
@@ -152,7 +155,8 @@ GameCreator = class GameCreator {
       embargos: 0,
       top_card: _.first(card_stack),
       stack: card_stack,
-      source: source
+      source: source,
+      bane: card.bane
     }
   }
 
@@ -205,6 +209,22 @@ GameCreator = class GameCreator {
         return prize.to_h()
       })
     }
+  }
+
+  has_young_witch(cards) {
+    return _.find(cards, function(card) {
+      return card.name === 'Young Witch'
+    })
+  }
+
+  bane_card(cards) {
+    let game_card_names = _.pluck(cards, 'name')
+    var card
+    do {
+      card = CardList.pull_one()
+    } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.contains(game_card_names, card.name))
+    card.bane = true
+    return this.game_card(card, 'kingdom')
   }
 
   prosperity_game() {
