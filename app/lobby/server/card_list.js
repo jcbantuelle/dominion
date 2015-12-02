@@ -29,8 +29,8 @@ CardList = class CardList {
       'Tournament',
       'YoungWitch',
       'Harvest',
-      /*'HornOfPlenty',
-      'HuntingParty',
+      'HornOfPlenty',
+      /*'HuntingParty',
       'Jester',
       'Fairgrounds'*/
     ]
