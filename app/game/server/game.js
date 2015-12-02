@@ -31,7 +31,6 @@ Meteor.methods({
           ActionLock[game_id] = true
           let card_player = new CardPlayer(current_game, player_cards(current_game), card_name)
           card_player.play()
-          snapshot()
           ActionLock[game_id] = false
         }
       }
@@ -49,8 +48,8 @@ Meteor.methods({
           if (current_game.turn.buys === 0) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
+            snapshot()
           }
-          snapshot()
           ActionLock[game_id] = false
         }
       }
@@ -77,7 +76,6 @@ Meteor.methods({
         ActionLock[game_id] = true
         let all_coin_player = new AllCoinPlayer(current_game, player_cards(current_game))
         all_coin_player.play()
-        snapshot()
         ActionLock[game_id] = false
       }
     }
