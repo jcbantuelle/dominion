@@ -8,11 +8,9 @@ TrashEventProcessor = class BuyEventProcessor {
     return ['Overgrown Estate', 'Squire']
   }
 
-  constructor(trasher, card_name) {
+  constructor(trasher, card) {
     this.trasher = trasher
-    this.card = _.find(trasher.player_cards[trasher.source], (trash_card) => {
-      return trash_card.name === card_name
-    })
+    this.card = card
     this.find_trash_events()
   }
 

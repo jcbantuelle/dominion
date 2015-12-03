@@ -32,10 +32,13 @@ CardTrasher = class CardTrasher {
     }
     _.each(this.card_names, (card_name) => {
       let card_index = this.find_card_index(card_name)
-      this.update_log(this.player_cards[this.source][card_index])
-      let trash_event_processor = new TrashEventProcessor(this, card_name)
+      let trashed_card = this.player_cards[this.source].splice(card_index, 1)[0]
+      this.player_cards.trashing.push(trashed_card)
+      this.trashed_card_count = _.size(this.player_cards.trashing)
+      this.update_log(trashed_card)
+      let trash_event_processor = new TrashEventProcessor(this, trashed_card)
       trash_event_processor.process()
-      if (card_index !== -1) {
+      if (_.size(this.player_cards.trashing) === this.trashed_card_count) {
         this.trash_card(card_index)
       }
     })
@@ -48,10 +51,11 @@ CardTrasher = class CardTrasher {
   }
 
   trash_card(card_index) {
+    let trashed_card = this.player_cards.trashing.pop()
     if (this.game.turn.possessed) {
-      this.player_cards.possession_trash.push(this.player_cards[this.source][card_index])
+      this.player_cards.possession_trash.push(trashed_card)
     } else {
-      this.game.trash.push(this.player_cards[this.source][card_index])
+      this.game.trash.push(trashed_card)
     }
     this.trashed_cards = this.trashed_cards.concat(this.player_cards[this.source].splice(card_index, 1))
   }
