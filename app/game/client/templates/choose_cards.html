@@ -8,7 +8,7 @@
           {{#if ../game_cards}}
             <span class="{{top_card.types}}">{{top_card.name}}</span>
           {{else}}
-            <span class="{{types}}">{{name}}</span>
+            <span class="{{types}}">{{name}}</span>{{#if source}} ({{source}}){{/if}}
           {{/if}}
         </label>
       {{/each}}

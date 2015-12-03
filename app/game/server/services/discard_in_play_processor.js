@@ -3,7 +3,7 @@ DiscardInPlayProcessor = class DiscardInPlayProcessor {
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
-    this.event_cards = ['Treasury', 'Herbalist', 'Alchemist']
+    this.event_cards = ['Treasury', 'Herbalist', 'Alchemist', 'Hermit']
     this.find_discard_events()
   }
 
@@ -22,6 +22,8 @@ DiscardInPlayProcessor = class DiscardInPlayProcessor {
           return _.any(this.player_cards.in_play, function(card) {
             return card.name === 'Potion'
           })
+        } else if (card.name === 'Hermit') {
+          return _.isEmpty(this.game.turn.bought_cards)
         } else {
           return true
         }
