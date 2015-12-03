@@ -2,6 +2,13 @@
 
   <div class="row">
 
+    <!-- Not Supply Cards -->
+    <div class="col-md-2" id="not-supply-cards">
+      {{#each game.not_supply_cards}}
+        {{> card}}
+      {{/each}}
+    </div>
+
     <!-- Kingdom Cards -->
     <div class="col-md-2" id="kingdom-cards">
       {{#each game.kingdom_cards}}

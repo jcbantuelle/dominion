@@ -1,75 +1,76 @@
 <template name="lobby">
+  <div id="lobby-container">
+    <div id="proposal-message">{{{currentUser.declined_proposal}}}</div>
 
-  <div id="proposal-message">{{{currentUser.declined_proposal}}}</div>
-
-  <div id="proposal">
-    {{#with proposal}}
-      <div>
-        {{#if is_proposer}}
-          You have
-        {{else}}
-          <strong>{{proposer.username}}</strong> has
-        {{/if}}
-        proposed a game.
-      </div>
-
-      <br />
-
-      <div>
-        <strong>Players:</strong>
-        {{#each players}}
-          {{username}}
-        {{/each}}
-      </div>
-
-      <div>
-        <strong>Cards:</strong>
-        {{#each cards}}
-          <span class="lobby-card {{types}}">{{name}}</span>
-        {{/each}}
-      </div>
-
-      <br />
-
-      {{#if accepted}}
-        <div>Waiting for others to accept...</div>
-      {{else}}
-        <div id="proposal-form-container">
-          <form id="proposed-game">
-            <input type="hidden" id="proposal_id" value="{{_id}}" />
-            <button id="decline-proposal" class="btn btn-small btn-danger" type="submit" value="Decline Game">Decline Game</button>
-            <button id="accept-proposal" class="btn btn-small btn-success" type="submit" value="Accept Game">Accept Game</button>
-          </form>
-        </div>
-      {{/if}}
-    {{/with}}
-  </div>
-
-  {{#unless proposal}}
-    <form id="lobby">
-      <div id="players" class="checkbox">
-        {{#each lobby_players}}
-          {{#if has_proposal}}
-            <span class="busy">{{username}}</span>
+    <div id="proposal">
+      {{#with proposal}}
+        <div>
+          {{#if is_proposer}}
+            You have
           {{else}}
-            <label for="player_{{_id}}">
-              <input type="checkbox" class="lobby-player" id="player_{{_id}}" value="{{_id}}" />
-              {{username}}
-            </label>
+            <strong>{{proposer.username}}</strong> has
           {{/if}}
-        {{/each}}
-      </div>
-      <br class="clear" />
-      <button id="propose-game" class="btn btn-primary" type="submit" value="Start Game">Propose Game</button>
+          proposed a game.
+        </div>
+
+        <br />
+
+        <div>
+          <strong>Players:</strong>
+          {{#each players}}
+            {{username}}
+          {{/each}}
+        </div>
+
+        <div>
+          <strong>Cards:</strong>
+          {{#each cards}}
+            <span class="lobby-card {{types}}">{{name}}</span>
+          {{/each}}
+        </div>
+
+        <br />
+
+        {{#if accepted}}
+          <div>Waiting for others to accept...</div>
+        {{else}}
+          <div id="proposal-form-container">
+            <form id="proposed-game">
+              <input type="hidden" id="proposal_id" value="{{_id}}" />
+              <button id="decline-proposal" class="btn btn-small btn-danger" type="submit" value="Decline Game">Decline Game</button>
+              <button id="accept-proposal" class="btn btn-small btn-success" type="submit" value="Accept Game">Accept Game</button>
+            </form>
+          </div>
+        {{/if}}
+      {{/with}}
+    </div>
+
+    {{#unless proposal}}
+      <form id="lobby">
+        <div id="players" class="checkbox">
+          {{#each lobby_players}}
+            {{#if has_proposal}}
+              <span class="busy">{{username}}</span>
+            {{else}}
+              <label for="player_{{_id}}">
+                <input type="checkbox" class="lobby-player" id="player_{{_id}}" value="{{_id}}" />
+                {{username}}
+              </label>
+            {{/if}}
+          {{/each}}
+        </div>
+        <br class="clear" />
+        <button id="propose-game" class="btn btn-primary" type="submit" value="Start Game">Propose Game</button>
+      </form>
+    {{/unless}}
+
+    <br />
+
+    <pre id="lobby-chat"></pre>
+
+    <form id="chat">
+      <input type="text" name="message" id="message" class="form-control" autocomplete="off" />
     </form>
-  {{/unless}}
-
-  <br />
-
-  <pre id="lobby-chat"></pre>
-
-  <form id="chat">
-    <input type="text" name="message" id="message" class="form-control" autocomplete="off" />
-  </form>
+  </div>
 
 </template>

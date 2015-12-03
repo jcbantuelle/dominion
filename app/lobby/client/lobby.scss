@@ -17,6 +17,12 @@ $player_margin: 25px;
   background-image: -ms-linear-gradient(bottom, $to 50%, $from 50%);
 }
 
+#lobby-container {
+  width: 1170px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 #players label {
   display: inline;
   float: left;

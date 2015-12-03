@@ -4,6 +4,10 @@ body {
   overflow-y: scroll;
 }
 
+.container {
+  width: 1410px;
+}
+
 #kingdom-cards {
   width: 240px;
 }
@@ -56,7 +60,7 @@ body {
   color: lightblue;
 }
 
-#common-cards {
+#common-cards, #not-supply-cards {
   width: 190px;
 }
 
@@ -118,6 +122,12 @@ body {
 #game-chat {
   height: 100px;
   overflow: auto;
+}
+
+#game-chat, #message {
+  width: 1170px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #turn-event label {

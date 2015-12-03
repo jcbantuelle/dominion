@@ -17,9 +17,6 @@ GameCreator = class GameCreator {
 
   create_game() {
     let cards = this.game_cards()
-    if (this.has_young_witch(cards)) {
-      cards.push(this.bane_card(cards))
-    }
     return GameModel.insert({
       players: _.shuffle(this.players),
       cards: cards,
@@ -109,16 +106,33 @@ GameCreator = class GameCreator {
     this.use_dark_ages_cards = this.dark_ages_game()
     this.use_potions = this.potion_game()
     this.selected_common_cards = this.common_cards()
+    this.selected_not_supply_cards = this.not_supply_cards()
     this.trade_route_game()
-    return this.selected_kingdom_cards.concat(this.selected_common_cards)
+    return this.selected_kingdom_cards.concat(this.selected_common_cards).concat(this.selected_not_supply_cards)
   }
 
   kingdom_cards() {
-    return _.chain(this.cards).map((card) => {
+    let kingdom_cards = _.map(this.cards, (card) => {
       return this.game_card(card, 'kingdom')
-    }).sortBy(function(card) {
+    })
+
+    if (this.has_young_witch(kingdom_cards)) {
+      kingdom_cards.push(this.bane_card(kingdom_cards))
+    }
+
+    return _.sortBy(kingdom_cards, function(card) {
       return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
-    }).value()
+    })
+  }
+
+  not_supply_cards() {
+    let not_supply_cards = []
+    if (this.has_hermit(this.selected_kingdom_cards)) {
+      not_supply_cards.push(this.game_card((new Madman()).to_h(), 'not_supply'))
+    }
+    return _.sortBy(not_supply_cards, function(card) {
+      return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
+    })
   }
 
   common_cards() {
@@ -225,6 +239,12 @@ GameCreator = class GameCreator {
   has_young_witch(cards) {
     return _.find(cards, function(card) {
       return card.name === 'Young Witch'
+    })
+  }
+
+  has_hermit(cards) {
+    return _.find(cards, function(card) {
+      return card.name === 'Hermit'
     })
   }
 
