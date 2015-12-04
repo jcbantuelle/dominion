@@ -4,6 +4,10 @@ RuinedVillage = class RuinedVillage extends Card {
     return ['action', 'ruins']
   }
 
+  stack_name() {
+    return 'Ruins'
+  }
+
   coin_cost() {
     return 0
   }
