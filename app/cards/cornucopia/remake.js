@@ -38,13 +38,13 @@ Remake = class Remake extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
+    let all_player_cards = PlayerCardsModel.find(game._id)
+
     let trashed_card = selected_cards[0]
-    let trashed_card_coin_cost = CostCalculator.calculate(game, trashed_card)
+    let trashed_card_coin_cost = CostCalculator.calculate(game, trashed_card, all_player_cards)
 
     let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
     card_trasher.trash()
-
-    let all_player_cards = PlayerCardsModel.find(game._id)
 
     let eligible_cards = _.filter(game.cards, function(card) {
       let game_card_coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
