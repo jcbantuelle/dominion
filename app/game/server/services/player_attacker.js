@@ -9,6 +9,8 @@ PlayerAttacker = class PlayerAttacker {
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
     ordered_player_cards.shift()
 
+    UrchinResolver.resolve(this.game, attacker)
+
     _.each(ordered_player_cards, (attacked_player_cards) => {
       let attack_event_processor = new AttackEventProcessor(this.game, attacked_player_cards)
       attack_event_processor.process()

@@ -130,6 +130,9 @@ GameCreator = class GameCreator {
     if (this.has_hermit(this.selected_kingdom_cards)) {
       not_supply_cards.push(this.game_card((new Madman()).to_h(), 'not_supply'))
     }
+    if (this.has_urchin(this.selected_kingdom_cards)) {
+      not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
+    }
     return _.sortBy(not_supply_cards, function(card) {
       return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
     })
@@ -245,6 +248,12 @@ GameCreator = class GameCreator {
   has_hermit(cards) {
     return _.find(cards, function(card) {
       return card.name === 'Hermit'
+    })
+  }
+
+  has_urchin(cards) {
+    return _.find(cards, function(card) {
+      return card.name === 'Urchin'
     })
   }
 
