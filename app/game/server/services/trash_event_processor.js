@@ -5,7 +5,7 @@ TrashEventProcessor = class BuyEventProcessor {
   }
 
   static event_cards() {
-    return ['Overgrown Estate', 'Squire', 'Feodum']
+    return ['Overgrown Estate', 'Squire', 'Feodum', 'Fortress']
   }
 
   constructor(trasher, card) {
