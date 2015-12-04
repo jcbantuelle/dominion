@@ -5,7 +5,7 @@ CardBuyer = class CardBuyer {
     this.player_cards = player_cards
     this.game_card = this.find_game_card(card_name)
     this.card = ClassCreator.create(this.game_card.top_card.name)
-    this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', this.card.name(), true)
+    this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', card_name, true)
     this.all_player_cards = PlayerCardsModel.find(game._id)
   }
 
