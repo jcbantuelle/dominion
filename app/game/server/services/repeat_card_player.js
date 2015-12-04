@@ -10,7 +10,6 @@ RepeatCardPlayer = class RepeatCardPlayer extends CardPlayer {
         this.mark_source_as_duration(source)
       }
     }
-    this.resolve_played_cards()
     this.update_db()
   }
 
