@@ -133,6 +133,9 @@ GameCreator = class GameCreator {
     if (this.has_urchin(this.selected_kingdom_cards)) {
       not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
     }
+    if (this.has_spoils(this.selected_kingdom_cards)) {
+      not_supply_cards.push(this.game_card((new Spoils()).to_h(), 'not_supply'))
+    }
     return _.sortBy(not_supply_cards, function(card) {
       return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
     })
@@ -217,6 +220,8 @@ GameCreator = class GameCreator {
       return 12
     } else if (card.name === 'Potion') {
       return 16
+    } else if (card.name === 'Spoils') {
+      return 15
     } else {
       return 10
     }
@@ -284,6 +289,12 @@ GameCreator = class GameCreator {
   has_looters() {
     return _.any(this.selected_kingdom_cards, function(card) {
       return _.contains(card.top_card.types, 'looter')
+    })
+  }
+
+  has_spoils() {
+    return _.any(this.selected_kingdom_cards, function(card) {
+      return _.contains(['Marauder'], card.name)
     })
   }
 
