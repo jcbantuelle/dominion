@@ -35,7 +35,7 @@ ScryingPool = class ScryingPool extends Card {
       }
       let card = player_cards.deck.shift()
       player_cards.revealed.push(card)
-      if (!_.contains(card.types, 'action')) {
+      if (!_.contains(_.words(card.types), 'action')) {
         non_action = true
       }
     }

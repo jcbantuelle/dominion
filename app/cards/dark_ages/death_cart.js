@@ -13,7 +13,7 @@ DeathCart = class DeathCart extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$5`)
 
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(card.types, 'action')
+      return _.contains(_.words(card.types), 'action')
     })
 
     if (_.size(eligible_cards) > 0) {

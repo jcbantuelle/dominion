@@ -8,7 +8,7 @@ SchemeResolver = class SchemeResolver {
   resolve() {
     _.times(this.game.turn.schemes, () => {
       let action_cards = _.filter(this.player_cards.in_play, (card) => {
-        return _.contains(card.types, 'action')
+        return _.contains(_.words(card.types), 'action')
       })
       if (!_.isEmpty(action_cards)) {
         let turn_event_id = TurnEventModel.insert({

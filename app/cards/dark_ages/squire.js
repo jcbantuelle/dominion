@@ -46,7 +46,7 @@ Squire = class Squire extends Card {
 
   trash_event(trasher) {
     let eligible_cards = _.filter(trasher.game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && _.contains(card.top_card.types, 'attack')
+      return card.count > 0 && card.top_card.purchasable && _.contains(_.words(card.top_card.types), 'attack')
     })
 
     if (_.size(eligible_cards) > 0) {

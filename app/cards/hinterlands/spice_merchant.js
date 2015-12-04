@@ -10,7 +10,7 @@ SpiceMerchant = class SpiceMerchant extends Card {
 
   play(game, player_cards) {
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(card.types, 'treasure')
+      return _.contains(_.words(card.types), 'treasure')
     })
     if (_.size(eligible_cards) > 0) {
       let turn_event_id = TurnEventModel.insert({

@@ -29,7 +29,7 @@ Jester = class Jester extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard_all(false)
 
-      if (_.contains(player_cards.revealed_card.types, 'victory')) {
+      if (_.contains(_.words(player_cards.revealed_card.types), 'victory')) {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
         card_gainer.gain_game_card()
       } else {

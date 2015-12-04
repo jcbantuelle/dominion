@@ -206,7 +206,7 @@ GameCreator = class GameCreator {
   }
 
   stack_size(card) {
-    if (_.contains(card.types, 'victory')) {
+    if (_.contains(_.words(card.types), 'victory')) {
       return _.size(this.players) < 3 ? 8 : 12
     } else if (_.contains(['Curse', 'Ruins'], card.name)) {
       return _.size(this.players) === 1 ? 10 : _.size(this.players) * 10 - 10
@@ -288,7 +288,7 @@ GameCreator = class GameCreator {
 
   has_looters() {
     return _.any(this.selected_kingdom_cards, function(card) {
-      return _.contains(card.top_card.types, 'looter')
+      return _.contains(_.words(card.top_card.types), 'looter')
     })
   }
 
@@ -341,7 +341,7 @@ GameCreator = class GameCreator {
   }
 
   set_trade_route_tokens(card) {
-    if (card.name != 'Knights' && _.contains(card.top_card.types, 'victory')) {
+    if (card.name != 'Knights' && _.contains(_.words(card.top_card.types), 'victory')) {
       card.has_trade_route_token = true
     }
     return card

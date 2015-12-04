@@ -51,7 +51,7 @@ NobleBrigand = class NobleBrigand extends Card {
       })
       if (_.isEmpty(revealed_treasures)) {
         let any_treasures = _.any(player_cards.revealed, function(card) {
-          return _.contains(card.types, 'treasure')
+          return _.contains(_.words(card.types), 'treasure')
         })
         let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
         card_discarder.discard_all()

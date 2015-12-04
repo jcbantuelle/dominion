@@ -27,7 +27,7 @@ Adventurer = class Adventurer extends Card {
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      if (_.contains(card.types, 'treasure')) {
+      if (_.contains(_.words(card.types), 'treasure')) {
         player_cards.hand.push(card)
         player_cards.revealed_treasures.push(card)
       } else {

@@ -21,7 +21,7 @@ CostCalculator = class CostCalculator {
     }))
     cost -= (princesses * 2)
 
-    if (_.contains(type, 'action')) {
+    if (_.contains(_.words(type), 'action')) {
       let quarries = _.size(_.filter(in_play_cards, function(player_card) {
         return player_card.name === 'Quarry'
       }))
@@ -30,7 +30,7 @@ CostCalculator = class CostCalculator {
 
     if (name === 'Peddler' && (game.turn.phase === 'buy' || buy_phase)) {
       let action_count = _.size(_.filter(in_play_cards, function(player_card) {
-        return _.contains(player_card.types, 'action')
+        return _.contains(_.words(player_card.types), 'action')
       }))
       cost -= (action_count * 2)
     }

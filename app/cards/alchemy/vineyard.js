@@ -18,7 +18,7 @@ Vineyard = class Vineyard extends Card {
 
   point_variable(player_cards) {
     return _.size(_.filter(player_cards, function(card) {
-      return _.contains(card.types, 'action')
+      return _.contains(_.words(card.types), 'action')
     }))
   }
 

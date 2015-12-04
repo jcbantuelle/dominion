@@ -29,7 +29,7 @@ Library = class Library extends Card {
         DeckShuffler.shuffle(player_cards)
       }
       let top_card = player_cards.deck.shift()
-      if (_.contains(top_card.types, 'action')) {
+      if (_.contains(_.words(top_card.types), 'action')) {
         player_cards.pending = top_card
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,

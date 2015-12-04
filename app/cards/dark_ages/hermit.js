@@ -65,7 +65,7 @@ Hermit = class Hermit extends Card {
 
   trashable_cards(source, letter) {
     return _.chain(source).filter(function(card) {
-      return !_.contains(card.types, 'treasure')
+      return !_.contains(_.words(card.types), 'treasure')
     }).map(function(card) {
       let trashable_card = _.clone(card)
       trashable_card.source = letter

@@ -45,7 +45,7 @@ Mandarin = class Mandarin extends Card {
 
   gain_event(gainer) {
     let treasures = _.filter(gainer.player_cards.in_play, function(card) {
-      return _.contains(card.types, 'treasure')
+      return _.contains(_.words(card.types), 'treasure')
     })
 
     if (_.size(treasures) > 0) {

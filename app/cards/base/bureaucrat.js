@@ -18,7 +18,7 @@ Bureaucrat = class Bureaucrat extends Card {
 
   attack(game, player_cards) {
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(card.types, 'victory')
+      return _.contains(_.words(card.types), 'victory')
     })
 
     if (_.size(eligible_cards) > 0) {

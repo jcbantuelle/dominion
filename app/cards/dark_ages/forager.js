@@ -32,7 +32,7 @@ Forager = class Forager extends Card {
     }
 
     let trashed_treasures = _.filter(game.trash, function(card) {
-      return _.contains(card.types, 'treasure')
+      return _.contains(_.words(card.types), 'treasure')
     })
     let unique_treasure_count = _.size(_.uniq(trashed_treasures, function(card) {
       return card.name

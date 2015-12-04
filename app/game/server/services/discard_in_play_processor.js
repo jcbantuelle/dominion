@@ -12,11 +12,11 @@ DiscardInPlayProcessor = class DiscardInPlayProcessor {
       if (_.contains(this.event_cards, card.name)) {
         if (card.name === 'Treasury') {
           return !_.any(this.game.turn.bought_cards, function(card) {
-            return _.contains(card.types, 'victory')
+            return _.contains(_.words(card.types), 'victory')
           })
         } else if (card.name === 'Herbalist') {
           return _.any(this.player_cards.in_play, function(card) {
-            return _.contains(card.types, 'treasure')
+            return _.contains(_.words(card.types), 'treasure')
           })
         } else if (card.name === 'Alchemist') {
           return _.any(this.player_cards.in_play, function(card) {
@@ -80,7 +80,7 @@ DiscardInPlayProcessor = class DiscardInPlayProcessor {
 
   static purge_invalid_discard_events(game, player_cards, discard_in_play_processor) {
     let treasures = _.any(player_cards.in_play, function(card) {
-      return _.contains(card.types, 'treasure')
+      return _.contains(_.words(card.types), 'treasure')
     })
     if (!treasures) {
       discard_in_play_processor.discard_events = _.filter(discard_in_play_processor.discard_events, function(event) {

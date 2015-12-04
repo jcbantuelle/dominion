@@ -32,7 +32,7 @@ FarmingVillage = class FarmingVillage extends Card {
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      if (_.contains(card.types, 'treasure') || _.contains(card.types, 'action')) {
+      if (_.contains(_.words(card.types), 'treasure') || _.contains(_.words(card.types), 'action')) {
         player_cards.hand.push(card)
         player_cards.revealed_card = card
       } else {

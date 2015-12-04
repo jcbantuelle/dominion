@@ -15,7 +15,7 @@ ShantyTown = class ShantyTown extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
 
     let has_actions = _.any(player_cards.hand, function(card) {
-      return _.contains(card.types, 'action')
+      return _.contains(_.words(card.types), 'action')
     })
     if (!has_actions) {
       let card_drawer = new CardDrawer(game, player_cards)

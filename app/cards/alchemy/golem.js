@@ -57,7 +57,7 @@ Golem = class Golem extends Card {
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      if (_.contains(card.types, 'action') && card.name !== 'Golem') {
+      if (_.contains(_.words(card.types), 'action') && card.name !== 'Golem') {
         if (player_cards.first_golem_card) {
           player_cards.second_golem_card = card
         } else {

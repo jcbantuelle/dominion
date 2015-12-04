@@ -18,7 +18,7 @@ Ironmonger = class Ironmonger extends Card {
     this.reveal(game, player_cards)
 
     let gains = []
-    let types = player_cards.revealed_card.types
+    let types = _.words(player_cards.revealed_card.types)
     if (_.contains(types, 'action')) {
       game.turn.actions += 1
       gains.push('+1 action')

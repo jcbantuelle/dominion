@@ -10,7 +10,7 @@ Mint = class Mint extends Card {
 
   play(game, player_cards) {
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(card.types, 'treasure')
+      return _.contains(_.words(card.types), 'treasure')
     })
     if (_.size(eligible_cards) > 0) {
       let turn_event_id = TurnEventModel.insert({
@@ -42,7 +42,7 @@ Mint = class Mint extends Card {
 
   buy_event(buyer) {
     let treasures_to_trash = _.filter(buyer.player_cards.in_play, function(card) {
-      return _.contains(card.types, 'treasure')
+      return _.contains(_.words(card.types), 'treasure')
     })
     let card_trasher = new CardTrasher(buyer.game, buyer.player_cards, 'in_play', _.pluck(treasures_to_trash, 'name'))
     card_trasher.trash()

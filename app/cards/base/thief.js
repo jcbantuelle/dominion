@@ -30,7 +30,7 @@ Thief = class Thief extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
       let revealed_treasures = _.filter(player_cards.revealed, function(card) {
-        return _.contains(card.types, 'treasure')
+        return _.contains(_.words(card.types), 'treasure')
       })
       if (_.isEmpty(revealed_treasures)) {
         game.log.push(`&nbsp;&nbsp;but there are no treasures to trash`)

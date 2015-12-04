@@ -16,7 +16,7 @@ Herbalist = class Herbalist extends Card {
 
   discard_from_play(game, player_cards) {
     let treasures = _.filter(player_cards.in_play, function(card) {
-      return _.contains(card.types, 'treasure')
+      return _.contains(_.words(card.types), 'treasure')
     })
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,

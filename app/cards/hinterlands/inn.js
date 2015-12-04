@@ -46,7 +46,7 @@ Inn = class Inn extends Card {
 
   gain_event(gainer) {
     let eligible_cards = _.filter(gainer.player_cards.discard, function(card) {
-      return _.contains(card.types, 'action')
+      return _.contains(_.words(card.types), 'action')
     })
 
     if (_.size(eligible_cards) > 0) {
