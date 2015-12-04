@@ -19,7 +19,7 @@ ScryingPool = class ScryingPool extends Card {
     ScryingPool.reveal_card(game, player_cards)
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack()
+    player_attacker.attack(player_cards)
 
     this.reveal(game, player_cards)
 

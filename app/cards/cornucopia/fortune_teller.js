@@ -13,7 +13,7 @@ FortuneTeller = class FortuneTeller extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2`)
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack()
+    player_attacker.attack(player_cards)
   }
 
   attack(game, player_cards) {

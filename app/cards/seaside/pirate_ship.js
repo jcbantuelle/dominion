@@ -26,7 +26,7 @@ PirateShip = class PirateShip extends Card {
     turn_event_processor.process(PirateShip.process_response)
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack()
+    player_attacker.attack(player_cards)
 
     if (game.turn.pirate_ship_trashed) {
       player_cards.pirate_ship_coins += 1

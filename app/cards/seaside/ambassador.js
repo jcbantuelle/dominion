@@ -28,7 +28,7 @@ Ambassador = class Ambassador extends Card {
     }
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack()
+    player_attacker.attack(player_cards)
 
     delete game.turn.ambassador_selected_card
     delete game.turn.ambassador_game_stack

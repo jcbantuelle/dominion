@@ -29,7 +29,7 @@ Minion = class Minion extends Card {
     turn_event_processor.process(Minion.process_response)
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack()
+    player_attacker.attack(player_cards)
 
     delete game.turn.minion_attack
   }

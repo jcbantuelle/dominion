@@ -5,7 +5,7 @@ PlayerAttacker = class PlayerAttacker {
     this.card = card
   }
 
-  attack() {
+  attack(attacker) {
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
     ordered_player_cards.shift()
 

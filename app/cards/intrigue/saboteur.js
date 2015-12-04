@@ -12,7 +12,7 @@ Saboteur = class Saboteur extends Card {
     this.all_player_cards = PlayerCardsModel.find(game._id)
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack()
+    player_attacker.attack(player_cards)
   }
 
   attack(game, player_cards) {

@@ -13,7 +13,7 @@ Witch = class Witch extends Card {
     card_drawer.draw(2)
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack()
+    player_attacker.attack(player_cards)
   }
 
   attack(game, player_cards) {

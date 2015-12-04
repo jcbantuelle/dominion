@@ -22,7 +22,7 @@ NobleBrigand = class NobleBrigand extends Card {
   attack_action(game, player_cards) {
     game.turn.trashed_treasures = []
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack()
+    player_attacker.attack(player_cards)
     _.each(game.turn.trashed_treasures, function(treasure) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', treasure.name)
       card_gainer.gain_trash_card()

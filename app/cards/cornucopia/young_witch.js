@@ -36,7 +36,7 @@ YoungWitch = class YoungWitch extends Card {
     }
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack()
+    player_attacker.attack(player_cards)
   }
 
   static discard_cards(game, player_cards, selected_cards) {
