@@ -222,6 +222,8 @@ GameCreator = class GameCreator {
       return 16
     } else if (card.name === 'Spoils') {
       return 15
+    } else if (card.name === 'Rats') {
+      return 20
     } else {
       return 10
     }
