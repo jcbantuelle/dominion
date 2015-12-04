@@ -172,7 +172,11 @@ GameCreator = class GameCreator {
   }
 
   miscellaneous_card_names() {
-    return ['Curse']
+    let miscellaneous_cards = ['Curse']
+    if (this.has_looters()) {
+      miscellaneous_cards.push('Ruins')
+    }
+    return miscellaneous_cards
   }
 
   game_card(card, source) {
@@ -189,15 +193,19 @@ GameCreator = class GameCreator {
   }
 
   create_card_stack(card) {
-    return _.times(this.stack_size(card), function(counter) {
-      return card
-    })
+    if (card.name === 'Ruins') {
+      return this.ruins_stack(card)
+    } else {
+      return _.times(this.stack_size(card), function(counter) {
+        return card
+      })
+    }
   }
 
   stack_size(card) {
     if (_.contains(card.types, 'victory')) {
       return _.size(this.players) < 3 ? 8 : 12
-    } else if (card.name === 'Curse') {
+    } else if (_.contains(['Curse', 'Ruins'], card.name)) {
       return _.size(this.players) === 1 ? 10 : _.size(this.players) * 10 - 10
     } else if (card.name === 'Copper') {
       return 60
@@ -212,6 +220,22 @@ GameCreator = class GameCreator {
     } else {
       return 10
     }
+  }
+
+  ruins_stack(card) {
+    let ruins_cards = [
+      new AbandonedMine(),
+      new RuinedLibrary(),
+      new RuinedMarket(),
+      new RuinedVillage(),
+      new Survivors()
+    ]
+
+    let ruins_pile = _.shuffle(_.flatten(_.map(ruins_cards, function(ruin) {
+      return _.times(10, function() { return ruin.to_h() })
+    })))
+
+    return _.take(ruins_pile, this.stack_size(card))
   }
 
   has_duchess(cards) {
@@ -254,6 +278,12 @@ GameCreator = class GameCreator {
   has_urchin(cards) {
     return _.find(cards, function(card) {
       return card.name === 'Urchin'
+    })
+  }
+
+  has_looters() {
+    return _.any(this.selected_kingdom_cards, function(card) {
+      return _.contains(card.top_card.types, 'looter')
     })
   }
 
