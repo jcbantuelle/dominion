@@ -121,7 +121,11 @@ GameCreator = class GameCreator {
     }
 
     return _.sortBy(kingdom_cards, function(card) {
-      return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
+      if (card.name === 'Knights') {
+        return -4.5
+      } else {
+        return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
+      }
     })
   }
 
@@ -198,6 +202,8 @@ GameCreator = class GameCreator {
   create_card_stack(card) {
     if (card.name === 'Ruins') {
       return this.ruins_stack(card)
+    } else if (card.name === 'Knights') {
+      return this.knights_stack(card)
     } else {
       return _.times(this.stack_size(card), function(counter) {
         return card
@@ -243,6 +249,25 @@ GameCreator = class GameCreator {
     })))
 
     return _.take(ruins_pile, this.stack_size(card))
+  }
+
+  knights_stack(card) {
+    let knights_cards = [
+      new SirMartin(),
+      new DameAnna(),
+      new DameJosephine(),
+      new DameMolly(),
+      new DameNatalie(),
+      new DameSylvia(),
+      new SirBailey(),
+      new SirDestry(),
+      new SirMichael(),
+      new SirVander()
+    ]
+
+    return _.shuffle(_.map(knights_cards, function(knight) {
+      return knight.to_h()
+    }))
   }
 
   has_duchess(cards) {
