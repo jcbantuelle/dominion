@@ -44,7 +44,7 @@ Masquerade = class Masquerade extends Card {
           return player.player_id === next_player._id
         })
         next_player_cards.hand.push(other_player_cards.masquerade)
-        game.log.push(`&nbsp;&nbsp;<strong>${other_player_cards.username}</strong> passes ${CardView.render(other_player_cards.masquerade)} to ${next_player.username}`)
+        game.log.push(`&nbsp;&nbsp;<strong>${other_player_cards.username}</strong> passes a card to ${next_player.username}`)
         delete other_player_cards.masquerade
       } else {
         game.log.push(`&nbsp;&nbsp;<strong>${other_player_cards.username}</strong> has no cards in hand`)
