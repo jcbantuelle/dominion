@@ -22,7 +22,9 @@ CardPlayer = class CardPlayer {
       if (this.play_card(auto_update) === 'duration') {
         this.mark_played_card_as_duration()
       }
-      this.resolve_played_cards()
+      if (!this.free_play) {
+        this.resolve_played_cards()
+      }
       if (auto_update) {
         this.update_db()
       }
