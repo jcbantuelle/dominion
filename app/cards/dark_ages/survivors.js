@@ -1,16 +1,4 @@
-Survivors = class Survivors extends Card {
-
-  types() {
-    return ['action', 'ruins']
-  }
-
-  stack_name() {
-    return 'Ruins'
-  }
-
-  coin_cost() {
-    return 0
-  }
+Survivors = class Survivors extends Ruins {
 
   play(game, player_cards) {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {

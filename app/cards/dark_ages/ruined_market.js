@@ -1,16 +1,4 @@
-RuinedMarket = class RuinedMarket extends Card {
-
-  types() {
-    return ['action', 'ruins']
-  }
-
-  stack_name() {
-    return 'Ruins'
-  }
-
-  coin_cost() {
-    return 0
-  }
+RuinedMarket = class RuinedMarket extends Ruins {
 
   play(game, player_cards) {
     game.turn.buys += 1

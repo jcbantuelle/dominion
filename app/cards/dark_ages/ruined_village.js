@@ -1,16 +1,4 @@
-RuinedVillage = class RuinedVillage extends Card {
-
-  types() {
-    return ['action', 'ruins']
-  }
-
-  stack_name() {
-    return 'Ruins'
-  }
-
-  coin_cost() {
-    return 0
-  }
+RuinedVillage = class RuinedVillage extends Ruins {
 
   play(game, player_cards) {
     game.turn.actions += 1
