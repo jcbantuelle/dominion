@@ -38,6 +38,9 @@ SchemeResolver = class SchemeResolver {
         return card.name === selected_card.name
       })
       let returned_card = player_cards.in_play.splice(returned_card_index, 1)[0]
+      if (returned_card.misfit) {
+        returned_card = ClassCreator.create('Band Of Misfits').to_h()
+      }
       player_cards.deck.unshift(returned_card)
       game.log.push(`<strong>${player_cards.username}</strong> places ${CardView.render(selected_card)} on their deck`)
     } else {
