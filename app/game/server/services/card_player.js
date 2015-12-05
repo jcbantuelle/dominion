@@ -33,7 +33,7 @@ CardPlayer = class CardPlayer {
     if (_.contains(this.card.types(), 'action') && this.game.turn.player._id === this.player_cards.player_id) {
       this.game.turn.played_actions += 1
     }
-    let result = this.card.play(this.game, this.player_cards)
+    let result = this.card.play(this.game, this.player_cards, this)
     if (auto_update) {
       this.update_db()
     }
