@@ -69,6 +69,10 @@ DiscardInPlayProcessor = class DiscardInPlayProcessor {
     let event_card = ClassCreator.create(player_cards.discarding[0].name)
     event_card.discard_from_play(game, player_cards)
 
+    if (player_cards.discarding[0].misfit) {
+      player_cards.discarding[0] = ClassCreator.create('Band Of Misfits').to_h()
+    }
+
     player_cards.discard = player_cards.discard.concat(player_cards.discarding)
     player_cards.discarding = []
 

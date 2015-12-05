@@ -36,6 +36,9 @@ Alchemist = class Alchemist extends Card {
 
   static put_on_deck(game, player_cards, response) {
     if (response === 'yes') {
+      if (player_cards.discarding[0].misfit) {
+        player_cards.discarding[0] = ClassCreator.create('Band Of Misfits').to_h()
+      }
       player_cards.deck.unshift(player_cards.discarding.pop())
       game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.card_html('action', 'Alchemist')} on top of their deck`)
     }

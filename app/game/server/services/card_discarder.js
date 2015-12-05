@@ -63,6 +63,12 @@ CardDiscarder = class CardDiscarder {
       let discard_in_play_processor = new DiscardInPlayProcessor(this.game, this.player_cards)
       discard_in_play_processor.process_cards()
     }
+    cards = _.map(cards, function(card) {
+      if (card.misfit) {
+        card = ClassCreator.create('Band Of Misfits').to_h()
+      }
+      return card
+    })
     this.player_cards.discard = cards.concat(this.player_cards.discard)
   }
 

@@ -20,6 +20,9 @@ Fortress = class Fortress extends Card {
     let fortress_index = _.findIndex(trasher.player_cards.trashing, function(card) {
       return card.name === 'Fortress'
     })
+    if (trasher.player_cards.trashing[fortress_index].misfit) {
+      trasher.player_cards.trashing[fortress_index] = ClassCreator.create('Band Of Misfits').to_h()
+    }
     trasher.player_cards.hand.push(trasher.player_cards.trashing.splice(fortress_index, 1)[0])
     trasher.game.log.push(`&nbsp;&nbsp;<strong>${trasher.player_cards.username}</strong> puts ${CardView.render(this)} in their hand`)
   }
