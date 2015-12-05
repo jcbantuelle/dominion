@@ -39,6 +39,9 @@ DameAnna = class DameAnna extends Knights {
     } else {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
       card_trasher.trash()
+
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
     }
   }
 
