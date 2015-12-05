@@ -92,7 +92,7 @@ CardGainer = class CardGainer {
   }
 
   track_gained_card(gained_card) {
-    if (this.game.turn.player._id === this.player_cards._id && !this.game.turn.possessed) {
+    if (this.game.turn.player._id === this.player_cards.player_id && !this.game.turn.possessed) {
       this.game.turn.gained_cards.push(this.gained_card)
     }
   }
