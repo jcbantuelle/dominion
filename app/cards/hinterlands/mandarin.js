@@ -71,8 +71,11 @@ Mandarin = class Mandarin extends Card {
         return card.name === card_name
       })
       let card = player_cards.in_play.splice(card_index, 1)[0]
-      player_cards.deck.unshift(card)
       replaced_cards.push(card)
+      if (card.misfit) {
+        card = ClassCreator.create('Band Of Misfits').to_h()
+      }
+      player_cards.deck.unshift(card)
     })
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places ${CardView.render(replaced_cards)} on their deck`)
   }

@@ -40,6 +40,9 @@ Herbalist = class Herbalist extends Card {
       })
 
       let card = player_cards.in_play.splice(card_index, 1)[0]
+      if (card.misfit) {
+        card = ClassCreator.create('Band Of Misfits').to_h()
+      }
       player_cards.deck.unshift(card)
       game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(card)} on top of their deck`)
     }
