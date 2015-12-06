@@ -52,8 +52,8 @@ CardList = class CardList {
       'Mystic',
       'Pillage',
       'Rebuild',
-      /*'Rogue',
-      'Altar',
+      'Rogue',
+      /*'Altar',
       'HuntingGrounds'*/
     ]
   }
