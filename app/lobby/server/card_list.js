@@ -15,9 +15,26 @@ CardList = class CardList {
   }
 
   static full_list() {
-    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue()).concat(CardList.cornucopia()).concat(CardList.dark_ages())
+    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue()).concat(CardList.cornucopia()).concat(CardList.dark_ages()).concat(CardList.guilds())
   }
 
+  static guilds() {
+    return [
+      /*'CandlestickMaker',
+      'Stonemason',
+      'Doctor',
+      'Masterpiece',
+      'Advisor',
+      'Herald',
+      'Plaza',
+      'Taxman',
+      'Baker',
+      'Butcher',
+      'Journeyman',
+      'MerchantGuild',
+      'Soothsayer'*/
+    ]
+  }
   static dark_ages() {
     return [
       'PoorHouse',
