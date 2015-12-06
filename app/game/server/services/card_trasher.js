@@ -12,16 +12,8 @@ CardTrasher = class CardTrasher {
       this.player_cards.trash.push(this.find_card(card_name))
     })
 
-    let has_event_cards = _.any(this.card_names, (card_name) => {
-      return _.contains(TrashEventProcessor.event_cards(), card_name)
-    })
-    let has_reaction_cards = _.any(this.player_cards.hand, (card) => {
-      return _.contains(TrashEventProcessor.reaction_cards(), card.name)
-    })
-    if (_.size(this.player_cards.trash) > 1 && (has_event_cards || has_reaction_cards)) {
-      let card_list = _.map(this.card_names, function(card_name) {
-        return ClassCreator.create(card_name).to_h()
-      })
+    let events = this.has_events()
+    if (_.size(this.player_cards.trash) > 1 && events) {
       let turn_event_id = TurnEventModel.insert({
         game_id: this.game._id,
         player_id: this.player_cards.player_id,
@@ -30,19 +22,35 @@ CardTrasher = class CardTrasher {
         instructions: 'Choose order to trash cards: (leftmost will be first)',
         cards: this.player_cards.trash
       })
-      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this)
+      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
       turn_event_processor.process(CardTrasher.order_cards)
+    }
+
+    if (!events) {
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> trashes ${CardView.render(this.player_cards.trash)}`)
     }
 
     _.each(this.player_cards.trash, (trashed_card) => {
       this.track_trashed_card(trashed_card)
-      this.update_log(trashed_card)
+      if (events) {
+        this.update_log(trashed_card)
+      }
       let trash_event_processor = new TrashEventProcessor(this, trashed_card)
       trash_event_processor.process()
       this.put_card_in_trash(trashed_card)
     })
 
     this.player_cards.trash = []
+  }
+
+  has_events() {
+    let has_event_cards = _.any(this.card_names, (card_name) => {
+      return _.contains(TrashEventProcessor.event_cards(), card_name)
+    })
+    let has_reaction_cards = _.any(this.player_cards.hand, (card) => {
+      return _.contains(TrashEventProcessor.reaction_cards(), card.name)
+    })
+    return has_event_cards || has_reaction_cards
   }
 
   find_card(card_name) {
@@ -57,8 +65,9 @@ CardTrasher = class CardTrasher {
     this.trashed_card_count = _.size(this.player_cards.trashing)
   }
 
-  put_card_in_trash(trashed_card) {
+  put_card_in_trash() {
     if (_.size(this.player_cards.trashing) === this.trashed_card_count) {
+      trashed_card = this.player_cards.trashing.pop()
       if (trashed_card.misfit) {
         trashed_card = ClassCreator.create('Band Of Misfits').to_h()
       }
@@ -78,13 +87,13 @@ CardTrasher = class CardTrasher {
     this.game.log.push(log_message)
   }
 
-  static order_cards(game, player_cards, ordered_card_names, trasher) {
+  static order_cards(game, player_cards, ordered_card_names) {
     let new_trash_order = []
     _.each(ordered_card_names, function(card_name) {
-      let trash_card = _.find(player_cards.trash, function(card) {
+      let trash_card_index = _.findIndex(player_cards.trash, function(card) {
         return card.name === card_name
       })
-      new_trash_order.push(trash_card)
+      new_trash_order.push(player_cards.trash.splice(trash_card_index, 1)[0])
     })
     player_cards.trash = new_trash_order
   }
