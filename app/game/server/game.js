@@ -80,6 +80,17 @@ Meteor.methods({
       }
     }
   },
+  playCoinToken: function(game_id) {
+    if (!ActionLock[game_id]) {
+      let current_game = game(game_id)
+      if (allowed_to_play(current_game)) {
+        ActionLock[game_id] = true
+        let coin_token_player = new CoinTokenPlayer(current_game, player_cards(current_game))
+        coin_token_player.play()
+        ActionLock[game_id] = false
+      }
+    }
+  },
   turnEvent: function(selected_cards, turn_event_id) {
     TurnEventFutures[turn_event_id].return(selected_cards)
   },

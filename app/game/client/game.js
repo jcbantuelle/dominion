@@ -4,19 +4,13 @@ Template.game.onRendered(createPopovers)
 Template.log.onRendered(scrollGameLog)
 Template.sort_cards.onRendered(addSortable)
 
-Template.turn_actions.helpers({
-  allow_treasures: function() {
-    let game = Games.findOne(Router.current().params.id)
-    return _.contains(['action', 'treasure'], game.turn.phase)
-  }
-})
-
 Template.game.events({
   "submit #chat": sendMessage,
   "click #hand .card": playCard,
   "click .card-container .card": buyCard,
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
+  "click #play-coin-token": playCoinToken,
   "submit #turn-event": turnEvent,
   "click #destroy-game": destroyGame,
   "click": removePopover,
@@ -80,6 +74,10 @@ function endTurn() {
 
 function playAllCoin() {
   Meteor.call('playAllCoin', Router.current().params.id)
+}
+
+function playCoinToken() {
+  Meteor.call('playCoinToken', Router.current().params.id)
 }
 
 function turnEvent(event) {

@@ -4,6 +4,10 @@
     <br />
     Buys: <strong>{{buys}}</strong>
     <br />
+    {{#if ../player_cards.coin_tokens}}
+      Coin Tokens: <strong>{{../player_cards.coin_tokens}}</strong> {{#if allow_treasures}}<button id="play-coin-token" class="btn btn-xs btn-warning">+</button>{{/if}}
+      <br />
+    {{/if}}
     To Spend: <strong>${{coins}}</strong>
     {{#each times potions}}
       &oplus;
