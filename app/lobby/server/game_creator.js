@@ -321,7 +321,7 @@ GameCreator = class GameCreator {
 
   has_spoils() {
     return _.any(this.selected_kingdom_cards, function(card) {
-      return _.contains(['Marauder', 'Bandit Camp'], card.name)
+      return _.contains(['Marauder', 'Bandit Camp', 'Pillage'], card.name)
     })
   }
 
