@@ -33,8 +33,8 @@ Stables = class Stables extends Card {
 
   static discard_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-      card_discarder.discard_some(selected_cards)
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+      card_discarder.discard()
 
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(3)

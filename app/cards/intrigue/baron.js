@@ -35,11 +35,8 @@ Baron = class Baron extends Card {
 
   static discard_estate(game, player_cards, response) {
     if (response === 'yes') {
-      let estate = _.find(player_cards.hand, function(card) {
-        return card.name === 'Estate'
-      })
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-      card_discarder.discard_some([estate])
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', 'Estate')
+      card_discarder.discard()
 
       game.turn.coins += 4
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$4`)

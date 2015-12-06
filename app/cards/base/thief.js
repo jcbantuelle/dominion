@@ -34,8 +34,8 @@ Thief = class Thief extends Card {
       })
       if (_.isEmpty(revealed_treasures)) {
         game.log.push(`&nbsp;&nbsp;but there are no treasures to trash`)
-        let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-        card_discarder.discard_all()
+        let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+        card_discarder.discard()
       } else if (_.size(revealed_treasures) === 1) {
         return Thief.trash_treasure(game, player_cards, revealed_treasures[0])
       } else {
@@ -66,8 +66,8 @@ Thief = class Thief extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'revealed', trashed_treasure.name)
     card_trasher.trash()
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-    card_discarder.discard_all()
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+    card_discarder.discard()
 
     GameModel.update(game._id, game)
 

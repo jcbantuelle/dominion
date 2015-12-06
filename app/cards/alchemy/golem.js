@@ -17,8 +17,8 @@ Golem = class Golem extends Card {
 
     if (has_cards) {
 
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all()
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+      card_discarder.discard()
 
       GameModel.update(game._id, game)
 

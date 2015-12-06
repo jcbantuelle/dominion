@@ -33,8 +33,8 @@ SecretChamber = class SecretChamber extends Card {
     if (discard_count === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-      card_discarder.discard_some(selected_cards)
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+      card_discarder.discard()
 
       game.turn.coins += discard_count
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${discard_count}`)

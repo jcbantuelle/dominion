@@ -40,11 +40,8 @@ Mountebank = class Mountebank extends Card {
 
   static discard_curse(game, player_cards, response) {
     if (response === 'yes') {
-      let curse = _.find(player_cards.hand, function(card) {
-        return card.name === 'Curse'
-      })
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-      card_discarder.discard_some([curse])
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', 'Curse')
+      card_discarder.discard()
     } else {
       Mountebank.gain_cards(game, player_cards)
     }

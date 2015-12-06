@@ -11,7 +11,7 @@ Tactician = class Tactician extends Card {
   play(game, player_cards) {
     if (_.size(player_cards.hand) > 0) {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-      card_discarder.discard_all()
+      card_discarder.discard()
       return 'duration'
     }
   }

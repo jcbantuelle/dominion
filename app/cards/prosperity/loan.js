@@ -36,7 +36,7 @@ Loan = class Loan extends Card {
     delete player_cards.revealed_treasure
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-    card_discarder.discard_all()
+    card_discarder.discard()
   }
 
   reveal(game, player_cards) {

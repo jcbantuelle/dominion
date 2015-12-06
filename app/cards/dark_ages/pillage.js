@@ -44,8 +44,8 @@ Pillage = class Pillage extends Card {
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-    card_discarder.discard_some(selected_cards)
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+    card_discarder.discard()
   }
 
 }

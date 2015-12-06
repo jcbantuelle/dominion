@@ -29,7 +29,7 @@ Harvest = class Harvest extends Card {
       })
 
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all()
+      card_discarder.discard()
 
       game.turn.coins += _.size(unique_cards)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${_.size(unique_cards)}`)

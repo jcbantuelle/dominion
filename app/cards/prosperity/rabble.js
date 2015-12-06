@@ -36,8 +36,8 @@ Rabble = class Rabble extends Card {
         return _.contains(_.words(card.types), 'action') || _.contains(_.words(card.types), 'treasure')
       })
 
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_some(discarded_cards)
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(discarded_cards, 'name'))
+      card_discarder.discard()
 
       if (!_.isEmpty(player_cards.revealed)) {
         let turn_event_id = TurnEventModel.insert({

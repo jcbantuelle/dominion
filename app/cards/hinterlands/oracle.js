@@ -55,7 +55,7 @@ Oracle = class Oracle extends Card {
   static discard_card(game, player_cards, response) {
     if (response === 'yes') {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all()
+      card_discarder.discard()
     } else {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,

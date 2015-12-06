@@ -49,7 +49,7 @@ Navigator = class Navigator extends Card {
     response = response[0]
     if (response === 'discard') {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all()
+      card_discarder.discard()
     } else if (response === 'deck') {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,

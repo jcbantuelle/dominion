@@ -54,8 +54,8 @@ Spy = class Spy extends Card {
 
   static discard_card(game, player_cards, response) {
     if (response === 'yes') {
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all()
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+      card_discarder.discard()
     } else {
       let card = player_cards.revealed[0]
       player_cards.deck.unshift(card)

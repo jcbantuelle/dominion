@@ -14,7 +14,7 @@ Venture = class Venture extends Card {
     let revealed_treasure = this.reveal(game, player_cards)
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-    card_discarder.discard_all()
+    card_discarder.discard()
 
     if (revealed_treasure) {
       player_cards.hand.push(revealed_treasure)

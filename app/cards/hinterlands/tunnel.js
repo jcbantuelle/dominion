@@ -12,20 +12,18 @@ Tunnel = class Tunnel extends Card {
     return 2
   }
 
-  discard_reaction(game, player_cards) {
-    if (game.turn.phase !== 'cleanup') {
-      let turn_event_id = TurnEventModel.insert({
-        game_id: game._id,
-        player_id: player_cards.player_id,
-        username: player_cards.username,
-        type: 'choose_yes_no',
-        instructions: `Reveal ${CardView.render(this)} to gain a ${CardView.card_html('treasure', 'Gold')}?`,
-        minimum: 1,
-        maximum: 1
-      })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(Tunnel.gain_gold)
-    }
+  discard_event(discarder) {
+    let turn_event_id = TurnEventModel.insert({
+      game_id: discarder.game._id,
+      player_id: discarder.player_cards.player_id,
+      username: discarder.player_cards.username,
+      type: 'choose_yes_no',
+      instructions: `Reveal ${CardView.render(this)} to gain a ${CardView.card_html('treasure', 'Gold')}?`,
+      minimum: 1,
+      maximum: 1
+    })
+    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id)
+    turn_event_processor.process(Tunnel.gain_gold)
   }
 
   static gain_gold(game, player_cards, response) {

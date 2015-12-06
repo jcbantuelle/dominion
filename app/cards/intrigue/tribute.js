@@ -29,7 +29,7 @@ Tribute = class Tribute extends Card {
       return card.name
     })
     let card_discarder = new CardDiscarder(game, next_player_cards, 'revealed')
-    card_discarder.discard_all()
+    card_discarder.discard()
     PlayerCardsModel.update(game._id, next_player_cards)
 
     let coins = 0

@@ -36,7 +36,7 @@ Rebuild = class Rebuild extends Card {
       this.reveal(game, player_cards)
 
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all()
+      card_discarder.discard()
 
       if (player_cards.revealed_victory_card) {
         player_cards.revealed.push(player_cards.revealed_victory_card)

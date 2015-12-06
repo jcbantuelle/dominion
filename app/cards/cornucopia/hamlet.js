@@ -52,8 +52,8 @@ Hamlet = class Hamlet extends Card {
 
   static action_discard(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-      card_discarder.discard_some(selected_cards)
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+      card_discarder.discard()
 
       game.turn.actions += 1
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
@@ -64,8 +64,8 @@ Hamlet = class Hamlet extends Card {
 
   static buy_discard(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-      card_discarder.discard_some(selected_cards)
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+      card_discarder.discard()
 
       game.turn.buys += 1
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)

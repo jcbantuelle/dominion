@@ -54,7 +54,7 @@ NobleBrigand = class NobleBrigand extends Card {
           return _.contains(_.words(card.types), 'treasure')
         })
         let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-        card_discarder.discard_all()
+        card_discarder.discard()
         if (!any_treasures) {
           let card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
           card_gainer.gain_game_card()
@@ -90,7 +90,7 @@ NobleBrigand = class NobleBrigand extends Card {
     card_trasher.trash()
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-    card_discarder.discard_all()
+    card_discarder.discard()
 
     GameModel.update(game._id, game)
   }

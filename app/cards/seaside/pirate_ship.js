@@ -68,7 +68,7 @@ PirateShip = class PirateShip extends Card {
         if (_.isEmpty(revealed_treasures)) {
           game.log.push(`&nbsp;&nbsp;but there are no treasures to trash`)
           let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-          card_discarder.discard_all()
+          card_discarder.discard()
         } else if (_.size(revealed_treasures) === 1) {
           return PirateShip.trash_treasure(game, player_cards, revealed_treasures[0])
         } else {
@@ -101,7 +101,7 @@ PirateShip = class PirateShip extends Card {
     card_trasher.trash()
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-    card_discarder.discard_all()
+    card_discarder.discard()
 
     game.turn.pirate_ship_trashed = true
   }

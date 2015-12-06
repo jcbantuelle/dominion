@@ -27,7 +27,7 @@ Jester = class Jester extends Card {
       player_cards.revealed.push(player_cards.revealed_card)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> discards ${CardView.render(player_cards.revealed)} from the top of their deck`)
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all(false)
+      card_discarder.discard(false)
 
       if (_.contains(_.words(player_cards.revealed_card.types), 'victory')) {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')

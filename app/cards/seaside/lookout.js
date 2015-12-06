@@ -53,7 +53,7 @@ Lookout = class Lookout extends Card {
     card_trasher.trash()
     if (_.size(player_cards.revealed) === 1) {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all()
+      card_discarder.discard()
       game.log.push(`&nbsp;&nbsp;but has no cards left to continue`)
     } else {
       let turn_event_id = TurnEventModel.insert({
@@ -73,8 +73,8 @@ Lookout = class Lookout extends Card {
   }
 
   static discard_card(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-    card_discarder.discard_some(selected_cards)
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(selected_cards, 'name'))
+    card_discarder.discard()
 
     player_cards.deck.unshift(player_cards.revealed[0])
     player_cards.revealed = []

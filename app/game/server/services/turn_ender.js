@@ -32,11 +32,10 @@ TurnEnder = class TurnEnder {
 
   clean_up_cards_in_play() {
     if (this.game.turn.schemes > 0) {
-      let scheme_resolver = new SchemeResolver(this.game, this.player_cards)
-      scheme_resolver.resolve()
+      SchemeChooser.choose(this.game, this.player_cards)
     }
     let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play')
-    card_discarder.discard_all(false)
+    card_discarder.discard(false)
 
     if (this.game.turn.possessed && !_.isEmpty(this.player_cards.possession_trash)) {
       this.player_cards.discard = this.player_cards.discard.concat(this.player_cards.possession_trash)
@@ -47,7 +46,7 @@ TurnEnder = class TurnEnder {
 
   discard_hand() {
     let card_discarder = new CardDiscarder(this.game, this.player_cards, 'hand')
-    card_discarder.discard_all(false)
+    card_discarder.discard(false)
   }
 
   draw_new_hand() {

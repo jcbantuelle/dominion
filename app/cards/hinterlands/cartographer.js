@@ -52,8 +52,8 @@ Cartographer = class Cartographer extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_some(selected_cards)
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(selected_cards, 'name'))
+      card_discarder.discard()
 
       if (_.size(player_cards.revealed) > 0) {
         let turn_event_id = TurnEventModel.insert({

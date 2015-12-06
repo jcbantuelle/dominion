@@ -55,7 +55,7 @@ Minion = class Minion extends Card {
 
   static redraw_hand(game, player_cards) {
     let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-    card_discarder.discard_all()
+    card_discarder.discard()
 
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(4)

@@ -32,13 +32,13 @@ Embassy = class Embassy extends Card {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     } else {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-      card_discarder.discard_all()
+      card_discarder.discard()
     }
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-    card_discarder.discard_some(selected_cards)
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+    card_discarder.discard()
   }
 
   gain_event(gainer) {

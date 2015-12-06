@@ -28,7 +28,7 @@ FortuneTeller = class FortuneTeller extends Card {
     delete player_cards.top_card
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-    card_discarder.discard_all()
+    card_discarder.discard()
   }
 
   reveal(game, player_cards) {

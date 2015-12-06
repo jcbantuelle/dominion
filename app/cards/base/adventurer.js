@@ -12,8 +12,8 @@ Adventurer = class Adventurer extends Card {
     player_cards.revealed_treasures = []
     this.reveal(game, player_cards)
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-    card_discarder.discard_all(false)
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+    card_discarder.discard(false)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed_treasures)} in hand and discards the rest`)
 
     delete player_cards.revealed_treasures

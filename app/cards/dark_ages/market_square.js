@@ -18,11 +18,8 @@ MarketSquare = class MarketSquare extends Card {
   }
 
   trash_reaction(game, player_cards, trasher) {
-    let market_square = _.find(player_cards.hand, function(card) {
-      return card.name === 'Market Square'
-    })
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-    card_discarder.discard_some([market_square])
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', 'Market Square')
+    card_discarder.discard()
 
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
     card_gainer.gain_game_card()

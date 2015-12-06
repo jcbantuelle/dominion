@@ -1,90 +1,107 @@
 CardDiscarder = class CardDiscarder {
 
-  constructor(game, player_cards, source) {
+  constructor(game, player_cards, source, card_names) {
     this.game = game
     this.player_cards = player_cards
     this.source = source
+    if (!card_names) {
+      this.card_names = _.pluck(player_cards[source], 'name')
+    } else {
+      this.card_names = _.isArray(card_names) ? card_names : [card_names]
+    }
     this.discard_reaction_cards = ['Tunnel']
   }
 
-  discard_all(announce = true) {
-    if (announce) {
-      this.update_log(this.player_cards[this.source])
+  discard(announce = true) {
+    _.each(this.card_names, (card_name) => {
+      this.player_cards.to_discard.push(this.find_card(card_name))
+    })
+
+    let events = this.has_events()
+    if (_.size(this.player_cards.to_discard) > 1 && events) {
+      let turn_event_id = TurnEventModel.insert({
+        game_id: this.game._id,
+        player_id: this.player_cards.player_id,
+        username: this.player_cards.username,
+        type: 'sort_cards',
+        instructions: 'Choose order to discard cards: (leftmost will be first)',
+        cards: this.player_cards.to_discard
+      })
+      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+      turn_event_processor.process(CardDiscarder.order_cards)
     }
-    this.discard_reactions(this.player_cards[this.source])
-    this.move_to_discard(this.player_cards[this.source])
-    this.player_cards[this.source] = []
+
+    if (!events && announce) {
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(this.player_cards.to_discard)}`)
+    }
+
+    var discarded_card
+    do {
+      discarded_card = this.player_cards.to_discard.shift()
+      if (discarded_card) {
+        this.track_discarded_card(discarded_card)
+        if (events && announce) {
+          this.update_log(discarded_card)
+        }
+        let discard_event_processor = new DiscardEventProcessor(this, discarded_card)
+        discard_event_processor.process()
+        this.put_card_in_discard()
+      }
+    } while (discarded_card)
   }
 
-  discard_some(cards, announce = true) {
-    if (announce) {
-      this.update_log(cards)
+  put_card_in_discard() {
+    if (_.size(this.player_cards.discarding) === this.discarded_card_count) {
+      let discarding_card = this.player_cards.discarding.pop()
+      let destination = 'discard'
+      if (discarding_card.scheme) {
+        destination = 'deck'
+        delete discarding_card.scheme
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places ${CardView.render(discarding_card)} on their deck`)
+      }
+      if (discarding_card.misfit) {
+        discarding_card = ClassCreator.create('Band Of Misfits').to_h()
+      }
+      this.player_cards[destination].unshift(discarding_card)
     }
-    this.discard_reactions(cards)
-    this.move_to_discard(cards)
-    this.remove_from_source(cards)
   }
 
-  discard_by_name(card_name, announce = false) {
-    let card_index = _.findIndex(this.player_cards[this.source], function(card) {
+  has_events() {
+    let has_event_cards = _.any(this.player_cards.to_discard, (card) => {
+      let discard_event_processor = new DiscardEventProcessor(this, card)
+      return !_.isEmpty(discard_event_processor.discard_events)
+    })
+    let multiple_schemes = _.size(_.filter(this.player_cards.to_discard, function(card) {
+      return card.scheme
+    })) > 1
+    return (has_event_cards || multiple_schemes)
+  }
+
+  find_card(card_name) {
+    let card_index = _.findIndex(this.player_cards[this.source], (card) => {
       return card.name === card_name
     })
-
-    if (card_index !== -1) {
-      let cards = [this.player_cards[this.source][card_index]]
-      if (announce) {
-        this.update_log(cards)
-      }
-      this.discard_reactions(cards)
-      this.move_to_discard(cards)
-      this.remove_from_source(cards)
-    } else {
-      if (announce) {
-        let card = ClassCreator.create(card_name)
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no ${CardView.render(card)} in ${this.source}`)
-      }
-    }
+    return this.player_cards[this.source].splice(card_index, 1)[0]
   }
 
-  discard_reactions(cards) {
-    let discard_reactions = _.filter(cards, (card) => {
-      return _.contains(this.discard_reaction_cards, card.name)
-    })
-    _.each(discard_reactions, (card) => {
-      let reaction_card = ClassCreator.create(card.name)
-      reaction_card.discard_reaction(this.game, this.player_cards)
-      GameModel.update(this.game._id, this.game)
-      PlayerCardsModel.update(this.game._id, this.player_cards)
-    })
+  track_discarded_card(discarded_card) {
+    this.player_cards.discarding.push(discarded_card)
+    this.discarded_card_count = _.size(this.player_cards.discarding)
   }
 
-  move_to_discard(cards) {
-    if (this.source === 'in_play') {
-      let discard_in_play_processor = new DiscardInPlayProcessor(this.game, this.player_cards)
-      discard_in_play_processor.process_cards()
-    }
-    cards = _.map(cards, function(card) {
-      if (card.misfit) {
-        card = ClassCreator.create('Band Of Misfits').to_h()
-      }
-      return card
-    })
-    this.player_cards.discard = cards.concat(this.player_cards.discard)
+  update_log(card) {
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(card)}`)
   }
 
-  remove_from_source(cards) {
-    _.each(cards, (card) => {
-      let card_index = _.findIndex(this.player_cards[this.source], function(source_card) {
-        return source_card.name === card.name
+  static order_cards(game, player_cards, ordered_card_names) {
+    let new_discard_order = []
+    _.each(ordered_card_names, function(card_name) {
+      let discard_card_index = _.findIndex(player_cards.to_discard, function(card) {
+        return card.name === card_name
       })
-      this.player_cards[this.source].splice(card_index, 1)
+      new_discard_order.push(player_cards.to_discard.splice(discard_card_index, 1)[0])
     })
-  }
-
-  update_log(cards) {
-    if (!_.isEmpty(cards)) {
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(cards)}`)
-    }
+    player_cards.to_discard = new_discard_order
   }
 
 }

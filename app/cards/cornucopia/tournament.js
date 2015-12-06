@@ -42,7 +42,7 @@ Tournament = class Tournament extends Card {
       })
       player_cards.revealed.push(player_cards.hand.splice(province_index, 1)[0])
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard_all()
+      card_discarder.discard()
 
       if (!_.isEmpty(game.prizes)) {
         let turn_event_id = TurnEventModel.insert({
