@@ -89,6 +89,8 @@ function turnEvent(event) {
     selection = $('#turn-event input').map(function() {
       return $(this).val()
     }).get()
+  } else if (turn_event.type === 'overpay') {
+    selection = $('#overpay-input').val()
   } else {
     selection = $('#turn-event').find(':checked')
   }

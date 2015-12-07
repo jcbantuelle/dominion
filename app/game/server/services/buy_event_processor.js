@@ -12,6 +12,10 @@ BuyEventProcessor = class BuyEventProcessor {
     return ['Haggler', 'Talisman', 'Hoard']
   }
 
+  static overpay_cards() {
+    return ['Stonemason']
+  }
+
   constructor(buyer) {
     this.buyer = buyer
     this.find_buy_events()
@@ -20,6 +24,10 @@ BuyEventProcessor = class BuyEventProcessor {
   find_buy_events() {
     this.buy_events = []
     if (_.contains(BuyEventProcessor.event_cards(), this.buyer.card.name())) {
+      this.buy_events.push(this.buyer.card.to_h())
+    }
+
+    if (_.contains(BuyEventProcessor.overpay_cards(), this.buyer.card.name()) && this.buyer.game.turn.coins > 0) {
       this.buy_events.push(this.buyer.card.to_h())
     }
 
@@ -54,7 +62,7 @@ BuyEventProcessor = class BuyEventProcessor {
   process() {
     if (!_.isEmpty(this.buy_events)) {
       let mandatory_buy_events = _.filter(this.buy_events, function(event) {
-        return _.contains(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()), event.name)
+        return _.contains(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()), event.name)
       })
       if (_.size(this.buy_events) === 1 && !_.isEmpty(mandatory_buy_events)) {
         BuyEventProcessor.buy_event(this.buyer.game, this.buyer.player_cards, this.buy_events, this)

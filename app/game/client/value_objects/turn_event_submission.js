@@ -7,7 +7,13 @@ TurnEventSubmission = class TurnEventSubmission {
   }
 
   valid_selection() {
-    if (this.turn_event.type !== 'sort_cards') {
+    if (this.turn_event.type === 'overpay') {
+      if (this.selection < this.turn_event.minimum) {
+        this.error = `You can't overpay less than ${this.turn_event.minimum}`
+      } else if (this.selection > this.turn_event.maximum) {
+        this.error = `You can't overpay more than ${this.turn_event.maximum}`
+      }
+    } else if (this.turn_event.type !== 'sort_cards') {
       if (this.turn_event.maximum > 0 && this.selection.length > this.turn_event.maximum) {
         this.error = `You can select no more than ${this.turn_event.maximum} ${this.error_text}`
       } else if (this.turn_event.minimum > 0 && this.selection.length < this.turn_event.minimum) {
@@ -25,6 +31,8 @@ TurnEventSubmission = class TurnEventSubmission {
     } else if (this.turn_event.type === 'choose_options') {
       return this.options_selection()
     } else if (this.turn_event.type === 'sort_cards') {
+      return this.selection
+    } else if (this.turn_event.type === 'overpay') {
       return this.selection
     }
   }
