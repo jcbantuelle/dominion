@@ -40,9 +40,11 @@ Mine = class Mine extends Card {
 
     let all_player_cards = PlayerCardsModel.find(game._id)
 
+    let trashed_cost = CostCalculator.calculate(game, selected_card, all_player_cards)
+
     let eligible_cards = _.filter(game.cards, function(card) {
       let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && _.contains(_.words(card.top_card.types), 'treasure') && coin_cost <= (selected_card.coin_cost + 3) && card.top_card.potion_cost <= selected_card.potion_cost
+      return card.count > 0 && card.top_card.purchasable && _.contains(_.words(card.top_card.types), 'treasure') && coin_cost <= (trashed_cost + 3) && card.top_card.potion_cost <= selected_card.potion_cost
     })
 
     if (_.size(eligible_cards) > 0) {
