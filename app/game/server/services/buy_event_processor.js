@@ -13,7 +13,7 @@ BuyEventProcessor = class BuyEventProcessor {
   }
 
   static overpay_cards() {
-    return ['Stonemason', 'Doctor']
+    return ['Stonemason', 'Doctor', 'Masterpiece']
   }
 
   constructor(buyer) {
