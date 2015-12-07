@@ -35,6 +35,7 @@ CardList = class CardList {
       'Soothsayer'*/
     ]
   }
+
   static dark_ages() {
     return [
       'PoorHouse',
