@@ -21,8 +21,8 @@ CardList = class CardList {
   static guilds() {
     return [
       'CandlestickMaker',
-      /*'Stonemason',
-      'Doctor',
+      'Stonemason',
+      /*'Doctor',
       'Masterpiece',
       'Advisor',
       'Herald',
