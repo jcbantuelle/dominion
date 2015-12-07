@@ -22,9 +22,7 @@ Cutpurse = class Cutpurse extends Card {
     let card_discarder = new CardDiscarder(game, player_cards, 'hand', 'Copper')
     card_discarder.discard()
 
-    if (_.size(player_cards.hand) < original_hand_size) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> discards ${CardView.card_html('treasure', 'Copper')}`)
-    } else {
+    if (_.size(player_cards.hand) === original_hand_size) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
     }
   }
