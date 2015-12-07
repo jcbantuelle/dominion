@@ -22,8 +22,8 @@ CardList = class CardList {
     return [
       'CandlestickMaker',
       'Stonemason',
-      /*'Doctor',
-      'Masterpiece',
+      'Doctor',
+      /*'Masterpiece',
       'Advisor',
       'Herald',
       'Plaza',
