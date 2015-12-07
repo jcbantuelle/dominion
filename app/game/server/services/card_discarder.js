@@ -13,41 +13,43 @@ CardDiscarder = class CardDiscarder {
   }
 
   discard(announce = true) {
-    _.each(this.card_names, (card_name) => {
-      this.player_cards.to_discard.push(this.find_card(card_name))
-    })
-
-    let events = this.has_events()
-    if (_.size(this.player_cards.to_discard) > 1 && events) {
-      let turn_event_id = TurnEventModel.insert({
-        game_id: this.game._id,
-        player_id: this.player_cards.player_id,
-        username: this.player_cards.username,
-        type: 'sort_cards',
-        instructions: 'Choose order to discard cards: (leftmost will be first)',
-        cards: this.player_cards.to_discard
+    if (!_.isEmpty(this.card_names)) {
+      _.each(this.card_names, (card_name) => {
+        this.player_cards.to_discard.push(this.find_card(card_name))
       })
-      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
-      turn_event_processor.process(CardDiscarder.order_cards)
-    }
 
-    if (!events && announce) {
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(this.player_cards.to_discard)}`)
-    }
-
-    var discarded_card
-    do {
-      discarded_card = this.player_cards.to_discard.shift()
-      if (discarded_card) {
-        this.track_discarded_card(discarded_card)
-        if (events && announce) {
-          this.update_log(discarded_card)
-        }
-        let discard_event_processor = new DiscardEventProcessor(this, discarded_card)
-        discard_event_processor.process()
-        this.put_card_in_discard()
+      let events = this.has_events()
+      if (_.size(this.player_cards.to_discard) > 1 && events) {
+        let turn_event_id = TurnEventModel.insert({
+          game_id: this.game._id,
+          player_id: this.player_cards.player_id,
+          username: this.player_cards.username,
+          type: 'sort_cards',
+          instructions: 'Choose order to discard cards: (leftmost will be first)',
+          cards: this.player_cards.to_discard
+        })
+        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+        turn_event_processor.process(CardDiscarder.order_cards)
       }
-    } while (discarded_card)
+
+      if (!events && announce) {
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(this.player_cards.to_discard)}`)
+      }
+
+      var discarded_card
+      do {
+        discarded_card = this.player_cards.to_discard.shift()
+        if (discarded_card) {
+          this.track_discarded_card(discarded_card)
+          if (events && announce) {
+            this.update_log(discarded_card)
+          }
+          let discard_event_processor = new DiscardEventProcessor(this, discarded_card)
+          discard_event_processor.process()
+          this.put_card_in_discard()
+        }
+      } while (discarded_card)
+    }
   }
 
   put_card_in_discard() {
