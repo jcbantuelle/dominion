@@ -89,6 +89,7 @@ Stonemason = class Stonemason extends Card {
 
   static overpay(game, player_cards, amount) {
     amount = Number(amount)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> overpays by $${amount}`)
     game.turn.coins -= amount
 
     let all_player_cards = PlayerCardsModel.find(game._id)
