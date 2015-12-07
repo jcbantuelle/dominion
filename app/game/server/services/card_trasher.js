@@ -4,7 +4,11 @@ CardTrasher = class CardTrasher {
     this.game = game
     this.player_cards = player_cards
     this.source = source
-    this.card_names = _.isArray(card_names) ? card_names : [card_names]
+    if (!card_names) {
+      this.card_names = _.pluck(player_cards[source], 'name')
+    } else {
+      this.card_names = _.isArray(card_names) ? card_names : [card_names]
+    }
   }
 
   trash() {
