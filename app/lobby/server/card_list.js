@@ -28,8 +28,8 @@ CardList = class CardList {
       'Herald',
       'Plaza',
       'Taxman',
-      /*'Baker',
-      'Butcher',
+      'Baker',
+      /*'Butcher',
       'Journeyman',
       'MerchantGuild',
       'Soothsayer'*/

@@ -82,12 +82,15 @@ GameCreator = class GameCreator {
     hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
+    let coin_tokens = this.has_baker() ? 1 : 0
+
     PlayerCardsModel.insert({
       player_id: player._id,
       game_id: this.game._id,
       username: player.username,
       deck: deck,
       hand: hand,
+      coin_tokens: coin_tokens,
       turns: (this.game.turn.player._id === player._id) ? 1 : 0
     })
   }
@@ -316,6 +319,12 @@ GameCreator = class GameCreator {
   has_looters() {
     return _.any(this.selected_kingdom_cards, function(card) {
       return _.contains(_.words(card.top_card.types), 'looter')
+    })
+  }
+
+  has_baker() {
+    return _.any(this.selected_kingdom_cards, function(card) {
+      return card.name === 'Baker'
     })
   }
 
