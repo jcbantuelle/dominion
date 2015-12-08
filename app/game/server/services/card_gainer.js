@@ -62,6 +62,9 @@ CardGainer = class CardGainer {
       this.gain_events()
       this.trade_route_token(game_card)
       this.update_cards()
+      return this.gained_card
+    } else {
+      return false
     }
   }
 
