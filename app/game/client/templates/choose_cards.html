@@ -6,9 +6,14 @@
         <label for="card_{{@index}}">
           <input type="checkbox" id="card_{{@index}}" value="{{name}}" />
           {{#if ../game_cards}}
-            <span class="{{top_card.types}}">{{top_card.name}}</span>
+            <span class="{{top_card.types}}{{#if show_images}} choose-card{{/if}}">{{top_card.name}}</span>
           {{else}}
-            <span class="{{types}}">{{name}}</span>{{#if source}} ({{source}}){{/if}}
+            <span class="{{types}}{{#if ../show_images}} choose-card{{/if}}">{{name}}</span>{{#if source}} ({{source}}){{/if}}
+            {{#if ../show_images}}
+              <div class="card-tooltip">
+                <img src="http://images.mudbugmedia.com/dominion/images/cards/{{image}}.jpg" width="220" height="341" />
+              </div>
+            {{/if}}
           {{/if}}
         </label>
       {{/each}}

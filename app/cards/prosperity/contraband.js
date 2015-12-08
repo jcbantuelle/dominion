@@ -19,6 +19,9 @@ Contraband = class Contraband extends Card {
       }))
       return cards
     }, [])
+    if (game.black_market_deck) {
+      eligible_cards = eligible_cards.concat(game.black_market_deck)
+    }
 
     if (_.size(eligible_cards) > 0) {
       let player_to_left = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)[1]

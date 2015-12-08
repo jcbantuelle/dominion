@@ -26,6 +26,22 @@ CardGainer = class CardGainer {
     }
   }
 
+  gain_black_market_card() {
+    this.would_gain_reactions()
+    if (this.gain_from_game_cards) {
+      this.gain_game_card()
+    } else {
+      this.gained_card = this.game.black_market_bought_card
+      this.track_gained_card()
+      this.possessed()
+      this.player_cards[this.destination].unshift(this.gained_card)
+      delete this.game.black_market_bought_card
+      this.update_log()
+      this.gain_events()
+      this.update_cards()
+    }
+  }
+
   gain_prize_card() {
     this.would_gain_reactions()
     if (this.gain_from_game_cards) {

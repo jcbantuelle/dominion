@@ -20,8 +20,8 @@ CardList = class CardList {
 
   static promo() {
     return [
-      /*'BlackMarket',
-      'Envoy',
+      'BlackMarket',
+      /*'Envoy',
       'WalledVillage',
       'Governor',
       'Stash',

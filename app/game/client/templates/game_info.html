@@ -1,4 +1,15 @@
 <template name="game_info">
+  {{#if game.black_market_deck}}
+    Black Market:
+    {{#each game.black_market_deck}}
+      <span class="{{types}} black-market-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="http://images.mudbugmedia.com/dominion/images/cards/{{image}}.jpg" width="220" height="341" />
+      </div>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
   {{#if game.prizes}}
     Prizes:
     {{#each game.prizes}}

@@ -3,10 +3,12 @@ CardBuyer = class CardBuyer {
   constructor(game, player_cards, card_name) {
     this.game = game
     this.player_cards = player_cards
-    this.game_card = this.find_game_card(card_name)
-    this.card = ClassCreator.create(this.game_card.top_card.name)
-    this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', card_name, true)
     this.all_player_cards = PlayerCardsModel.find(game._id)
+    if (card_name) {
+      this.game_card = this.find_game_card(card_name)
+      this.card = ClassCreator.create(this.game_card.top_card.name)
+      this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', card_name, true)
+    }
   }
 
   find_game_card(card_name) {

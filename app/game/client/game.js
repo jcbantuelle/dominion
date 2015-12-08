@@ -22,7 +22,7 @@ function registerStreams() {
 
 function createPopovers() {
   $('body').popover({
-    selector: '.card-container .card, .hand-card, .prize-card',
+    selector: '.card-container .card, .hand-card, .prize-card, .black-market-card, .choose-card',
     html: true,
     content: function() {
       return $(this).next('.card-tooltip').html()

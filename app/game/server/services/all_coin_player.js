@@ -1,9 +1,12 @@
 AllCoinPlayer = class AllCoinPlayer {
 
+  static bulk_playable_treasures() {
+    return ['Copper', 'Silver', 'Gold', 'Platinum', 'Fools Gold', 'Cache', 'Potion', 'Philosophers Stone', 'Harem', 'Diadem', 'Masterpiece']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
-    this.bulk_playable_treasures = ['Copper', 'Silver', 'Gold', 'Platinum', 'Fools Gold', 'Cache', 'Potion', 'Philosophers Stone', 'Harem', 'Diadem', 'Masterpiece']
   }
 
   play() {
@@ -21,7 +24,7 @@ AllCoinPlayer = class AllCoinPlayer {
 
   find_playable_cards() {
     return _.filter(this.player_cards.hand, (card) => {
-      return _.contains(this.bulk_playable_treasures, card.name)
+      return _.contains(AllCoinPlayer.bulk_playable_treasures(), card.name)
     })
   }
 

@@ -17,12 +17,16 @@ GameCreator = class GameCreator {
 
   create_game() {
     let cards = this.game_cards()
-    return GameModel.insert({
+    let game_attributes = {
       players: _.shuffle(this.players),
       cards: cards,
-      duchess: this.has_duchess(cards),
+      duchess: this.game_has_card(cards, 'Duchess'),
       prizes: this.prizes(cards)
-    })
+    }
+    if (this.black_market_deck) {
+      game_attributes.black_market_deck = this.black_market_deck
+    }
+    return GameModel.insert(game_attributes)
   }
 
   start_game_log() {
@@ -82,7 +86,7 @@ GameCreator = class GameCreator {
     hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
-    let coin_tokens = this.has_baker() ? 1 : 0
+    let coin_tokens = this.game_has_card(this.selected_kingdom_cards, 'Baker') ? 1 : 0
 
     PlayerCardsModel.insert({
       player_id: player._id,
@@ -110,7 +114,9 @@ GameCreator = class GameCreator {
     this.use_potions = this.potion_game()
     this.selected_common_cards = this.common_cards()
     this.selected_not_supply_cards = this.not_supply_cards()
-    this.trade_route_game()
+    if (this.game_has_card(this.selected_kingdom_cards, 'Trade Route')) {
+      this.trade_route_game()
+    }
     return this.selected_kingdom_cards.concat(this.selected_common_cards).concat(this.selected_not_supply_cards)
   }
 
@@ -119,7 +125,11 @@ GameCreator = class GameCreator {
       return this.game_card(card, 'kingdom')
     })
 
-    if (this.has_young_witch(kingdom_cards)) {
+    if (this.game_has_card(kingdom_cards, 'Black Market')) {
+      this.build_black_market_deck(kingdom_cards)
+    }
+
+    if (this.game_has_card(kingdom_cards, 'Young Witch')) {
       kingdom_cards.push(this.bane_card(kingdom_cards))
     }
 
@@ -134,10 +144,10 @@ GameCreator = class GameCreator {
 
   not_supply_cards() {
     let not_supply_cards = []
-    if (this.has_hermit(this.selected_kingdom_cards)) {
+    if (this.game_has_card(this.selected_kingdom_cards, 'Hermit')) {
       not_supply_cards.push(this.game_card((new Madman()).to_h(), 'not_supply'))
     }
-    if (this.has_urchin(this.selected_kingdom_cards)) {
+    if (this.game_has_card(this.selected_kingdom_cards, 'Urchin')) {
       not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
     }
     if (this.has_spoils(this.selected_kingdom_cards)) {
@@ -273,12 +283,6 @@ GameCreator = class GameCreator {
     }))
   }
 
-  has_duchess(cards) {
-    return _.find(cards, function(card) {
-      return card.name === 'Duchess'
-    }) !== undefined
-  }
-
   prizes(cards) {
     let tournament = _.find(cards, function(card) {
       return card.name === 'Tournament'
@@ -298,44 +302,60 @@ GameCreator = class GameCreator {
     }
   }
 
-  has_young_witch(cards) {
-    return _.find(cards, function(card) {
-      return card.name === 'Young Witch'
-    })
-  }
-
-  has_hermit(cards) {
-    return _.find(cards, function(card) {
-      return card.name === 'Hermit'
-    })
-  }
-
-  has_urchin(cards) {
-    return _.find(cards, function(card) {
-      return card.name === 'Urchin'
+  game_has_card(cards, card_name) {
+    if (this.black_market_deck && card_name !== 'Duchess') {
+      cards = cards.concat(this.black_market_deck)
+    }
+    return _.any(cards, function(card) {
+      return card.name === card_name
     })
   }
 
   has_looters() {
-    return _.any(this.selected_kingdom_cards, function(card) {
+    let black_market_looters = false
+    if (this.black_market_deck) {
+      black_market_looters = _.any(this.black_market_deck, function(card) {
+        return _.contains(_.words(card.types), 'looter')
+      })
+    }
+    return black_market_looters || _.any(this.selected_kingdom_cards, function(card) {
       return _.contains(_.words(card.top_card.types), 'looter')
     })
   }
 
-  has_baker() {
-    return _.any(this.selected_kingdom_cards, function(card) {
-      return card.name === 'Baker'
+  has_spoils(cards) {
+    if (this.black_market_deck) {
+      cards.concat(this.black_market_deck)
+    }
+    return _.any(cards, function(card) {
+      return _.contains(['Marauder', 'Bandit Camp', 'Pillage'], card.name)
     })
   }
 
-  has_spoils() {
-    return _.any(this.selected_kingdom_cards, function(card) {
-      return _.contains(['Marauder', 'Bandit Camp', 'Pillage'], card.name)
+  build_black_market_deck(kingdom_cards) {
+    let used_card_names = _.map(kingdom_cards, function(card) {
+      return _.titleize(card.name)
+    })
+    let available_cards = _.shuffle(_.difference(CardList.full_list(), used_card_names))
+
+    let black_market_card_names = _.take(available_cards, 25)
+    let knight_index = _.findIndex(black_market_card_names, function(name) {
+      name === 'Knights'
+    })
+    if (knight_index !== -1) {
+      let knight_names = _.shuffle(['SirMartin', 'DameAnna', 'DameJosephine', 'DameMolly', 'DameNatalie', 'DameSylvia', 'SirBailey', 'SirDestry', 'SirMichael', 'SirVander'])
+      black_market_card_names.splice(knight_index, 1, _.take(knight_names, 1))
+    }
+    this.black_market_deck = _.map(black_market_card_names, function(name) {
+      return ClassCreator.create(name).to_h()
     })
   }
 
   bane_card(cards) {
     let game_card_names = _.pluck(cards, 'name')
+    if (this.black_market_deck) {
+      game_card_names = game_card_names.concat(_.pluck(this.black_market_deck, 'name'))
+    }
     var card
     do {
       card = CardList.pull_one()
@@ -369,14 +389,11 @@ GameCreator = class GameCreator {
   }
 
   trade_route_game() {
-    let card_names = _.pluck(this.selected_kingdom_cards, 'name')
-    if (_.contains(card_names, 'Trade Route')) {
-      this.selected_kingdom_cards = _.map(this.selected_kingdom_cards, this.set_trade_route_tokens)
-      this.selected_common_cards = _.map(this.selected_common_cards, this.set_trade_route_tokens)
-    }
+    this.selected_kingdom_cards = _.map(this.selected_kingdom_cards, this.set_trade_route_token)
+    this.selected_common_cards = _.map(this.selected_common_cards, this.set_trade_route_token)
   }
 
-  set_trade_route_tokens(card) {
+  set_trade_route_token(card) {
     if (card.name != 'Knights' && _.contains(_.words(card.top_card.types), 'victory')) {
       card.has_trade_route_token = true
     }

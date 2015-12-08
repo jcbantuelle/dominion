@@ -12,7 +12,9 @@ CardPlayer = class CardPlayer {
 
   play(auto_update = true) {
     if (this.free_play || this.can_play()) {
-      this.update_phase()
+      if (!this.free_play) {
+        this.update_phase()
+      }
       this.put_card_in_play()
       this.use_action()
       if (auto_update) {
