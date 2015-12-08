@@ -42,6 +42,7 @@ CardBuyer = class CardBuyer {
     this.gain_card()
     this.embargo()
     this.goons()
+    this.merchant_guild()
   }
 
   update_turn() {
@@ -78,6 +79,16 @@ CardBuyer = class CardBuyer {
     if (goon_count > 0) {
       this.player_cards.victory_tokens += goon_count
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
+    }
+  }
+
+  merchant_guild() {
+    let merchant_guild_count = _.size(_.filter(this.player_cards.in_play, function(card) {
+      return card.name === 'Merchant Guild'
+    }))
+    if (merchant_guild_count > 0) {
+      this.player_cards.coin_tokens += merchant_guild_count
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.card_html('action', 'Merchant Guild')}`)
     }
   }
 
