@@ -15,7 +15,18 @@ CardList = class CardList {
   }
 
   static full_list() {
-    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue()).concat(CardList.cornucopia()).concat(CardList.dark_ages()).concat(CardList.guilds())
+    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue()).concat(CardList.cornucopia()).concat(CardList.dark_ages()).concat(CardList.guilds()).concat(CardList.promo())
+  }
+
+  static promo() {
+    return [
+      /*'BlackMarket',
+      'Envoy',
+      'WalledVillage',
+      'Governor',
+      'Stash',
+      'Prince'*/
+    ]
   }
 
   static guilds() {
