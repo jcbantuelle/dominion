@@ -21,8 +21,8 @@ CardList = class CardList {
   static promo() {
     return [
       'BlackMarket',
-      /*'Envoy',
-      'WalledVillage',
+      'Envoy',
+      /*'WalledVillage',
       'Governor',
       'Stash',
       'Prince'*/
