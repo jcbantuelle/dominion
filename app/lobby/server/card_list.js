@@ -30,8 +30,8 @@ CardList = class CardList {
       'Taxman',
       'Baker',
       'Butcher',
-      /*'Journeyman',
-      'MerchantGuild',
+      'Journeyman',
+      /*'MerchantGuild',
       'Soothsayer'*/
     ]
   }
