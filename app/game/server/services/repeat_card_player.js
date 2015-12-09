@@ -5,7 +5,7 @@ RepeatCardPlayer = class RepeatCardPlayer extends CardPlayer {
     let play_results = this.play_multiple_times(times)
     let duration_count = _.size(this.duration_plays(play_results))
     if (duration_count > 0) {
-      this.mark_played_card_as_duration(duration_count)
+      this.mark_played_card_as_duration()
       if (duration_count > 1) {
         this.mark_source_as_duration(source)
       }

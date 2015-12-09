@@ -116,12 +116,11 @@ CardPlayer = class CardPlayer {
     return this.card_index !== -1
   }
 
-  mark_played_card_as_duration(duration_count = 1) {
+  mark_played_card_as_duration() {
     let duration_card_index = _.findIndex(this.player_cards.playing, (card) => {
       return card.name === this.card.name() && !card.processed
     })
     this.player_cards.playing[duration_card_index].destination = 'duration'
-    this.player_cards.playing[duration_card_index].duration_effect_count = duration_count
     this.player_cards.playing[duration_card_index].processed = true
   }
 

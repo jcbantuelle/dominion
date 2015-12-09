@@ -17,6 +17,7 @@ TurnEnder = class TurnEnder {
     } else {
       this.set_next_turn()
       this.start_turn_events()
+      this.move_duration_cards()
       this.update_db()
     }
   }
@@ -216,6 +217,11 @@ TurnEnder = class TurnEnder {
   start_turn_events() {
     let start_turn_event_processor = new StartTurnEventProcessor(this.game, this.next_player_cards)
     start_turn_event_processor.process()
+  }
+
+  move_duration_cards() {
+    this.next_player_cards.in_play = this.next_player_cards.in_play.concat(this.next_player_cards.duration)
+    this.next_player_cards.duration = []
   }
 
   player_turn_number() {

@@ -12,19 +12,10 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return card
     })
 
-    let duration_events = _.compact(_.map(_.clone(this.player_cards.duration), (card) => {
-      let card_action = ClassCreator.create(card.name)
-      if (typeof card_action.duration === 'function') {
-        card.start_event_type = 'Duration'
-        return card
-      } else {
-        let duration_index = _.findIndex(this.player_cards.duration, function(duration_card) {
-          return duration_card.name === card.name
-        })
-        let duration_card = this.player_cards.duration.splice(duration_index, 1)[0]
-        this.player_cards.in_play.push(card)
-      }
-    }))
+    let duration_events = _.map(this.player_cards.duration_effects, function(card) {
+      card.start_event_type = 'Duration'
+      return card
+    })
 
     this.start_turn_events = horse_traders_events.concat(duration_events)
   }
@@ -44,6 +35,8 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
     } else {
       StartTurnEventProcessor.event_order(this.game, this.player_cards, _.pluck(this.start_turn_events, 'name'), this.start_turn_events)
     }
+
+    this.player_cards.duration_effects = []
   }
 
   static event_order(game, player_cards, event_name_order, events) {
@@ -52,20 +45,11 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         return event.name === event_name
       })
       let event = events.splice(event_index, 1)[0]
+      let selected_event = ClassCreator.create(event.name)
       if (event.start_event_type === 'Horse Traders') {
-        let selected_event = ClassCreator.create(event.name)
         selected_event.start_turn_event(game, player_cards, player_cards.horse_traders.pop())
       } else if (event.start_event_type === 'Duration') {
-        let duration_card_index = _.findIndex(player_cards.duration, function(card) {
-          return card.name === event.name
-        })
-        let duration_card = player_cards.duration.splice(duration_card_index, 1)[0]
-        let selected_event = ClassCreator.create(event.name)
-        if (typeof selected_event.duration === 'function') {
-          selected_event.duration(game, player_cards, duration_card)
-        }
-        delete duration_card.duration_effect_count
-        player_cards.in_play.push(duration_card)
+        selected_event.duration(game, player_cards, event)
       }
     })
   }

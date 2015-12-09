@@ -9,6 +9,8 @@ Wharf = class Wharf extends Card {
   }
 
   play(game, player_cards) {
+    player_cards.duration_effects.push(this.to_h())
+
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
@@ -18,12 +20,10 @@ Wharf = class Wharf extends Card {
   }
 
   duration(game, player_cards, duration_card) {
-    _.times(duration_card.duration_effect_count, () => {
-      let card_drawer = new CardDrawer(game, player_cards)
-      card_drawer.draw(2, false)
-      game.turn.buys += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 2 cards and gets +1 buy from ${CardView.render(duration_card)}`)
-    })
+    let card_drawer = new CardDrawer(game, player_cards)
+    card_drawer.draw(2, false)
+    game.turn.buys += 1
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 2 cards and gets +1 buy from ${CardView.render(duration_card)}`)
   }
 
 }
