@@ -24,8 +24,8 @@ CardList = class CardList {
       'Envoy',
       'WalledVillage',
       'Governor',
-      /*'Stash',
-      'Prince'*/
+      'Stash',
+      /*'Prince'*/
     ]
   }
 

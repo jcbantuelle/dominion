@@ -98,6 +98,7 @@ function turnEvent(event) {
   let turn_event_submission = new TurnEventSubmission(turn_event, selection)
   if (turn_event_submission.valid_selection()) {
     $('#turn-event input:checkbox').prop('checked', false)
+    $('#turn-event #overpay-input').val('')
     Meteor.call('turnEvent', turn_event_submission.selected_values(), turn_event._id)
   } else {
     alert(turn_event_submission.error_message())
