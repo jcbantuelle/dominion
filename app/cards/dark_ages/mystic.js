@@ -43,7 +43,7 @@ Mystic = class Mystic extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> names ${CardView.render(selected_card)}`)
 
     if (_.isEmpty(player_cards.deck)) {
-      DeckShuffler.shuffle(player_cards)
+      DeckShuffler.shuffle(game, player_cards)
     }
 
     let top_card = player_cards.deck[0]

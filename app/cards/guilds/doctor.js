@@ -41,7 +41,7 @@ Doctor = class Doctor extends Card {
 
     let revealed_card_count = _.size(player_cards.revealed)
     if (revealed_card_count < 3 && _.size(player_cards.discard) > 0) {
-      DeckShuffler.shuffle(player_cards)
+      DeckShuffler.shuffle(game, player_cards)
       player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 3 - revealed_card_count))
       player_cards.deck = _.drop(player_cards.deck, 3 - revealed_card_count)
     }
@@ -109,7 +109,7 @@ Doctor = class Doctor extends Card {
       } else {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> looks at the top card of their deck`)
         if (_.isEmpty(player_cards.deck)) {
-          DeckShuffler.shuffle(player_cards)
+          DeckShuffler.shuffle(game, player_cards)
         }
 
         player_cards.revealed.push(player_cards.deck.shift())

@@ -18,7 +18,7 @@ Tribute = class Tribute extends Card {
 
     let revealed_card_count = _.size(next_player_cards.revealed)
     if (revealed_card_count < 2 && _.size(next_player_cards.discard) > 0) {
-      DeckShuffler.shuffle(next_player_cards)
+      DeckShuffler.shuffle(game, next_player_cards)
       next_player_cards.revealed = next_player_cards.revealed.concat(_.take(next_player_cards.deck, 2 - revealed_card_count))
       next_player_cards.deck = _.drop(next_player_cards.deck, 2 - revealed_card_count)
     }

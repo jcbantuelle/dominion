@@ -31,7 +31,7 @@ ScryingPool = class ScryingPool extends Card {
     var non_action
     while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !non_action) {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(player_cards)
+        DeckShuffler.shuffle(game, player_cards)
       }
       let card = player_cards.deck.shift()
       player_cards.revealed.push(card)
@@ -55,7 +55,7 @@ ScryingPool = class ScryingPool extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(player_cards)
+        DeckShuffler.shuffle(game, player_cards)
       }
 
       let revealed_card = player_cards.deck.shift()

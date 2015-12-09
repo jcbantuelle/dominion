@@ -42,7 +42,7 @@ Loan = class Loan extends Card {
   reveal(game, player_cards) {
     while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.revealed_treasure) {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(player_cards)
+        DeckShuffler.shuffle(game, player_cards)
       }
       let card = player_cards.deck.shift()
       player_cards.revealed.push(card)

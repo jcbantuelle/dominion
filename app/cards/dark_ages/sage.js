@@ -29,7 +29,7 @@ Sage = class Sage extends Card {
     let all_player_cards = PlayerCardsModel.find(game._id)
     while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.revealed_card) {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(player_cards)
+        DeckShuffler.shuffle(game, player_cards)
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)

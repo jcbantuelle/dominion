@@ -19,7 +19,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(player_cards)
+        DeckShuffler.shuffle(game, player_cards)
       }
 
       let revealed_card = player_cards.deck.shift()

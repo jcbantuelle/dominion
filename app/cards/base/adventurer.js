@@ -23,7 +23,7 @@ Adventurer = class Adventurer extends Card {
     let revealed_cards = []
     while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && _.size(player_cards.revealed_treasures) < 2) {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(player_cards)
+        DeckShuffler.shuffle(game, player_cards)
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)

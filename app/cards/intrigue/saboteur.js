@@ -57,7 +57,7 @@ Saboteur = class Saboteur extends Card {
   reveal(game, player_cards) {
     while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.trashed_card) {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(player_cards)
+        DeckShuffler.shuffle(game, player_cards)
       }
       let card = player_cards.deck.shift()
       let coin_cost = CostCalculator.calculate(game, card, this.all_player_cards)

@@ -29,7 +29,7 @@ Apothecary = class Apothecary extends Card {
 
       let revealed_card_count = _.size(revealed_cards)
       if (revealed_card_count < 4 && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(player_cards)
+        DeckShuffler.shuffle(game, player_cards)
         revealed_cards = revealed_cards.concat(_.take(player_cards.deck, 4 - revealed_card_count))
         player_cards.deck = _.drop(player_cards.deck, 4 - revealed_card_count)
       }

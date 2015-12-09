@@ -21,7 +21,7 @@ Jester = class Jester extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(player_cards)
+        DeckShuffler.shuffle(game, player_cards)
       }
       player_cards.revealed_card = player_cards.deck.shift()
       player_cards.revealed.push(player_cards.revealed_card)
