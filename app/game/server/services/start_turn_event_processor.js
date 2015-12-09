@@ -26,23 +26,25 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
   }
 
   process() {
-    if (_.size(this.start_turn_events) > 1) {
-      let turn_event_id = TurnEventModel.insert({
-        game_id: this.game._id,
-        player_id: this.player_cards.player_id,
-        username: this.player_cards.username,
-        type: 'sort_cards',
-        instructions: 'Choose order to resolve start of turn events (leftmost will be first):',
-        cards: this.start_turn_events
-      })
-      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this.start_turn_events)
-      turn_event_processor.process(StartTurnEventProcessor.event_order)
-    } else {
-      StartTurnEventProcessor.event_order(this.game, this.player_cards, _.pluck(this.start_turn_events, 'name'), this.start_turn_events)
-    }
+    if (!_.isEmpty(this.start_turn_events)) {
+      if (_.size(this.start_turn_events) > 1) {
+        let turn_event_id = TurnEventModel.insert({
+          game_id: this.game._id,
+          player_id: this.player_cards.player_id,
+          username: this.player_cards.username,
+          type: 'sort_cards',
+          instructions: 'Choose order to resolve start of turn events (leftmost will be first):',
+          cards: this.start_turn_events
+        })
+        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this.start_turn_events)
+        turn_event_processor.process(StartTurnEventProcessor.event_order)
+      } else {
+        StartTurnEventProcessor.event_order(this.game, this.player_cards, _.pluck(this.start_turn_events, 'name'), this.start_turn_events)
+      }
 
-    this.player_cards.duration_effects = []
-    this.player_cards.princed = []
+      this.player_cards.duration_effects = []
+      this.player_cards.princed = []
+    }
   }
 
   static event_order(game, player_cards, event_name_order, events) {
