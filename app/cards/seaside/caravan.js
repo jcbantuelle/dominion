@@ -17,10 +17,12 @@ Caravan = class Caravan extends Card {
     return 'duration'
   }
 
-  duration(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(1, false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 1 card from ${CardView.render(this)}`)
+  duration(game, player_cards, duration_card) {
+    _.times(duration_card.duration_effect_count, () => {
+      let card_drawer = new CardDrawer(game, player_cards)
+      card_drawer.draw(1, false)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 1 card from ${CardView.render(duration_card)}`)
+    })
   }
 
 }

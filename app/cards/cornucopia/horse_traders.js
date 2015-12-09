@@ -48,4 +48,12 @@ HorseTraders = class HorseTraders extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(this)}`)
   }
 
+  start_turn_event(game, player_cards, horse_traders) {
+    let card_drawer = new CardDrawer(game, player_cards)
+    card_drawer.draw(1)
+
+    player_cards.hand.push(horse_traders)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(horse_traders)} in hand`)
+  }
+
 }

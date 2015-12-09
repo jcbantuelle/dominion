@@ -44,8 +44,31 @@ Haven = class Haven extends Card {
       return selected_card.name === card.name
     })
 
-    player_cards.haven = player_cards.haven.concat(player_cards.hand.splice(card_index, 1))
+    let set_aside_card = player_cards.hand.splice(card_index, 1)[0]
+
+    let haven_index = _.findIndex(player_cards.playing, function(card) {
+      return card.name === 'Haven'
+    })
+    if (!player_cards.playing[haven_index].haven) {
+      player_cards.playing[haven_index].haven = []
+    }
+    player_cards.playing[haven_index].haven.push(set_aside_card)
+
+    player_cards.haven.push(set_aside_card)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside a card`)
+  }
+
+  duration(game, player_cards, duration_card) {
+    _.each(duration_card.haven, function(haven_card) {
+      let set_aside_card_index = _.findIndex(player_cards.haven, function(card) {
+        return haven_card.name === card.name
+      })
+      let set_aside_card = player_cards.haven.splice(set_aside_card_index, 1)[0]
+      player_cards.hand.push(set_aside_card)
+    })
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${_.size(duration_card.haven)} card(s) in hand from ${CardView.render(duration_card)}`)
+
+    delete duration_card.haven
   }
 
 }

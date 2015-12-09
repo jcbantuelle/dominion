@@ -16,12 +16,14 @@ Tactician = class Tactician extends Card {
     }
   }
 
-  duration(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(5, false)
-    game.turn.buys += 1
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 5 cards and gets +1 buy and +1 action from ${CardView.render(this)}`)
+  duration(game, player_cards, duration_card) {
+    _.times(duration_card.duration_effect_count, () => {
+      let card_drawer = new CardDrawer(game, player_cards)
+      card_drawer.draw(5, false)
+      game.turn.buys += 1
+      game.turn.actions += 1
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 5 cards and gets +1 buy and +1 action from ${CardView.render(duration_card)}`)
+    })
   }
 
 }
