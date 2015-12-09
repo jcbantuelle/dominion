@@ -1,7 +1,8 @@
 GameProposer = class GameProposer {
 
-  constructor(player_ids) {
+  constructor(player_ids, exclusions) {
     this.players = this.find_players(player_ids)
+    this.exclusions = exclusions
   }
 
   propose() {
@@ -23,7 +24,7 @@ GameProposer = class GameProposer {
   }
 
   select_cards() {
-    card_list = new CardList()
+    card_list = new CardList(this.exclusions)
     this.cards = card_list.pull_set()
   }
 

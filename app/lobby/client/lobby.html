@@ -47,6 +47,17 @@
 
     {{#unless proposal}}
       <form id="lobby">
+        <div>Choose any sets you'd like to exclude:</div>
+        <div id="card-sets" class="checkbox">
+          {{#each card_sets}}
+            <label for="set_{{id}}">
+              <input type="checkbox" class="card-set" id="set_{{id}}" value="{{id}}" />
+              <span class="set-text">{{name}}</span>
+            </label>
+          {{/each}}
+        </div>
+        <hr class="clear" />
+        <div>Select up to 3 other players to play a game with:</div>
         <div id="players" class="checkbox">
           {{#each lobby_players}}
             {{#if has_proposal}}

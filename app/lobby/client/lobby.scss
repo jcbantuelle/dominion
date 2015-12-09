@@ -23,10 +23,14 @@ $player_margin: 25px;
   margin-right: auto;
 }
 
-#players label {
+#players label, #card-sets label {
   display: inline;
   float: left;
   margin-right: $player_margin;
+}
+
+hr {
+  margin-top: 50px;
 }
 
 #propose-game {

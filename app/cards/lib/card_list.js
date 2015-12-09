@@ -1,7 +1,7 @@
 CardList = class CardList {
 
-  constructor() {
-    this.cards = CardList.full_list()
+  constructor(exclusions) {
+    this.cards = CardList.full_list(exclusions)
   }
 
   pull_set() {
@@ -10,12 +10,21 @@ CardList = class CardList {
     }).value()
   }
 
+  static sets() {
+    return ['base', 'intrigue', 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo']
+  }
+
   static pull_one() {
     return ClassCreator.create(_.sample(CardList.full_list(), 1)).to_h()
   }
 
-  static full_list() {
-    return CardList.base().concat(CardList.seaside()).concat(CardList.hinterlands()).concat(CardList.prosperity()).concat(CardList.alchemy()).concat(CardList.intrigue()).concat(CardList.cornucopia()).concat(CardList.dark_ages()).concat(CardList.guilds()).concat(CardList.promo())
+  static full_list(exclusions = []) {
+    return _.reduce(CardList.sets(), function(card_list, set) {
+      if (!_.contains(exclusions, set)) {
+        card_list = card_list.concat(CardList[set]())
+      }
+      return card_list
+    }, [])
   }
 
   static promo() {

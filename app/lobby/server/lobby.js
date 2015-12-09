@@ -1,6 +1,6 @@
 Meteor.methods({
-  proposeGame: function(player_ids) {
-    let game_proposer = new GameProposer(player_ids)
+  proposeGame: function(player_ids, exclusions) {
+    let game_proposer = new GameProposer(player_ids, exclusions)
     game_proposer.propose()
   },
   declineProposal: function(proposal_id) {

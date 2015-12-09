@@ -33,12 +33,16 @@ function proposeGame(event) {
     return $(this).val()
   }).get()
 
+  exclusions = $('.card-set:checked').map(function() {
+    return $(this).val()
+  }).get()
+
   if (player_ids.length > 3) {
     alert('Game can not have more than 4 players.')
   } else if (player_ids.length < 1) {
     alert('Game must have at least 2 players.')
   } else {
-    Meteor.call('proposeGame', player_ids)
+    Meteor.call('proposeGame', player_ids, exclusions)
   }
 }
 
