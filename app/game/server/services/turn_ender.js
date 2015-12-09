@@ -220,12 +220,14 @@ TurnEnder = class TurnEnder {
   }
 
   move_duration_cards() {
-    let duration_cards = _.map(this.next_player_cards.duration, function(card) {
-      delete card.prince
-      return card
-    })
-    this.next_player_cards.in_play = this.next_player_cards.in_play.concat(duration_cards)
-    this.next_player_cards.duration = []
+    if (!_.isEmpty(this.next_player_cards.duration)) {
+      let duration_cards = _.map(this.next_player_cards.duration, function(card) {
+        delete card.prince
+        return card
+      })
+      this.next_player_cards.in_play = this.next_player_cards.in_play.concat(duration_cards)
+      this.next_player_cards.duration = []
+    }
   }
 
   player_turn_number() {
