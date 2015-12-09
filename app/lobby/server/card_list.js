@@ -22,8 +22,8 @@ CardList = class CardList {
     return [
       'BlackMarket',
       'Envoy',
-      /*'WalledVillage',
-      'Governor',
+      'WalledVillage',
+      /*'Governor',
       'Stash',
       'Prince'*/
     ]

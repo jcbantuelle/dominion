@@ -31,6 +31,12 @@ TurnEnder = class TurnEnder {
   }
 
   clean_up_cards_in_play() {
+    let walled_villages = _.filter(this.player_cards.in_play, function(card) {
+      return card.name === 'Walled Village'
+    })
+    if (!_.isEmpty(walled_villages)) {
+      WalledVillageResolver.resolve(this.game, this.player_cards, walled_villages)
+    }
     if (this.game.turn.schemes > 0) {
       SchemeChooser.choose(this.game, this.player_cards)
     }
