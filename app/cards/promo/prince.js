@@ -57,7 +57,7 @@ Prince = class Prince extends Card {
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Prince.set_aside_action)
       } else {
-        game.log.push(`&nbsp;&nbsp;but there are no actions in hand`)
+        game.log.push(`&nbsp;&nbsp;but there are no eligible actions in hand`)
       }
     } else {
       game.log.push(`&nbsp;&nbsp;but chooses not to set it aside`)
