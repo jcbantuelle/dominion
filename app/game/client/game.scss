@@ -12,6 +12,11 @@ body {
   width: 240px;
 }
 
+#game-over {
+  width: 700px;
+  margin-top: 20px;
+}
+
 .card-container {
   height: $card_height;
   padding-bottom: $card_height + 5px;

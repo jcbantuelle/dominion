@@ -1,20 +1,26 @@
 <template name="game_over">
-  <br />
-  <strong>Winner(s):</strong> {{winners}}
-  <br />
-  <br />
-  {{#each scores}}
-    <strong>{{username}}</strong>: &nbsp;&nbsp;{{points}} Points ({{turns}} turns)
+  <div id="game-over">
+    <strong>Winner(s):</strong> {{winners}}
     <br />
     <br />
-    {{#if victory_tokens}}
-      <strong>Victory Tokens:</strong> {{victory_tokens}}
+    {{#each scores}}
+      <strong>{{username}}</strong>: &nbsp;&nbsp;{{points}} Points ({{turns}} turns)
       <br />
-    {{/if}}
-    {{#each point_cards}}
-      <strong>{{name}}</strong> x {{count}} {{#if point_variable}}({{point_variable}}){{/if}}
+      {{#if victory_tokens}}
+        <strong>Victory Tokens:</strong> {{victory_tokens}}
+        <br />
+      {{/if}}
+      <strong>Victory Cards:</strong>
+      {{#each point_cards}}
+        <span class="{{types}}">{{name}}</span> x {{count}} {{#if point_variable}}({{point_variable}}){{/if}}&nbsp;
+      {{/each}}
+      <br />
+      <strong>Deck Breakdown:</strong>
+      {{#each deck_breakdown}}
+        <span class="{{types}}">{{name}}</span> x {{count}}&nbsp;&nbsp;
+      {{/each}}
+      <br />
       <br />
     {{/each}}
-    <br />
-  {{/each}}
+  </div>
 </template>

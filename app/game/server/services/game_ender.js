@@ -26,11 +26,13 @@ GameEnder = class GameEnder {
     return _.chain(this.players_cards).map((player_cards) => {
       let all_cards = AllPlayerCardsQuery.find(player_cards)
       let point_cards = this.point_cards(all_cards)
+      let deck_breakdown = this.deck_breakdown(all_cards)
       let player_score = {
         username: player_cards.username,
         point_cards: point_cards,
         points: this.card_score(point_cards) + player_cards.victory_tokens,
-        turns: player_cards.turns
+        turns: player_cards.turns,
+        deck_breakdown: deck_breakdown
       }
       if (player_cards.victory_tokens > 0) {
         player_score.victory_tokens = player_cards.victory_tokens
@@ -46,6 +48,7 @@ GameEnder = class GameEnder {
       let card = ClassCreator.create(player_card.name)
       return {
         name: card.name(),
+        types: card.type_class(),
         points: card.victory_points(player_cards),
         point_variable: card.point_variable(player_cards)
       }
@@ -57,8 +60,21 @@ GameEnder = class GameEnder {
       return {
         name: card_name,
         count: _.size(cards),
+        types: _.first(cards).types,
         point_variable: _.first(cards).point_variable,
         points: _.first(cards).points * _.size(cards)
+      }
+    }).value()
+  }
+
+  deck_breakdown(player_cards) {
+    return _.chain(player_cards).groupBy(function(card) {
+      return card.name
+    }).map(function(cards, card_name) {
+      return {
+        name: card_name,
+        count: _.size(cards),
+        types: _.first(cards).types
       }
     }).value()
   }
