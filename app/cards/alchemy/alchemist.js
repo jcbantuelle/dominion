@@ -39,6 +39,7 @@ Alchemist = class Alchemist extends Card {
       let alchemist = player_cards.discarding.pop()
       game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(alchemist)} on top of their deck`)
       delete alchemist.scheme
+      delete alchemist.prince
       if (alchemist.misfit) {
         alchemist = ClassCreator.create('Band Of Misfits').to_h()
       }

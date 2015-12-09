@@ -41,6 +41,7 @@ Herbalist = class Herbalist extends Card {
 
       let card = player_cards.to_discard.splice(card_index, 1)[0]
       delete card.scheme
+      delete card.prince
       if (card.misfit) {
         card = ClassCreator.create('Band Of Misfits').to_h()
       }

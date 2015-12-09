@@ -63,7 +63,12 @@ CardDiscarder = class CardDiscarder {
       if (discarding_card.scheme) {
         destination = 'deck'
         delete discarding_card.scheme
+        delete discarding_card.prince
         this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places ${CardView.render(discarding_card)} on their deck`)
+      }
+      if (discarding_card.prince) {
+        destination = 'princed'
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> sets aside ${CardView.render(discarding_card)} from ${CardView.card_html('action', 'Prince')}`)
       }
       if (discarding_card.misfit) {
         discarding_card = ClassCreator.create('Band Of Misfits').to_h()

@@ -17,7 +17,12 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return card
     })
 
-    this.start_turn_events = horse_traders_events.concat(duration_events)
+    let prince_events = _.map(this.player_cards.princed, function(card) {
+      card.prince = true
+      return card
+    })
+
+    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events)
   }
 
   process() {
@@ -37,6 +42,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
     }
 
     this.player_cards.duration_effects = []
+    this.player_cards.princed = []
   }
 
   static event_order(game, player_cards, event_name_order, events) {
@@ -46,7 +52,11 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       })
       let event = events.splice(event_index, 1)[0]
       let selected_event = ClassCreator.create(event.name)
-      if (event.start_event_type === 'Horse Traders') {
+      if (event.prince) {
+        player_cards.hand.push(event)
+        let card_player = new CardPlayer(game, player_cards, event.name, true)
+        card_player.play()
+      } else if (event.start_event_type === 'Horse Traders') {
         selected_event.start_turn_event(game, player_cards, player_cards.horse_traders.pop())
       } else if (event.start_event_type === 'Duration') {
         selected_event.duration(game, player_cards, event)

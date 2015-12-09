@@ -36,6 +36,7 @@ Treasury = class Treasury extends Card {
       let treasury = player_cards.discarding.pop()
       game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(treasury)} on top of their deck`)
       delete treasury.scheme
+      delete treasury.prince
       if (treasury.misfit) {
         treasury = ClassCreator.create('Band Of Misfits').to_h()
       }
