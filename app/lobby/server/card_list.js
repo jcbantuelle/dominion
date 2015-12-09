@@ -23,8 +23,8 @@ CardList = class CardList {
       'BlackMarket',
       'Envoy',
       'WalledVillage',
-      /*'Governor',
-      'Stash',
+      'Governor',
+      /*'Stash',
       'Prince'*/
     ]
   }
