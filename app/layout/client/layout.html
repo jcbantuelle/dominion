@@ -17,6 +17,10 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="#">Welcome {{currentUser.username}}!</a></li>
+            {{#if currentUser.admin}}
+              <li><a href="/accounts">Accounts</a></li>
+            {{/if}}
+            <li><a href="/game_history">Game History</a></li>
             <li><a class="js-logout btn-secondary">Logout</a></li>
           </ul>
         </div>

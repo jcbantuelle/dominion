@@ -1,0 +1,27 @@
+<template name="gameHistoryListing">
+  <h2>Game History</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Players</th>
+        <th>Winner</th>
+        <th>View</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each games}}
+        <tr>
+          <td>{{created_at}}</td>
+          <td>
+            {{#each players}}
+              {{username}}
+            {{/each}}
+          </td>
+          <td>{{winners}}</td>
+          <td><a href="/game_history/{{_id}}">View</a></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>

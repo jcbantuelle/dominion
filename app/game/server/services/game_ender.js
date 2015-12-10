@@ -8,6 +8,7 @@ GameEnder = class GameEnder {
   end_game() {
     this.update_game()
     this.update_players()
+    this.log_game()
   }
 
   update_game() {
@@ -20,6 +21,10 @@ GameEnder = class GameEnder {
   update_players() {
     let player_ids = _.pluck(this.game.players, '_id')
     Meteor.users.update({_id: {$in: player_ids}}, {$unset: {current_game: ''}}, {multi: true})
+  }
+
+  log_game() {
+    GameHistory.insert(_.merge(this.game, {created_at: new Date()}))
   }
 
   calculate_scores() {
