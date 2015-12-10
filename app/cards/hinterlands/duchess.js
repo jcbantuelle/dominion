@@ -13,6 +13,7 @@ Duchess = class Duchess extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2`)
 
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
+    ordered_player_cards[0] = player_cards
     _.each(ordered_player_cards, function(cards) {
       Duchess.reveal_card(game, cards)
     })
@@ -55,6 +56,7 @@ Duchess = class Duchess extends Card {
       player_cards.revealed = []
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places the card on top of their deck`)
     }
+    PlayerCardsModel.update(game._id, player_cards)
   }
 
 }
