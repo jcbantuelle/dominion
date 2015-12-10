@@ -1,0 +1,25 @@
+<template name="playersListing">
+  <h2>Players</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Win Ratio</th>
+        <th>Wins</th>
+        <th>Losses</th>
+        <th>View</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each players}}
+        <tr>
+          <td>{{username}}</td>
+          <td>{{win_ratio}}%</td>
+          <td>{{wins}}</td>
+          <td>{{losses}}</td>
+          <td><a href="/players/{{username}}">View</a></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>

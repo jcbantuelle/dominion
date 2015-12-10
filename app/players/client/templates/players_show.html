@@ -1,0 +1,30 @@
+<template name="playersShow">
+  <h2>{{username}}</h2>
+  <h3>Win Ratio: {{win_ratio}}%</h3>
+  <h3>Wins: {{wins}}</h3>
+  <h3>Losses: {{losses}}</h3>
+  <br />
+  <h3>Performance Against Opponents</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Win Ratio</th>
+        <th>Wins</th>
+        <th>Losses</th>
+        <th>View</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each opponents}}
+        <tr>
+          <td>{{username}}</td>
+          <td>{{win_ratio}}%</td>
+          <td>{{wins}}</td>
+          <td>{{losses}}</td>
+          <td><a href="/players/{{username}}">View</a></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>

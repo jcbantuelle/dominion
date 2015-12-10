@@ -9,6 +9,7 @@ GameEnder = class GameEnder {
     this.update_game()
     this.update_players()
     this.log_game()
+    this.update_player_rankings()
   }
 
   update_game() {
@@ -25,6 +26,41 @@ GameEnder = class GameEnder {
 
   log_game() {
     GameHistory.insert(_.merge(this.game, {created_at: new Date()}))
+  }
+
+  update_player_rankings() {
+    let usernames = _.pluck(this.game.players, 'username')
+    let player_rankings = PlayerRankings.find({username: {$in: usernames}}).fetch()
+    _.each(player_rankings, (player_ranking) => {
+      let winner = _.contains(this.game.winners, player_ranking.username)
+      if (winner) {
+        player_ranking.wins += 1
+      } else {
+        player_ranking.losses += 1
+      }
+      let opponent_names = _.difference(usernames, [player_ranking.username])
+      _.each(opponent_names, function(opponent_name) {
+        let opponent_index = _.findIndex(player_ranking.opponents, function(opponent) {
+          return opponent.username === opponent_name
+        })
+        if (opponent_index === -1) {
+          player_ranking.opponents.push({
+            username: opponent_name,
+            wins: winner ? 1 : 0,
+            losses: winner ? 0 : 1
+          })
+        } else {
+          let opponent_ranking = player_ranking.opponents[opponent_index]
+          if (winner) {
+            opponent_ranking.wins += 1
+          } else {
+            opponent_ranking.losses += 1
+          }
+          player_ranking.opponents[opponent_index] = opponent_ranking
+        }
+      })
+      PlayerRankings.update(player_ranking._id, player_ranking)
+    })
   }
 
   calculate_scores() {
