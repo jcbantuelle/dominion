@@ -108,9 +108,25 @@ BlackMarket = class BlackMarket extends Card {
     _.each(ordered_card_names, function(card_name) {
       let card_player = new CardPlayer(game, player_cards, card_name, true)
       card_player.play()
-      GameModel.update(game._id, game)
-      PlayerCardsModel.update(game._id, player_cards)
+      BlackMarket.push_treasure_into_play(game, player_cards, card_name)
     })
+    GameModel.update(game._id, game)
+    PlayerCardsModel.update(game._id, player_cards)
+  }
+
+  static push_treasure_into_play(game, player_cards, card_name) {
+    let treasure_index = _.findIndex(player_cards.playing, function(card) {
+      return card.name === card_name
+    })
+    let treasure = player_cards.playing.splice(treasure_index, 1)[0]
+    let destination = treasure.destination
+    delete treasure.processed
+    delete treasure.destination
+    if (destination) {
+      player_cards[destination].push(treasure)
+    } else {
+      player_cards.in_play.push(treasure)
+    }
   }
 
   static buy_card(game, player_cards, selected_cards) {
