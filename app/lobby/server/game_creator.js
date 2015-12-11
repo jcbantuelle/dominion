@@ -325,7 +325,7 @@ GameCreator = class GameCreator {
 
   has_spoils(cards) {
     if (this.black_market_deck) {
-      cards.concat(this.black_market_deck)
+      cards = cards.concat(this.black_market_deck)
     }
     return _.any(cards, function(card) {
       return _.contains(['Marauder', 'Bandit Camp', 'Pillage'], card.name)
