@@ -27,6 +27,9 @@ CardPlayer = class CardPlayer {
       if (!this.free_play) {
         this.resolve_played_cards()
       }
+      if (_.contains(_.words(this.card.types), 'action')) {
+        this.action_resolution_events()
+      }
       if (auto_update) {
         this.update_db()
       }
@@ -73,6 +76,11 @@ CardPlayer = class CardPlayer {
       }
     })
     this.player_cards.playing = []
+  }
+
+  action_resolution_events() {
+    let action_resolution_event_processor = new ActionResolutionEventProcessor(this.game, this.player_cards)
+    action_resolution_event_processor.process()
   }
 
   use_action() {
