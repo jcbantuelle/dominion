@@ -29,8 +29,8 @@ CardList = class CardList {
 
   static adventures() {
     return [
-      /*'CoinOfTheRealm',
-      'Page',
+      'CoinOfTheRealm',
+      /*'Page',
       'Peasant',
       'Ratcatcher',
       'Raze',
