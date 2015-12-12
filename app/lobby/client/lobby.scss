@@ -6,6 +6,7 @@ $curse: violet;
 $duration: orange;
 $shelter: salmon;
 $ruins: burlywood;
+$reserve: #cdb332;
 $busy: grey;
 $player_margin: 25px;
 
@@ -55,6 +56,10 @@ hr {
   background-color: $action;
 }
 
+.reserve {
+  background-color: $reserve;
+}
+
 .victory {
   background-color: $victory;
 }
@@ -85,6 +90,10 @@ hr {
 
 .treasure.victory {
   @include gradient($treasure, $victory);
+}
+
+.treasure.reserve {
+  @include gradient($treasure, $reserve);
 }
 
 .shelter.reaction {
