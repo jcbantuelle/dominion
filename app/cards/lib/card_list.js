@@ -11,7 +11,7 @@ CardList = class CardList {
   }
 
   static sets() {
-    return ['base', 'intrigue', 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo']
+    return ['base', 'intrigue', 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures']
   }
 
   static pull_one() {
@@ -25,6 +25,41 @@ CardList = class CardList {
       }
       return card_list
     }, [])
+  }
+
+  static adventures() {
+    return [
+      /*'CoinOfTheRealm',
+      'Page',
+      'Peasant',
+      'Ratcatcher',
+      'Raze',
+      'Amulet',
+      'CaravanGuard',
+      'Dungeon',
+      'Gear',
+      'Guide',
+      'Duplicate',
+      'Magpie',
+      'Messenger',
+      'Miser',
+      'Port',
+      'Ranger',
+      'Transmogrify',
+      'Artificer',
+      'BridgeTroll',
+      'DistantLands',
+      'Giant',
+      'HauntedWoods',
+      'LostCity',
+      'Relic',
+      'RoyalCarriage',
+      'Storyteller',
+      'SwampHag',
+      'TreasureTrove',
+      'WineMerchant',
+      'Hireling'*/
+    ]
   }
 
   static promo() {
