@@ -66,6 +66,13 @@
       {{/each}}
       <br />
     {{/if}}
+    {{#if tavern}}
+      Tavern:
+      {{#each tavern}}
+        <span class="{{types}}">{{name}}</span>
+      {{/each}}
+      <br />
+    {{/if}}
     <br />
   {{/each}}
 </template>
