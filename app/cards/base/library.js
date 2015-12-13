@@ -9,7 +9,9 @@ Library = class Library extends Card {
   }
 
   play(game, player_cards) {
-    if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
+    if (_.size(player_cards.hand) >= 7) {
+      game.log.push(`&nbsp;&nbsp;but ${player_cards.username} already has 7 cards in hand`)
+    } else if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
       player_cards.aside = []
       return Library.draw_cards(game, player_cards)
     } else {
