@@ -15,6 +15,8 @@ MiningVillage = class MiningVillage extends Card {
     game.turn.actions += 2
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
 
+    GameModel.update(game._id, game)
+
     let mining_village = _.find(player_cards.playing, function(card) {
       return card.name === 'Mining Village'
     })
