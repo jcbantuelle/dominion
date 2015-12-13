@@ -23,9 +23,11 @@ Saboteur = class Saboteur extends Card {
       card_trasher.trash()
       GameModel.update(game._id, game)
 
+      let trashed_cost = CostCalculator.calculate(game, player_cards.trashed_card, this.all_player_cards)
+
       let eligible_cards = _.filter(game.cards, function(card) {
         let coin_cost = CostCalculator.calculate(game, card.top_card, this.all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && coin_cost <= (player_cards.trashed_card_coin_cost - 2) && card.top_card.potion_cost <= player_cards.trashed_card.potion_cost
+        return card.count > 0 && card.top_card.purchasable && coin_cost <= (trashed_cost - 2) && card.top_card.potion_cost <= player_cards.trashed_card.potion_cost
       })
       if (_.size(eligible_cards) > 0) {
         let turn_event_id = TurnEventModel.insert({
