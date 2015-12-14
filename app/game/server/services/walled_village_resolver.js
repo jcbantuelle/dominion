@@ -1,7 +1,7 @@
 WalledVillageResolver = class WalledVillageResolver {
 
   static resolve(game, player_cards, walled_villages) {
-    let action_count = _.size(_.filter(player_cards.in_play.concat(player_cards.duration), function(card) {
+    let action_count = _.size(_.filter(player_cards.in_play.concat(player_cards.duration).concat(player_cards.permanent), function(card) {
       return _.contains(_.words(card.types), 'action')
     }))
     if (action_count < 3) {

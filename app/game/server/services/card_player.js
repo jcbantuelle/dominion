@@ -21,9 +21,13 @@ CardPlayer = class CardPlayer {
         this.update_log()
         this.update_db()
       }
-      if (this.play_card(auto_update) === 'duration') {
+      let play_response = this.play_card(auto_update)
+      if (play_response === 'duration') {
         this.mark_played_card_as_duration()
+      } else if (play_response === 'permanent') {
+        this.mark_played_card_as_permanent()
       }
+
       if (!this.free_play) {
         this.resolve_played_cards()
       }
@@ -130,6 +134,14 @@ CardPlayer = class CardPlayer {
     })
     this.player_cards.playing[duration_card_index].destination = 'duration'
     this.player_cards.playing[duration_card_index].processed = true
+  }
+
+  mark_played_card_as_permanent() {
+    let permanent_card_index = _.findIndex(this.player_cards.playing, (card) => {
+      return card.name === this.card.name() && !card.processed
+    })
+    this.player_cards.playing[permanent_card_index].destination = 'permanent'
+    this.player_cards.playing[permanent_card_index].processed = true
   }
 
 }

@@ -9,7 +9,7 @@ CostCalculator = class CostCalculator {
       player_cards = PlayerCardsModel.find(game._id)
     }
 
-    let in_play_cards = _.flatten(_.pluck(player_cards, 'in_play').concat(_.pluck(player_cards, 'duration')))
+    let in_play_cards = _.flatten(_.pluck(player_cards, 'in_play').concat(_.pluck(player_cards, 'duration')).concat(_.pluck(player_cards, 'permanent')))
 
     let highways = _.size(_.filter(in_play_cards, function(player_card) {
       return player_card.name === 'Highway'

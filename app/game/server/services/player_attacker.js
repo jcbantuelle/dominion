@@ -27,7 +27,7 @@ PlayerAttacker = class PlayerAttacker {
   }
 
   lighthouse_in_play(player_cards) {
-    return _.any(player_cards.duration, function(card) {
+    return _.any(player_cards.in_play.concat(player_cards.duration).concat(player_cards.permanent), function(card) {
       return card.name === 'Lighthouse'
     })
   }
