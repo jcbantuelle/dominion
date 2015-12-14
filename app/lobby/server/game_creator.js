@@ -150,6 +150,12 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Urchin')) {
       not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
+      _.each(['Treasure Hunter', 'Warrior', 'Hero', 'Champion'], (card_name) => {
+        let card = ClassCreator.create(card_name)
+        not_supply_cards.push(this.game_card(card.to_h(), 'not_supply'))
+      })
+    }
     if (this.has_spoils(this.selected_kingdom_cards)) {
       not_supply_cards.push(this.game_card((new Spoils()).to_h(), 'not_supply'))
     }
@@ -243,6 +249,8 @@ GameCreator = class GameCreator {
       return 15
     } else if (card.name === 'Rats') {
       return 20
+    } else if (_.contains(['Treasure Hunter', 'Warrior', 'Hero', 'Champion'], card.name)) {
+      return 5
     } else {
       return 10
     }

@@ -48,6 +48,10 @@ TurnEnder = class TurnEnder {
       this.game.log.push(`<strong>${this.player_cards.username}</strong> puts ${CardView.render(this.player_cards.possession_trash)} in their discard`)
       this.player_cards.possession_trash = []
     }
+
+    if (this.player_cards.champions > 0) {
+      this.player_cards.champion = true
+    }
   }
 
   discard_hand() {

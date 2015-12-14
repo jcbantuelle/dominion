@@ -83,6 +83,10 @@ CardPlayer = class CardPlayer {
   }
 
   action_resolution_events() {
+    if (this.player_cards.champions > 0) {
+      this.game.turn.actions += this.player_cards.champions
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> gets +${this.player_cards.champions} action(s) from ${CardView.card_html('action duration', 'Champion')}`)
+    }
     let action_resolution_event_processor = new ActionResolutionEventProcessor(this.game, this.player_cards)
     action_resolution_event_processor.process()
   }

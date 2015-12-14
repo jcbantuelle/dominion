@@ -15,7 +15,7 @@ PlayerAttacker = class PlayerAttacker {
       let attack_event_processor = new AttackEventProcessor(this.game, attacked_player_cards)
       attack_event_processor.process()
 
-      if (attacked_player_cards.moat || this.lighthouse_in_play(attacked_player_cards)) {
+      if (attacked_player_cards.moat || attacked_player_cards.champion || this.lighthouse_in_play(attacked_player_cards)) {
         delete attacked_player_cards.moat
         this.game.log.push(`&nbsp;&nbsp;<strong>${attacked_player_cards.username}</strong> is immune to the attack`)
       } else {
