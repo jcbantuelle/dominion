@@ -1,7 +1,7 @@
 StartTurnEventProcessor = class StartTurnEventProcessor {
 
   static reserve_events() {
-    return ['Teacher']
+    return ['Teacher', 'Ratcatcher']
   }
 
   constructor(game, player_cards) {
@@ -75,6 +75,8 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         delete event.start_event_type
         selected_event.reserve(game, player_cards, event)
       }
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
     })
   }
 

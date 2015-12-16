@@ -32,6 +32,16 @@ Card = class Card {
     return this.name()
   }
 
+  move_to_tavern(game, player_cards, name) {
+    let reserve_index = _.findIndex(player_cards.playing, function(card) {
+      return card.name === name
+    })
+    if (reserve_index !== -1) {
+      player_cards.tavern.push(player_cards.playing.splice(reserve_index, 1)[0])
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(this)} on their Tavern`)
+    }
+  }
+
   to_h() {
     return {
       name: this.name(),
