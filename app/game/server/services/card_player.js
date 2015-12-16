@@ -21,6 +21,7 @@ CardPlayer = class CardPlayer {
         this.update_log()
         this.update_db()
       }
+      this.token_effects()
       let play_response = this.play_card(auto_update)
       if (play_response === 'duration') {
         this.mark_played_card_as_duration()
@@ -38,6 +39,26 @@ CardPlayer = class CardPlayer {
         this.update_db()
       }
     }
+  }
+
+  token_effects() {
+    _.each(this.player_cards.tokens.pile, (token) => {
+      if (this.card.name() === token.card.name) {
+        if (token.effect === 'card') {
+          let card_drawer = new CardDrawer(this.game, this.player_cards)
+          card_drawer.draw(1)
+        } else if (token.effect === 'action') {
+          game.turn.actions += 1
+          game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+        } else if (token.effect === 'buy') {
+          game.turn.buys += 1
+          game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+        } else if (token.effect === 'coin') {
+          game.turn.coins += 1
+          game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$1`)
+        }
+      }
+    })
   }
 
   play_card(auto_update = true) {
