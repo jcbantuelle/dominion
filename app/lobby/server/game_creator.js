@@ -3,6 +3,7 @@ GameCreator = class GameCreator {
   constructor(players, cards) {
     this.players = players
     this.cards = cards
+    this.colors = ['red', 'blue', 'yellow', 'green']
   }
 
   create() {
@@ -30,8 +31,9 @@ GameCreator = class GameCreator {
   }
 
   start_game_log() {
-    let turn_order =  _.map(this.game.players, function(player) {
-      return player.username
+    let turn_order =  _.map(this.game.players, (player, index) => {
+      let color = this.assign_colors ? this.colors[index] : ''
+      return `<span class="${color}">${player.username}</span>`
     })
 
     this.game.log = [
@@ -62,10 +64,12 @@ GameCreator = class GameCreator {
 
   set_up_players() {
     PlayerCards[this.game._id] = new ReactiveDict()
-    _.each(this.game.players, this.create_player_cards.bind(this))
+    _.each(this.game.players, (player, index) => {
+      this.create_player_cards(player, index)
+    })
   }
 
-  create_player_cards(player) {
+  create_player_cards(player, index) {
     let copper = new Copper()
     coppers = _.times(7, function() { return copper.to_h() })
 
@@ -88,7 +92,7 @@ GameCreator = class GameCreator {
 
     let coin_tokens = this.game_has_card(this.selected_kingdom_cards, 'Baker') ? 1 : 0
 
-    PlayerCardsModel.insert({
+    let player_card_data = {
       player_id: player._id,
       game_id: this.game._id,
       username: player.username,
@@ -96,7 +100,13 @@ GameCreator = class GameCreator {
       hand: hand,
       coin_tokens: coin_tokens,
       turns: (this.game.turn.player._id === player._id) ? 1 : 0
-    })
+    }
+
+    if (this.assign_colors) {
+      player_card_data.color = this.colors[index]
+    }
+
+    PlayerCardsModel.insert(player_card_data)
   }
 
   assign_game_to_players() {
@@ -117,6 +127,7 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Trade Route')) {
       this.trade_route_game()
     }
+    this.assign_colors = this.color_game()
     return this.selected_kingdom_cards.concat(this.selected_common_cards).concat(this.selected_not_supply_cards)
   }
 
@@ -214,7 +225,8 @@ GameCreator = class GameCreator {
       top_card: _.first(card_stack),
       stack: card_stack,
       source: source,
-      bane: card.bane
+      bane: card.bane,
+      tokens: []
     }
   }
 
@@ -393,6 +405,12 @@ GameCreator = class GameCreator {
   potion_game() {
     return _.any(this.selected_kingdom_cards, function(card) {
       return card.top_card.potion_cost > 0
+    })
+  }
+
+  color_game() {
+    return _.any(this.selected_kingdom_cards, function(card) {
+      return card.name === 'Peasant'
     })
   }
 

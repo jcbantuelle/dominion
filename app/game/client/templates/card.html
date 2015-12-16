@@ -15,6 +15,9 @@
       <span class="remaining">({{count}})</span>
     </div>
     <div class="card-name">
+      {{#each tokens}}
+        <span class="{{color}} token">{{text}}</span>
+      {{/each}}
       {{#if bane}}
         <span class="bane">&diams;</span>&nbsp;
       {{/if}}
