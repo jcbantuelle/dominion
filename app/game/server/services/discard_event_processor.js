@@ -9,7 +9,11 @@ DiscardEventProcessor = class DiscardEventProcessor {
       {name: 'Page', upgrade: 'Treasure Hunter'},
       {name: 'Treasure Hunter', upgrade: 'Warrior'},
       {name: 'Warrior', upgrade: 'Hero'},
-      {name: 'Hero', upgrade: 'Champion'}
+      {name: 'Hero', upgrade: 'Champion'},
+      {name: 'Peasant', upgrade: 'Soldier'},
+      {name: 'Soldier', upgrade: 'Fugitive'},
+      {name: 'Fugitive', upgrade: 'Disciple'},
+      {name: 'Disciple', upgrade: 'Teacher'}
     ]
   }
 

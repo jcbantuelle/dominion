@@ -1,5 +1,9 @@
 StartTurnEventProcessor = class StartTurnEventProcessor {
 
+  static reserve_events() {
+    return ['Teacher']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
@@ -22,7 +26,12 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return card
     })
 
-    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events)
+    let reserve_events = _.filter(this.player_cards.tavern, function(card) {
+      card.start_event_type = 'Reserve'
+      return _.contains(StartTurnEventProcessor.reserve_events(), card.name)
+    })
+
+    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events)
   }
 
   process() {
@@ -62,6 +71,9 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         selected_event.start_turn_event(game, player_cards, player_cards.horse_traders.pop())
       } else if (event.start_event_type === 'Duration') {
         selected_event.duration(game, player_cards, event)
+      } else if (event.start_event_type === 'Reserve') {
+        delete event.start_event_type
+        selected_event.reserve(game, player_cards, event)
       }
     })
   }

@@ -31,8 +31,8 @@ CardList = class CardList {
     return [
       'CoinOfTheRealm',
       'Page',
-      /*'Peasant',
-      'Ratcatcher',
+      'Peasant',
+      /*'Ratcatcher',
       'Raze',
       'Amulet',
       'CaravanGuard',
