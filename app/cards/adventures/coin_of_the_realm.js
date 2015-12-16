@@ -11,13 +11,7 @@ CoinOfTheRealm = class CoinOfTheRealm extends Card {
   play(game, player_cards) {
     game.turn.coins += 1
 
-    let coin_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Coin Of The Realm'
-    })
-    if (coin_index !== -1) {
-      player_cards.tavern.push(player_cards.playing.splice(coin_index, 1)[0])
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(this)} on their Tavern`)
-    }
+    this.move_to_tavern(game, player_cards, 'Coin Of The Realm')
   }
 
   reserve(game, player_cards) {

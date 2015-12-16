@@ -13,13 +13,7 @@ Teacher = class Teacher extends Card {
   }
 
   play(game, player_cards) {
-    let teacher_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Teacher'
-    })
-    if (teacher_index !== -1) {
-      player_cards.tavern.push(player_cards.playing.splice(teacher_index, 1)[0])
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(this)} on their Tavern`)
-    }
+    this.move_to_tavern(game, player_cards, 'Teacher')
   }
 
   reserve(game, player_cards) {
