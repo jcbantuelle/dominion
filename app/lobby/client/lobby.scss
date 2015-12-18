@@ -116,6 +116,10 @@ hr {
   @include gradient($victory, $reaction);
 }
 
+.duration.reaction {
+  @include gradient($duration, $reaction);
+}
+
 #lobby-chat {
   height: 300px;
   overflow: auto;
