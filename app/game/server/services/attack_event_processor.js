@@ -1,7 +1,7 @@
 AttackEventProcessor = class AttackEventProcessor {
 
   static attack_reactions() {
-    return ['Moat', 'Secret Chamber', 'Horse Traders', 'Beggar']
+    return ['Moat', 'Secret Chamber', 'Horse Traders', 'Beggar', 'Caravan Guard']
   }
 
   static find_attack_events(player_cards) {
