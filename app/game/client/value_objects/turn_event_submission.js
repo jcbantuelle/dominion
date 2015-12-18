@@ -48,13 +48,10 @@ TurnEventSubmission = class TurnEventSubmission {
   }
 
   card_selection() {
-    let turn_event = this.turn_event
-    return this.selection.map(function() {
-      let card_name = $(this).val()
-      return _.find(turn_event.cards, function(card) {
-        return card.name === card_name
-      })
+    let indexes = this.selection.map(function() {
+      return $(this).val()
     }).get()
+    return _.pullAt(this.turn_event.cards, indexes)
   }
 
   error_message() {

@@ -4,7 +4,7 @@
     <div class="checkbox">
       {{#each cards}}
         <label for="card_{{@index}}">
-          <input type="checkbox" id="card_{{@index}}" value="{{name}}" />
+          <input type="checkbox" id="card_{{@index}}" value="{{@index}}" />
           {{#if ../game_cards}}
             <span class="{{top_card.types}}{{#if show_images}} choose-card{{/if}}">{{top_card.name}}</span>
           {{else}}
