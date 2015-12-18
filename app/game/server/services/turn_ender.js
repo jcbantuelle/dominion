@@ -15,6 +15,8 @@ TurnEnder = class TurnEnder {
     if (this.game_over()) {
       this.end_game()
     } else {
+      GameModel.update(this.game._id, this.game)
+      PlayerCardsModel.update(this.game._id, this.player_cards)
       this.set_next_turn()
       this.start_turn_events()
       this.move_duration_cards()
