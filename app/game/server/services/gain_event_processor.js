@@ -12,6 +12,10 @@ GainEventProcessor = class GainEventProcessor {
     return ['Royal Seal']
   }
 
+  static reserve_cards() {
+    return ['Duplicate']
+  }
+
   constructor(gainer, player_cards) {
     this.gainer = gainer
     this.player_cards = player_cards
@@ -56,12 +60,27 @@ GainEventProcessor = class GainEventProcessor {
         }
       }
     })
+
+    _.each(this.player_cards.tavern, (card) => {
+      if (_.contains(GainEventProcessor.reserve_cards(), card.name)) {
+        if (card.name === 'Duplicate') {
+          if (this.player_cards._id === this.gainer.player_cards._id) {
+            let card_cost = CostCalculator.calculate(this.gainer.game, this.gainer.gained_card)
+            if (card_cost <= 6 && this.gainer.gained_card.potion_cost === 0) {
+              this.gain_events.push(card)
+            }
+          }
+        } else {
+          this.gain_events.push(card)
+        }
+      }
+    })
   }
 
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, function(event) {
-        return _.contains(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()), event.name)
+        return _.contains(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.gainer.player_cards, this.gain_events, this)
