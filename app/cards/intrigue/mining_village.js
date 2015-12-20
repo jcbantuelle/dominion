@@ -15,13 +15,13 @@ MiningVillage = class MiningVillage extends Card {
     game.turn.actions += 2
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
 
-    GameModel.update(game._id, game)
-
     let mining_village = _.find(player_cards.playing, function(card) {
       return card.name === 'Mining Village'
     })
 
     if (mining_village) {
+      GameModel.update(game._id, game)
+      PlayerCards.update(game._id, player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
