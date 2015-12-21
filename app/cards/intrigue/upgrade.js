@@ -45,7 +45,7 @@ Upgrade = class Upgrade extends Card {
 
     let eligible_cards = _.filter(game.cards, function(card) {
       let game_card_coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && game_card_coin_cost === (coin_cost + 1) && card.top_card.potion_cost === 0
+      return card.count > 0 && card.top_card.purchasable && game_card_coin_cost === (coin_cost + 1) && card.top_card.potion_cost === selected_cards[0].potion_cost
     })
 
     if (_.size(eligible_cards) > 0) {
