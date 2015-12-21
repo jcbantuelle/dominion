@@ -267,6 +267,8 @@ GameCreator = class GameCreator {
       return 15
     } else if (card.name === 'Rats') {
       return 20
+    } else if (card.name === 'Port') {
+      return 12
     } else if (_.contains(['Treasure Hunter', 'Warrior', 'Hero', 'Champion', 'Soldier', 'Fugitive', 'Disciple', 'Teacher'], card.name)) {
       return 5
     } else {
