@@ -5,7 +5,7 @@ BuyEventProcessor = class BuyEventProcessor {
   }
 
   static event_cards() {
-    return ['Noble Brigand', 'Farmland', 'Mint']
+    return ['Noble Brigand', 'Farmland', 'Mint', 'Messenger']
   }
 
   static in_play_event_cards() {
@@ -24,7 +24,13 @@ BuyEventProcessor = class BuyEventProcessor {
   find_buy_events() {
     this.buy_events = []
     if (_.contains(BuyEventProcessor.event_cards(), this.buyer.card.name())) {
-      this.buy_events.push(this.buyer.card.to_h())
+      if (this.buyer.card.name() === 'Messenger') {
+        if (_.size(this.buyer.game.turn.bought_cards) === 1) {
+          this.buy_events.push(this.buyer.card.to_h())
+        }
+      } else {
+        this.buy_events.push(this.buyer.card.to_h())
+      }
     }
 
     if (_.contains(BuyEventProcessor.overpay_cards(), this.buyer.card.name()) && this.buyer.game.turn.coins > 0) {
