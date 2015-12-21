@@ -99,11 +99,16 @@ GameCreator = class GameCreator {
       deck: deck,
       hand: hand,
       coin_tokens: coin_tokens,
+      tokens: {pile: []},
       turns: (this.game.turn.player._id === player._id) ? 1 : 0
     }
 
     if (this.assign_colors) {
       player_card_data.color = this.colors[index]
+    }
+
+    if (this.use_journey_token) {
+      player_card_data.tokens.journey = 'up'
     }
 
     PlayerCardsModel.insert(player_card_data)
@@ -122,6 +127,7 @@ GameCreator = class GameCreator {
     this.use_prosperity_cards = this.prosperity_game()
     this.use_dark_ages_cards = this.dark_ages_game()
     this.use_potions = this.potion_game()
+    this.use_journey_token = this.journey_game()
     this.selected_common_cards = this.common_cards()
     this.selected_not_supply_cards = this.not_supply_cards()
     if (this.game_has_card(this.selected_kingdom_cards, 'Trade Route')) {
@@ -413,6 +419,12 @@ GameCreator = class GameCreator {
   potion_game() {
     return _.any(this.selected_kingdom_cards, function(card) {
       return card.top_card.potion_cost > 0
+    })
+  }
+
+  journey_game() {
+    return _.any(this.selected_kingdom_cards, function(card) {
+      return _.contains(['Ranger', 'Giant'], card.name)
     })
   }
 
