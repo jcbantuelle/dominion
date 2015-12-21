@@ -1,7 +1,7 @@
 StartTurnEventProcessor = class StartTurnEventProcessor {
 
   static reserve_events() {
-    return ['Teacher', 'Ratcatcher', 'Guide']
+    return ['Teacher', 'Ratcatcher', 'Guide', 'Transmogrify']
   }
 
   constructor(game, player_cards) {
