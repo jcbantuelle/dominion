@@ -37,7 +37,12 @@ Card = class Card {
       return card.name === name
     })
     if (reserve_index !== -1) {
-      player_cards.tavern.push(player_cards.playing.splice(reserve_index, 1)[0])
+      let reserve_card = player_cards.playing.splice(reserve_index, 1)[0]
+      delete reserve_card.prince
+      if (reserve_card.misfit) {
+        reserve_card = ClassCreator.create('Band Of Misfits').to_h()
+      }
+      player_cards.tavern.push(reserve_card)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(this)} on their Tavern`)
     }
   }
