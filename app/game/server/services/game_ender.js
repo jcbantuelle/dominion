@@ -90,7 +90,7 @@ GameEnder = class GameEnder {
       return {
         name: card.name(),
         types: card.type_class(),
-        points: card.victory_points(player_cards),
+        points: card.victory_points(player_cards, player_card.source),
         point_variable: card.point_variable(player_cards)
       }
     }).filter(function(point_card) {

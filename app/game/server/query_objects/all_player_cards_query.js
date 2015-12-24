@@ -6,7 +6,11 @@ AllPlayerCardsQuery = class AllPlayerCardsQuery {
 
   static find(player_cards) {
     return _.reduce(AllPlayerCardsQuery.card_sources(), function(all_cards, source) {
-      return all_cards.concat(player_cards[source])
+      let source_cards = _.map(player_cards[source], function(card) {
+        card.source = source
+        return card
+      })
+      return all_cards.concat(source_cards)
     }, [])
   }
 
