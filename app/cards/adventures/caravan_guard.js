@@ -27,8 +27,8 @@ CaravanGuard = class CaravanGuard extends Card {
   }
 
   duration(game, player_cards, duration_card) {
-    game.turn.coins += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$1 from ${CardView.render(duration_card)}`)
+    let gained_coins = CoinGainer.gain(game, player_cards, 1)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} from ${CardView.render(duration_card)}`)
   }
 
 }

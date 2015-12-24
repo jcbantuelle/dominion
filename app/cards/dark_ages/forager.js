@@ -38,8 +38,8 @@ Forager = class Forager extends Card {
       return card.name
     }))
 
-    game.turn.coins += unique_treasure_count
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${unique_treasure_count}`)
+    let gained_coins = CoinGainer.gain(game, player_cards, unique_treasure_count)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
   }
 
   static trash_card(game, player_cards, selected_cards) {

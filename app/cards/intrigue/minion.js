@@ -37,8 +37,8 @@ Minion = class Minion extends Card {
   static process_response(game, player_cards, response) {
     response = response[0]
     if (response === 'coins') {
-      game.turn.coins += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2`)
+      let gained_coins = CoinGainer.gain(game, player_cards, 2)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     } else if (response === 'discard') {
       game.turn.minion_attack = true
       Minion.redraw_hand(game, player_cards)

@@ -17,8 +17,8 @@ Soldier = class Soldier extends Traveller {
       return _.contains(_.words(card.types), 'attack')
     }))
 
-    game.turn.coins += (1 + attack_count)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${1+attack_count}`)
+    let gained_coins = CoinGainer.gain(game, player_cards, 1 + attack_count)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)

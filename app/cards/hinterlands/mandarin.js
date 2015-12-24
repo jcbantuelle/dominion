@@ -9,8 +9,8 @@ Mandarin = class Mandarin extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 3
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$3`)
+    let gained_coins = CoinGainer.gain(game, player_cards, 3)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({

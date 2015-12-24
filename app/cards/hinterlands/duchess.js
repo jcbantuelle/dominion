@@ -9,8 +9,8 @@ Duchess = class Duchess extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2`)
+    let gained_coins = CoinGainer.gain(game, player_cards, 2)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
     ordered_player_cards[0] = player_cards

@@ -92,8 +92,8 @@ Mercenary = class Mercenary extends Card {
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(2)
 
-      game.turn.coins += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2`)
+      let gained_coins = CoinGainer.gain(game, player_cards, 2)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     }
   }
 

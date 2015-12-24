@@ -9,7 +9,7 @@ Hoard = class Hoard extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 2
+    CoinGainer.gain(game, player_cards, 2)
   }
 
   buy_event(buyer) {

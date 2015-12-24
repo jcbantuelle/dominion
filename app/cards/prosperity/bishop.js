@@ -9,9 +9,9 @@ Bishop = class Bishop extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 1
+    let gained_coins = CoinGainer.gain(game, player_cards, 1)
     player_cards.victory_tokens += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$1 and +1 &nabla;`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} and +1 &nabla;`)
 
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({

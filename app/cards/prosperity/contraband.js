@@ -9,7 +9,7 @@ Contraband = class Contraband extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 3
+    CoinGainer.gain(game, player_cards, 3)
     game.turn.buys += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
 

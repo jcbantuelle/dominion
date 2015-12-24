@@ -13,8 +13,8 @@ Artificer = class Artificer extends Card {
     card_drawer.draw(1)
 
     game.turn.actions += 1
-    game.turn.coins += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$1`)
+    let gained_coins = CoinGainer.gain(game, player_cards, 1)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$${gained_coins}`)
 
     if (_.size(player_cards.hand) > 0) {
       PlayerCardsModel.update(game._id, player_cards)

@@ -42,8 +42,8 @@ Miser = class Miser extends Card {
       let copper_count = _.size(_.filter(player_cards.tavern, function(card) {
         return card.name === 'Copper'
       }))
-      game.turn.coins += copper_count
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${copper_count}`)
+      let gained_coins = CoinGainer.gain(game, player_cards, copper_count)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     }
   }
 

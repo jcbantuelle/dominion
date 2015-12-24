@@ -41,8 +41,8 @@ Amulet = class Amulet extends Card {
   static process_choice(game, player_cards, choice) {
     choice = choice[0]
     if (choice === 'coin') {
-      game.turn.coins += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$1`)
+      let gained_coins = CoinGainer.gain(game, player_cards, 1)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     } else if (choice === 'trash') {
       if (_.size(player_cards.hand) > 1) {
         let turn_event_id = TurnEventModel.insert({

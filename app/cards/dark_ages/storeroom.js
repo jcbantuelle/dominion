@@ -69,8 +69,8 @@ Storeroom = class Storeroom extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
       card_discarder.discard()
 
-      game.turn.coins += _.size(selected_cards)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${_.size(selected_cards)}`)
+      let gained_coins = CoinGainer.gain(game, player_cards, _.size(selected_cards))
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     }
   }
 

@@ -9,7 +9,7 @@ Platinum = class Platinum extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 5
+    CoinGainer.gain(game, player_cards, 5)
   }
 
 }

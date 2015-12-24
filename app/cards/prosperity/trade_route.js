@@ -10,8 +10,8 @@ TradeRoute = class TradeRoute extends Card {
 
   play(game, player_cards) {
     game.turn.buys += 1
-    game.turn.coins += game.trade_route_tokens
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and +$${game.trade_route_tokens}`)
+    let gained_coins = CoinGainer.gain(game, player_cards, game.trade_route_tokens)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and +$${gained_coins}`)
 
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({

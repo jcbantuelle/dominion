@@ -13,7 +13,7 @@ Spoils = class Spoils extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 3
+    CoinGainer.gain(game, player_cards, 3)
 
     let spoils_index = _.findIndex(player_cards.playing, function(card) {
       return card.name === 'Spoils'

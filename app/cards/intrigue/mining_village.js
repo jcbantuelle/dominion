@@ -41,8 +41,8 @@ MiningVillage = class MiningVillage extends Card {
       let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Mining Village')
       card_trasher.trash()
 
-      game.turn.coins += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2`)
+      let gained_coins = CoinGainer.gain(game, player_cards, 2)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     }
   }
 

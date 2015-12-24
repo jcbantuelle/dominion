@@ -10,10 +10,10 @@ FoolsGold = class FoolsGold extends Card {
 
   play(game, player_cards) {
     if (game.turn.fools_gold) {
-      game.turn.coins += 4
+      CoinGainer.gain(game, player_cards, 4)
     } else {
       game.turn.fools_gold = true
-      game.turn.coins += 1
+      CoinGainer.gain(game, player_cards, 1)
     }
   }
 

@@ -33,8 +33,8 @@ Steward = class Steward extends Card {
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(2)
     } else if (choice === 'coins') {
-      game.turn.coins += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2`)
+      let gained_coins = CoinGainer.gain(game, player_cards, 2)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     } else if (choice === 'trash') {
       if (_.size(player_cards.hand) > 2) {
         let turn_event_id = TurnEventModel.insert({

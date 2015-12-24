@@ -9,7 +9,7 @@ Quarry = class Quarry extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 1
+    CoinGainer.gain(game, player_cards, 1)
   }
 
 }

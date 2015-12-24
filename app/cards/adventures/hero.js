@@ -13,8 +13,8 @@ Hero = class Hero extends Traveller {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2`)
+    let gained_coins = CoinGainer.gain(game, player_cards, 2)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
     let eligible_cards = _.filter(game.cards, function(card) {
       return card.count > 0 && card.top_card.purchasable && _.contains(_.words(card.top_card.types), 'treasure')

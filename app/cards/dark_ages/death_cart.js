@@ -9,8 +9,8 @@ DeathCart = class DeathCart extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 5
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$5`)
+    let gained_coins = CoinGainer.gain(game, player_cards, 5)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
     let eligible_cards = _.filter(player_cards.hand, function(card) {
       return _.contains(_.words(card.types), 'action')

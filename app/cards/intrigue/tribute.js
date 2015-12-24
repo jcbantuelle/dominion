@@ -48,13 +48,13 @@ Tribute = class Tribute extends Card {
       }
     })
     game.turn.actions += actions
-    game.turn.coins += coins
+    let gained_coins = CoinGainer.gain(game, player_cards, coins)
 
     if (actions > 0) {
       gains.push(`+${actions} actions`)
     }
     if (coins > 0) {
-      gains.push(`+$${coins}`)
+      gains.push(`+$${gained_coins}`)
     }
     if (!_.isEmpty(gains)) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets ${gains.join(' and ')}`)

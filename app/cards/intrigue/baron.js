@@ -38,8 +38,8 @@ Baron = class Baron extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', 'Estate')
       card_discarder.discard()
 
-      game.turn.coins += 4
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$4`)
+      let gained_coins = CoinGainer.gain(game, player_cards, 4)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     } else {
       Baron.gain_estate(game, player_cards)
     }

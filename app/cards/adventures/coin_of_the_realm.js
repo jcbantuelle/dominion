@@ -9,8 +9,7 @@ CoinOfTheRealm = class CoinOfTheRealm extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 1
-
+    CoinGainer.gain(game, player_cards, 1)
     this.move_to_tavern(game, player_cards, 'Coin Of The Realm')
   }
 

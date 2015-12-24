@@ -24,8 +24,8 @@ City = class City extends Card {
     let log_message = `&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`
     if (empty_pile_count > 1) {
       game.turn.buys += 1
-      game.turn.coins += 1
-      log_message += ', +1 buy, and +$1'
+      let gained_coins = CoinGainer.gain(game, player_cards, 1)
+      log_message += `, +1 buy, and +$${gained_coins}`
     }
 
     game.log.push(log_message)

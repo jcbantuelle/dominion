@@ -9,9 +9,9 @@ Monument = class Monument extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 2
+    let gained_coins = CoinGainer.gain(game, player_cards, 2)
     player_cards.victory_tokens += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$2 and +1 &nabla;`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} and +1 &nabla;`)
   }
 
 }

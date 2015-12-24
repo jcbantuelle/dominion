@@ -24,8 +24,8 @@ Ironmonger = class Ironmonger extends Card {
       gains.push('+1 action')
     }
     if (_.contains(types, 'treasure')) {
-      game.turn.coins += 1
-      gains.push('+$1')
+      let gained_coins = CoinGainer.gain(game, player_cards, 1)
+      gains.push(`+$${gained_coins}`)
     }
     if (_.contains(types, 'victory')) {
       let card_drawer = new CardDrawer(game, player_cards)

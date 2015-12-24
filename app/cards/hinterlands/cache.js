@@ -9,7 +9,7 @@ Cache = class Cache extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 3
+    CoinGainer.gain(game, player_cards, 3)
   }
 
   gain_event(gainer) {

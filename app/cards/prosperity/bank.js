@@ -12,8 +12,8 @@ Bank = class Bank extends Card {
     let treasure_count = _.size(_.filter(player_cards.in_play.concat(player_cards.playing), function(card) {
       return _.contains(_.words(card.types), 'treasure')
     }))
-    game.turn.coins += treasure_count
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${treasure_count}`)
+    let gained_coins = CoinGainer.gain(game, player_cards, treasure_count)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
   }
 
 }

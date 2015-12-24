@@ -42,8 +42,8 @@ TrustySteed = class TrustySteed extends Card {
         game.turn.actions += 2
         gained.push('+2 actions')
       } else if (choice === 'coin') {
-        game.turn.coins += 2
-        gained.push('+$2')
+        let gained_coins = CoinGainer.gain(game, player_cards, 2)
+        gained.push(`+$${gained_coins}`)
       } else if (choice === 'silver') {
         _.times(4, function() {
           let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')

@@ -41,8 +41,8 @@ Pawn = class Pawn extends Card {
         game.turn.buys += 1
         gained.push('+1 buy')
       } else if (choice === 'coin') {
-        game.turn.coins += 1
-        gained.push('+$1')
+        let gained_coins = CoinGainer.gain(game, player_cards, 1)
+        gained.push(`+$${gained_coins}`)
       }
     })
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets ${gained.join(' and ')}`)

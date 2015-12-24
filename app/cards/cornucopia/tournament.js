@@ -65,8 +65,8 @@ Tournament = class Tournament extends Card {
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(1)
 
-      game.turn.coins += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$1`)
+      let gained_coins = CoinGainer.gain(game, player_cards, 1)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     }
 
     delete game.turn.self_revealed_province

@@ -38,8 +38,8 @@ Salvager = class Salvager extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
     card_trasher.trash()
 
-    game.turn.coins += coin_cost
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${coin_cost}`)
+    let gained_coins = CoinGainer.gain(game, player_cards, coin_cost)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
   }
 
 }

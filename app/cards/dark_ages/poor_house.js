@@ -18,8 +18,8 @@ PoorHouse = class PoorHouse extends Card {
     let coins = 4 - _.size(treasures)
     coins = coins < 0 ? 0 : coins
 
-    game.turn.coins += coins
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${coins}`)
+    let gained_coins = CoinGainer.gain(game, player_cards, coins)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
   }
 
 }

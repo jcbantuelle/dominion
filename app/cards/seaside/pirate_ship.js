@@ -40,8 +40,8 @@ PirateShip = class PirateShip extends Card {
     if (response === 'attack') {
       game.turn.pirate_ship_attack = true
     } else if (response === 'coin') {
-      game.turn.coins += player_cards.pirate_ship_coins
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${player_cards.pirate_ship_coins}`)
+      let gained_coins = CoinGainer.gain(game, player_cards, player_cards.pirate_ship_coins)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     }
   }
 

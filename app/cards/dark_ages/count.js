@@ -112,8 +112,8 @@ Count = class Count extends Card {
   static process_second_response(game, player_cards, response) {
     response = response[0]
     if (response === 'coin') {
-      game.turn.coins += 3
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$3`)
+      let gained_coins = CoinGainer.gain(game, player_cards, 3)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     } else if (response === 'trash') {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', _.pluck(player_cards.hand, 'name'))
       card_trasher.trash()

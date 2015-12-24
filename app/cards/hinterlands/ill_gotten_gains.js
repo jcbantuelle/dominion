@@ -9,7 +9,7 @@ IllGottenGains = class IllGottenGains extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 1
+    CoinGainer.gain(game, player_cards, 1)
 
     GameModel.update(game._id, game)
 

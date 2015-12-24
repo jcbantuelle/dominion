@@ -9,7 +9,7 @@ Counterfeit = class Counterfeit extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.coins += 1
+    CoinGainer.gain(game, player_cards, 1)
     game.turn.buys += 1
 
     let eligible_cards = _.filter(player_cards.hand, function(card) {
