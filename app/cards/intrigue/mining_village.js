@@ -21,7 +21,7 @@ MiningVillage = class MiningVillage extends Card {
 
     if (mining_village) {
       GameModel.update(game._id, game)
-      PlayerCards.update(game._id, player_cards)
+      PlayerCardsModel.update(game._id, player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
