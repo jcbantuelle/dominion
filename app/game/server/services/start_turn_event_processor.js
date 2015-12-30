@@ -16,7 +16,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return card
     })
 
-    let duration_events = _.map(this.player_cards.duration_effects, function(card) {
+    let duration_events = _.map(this.player_cards.duration_effects.concat(this.player_cards.permanent_duration_effects), function(card) {
       card.start_event_type = 'Duration'
       return card
     })
