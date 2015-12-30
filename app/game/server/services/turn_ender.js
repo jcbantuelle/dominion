@@ -6,6 +6,8 @@ TurnEnder = class TurnEnder {
   }
 
   end_turn() {
+    let end_buy_event_processor = new EndBuyEventProcessor(this.game, this.player_cards)
+    end_buy_event_processor.process()
     this.game.turn.phase = 'cleanup'
     this.discard_hand()
     this.clean_up_cards_in_play()

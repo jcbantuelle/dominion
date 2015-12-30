@@ -57,8 +57,8 @@ CardList = class CardList {
       'Storyteller',
       'SwampHag',
       'TreasureTrove',
-      /*'WineMerchant',
-      'Hireling'*/
+      'WineMerchant',
+      /*'Hireling'*/
     ]
   }
 
