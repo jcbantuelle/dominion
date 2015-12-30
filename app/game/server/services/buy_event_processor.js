@@ -17,7 +17,7 @@ BuyEventProcessor = class BuyEventProcessor {
   }
 
   static duration_attack_cards() {
-    return ['Haunted Woods']
+    return ['Haunted Woods', 'Swamp Hag']
   }
 
   constructor(buyer) {
