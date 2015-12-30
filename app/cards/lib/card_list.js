@@ -54,8 +54,8 @@ CardList = class CardList {
       'LostCity',
       'Relic',
       'RoyalCarriage',
-      /*'Storyteller',
-      'SwampHag',
+      'Storyteller',
+      /*'SwampHag',
       'TreasureTrove',
       'WineMerchant',
       'Hireling'*/
