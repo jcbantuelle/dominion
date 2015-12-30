@@ -18,7 +18,7 @@ IllGottenGains = class IllGottenGains extends Card {
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Gain a ${CardView.card_html('action', 'Copper')}?`,
+      instructions: `Gain a ${CardView.card_html('treasure', 'Copper')}?`,
       minimum: 1,
       maximum: 1
     })
@@ -39,6 +39,7 @@ IllGottenGains = class IllGottenGains extends Card {
     _.each(ordered_player_cards, function(other_player_cards) {
       let card_gainer = new CardGainer(gainer.game, other_player_cards, 'discard', 'Curse')
       card_gainer.gain_game_card()
+      PlayerCardsModel.update(gainer.game._id, other_player_cards)
     })
   }
 
