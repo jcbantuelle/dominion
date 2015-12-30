@@ -18,6 +18,7 @@ TurnEnder = class TurnEnder {
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, this.player_cards)
       this.set_next_turn()
+      this.clear_duration_attacks()
       this.start_turn_events()
       this.move_duration_cards()
       this.update_db()
@@ -108,6 +109,21 @@ TurnEnder = class TurnEnder {
       this.next_player_cards.turns += 1
     }
     this.game.turn = this.new_turn
+  }
+
+  clear_duration_attacks() {
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
+    _.each(ordered_player_cards, (player_cards) => {
+      if (player_cards.player_id === this.player_cards.player_id) {
+        player_cards = this.player_cards
+      } else if (player_cards.player_id === this.next_player_cards.player_id) {
+        player_cards = this.next_player_cards
+      }
+      player_cards.duration_attacks = _.reject(player_cards.duration_attacks, (attack) => {
+        return attack.player_source._id === this.next_player_cards.player_id
+      })
+      PlayerCardsModel.update(this.game._id, player_cards)
+    })
   }
 
   set_up_extra_turns() {

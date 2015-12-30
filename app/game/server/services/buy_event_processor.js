@@ -16,6 +16,10 @@ BuyEventProcessor = class BuyEventProcessor {
     return ['Stonemason', 'Doctor', 'Masterpiece', 'Herald']
   }
 
+  static duration_attack_cards() {
+    return ['Haunted Woods']
+  }
+
   constructor(buyer) {
     this.buyer = buyer
     this.find_buy_events()
@@ -63,12 +67,18 @@ BuyEventProcessor = class BuyEventProcessor {
         }
       }
     })
+
+    _.each(this.buyer.player_cards.duration_attacks, (card) => {
+      if (_.contains(BuyEventProcessor.duration_attack_cards(), card.name)) {
+        this.buy_events.push(card)
+      }
+    })
   }
 
   process() {
     if (!_.isEmpty(this.buy_events)) {
       let mandatory_buy_events = _.filter(this.buy_events, function(event) {
-        return _.contains(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()), event.name)
+        return _.contains(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()), event.name)
       })
       if (_.size(this.buy_events) === 1 && !_.isEmpty(mandatory_buy_events)) {
         BuyEventProcessor.buy_event(this.buyer.game, this.buyer.player_cards, this.buy_events, this)
