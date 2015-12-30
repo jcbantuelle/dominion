@@ -20,10 +20,10 @@ Tactician = class Tactician extends Card {
 
   duration(game, player_cards, duration_card) {
     let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(5, false)
+    let drawn_count = card_drawer.draw(5, false)
     game.turn.buys += 1
     game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 5 cards and gets +1 buy and +1 action from ${CardView.render(duration_card)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${drawn_count} cards and gets +1 buy and +1 action from ${CardView.render(duration_card)}`)
   }
 
 }

@@ -7,6 +7,12 @@ CardDrawer = class CardDrawer {
   }
 
   draw(to_draw_count, announce = true) {
+    if (this.player_cards.tokens.minus_card) {
+      to_draw_count -= 1
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards their -1 card token`)
+      delete this.player_cards.tokens.minus_card
+    }
+
     this.draw_cards(to_draw_count)
 
     if (this.drawn_card_count() < to_draw_count) {
@@ -17,6 +23,8 @@ CardDrawer = class CardDrawer {
     if (announce) {
       this.update_log()
     }
+
+    return this.drawn_card_count()
   }
 
   draw_cards(count) {

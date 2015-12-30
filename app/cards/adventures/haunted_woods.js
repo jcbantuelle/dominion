@@ -25,8 +25,8 @@ HauntedWoods = class HauntedWoods extends Card {
 
   duration(game, player_cards, duration_card) {
     let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(3, false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 3 cards from ${CardView.render(duration_card)}`)
+    let drawn_count = card_drawer.draw(3, false)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${drawn_count} cards from ${CardView.render(duration_card)}`)
   }
 
   buy_event(buyer) {

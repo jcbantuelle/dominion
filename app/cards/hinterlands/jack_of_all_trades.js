@@ -95,7 +95,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws up to ${_.size(player_cards.hand)} cards in hand`)
     } else {
       let card_drawer = new CardDrawer(game, player_cards)
-      card_drawer.draw(1)
+      card_drawer.draw(1, false)
       this.draw_to_five(game, player_cards)
     }
   }

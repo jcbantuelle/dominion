@@ -21,8 +21,8 @@ Caravan = class Caravan extends Card {
 
   duration(game, player_cards, duration_card) {
     let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(1, false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws 1 card from ${CardView.render(duration_card)}`)
+    let drawn_count = card_drawer.draw(1, false)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${drawn_count} card(s) from ${CardView.render(duration_card)}`)
   }
 
 }

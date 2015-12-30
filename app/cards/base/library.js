@@ -12,6 +12,10 @@ Library = class Library extends Card {
     if (_.size(player_cards.hand) >= 7) {
       game.log.push(`&nbsp;&nbsp;but ${player_cards.username} already has 7 cards in hand`)
     } else if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
+      if (player_cards.tokens.minus_card) {
+        this.game.log.push(`&nbsp;&nbsp;${this.player_cards.username} discards their -1 card token`)
+        delete this.player_cards.tokens.minus_card
+      }
       player_cards.aside = []
       return Library.draw_cards(game, player_cards)
     } else {
