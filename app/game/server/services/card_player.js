@@ -48,14 +48,14 @@ CardPlayer = class CardPlayer {
           let card_drawer = new CardDrawer(this.game, this.player_cards)
           card_drawer.draw(1)
         } else if (token.effect === 'action') {
-          game.turn.actions += 1
-          game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+          this.game.turn.actions += 1
+          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +1 action`)
         } else if (token.effect === 'buy') {
-          game.turn.buys += 1
-          game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+          this.game.turn.buys += 1
+          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +1 buy`)
         } else if (token.effect === 'coin') {
           let gained_coins = CoinGainer.gain(this.game, this.player_cards, 1)
-          game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +$${gained_coins}`)
         }
       }
     })
