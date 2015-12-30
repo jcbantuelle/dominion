@@ -5,7 +5,7 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static event_cards() {
-    return ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village', 'Death Cart']
+    return ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village', 'Death Cart', 'Lost City']
   }
 
   static in_play_event_cards() {
