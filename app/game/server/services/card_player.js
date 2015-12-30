@@ -29,11 +29,11 @@ CardPlayer = class CardPlayer {
         this.mark_played_card_as_permanent()
       }
 
-      if (!this.free_play) {
-        this.resolve_played_cards()
-      }
       if (_.contains(_.words(this.card.types), 'action')) {
         this.action_resolution_events()
+      }
+      if (!this.free_play) {
+        this.resolve_played_cards()
       }
       if (auto_update) {
         this.update_db()
@@ -108,7 +108,7 @@ CardPlayer = class CardPlayer {
       this.game.turn.actions += this.player_cards.champions
       this.game.log.push(`<strong>${this.player_cards.username}</strong> gets +${this.player_cards.champions} action(s) from ${CardView.card_html('action duration', 'Champion')}`)
     }
-    let action_resolution_event_processor = new ActionResolutionEventProcessor(this.game, this.player_cards)
+    let action_resolution_event_processor = new ActionResolutionEventProcessor(this.game, this.player_cards, this.card.to_h())
     action_resolution_event_processor.process()
   }
 

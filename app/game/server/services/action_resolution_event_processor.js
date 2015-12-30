@@ -1,18 +1,28 @@
 ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
 
   static reserve_events() {
-    return ['Coin Of The Realm']
+    return ['Coin Of The Realm', 'Royal Carriage']
   }
 
-  constructor(game, player_cards) {
+  constructor(game, player_cards, resolved_action) {
     this.game = game
     this.player_cards = player_cards
+    this.resolved_action = resolved_action
     this.find_action_resolution_events()
   }
 
   find_action_resolution_events() {
-    let reserve_events = _.filter(this.player_cards.tavern, function(card) {
-      return _.contains(ActionResolutionEventProcessor.reserve_events(), card.name)
+    let reserve_events = _.filter(this.player_cards.tavern, (card) => {
+      if (_.contains(ActionResolutionEventProcessor.reserve_events(), card.name)) {
+        if (card.name === 'Royal Carriage') {
+          let still_in_play = _.findIndex(this.player_cards.playing, (playing_card) => {
+            return playing_card.name === this.resolved_action.name
+          })
+          return still_in_play !== -1
+        } else {
+          return true
+        }
+      }
     })
 
     this.action_resolution_events = reserve_events
@@ -29,24 +39,29 @@ ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
           instructions: 'Choose order to resolve action events (leftmost will be first):',
           cards: this.action_resolution_events
         })
-        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this.action_resolution_events)
+        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, {events: this.action_resolution_events, resolved_action: this.resolved_action})
         turn_event_processor.process(ActionResolutionEventProcessor.event_order)
       } else {
-        StartTurnEventProcessor.event_order(this.game, this.player_cards, _.pluck(this.action_resolution_events, 'name'), this.action_resolution_events)
+        ActionResolutionEventProcessor.event_order(this.game, this.player_cards, _.pluck(this.action_resolution_events, 'name'), {events: this.action_resolution_events, resolved_action: this.resolved_action})
       }
     }
   }
 
-  static event_order(game, player_cards, event_name_order, events) {
+  static event_order(game, player_cards, event_name_order, params) {
     _.each(event_name_order, function(event_name) {
-      let event_index = _.findIndex(events, function(event) {
-        return event.name === event_name
+      let tavern_index = _.findIndex(player_cards.tavern, function(card) {
+        return card.name === event_name
       })
-      let event = events.splice(event_index, 1)[0]
-      let selected_event = ClassCreator.create(event.name)
-      selected_event.reserve(game, player_cards)
-      GameModel.update(game._id, game)
-      PlayerCardsModel.update(game._id, player_cards)
+      if (tavern_index !== -1) {
+        let event_index = _.findIndex(params.events, function(event) {
+          return event.name === event_name
+        })
+        let event = params.events.splice(event_index, 1)[0]
+        let selected_event = ClassCreator.create(event.name)
+        selected_event.reserve(game, player_cards, params.resolved_action)
+        GameModel.update(game._id, game)
+        PlayerCardsModel.update(game._id, player_cards)
+      }
     })
   }
 
