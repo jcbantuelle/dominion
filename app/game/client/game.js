@@ -8,6 +8,7 @@ Template.game.events({
   "submit #chat": sendMessage,
   "click #hand .card": playCard,
   "click .card-container .card": buyCard,
+  "click .event-container .card": buyEvent,
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
   "click #play-coin-token": playCoinToken,
@@ -22,7 +23,7 @@ function registerStreams() {
 
 function createPopovers() {
   $('body').popover({
-    selector: '.card-container .card, .hand-card, .prize-card, .black-market-card, .choose-card',
+    selector: '.card-container .card, .event-container .card, .hand-card, .prize-card, .black-market-card, .choose-card',
     html: true,
     content: function() {
       return $(this).next('.card-tooltip').html()
@@ -66,6 +67,10 @@ function playCard(event) {
 
 function buyCard(event) {
   Meteor.call('buyCard', $(event.target).attr('data-name'), Router.current().params.id)
+}
+
+function buyEvent(event) {
+  Meteor.call('buyEvent', $(event.target).attr('data-name'), Router.current().params.id)
 }
 
 function endTurn() {

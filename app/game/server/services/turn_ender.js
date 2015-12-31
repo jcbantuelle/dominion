@@ -85,6 +85,7 @@ TurnEnder = class TurnEnder {
       bought_cards: [],
       gain_event_stack: [],
       contraband: [],
+      forbidden_events: [],
       schemes: 0,
       possessions: 0,
       coin_discount: 0,

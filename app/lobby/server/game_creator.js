@@ -2,7 +2,13 @@ GameCreator = class GameCreator {
 
   constructor(players, cards) {
     this.players = players
-    this.cards = cards
+    let events = _.filter(cards, function(card) {
+      return _.contains(CardList.events(), card.name)
+    })
+    this.events = this.event_cards(events)
+    this.cards = _.reject(cards, function(card) {
+      return _.contains(CardList.events(), card.name)
+    })
     this.colors = ['red', 'blue', 'yellow', 'green']
   }
 
@@ -21,6 +27,7 @@ GameCreator = class GameCreator {
     let game_attributes = {
       players: _.shuffle(this.players),
       cards: cards,
+      events: this.events,
       duchess: this.game_has_card(cards, 'Duchess'),
       prizes: this.prizes(cards)
     }
@@ -54,6 +61,7 @@ GameCreator = class GameCreator {
       gained_cards: [],
       gain_event_stack: [],
       contraband: [],
+      forbidden_events: [],
       schemes: 0,
       possessions: 0,
       coin_discount: 0,
@@ -119,6 +127,12 @@ GameCreator = class GameCreator {
       Meteor.users.update(player._id, {
         $set: {current_game: this.game._id}
       })
+    })
+  }
+
+  event_cards(events) {
+    return _.sortBy(events, function(event) {
+      return -event.coin_cost
     })
   }
 

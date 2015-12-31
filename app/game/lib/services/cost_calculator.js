@@ -12,6 +12,9 @@ CostCalculator = class CostCalculator {
     let current_player_cards = _.find(player_cards, function(cards) {
       return cards.player_id === game.turn.player._id
     })
+    if (!current_player_cards) {
+      return 0
+    }
     let current_player_in_play_cards = current_player_cards.in_play.concat(current_player_cards.duration).concat(current_player_cards.permanent)
 
     let in_play_cards = _.flatten(_.pluck(player_cards, 'in_play').concat(_.pluck(player_cards, 'duration')).concat(_.pluck(player_cards, 'permanent')))

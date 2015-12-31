@@ -1,4 +1,5 @@
 $card_height: 46px;
+$event_height: 29px;
 
 body {
   overflow-y: scroll;
@@ -74,6 +75,20 @@ body {
   padding-right: 5px;
   line-height: 15px;
   padding-top: 5px;
+}
+
+.event-container {
+  height: $event_height;
+  padding-bottom: $event_height + 5px;
+}
+
+.event-details {
+  float: left;
+  text-align: center;
+  padding-left: 8px;
+  padding-right: 5px;
+  line-height: 15px;
+  padding-top: 7px;
 }
 
 .card-tooltip {
