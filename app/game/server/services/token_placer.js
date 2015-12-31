@@ -50,6 +50,7 @@ TokenPlacer = class TokenPlacer {
       name: this.token,
       text: this.token_text()
     })
+    this.game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places their +1 ${this.token()} token on ${this.pile.name}`)
   }
 
   place_player_token() {
