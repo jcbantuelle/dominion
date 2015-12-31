@@ -82,11 +82,14 @@ body {
   padding-bottom: $event_height + 5px;
 }
 
+.event-container > div {
+  float: right;
+}
+
 .event-details {
-  float: left;
   text-align: center;
   padding-left: 8px;
-  padding-right: 5px;
+  padding-right: 8px;
   line-height: 15px;
   padding-top: 7px;
 }
