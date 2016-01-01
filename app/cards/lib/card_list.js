@@ -68,8 +68,8 @@ CardList = class CardList {
     return [
       'Alms',
       'Borrow',
-      /*'Quest',
-      'Save',
+      'Quest',
+      /*'Save',
       'ScoutingParty',
       'TravellingFair',
       'Bonfire',
