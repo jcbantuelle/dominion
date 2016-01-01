@@ -65,8 +65,8 @@ CardList = class CardList {
   static events() {
     return [
       'Alms',
-      /*'Borrow',
-      'Quest',
+      'Borrow',
+      /*'Quest',
       'Save',
       'ScoutingParty',
       'TravellingFair',
