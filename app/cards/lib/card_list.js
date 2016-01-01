@@ -33,9 +33,11 @@ CardList = class CardList {
         invalid_replacement = true
         let replacement_card_name = CardList.pull_one().name
         if (!_.contains(game_cards, replacement_card_name)) {
-          if (_.contains(CardList.events(), replacement_card_name) && event_count < 2) {
-            game_cards.push(replacement_card_name)
-            event_count += 1
+          if (_.contains(CardList.events(), replacement_card_name)) {
+            if (event_count < 2) {
+              game_cards.push(replacement_card_name)
+              event_count += 1
+            }
           } else {
             game_cards.push(replacement_card_name)
             invalid_replacement = false
