@@ -42,10 +42,6 @@ SecretChamber = class SecretChamber extends Card {
   }
 
   attack_event(game, player_cards) {
-    let secret_chamber_index = _.findIndex(player_cards.hand, function(card) {
-      return card.name === 'Secret Chamber'
-    })
-    player_cards.revealed.push(player_cards.hand.splice(secret_chamber_index, 1)[0])
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(this)}`)
 
     let card_drawer = new CardDrawer(game, player_cards)
@@ -76,8 +72,6 @@ SecretChamber = class SecretChamber extends Card {
       game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }
 
-    player_cards.hand = player_cards.hand.concat(player_cards.revealed)
-    player_cards.revealed = []
   }
 
   static return_to_deck(game, player_cards, selected_cards) {
