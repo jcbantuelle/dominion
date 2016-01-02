@@ -68,6 +68,11 @@ TurnEnder = class TurnEnder {
     let cards_to_draw = this.game.turn.outpost ? 3 : 5
     let card_drawer = new CardDrawer(this.game, this.player_cards)
     card_drawer.draw(cards_to_draw, false)
+    if (!_.isEmpty(this.player_cards.save)) {
+      this.player_cards.hand = this.player_cards.hand.concat(this.player_cards.save)
+      this.player_cards.save = []
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> puts thier set aside card in hand from ${CardView.card_html('event', 'Save')}`)
+    }
   }
 
   track_gained_cards() {
