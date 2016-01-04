@@ -67,7 +67,7 @@ Doctor = class Doctor extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Doctor.replace_cards)
     } else if (_.size(player_cards.revealed) === 1) {
-      Doctor.replace_cards(game, player_cards, player_cards.revealed[0].name)
+      Doctor.replace_cards(game, player_cards, [player_cards.revealed[0].name])
     }
   }
 
