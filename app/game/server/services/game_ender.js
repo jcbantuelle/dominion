@@ -65,7 +65,7 @@ GameEnder = class GameEnder {
 
   calculate_scores() {
     return _.chain(this.players_cards).map((player_cards) => {
-      let all_cards = AllPlayerCardsQuery.find(player_cards)
+      let all_cards = AllPlayerCardsQuery.find(player_cards, true)
       let point_cards = this.point_cards(all_cards)
       let deck_breakdown = this.deck_breakdown(all_cards)
       let player_score = {
