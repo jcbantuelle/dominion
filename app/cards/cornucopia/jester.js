@@ -67,6 +67,8 @@ Jester = class Jester extends Card {
 
     let card_gainer = new CardGainer(game, gainer_cards, 'discard', player_cards.revealed_card.name)
     card_gainer.gain_game_card()
+
+    PlayerCardsModel.update(game._id, gainer_cards)
   }
 
 }
