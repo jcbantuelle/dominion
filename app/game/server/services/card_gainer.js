@@ -64,7 +64,7 @@ CardGainer = class CardGainer {
       this.would_gain_reactions()
     }
     let game_card = this.find_card(this.game.cards)
-    if (game_card.count > 0) {
+    if (game_card && game_card.count > 0) {
       game_card.stack.shift()
       this.possessed()
       this.player_cards[this.destination].unshift(game_card.top_card)
