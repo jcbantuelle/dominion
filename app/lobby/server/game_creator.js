@@ -3,11 +3,12 @@ GameCreator = class GameCreator {
   constructor(players, cards) {
     this.players = players
     let events = _.filter(cards, function(card) {
-      return _.contains(CardList.events(), card.name)
+      return _.contains(CardList.events(), _.titleize(card.name))
     })
+
     this.events = this.event_cards(events)
     this.cards = _.reject(cards, function(card) {
-      return _.contains(CardList.events(), card.name)
+      return _.contains(CardList.events(), _.titleize(card.name))
     })
     this.colors = ['red', 'blue', 'yellow', 'green']
   }
