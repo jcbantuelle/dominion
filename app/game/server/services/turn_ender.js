@@ -66,6 +66,7 @@ TurnEnder = class TurnEnder {
 
   draw_new_hand() {
     let cards_to_draw = this.game.turn.outpost ? 3 : 5
+    cards_to_draw += (this.game.turn.expeditions * 2)
     let card_drawer = new CardDrawer(this.game, this.player_cards)
     card_drawer.draw(cards_to_draw, false)
     if (!_.isEmpty(this.player_cards.save)) {
@@ -96,6 +97,7 @@ TurnEnder = class TurnEnder {
       coin_discount: 0,
       played_actions: 0,
       coppersmiths: 0,
+      expeditions: 0,
       previous_player: this.game.turn.player
     }
 
