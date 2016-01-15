@@ -33,22 +33,29 @@ Jester = class Jester extends Card {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
         card_gainer.gain_game_card()
       } else {
-        GameModel.update(game._id, game)
-        let turn_event_id = TurnEventModel.insert({
-          game_id: game._id,
-          player_id: game.turn.player._id,
-          username: game.turn.player.username,
-          type: 'choose_options',
-          instructions: `Choose who should gain a copy of ${CardView.render(player_cards.revealed_card)}:`,
-          minimum: 1,
-          maximum: 1,
-          options: [
-            {text: `${game.turn.player.username}`, value: 'self'},
-            {text: `${player_cards.username}`, value: 'opponent'}
-          ]
+        let game_card = _.find(game.cards, function(card) {
+          return card.name === player_cards.revealed_card.name
         })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        turn_event_processor.process(Jester.process_response)
+        if (game_card && game_card.source !== 'not_supply') {
+          GameModel.update(game._id, game)
+          let turn_event_id = TurnEventModel.insert({
+            game_id: game._id,
+            player_id: game.turn.player._id,
+            username: game.turn.player.username,
+            type: 'choose_options',
+            instructions: `Choose who should gain a copy of ${CardView.render(player_cards.revealed_card)}:`,
+            minimum: 1,
+            maximum: 1,
+            options: [
+              {text: `${game.turn.player.username}`, value: 'self'},
+              {text: `${player_cards.username}`, value: 'opponent'}
+            ]
+          })
+          let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+          turn_event_processor.process(Jester.process_response)
+        } else {
+          game.log.push(`&nbsp;&nbsp;but nobody gains a copy of ${CardView.render(player_cards.revealed_card)} because it is not in the supply`)
+        }
       }
 
       delete player_cards.revealed_card
