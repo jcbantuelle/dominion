@@ -35,7 +35,7 @@ Ambassador = class Ambassador extends Card {
   }
 
   attack(game, player_cards) {
-    if (game.turn.ambassador_game_stack && game.turn.ambassador_game_stack.top_card.name === game.turn.ambassador_selected_card.name) {
+    if (game.turn.ambassador_game_stack && game.turn.ambassador_game_stack.source !== 'not_supply' && game.turn.ambassador_game_stack.top_card.name === game.turn.ambassador_selected_card.name) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', game.turn.ambassador_game_stack.name)
       card_gainer.gain_game_card()
     }
@@ -44,12 +44,12 @@ Ambassador = class Ambassador extends Card {
   static reveal_card(game, player_cards, selected_cards) {
     game.turn.ambassador_selected_card = selected_cards[0]
     game.turn.ambassador_game_stack = _.find(game.cards, function(card) {
-      return card.name === game.turn.ambassador_selected_card.stack_name
+      return card.name === game.turn.ambassador_selected_card.stack_name && card.source !== 'not_supply'
     })
 
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(game.turn.ambassador_selected_card)}`)
 
-    if (_.contains(['kingdom', 'common'], game.turn.ambassador_game_stack.source)) {
+    if (game.turn.ambassador_game_stack) {
 
       let copies_in_hand = _.filter(player_cards.hand, function(card) {
         return card.name === game.turn.ambassador_selected_card.name
