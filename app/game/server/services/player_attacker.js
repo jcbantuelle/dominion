@@ -19,7 +19,7 @@ PlayerAttacker = class PlayerAttacker {
         delete attacked_player_cards.moat
         this.game.log.push(`&nbsp;&nbsp;<strong>${attacked_player_cards.username}</strong> is immune to the attack`)
       } else {
-        this.card.attack(this.game, attacked_player_cards)
+        this.card.attack(this.game, attacked_player_cards, attacker)
       }
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, attacked_player_cards)
