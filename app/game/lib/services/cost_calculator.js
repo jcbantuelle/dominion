@@ -4,6 +4,7 @@ CostCalculator = class CostCalculator {
     let cost = _.isPlainObject(card) ? card.coin_cost : card.coin_cost()
     let type = _.isPlainObject(card) ? card.types : card.type_class()
     let name = _.isPlainObject(card) ? card.name : card.name()
+    let stack_name = _.isPlainObject(card) ? card.stack_name : card.stack_name()
 
     if (!player_cards) {
       player_cards = PlayerCardsModel.find(game._id)
@@ -23,7 +24,7 @@ CostCalculator = class CostCalculator {
       return token.effect === 'discount'
     })
 
-    if (discount_token && discount_token.card.name === name) {
+    if (discount_token && discount_token.card.name === stack_name) {
       cost -= 2
     }
 
