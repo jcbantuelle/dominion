@@ -53,6 +53,8 @@ TokenPlacer = class TokenPlacer {
     var log_text
     if (this.token === 'discount') {
       log_text = '-$2 Cost'
+    } else if (this.token === 'trashing') {
+      log_text = 'Trashing'
     } else {
       log_text = `+1 ${this.token()}`
     }
@@ -67,7 +69,7 @@ TokenPlacer = class TokenPlacer {
   }
 
   pile_tokens() {
-    return ['card', 'action', 'buy', 'coin', 'discount']
+    return ['card', 'action', 'buy', 'coin', 'discount', 'trashing']
   }
 
   token_text() {
@@ -81,6 +83,8 @@ TokenPlacer = class TokenPlacer {
       return '+$'
     } else if (this.token === 'discount') {
       return '-2'
+    } else if (this.token === 'trashing') {
+      return 'T'
     }
   }
 
