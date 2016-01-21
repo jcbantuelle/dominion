@@ -19,6 +19,14 @@ CostCalculator = class CostCalculator {
 
     let in_play_cards = _.flatten(_.pluck(player_cards, 'in_play').concat(_.pluck(player_cards, 'duration')).concat(_.pluck(player_cards, 'permanent')))
 
+    let discount_token = _.find(current_player_cards.tokens.pile, function(token) {
+      return token.effect === 'discount'
+    })
+
+    if (discount_token && discount_token.card.name === name) {
+      cost -= 2
+    }
+
     let highways = _.size(_.filter(in_play_cards, function(player_card) {
       return player_card.name === 'Highway'
     }))

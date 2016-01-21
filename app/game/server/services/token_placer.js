@@ -50,7 +50,13 @@ TokenPlacer = class TokenPlacer {
       name: this.token,
       text: this.token_text()
     })
-    this.game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places their +1 ${this.token()} token on ${this.pile.name}`)
+    var log_text
+    if (this.token === 'discount') {
+      log_text = '-$2 Cost'
+    } else {
+      log_text = `+1 ${this.token()}`
+    }
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places their ${log_text} token on ${CardView.render(this.pile)}`)
   }
 
   place_player_token() {
@@ -61,7 +67,7 @@ TokenPlacer = class TokenPlacer {
   }
 
   pile_tokens() {
-    return ['card', 'action', 'buy', 'coin']
+    return ['card', 'action', 'buy', 'coin', 'discount']
   }
 
   token_text() {
@@ -73,6 +79,8 @@ TokenPlacer = class TokenPlacer {
       return '+B'
     } else if (this.token === 'coin') {
       return '+$'
+    } else if (this.token === 'discount') {
+      return '-2'
     }
   }
 
