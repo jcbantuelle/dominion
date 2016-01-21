@@ -16,7 +16,7 @@ Jester = class Jester extends Card {
     player_attacker.attack(player_cards)
   }
 
-  attack(game, player_cards) {
+  attack(game, player_cards, attacker) {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
@@ -51,7 +51,7 @@ Jester = class Jester extends Card {
               {text: `${player_cards.username}`, value: 'opponent'}
             ]
           })
-          let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+          let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, attacker)
           turn_event_processor.process(Jester.process_response)
         } else {
           game.log.push(`&nbsp;&nbsp;but nobody gains a copy of ${CardView.render(player_cards.revealed_card)} because it is not in the supply`)
@@ -59,15 +59,17 @@ Jester = class Jester extends Card {
       }
 
       delete player_cards.revealed_card
+
+      PlayerCardsModel.update(game._id, player_cards)
     }
 
   }
 
-  static process_response(game, player_cards, response) {
+  static process_response(game, player_cards, response, attacker) {
     response = response[0]
     var gainer_cards
     if (response === 'self') {
-      gainer_cards = PlayerCardsModel.findOne(game._id, game.turn.player._id)
+      gainer_cards = attacker
     } else if (response === 'opponent') {
       gainer_cards = player_cards
     }
