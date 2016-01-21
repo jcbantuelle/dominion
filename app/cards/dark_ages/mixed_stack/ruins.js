@@ -4,6 +4,10 @@ Ruins = class Ruins extends Card {
     return ['ruins']
   }
 
+  stack_name() {
+    return 'Ruins'
+  }
+
   coin_cost() {
     return 0
   }
