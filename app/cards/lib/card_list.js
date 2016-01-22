@@ -81,8 +81,8 @@ CardList = class CardList {
       'Ball',
       'Raid',
       'Seaway',
-      /*'Trade',
-      'LostArts',
+      'Trade',
+      /*'LostArts',
       'Training',
       'Inheritance',
       'Pathfinding'*/
