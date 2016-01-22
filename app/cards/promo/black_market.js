@@ -40,7 +40,7 @@ BlackMarket = class BlackMarket extends Card {
 
     let eligible_buys = _.filter(game.black_market_revealed, function(card) {
       let coin_cost = CostCalculator.calculate(game, card, all_player_cards)
-      return coin_cost <= game.turn.coins && card.potion_cost <= game.turn.potions && !_.contains(game.turn.contraband, card.name) && (card.name !== 'Grand Market' || !_.contains(_.pluck(player_cards.in_play, 'name'), 'Copper'))
+      return !game.turn.mission_turn && coin_cost <= game.turn.coins && card.potion_cost <= game.turn.potions && !_.contains(game.turn.contraband, card.name) && (card.name !== 'Grand Market' || !_.contains(_.pluck(player_cards.in_play, 'name'), 'Copper'))
     })
     if (_.size(eligible_buys) > 0) {
       let turn_event_id = TurnEventModel.insert({

@@ -27,7 +27,7 @@ CardBuyer = class CardBuyer {
   }
 
   can_buy() {
-    return this.is_purchasable() && this.is_valid_buy() && !this.is_contraband()
+    return this.is_purchasable() && this.is_valid_buy() && !this.is_contraband() && !this.game.turn.mission_turn
   }
 
   update_phase() {
