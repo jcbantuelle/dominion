@@ -439,8 +439,8 @@ GameCreator = class GameCreator {
   }
 
   journey_game() {
-    return _.any(this.selected_kingdom_cards, function(card) {
-      return _.contains(['Ranger', 'Giant'], card.name)
+    return _.any(this.selected_kingdom_cards.concat(this.events), function(card) {
+      return _.contains(['Ranger', 'Giant', 'Pilgrimage'], card.name)
     })
   }
 
