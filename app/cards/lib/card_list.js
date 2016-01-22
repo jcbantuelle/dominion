@@ -83,8 +83,8 @@ CardList = class CardList {
       'Seaway',
       'Trade',
       'LostArts',
-      /*'Training',
-      'Inheritance',
+      'Training',
+      /*'Inheritance',
       'Pathfinding'*/
     ]
   }

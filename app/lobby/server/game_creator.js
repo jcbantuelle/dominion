@@ -446,7 +446,7 @@ GameCreator = class GameCreator {
 
   color_game() {
     return _.any(this.selected_kingdom_cards.concat(this.events), function(card) {
-      return _.contains(['Peasant', 'Ferry', 'Plan', 'Seaway', 'Lost Arts'], card.name)
+      return _.contains(['Peasant', 'Ferry', 'Plan', 'Seaway', 'Lost Arts', 'Training'], card.name)
     })
   }
 
