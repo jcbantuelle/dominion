@@ -56,7 +56,7 @@ TokenPlacer = class TokenPlacer {
     } else if (this.token === 'trashing') {
       log_text = 'Trashing'
     } else {
-      log_text = `+1 ${this.token()}`
+      log_text = `+1 ${this.token}`
     }
     this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places their ${log_text} token on ${CardView.render(this.pile)}`)
   }
