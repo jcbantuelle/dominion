@@ -82,6 +82,7 @@ CardList = class CardList {
       'Raid',
       'Seaway',
       'Trade',
+      'Summon',
       'LostArts',
       'Training',
       'Pathfinding'

@@ -186,6 +186,8 @@ CardGainer = class CardGainer {
         log_message += ', placing it in hand'
       } else if (this.destination === 'deck') {
         log_message += ', placing it on top of their deck'
+      } else if (this.destination === 'summon') {
+        log_message += ', setting it aside'
       }
       this.game.log.push(log_message)
     } else if (this.buy && this.game.turn.travelling_fair && !this.game.turn.possessed && this.destination === 'deck') {

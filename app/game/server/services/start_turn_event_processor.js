@@ -26,12 +26,17 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return card
     })
 
+    let summon_events = _.map(this.player_cards.summon, function(card) {
+      card.summon = true
+      return card
+    })
+
     let reserve_events = _.filter(this.player_cards.tavern, function(card) {
       card.start_event_type = 'Reserve'
       return _.contains(StartTurnEventProcessor.reserve_events(), card.name)
     })
 
-    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events)
+    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events)
   }
 
   process() {
@@ -53,6 +58,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
 
       this.player_cards.duration_effects = []
       this.player_cards.princed = []
+      this.player_cards.summon = []
     }
   }
 
@@ -63,7 +69,8 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       })
       let event = events.splice(event_index, 1)[0]
       let selected_event = ClassCreator.create(event.name)
-      if (event.prince) {
+      if (event.prince || event.summon) {
+        delete event.summon
         player_cards.hand.push(event)
         let card_player = new CardPlayer(game, player_cards, event.name, true)
         card_player.play()
