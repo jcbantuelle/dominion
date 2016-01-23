@@ -7,12 +7,12 @@ CardList = class CardList {
   pull_set() {
     let game_cards = _.sample(this.cards, 10)
     let events = _.filter(game_cards, function(card_name) {
-      return _.contains(CardList.events(), card_name)
+      return _.contains(CardList.events(), _.titleize(card_name))
     })
     let event_count = _.size(events)
     if (event_count > 2) {
       game_cards = _.reject(game_cards, function(card_name) {
-        return _.contains(CardList.events(), card_name)
+        return _.contains(CardList.events(), _.titleize(card_name))
       })
       game_cards.push(events[0])
       game_cards.push(events[1])
@@ -33,7 +33,7 @@ CardList = class CardList {
         invalid_replacement = true
         let replacement_card_name = CardList.pull_one().name
         if (!_.contains(game_cards, replacement_card_name)) {
-          if (_.contains(CardList.events(), replacement_card_name)) {
+          if (_.contains(CardList.events(), _.titleize(replacement_card_name))) {
             if (event_count < 2) {
               game_cards.push(replacement_card_name)
               event_count += 1
