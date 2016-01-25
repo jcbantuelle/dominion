@@ -12,14 +12,6 @@ NobleBrigand = class NobleBrigand extends Card {
     let gained_coins = CoinGainer.gain(game, player_cards, 1)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
-    this.attack_action(game, player_cards)
-  }
-
-  buy_event(buyer) {
-    this.attack_action(buyer.game, buyer.player_cards)
-  }
-
-  attack_action(game, player_cards) {
     game.turn.trashed_treasures = []
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
@@ -28,6 +20,22 @@ NobleBrigand = class NobleBrigand extends Card {
       card_gainer.gain_trash_card()
     })
     delete game.turn.trashed_treasure
+  }
+
+  buy_event(buyer) {
+    buyer.game.turn.trashed_treasures = []
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(buyer.game)
+    ordered_player_cards.shift()
+    _.each(ordered_player_cards, (other_player_cards) => {
+      this.attack(buyer.game, other_player_cards)
+      PlayerCardsModel.update(buyer.game._id, other_player_cards)
+    })
+
+    _.each(buyer.game.turn.trashed_treasures, function(treasure) {
+      let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', treasure.name)
+      card_gainer.gain_trash_card()
+    })
+    delete buyer.game.turn.trashed_treasure
   }
 
   attack(game, player_cards) {
