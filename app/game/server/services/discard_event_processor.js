@@ -29,7 +29,7 @@ DiscardEventProcessor = class DiscardEventProcessor {
       if (this.card.name === 'Tunnel' && this.discarder.game.turn.phase !== 'cleanup') {
         this.discard_events.push(this.card)
       } else if (this.card.name === 'Treasury' && this.discarder.source === 'in_play') {
-        let no_bought_victory_cards = !_.any(discarder.game.turn.bought_cards, function(card) {
+        let no_bought_victory_cards = !_.any(this.discarder.game.turn.bought_cards, function(card) {
           return _.contains(_.words(card.types), 'victory')
         })
         if (no_bought_victory_cards) {

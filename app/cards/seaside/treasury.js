@@ -40,7 +40,7 @@ Treasury = class Treasury extends Card {
       if (treasury.misfit) {
         treasury = ClassCreator.create('Band Of Misfits').to_h()
       }
-      player_cards.deck.unshift(treasure)
+      player_cards.deck.unshift(treasury)
     }
   }
 
