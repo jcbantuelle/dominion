@@ -43,7 +43,7 @@ Herbalist = class Herbalist extends Card {
       delete card.scheme
       delete card.prince
       if (card.misfit) {
-        card = ClassCreator.create('Band Of Misfits').to_h()
+        card = card.misfit
       }
       player_cards.deck.unshift(card)
       game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(card)} on top of their deck`)

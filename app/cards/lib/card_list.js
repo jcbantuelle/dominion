@@ -32,7 +32,7 @@ CardList = class CardList {
       do {
         invalid_replacement = true
         let replacement_card_name = CardList.pull_one().name
-        if (!_.contains(game_cards, replacement_card_name)) {
+        if (!_.contains(game_cards, _.titleize(replacement_card_name))) {
           if (_.contains(CardList.events(), _.titleize(replacement_card_name))) {
             if (event_count < 2) {
               game_cards.push(replacement_card_name)
@@ -85,8 +85,8 @@ CardList = class CardList {
       'Summon',
       'LostArts',
       'Training',
+      'Inheritance',
       'Pathfinding'
-      /*'Inheritance'*/
     ]
   }
 

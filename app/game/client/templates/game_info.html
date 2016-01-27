@@ -78,6 +78,10 @@
       -1 Card Token
       <br />
     {{/if}}
+    {{#if estate}}
+      Estate Token: <span class="{{estate.types}}">{{estate.name}}</span>
+      <br />
+    {{/if}}
     {{#if tavern}}
       Tavern:
       {{#each tavern}}

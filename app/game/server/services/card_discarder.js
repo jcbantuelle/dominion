@@ -71,7 +71,7 @@ CardDiscarder = class CardDiscarder {
         this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> sets aside ${CardView.render(discarding_card)} from ${CardView.card_html('action', 'Prince')}`)
       }
       if (discarding_card.misfit) {
-        discarding_card = ClassCreator.create('Band Of Misfits').to_h()
+        discarding_card = discarding_card.misfit
       }
       this.player_cards[destination].unshift(discarding_card)
     }

@@ -18,8 +18,14 @@ Watchtower = class Watchtower extends Card {
     card_drawer.draw(cards_to_draw)
   }
 
-  gain_reaction(game, player_cards, gainer) {
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(this)}`)
+  gain_reaction(game, player_cards, gainer, card_name = 'Watchtower') {
+    let revealed_card = this
+    if (card_name === 'Estate') {
+      revealed_card = _.find(player_cards.hand, function(card) {
+        return card.name === 'Estate'
+      })
+    }
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,

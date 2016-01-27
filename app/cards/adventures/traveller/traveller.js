@@ -5,12 +5,18 @@ Traveller = class Traveller extends Card {
       return card.name === new_card
     })
     if (traveller_stack.count > 0) {
+      let exchange_card = this
+      if (old_card === 'Estate') {
+        exchange_card = _.find(player_cards.discarding, function(card) {
+          return card.name === 'Estate'
+        })
+      }
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Exchange ${CardView.render(this)} for ${CardView.render(traveller_stack)}?`,
+        instructions: `Exchange ${CardView.render(exchange_card)} for ${CardView.render(traveller_stack)}?`,
         minimum: 1,
         maximum: 1
       })
@@ -30,6 +36,9 @@ Traveller = class Traveller extends Card {
           return card.name === exchange.old_card
         })
         let old_card = player_cards.discarding.splice(old_card_index, 1)[0]
+        if (old_card.name === 'Estate') {
+          old_card = ClassCreator.create('Estate').to_h()
+        }
 
         old_card_pile.count += 1
         old_card_pile.stack.unshift(old_card)

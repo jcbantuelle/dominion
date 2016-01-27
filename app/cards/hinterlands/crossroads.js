@@ -8,7 +8,7 @@ Crossroads = class Crossroads extends Card {
     return 2
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
 
     let victory_cards = _.filter(player_cards.hand, function(card) {
@@ -19,7 +19,7 @@ Crossroads = class Crossroads extends Card {
       card_drawer.draw(_.size(victory_cards))
     }
 
-    if (!game.turn.crossroads) {
+    if (!game.turn.crossroads && player.card.name() === 'Crossroads') {
       game.turn.actions += 3
       game.turn.crossroads = true
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +3 actions`)

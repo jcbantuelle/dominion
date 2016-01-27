@@ -13,7 +13,7 @@ CoinOfTheRealm = class CoinOfTheRealm extends Card {
     this.move_to_tavern(game, player_cards, 'Coin Of The Realm')
   }
 
-  reserve(game, player_cards) {
+  action_resolution_event(game, player_cards) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,

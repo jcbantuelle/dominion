@@ -40,12 +40,13 @@ HorseTraders = class HorseTraders extends Card {
     card_discarder.discard()
   }
 
-  attack_event(game, player_cards) {
+  attack_event(game, player_cards, card_name = 'Horse Traders') {
     let horse_traders_index = _.findIndex(player_cards.hand, function(card) {
-      return card.name === 'Horse Traders'
+      return card.name === card_name
     })
-    player_cards.horse_traders.push(player_cards.hand.splice(horse_traders_index, 1)[0])
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(this)}`)
+    let horse_traders = player_cards.hand.splice(horse_traders_index, 1)[0]
+    player_cards.horse_traders.push(horse_traders)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(horse_traders)}`)
   }
 
   start_turn_event(game, player_cards, horse_traders) {

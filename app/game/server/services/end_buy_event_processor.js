@@ -12,8 +12,8 @@ EndBuyEventProcessor = class EndBuyEventProcessor {
 
   find_end_buy_events() {
     let reserve_events = _.filter(this.player_cards.tavern, (card) => {
-      if (_.contains(EndBuyEventProcessor.reserve_events(), card.name)) {
-        if (card.name === 'Wine Merchant') {
+      if (_.contains(EndBuyEventProcessor.reserve_events(), card.inherited_name)) {
+        if (card.inherited_name === 'Wine Merchant') {
           return this.game.turn.coins >= 2
         } else {
           return true
@@ -50,7 +50,10 @@ EndBuyEventProcessor = class EndBuyEventProcessor {
         return event.name === event_name
       })
       let event = events.splice(event_index, 1)[0]
-      let selected_event = ClassCreator.create(event.name)
+      if (event_name === 'Estate' && player_cards.tokens.estate) {
+        event_name = 'InheritedEstate'
+      }
+      let selected_event = ClassCreator.create(event_name)
       selected_event.end_buy_event(game, player_cards)
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)

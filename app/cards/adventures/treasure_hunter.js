@@ -26,8 +26,8 @@ TreasureHunter = class TreasureHunter extends Traveller {
     })
   }
 
-  discard_event(discarder) {
-    this.choose_exchange(discarder.game, discarder.player_cards, 'Treasure Hunter', 'Warrior')
+  discard_event(discarder, card_name = 'Treasure Hunter') {
+    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Warrior')
   }
 
 }

@@ -11,7 +11,7 @@ BandOfMisfits = class BandOfMisfits extends Card {
   play(game, player_cards, player) {
     let all_player_cards = PlayerCardsModel.find(game._id)
 
-    let self_cost = CostCalculator.calculate(game, this.to_h(), all_player_cards)
+    let self_cost = CostCalculator.calculate(game, player.card.to_h(player_cards), all_player_cards)
 
     let eligible_cards = _.filter(game.cards, function(card) {
       let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
@@ -25,7 +25,7 @@ BandOfMisfits = class BandOfMisfits extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         game_cards: true,
-        instructions: `Choose a card to play ${CardView.render(this)} as:`,
+        instructions: `Choose a card to play ${CardView.render(player.card.to_h(player_cards))} as:`,
         cards: eligible_cards,
         minimum: 1,
         maximum: 1
@@ -43,13 +43,13 @@ BandOfMisfits = class BandOfMisfits extends Card {
 
   static copy_card(game, player_cards, selected_cards, player) {
     let played_misfit_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Band Of Misfits'
+      return card.name === player.card.name()
     })
-    let misfit = player_cards.playing.splice(played_misfit_index, 1)
+    let misfit = player_cards.playing.splice(played_misfit_index, 1)[0]
 
     player.card = ClassCreator.create(selected_cards[0].name)
     let copy = player.card.to_h()
-    copy.misfit = true
+    copy.misfit = misfit
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> plays ${CardView.render(misfit)} as ${CardView.render(copy)}`)
 
     GameModel.update(game._id, game)

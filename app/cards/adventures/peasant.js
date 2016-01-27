@@ -14,8 +14,8 @@ Peasant = class Peasant extends Traveller {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and +$${gained_coins}`)
   }
 
-  discard_event(discarder) {
-    this.choose_exchange(discarder.game, discarder.player_cards, 'Peasant', 'Soldier')
+  discard_event(discarder, card_name = 'Peasant') {
+    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Soldier')
   }
 
 }

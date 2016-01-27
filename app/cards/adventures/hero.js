@@ -44,8 +44,8 @@ Hero = class Hero extends Traveller {
     card_gainer.gain_game_card()
   }
 
-  discard_event(discarder) {
-    this.choose_exchange(discarder.game, discarder.player_cards, 'Hero', 'Champion')
+  discard_event(discarder, card_name = 'Hero') {
+    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Champion')
   }
 
 }

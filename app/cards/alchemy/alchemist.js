@@ -41,7 +41,7 @@ Alchemist = class Alchemist extends Card {
       delete alchemist.scheme
       delete alchemist.prince
       if (alchemist.misfit) {
-        alchemist = ClassCreator.create('Band Of Misfits').to_h()
+        alchemist = alchemist.misfit
       }
       player_cards.deck.unshift(alchemist)
     }

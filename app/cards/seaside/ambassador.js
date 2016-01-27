@@ -99,6 +99,11 @@ Ambassador = class Ambassador extends Card {
       }
 
       let returned_cards = _.pullAt(player_cards.hand, returned_card_indexes)
+      if (game.turn.ambassador_selected_card.name === 'Estate' && player_cards.tokens.estate) {
+        returned_cards = _.map(returned_cards, function(card) {
+          return ClassCreator.create('Estate').to_h()
+        })
+      }
 
       game.turn.ambassador_game_stack.count += _.size(returned_card_indexes)
       game.turn.ambassador_game_stack.stack = returned_cards.concat(game.turn.ambassador_game_stack.stack)

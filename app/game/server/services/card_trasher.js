@@ -73,11 +73,14 @@ CardTrasher = class CardTrasher {
     if (_.size(this.player_cards.trashing) === this.trashed_card_count) {
       trashed_card = this.player_cards.trashing.pop()
       if (trashed_card.misfit) {
-        trashed_card = ClassCreator.create('Band Of Misfits').to_h()
+        trashed_card = trashed_card.misfit
       }
       if (this.game.turn.possessed) {
         this.player_cards.possession_trash.push(trashed_card)
       } else {
+        if (trashed_card.name === 'Estate' && this.player_cards.tokens.estate) {
+          trashed_card = ClassCreator.create('Estate').to_h()
+        }
         this.game.trash.push(trashed_card)
       }
     }

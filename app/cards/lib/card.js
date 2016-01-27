@@ -20,12 +20,16 @@ Card = class Card {
     return _.startCase(this.constructor.name)
   }
 
+  inherited_name() {
+    return this.name()
+  }
+
   image() {
     return _.snakeCase(this.constructor.name)
   }
 
-  type_class() {
-    return this.types().join(' ')
+  type_class(player_cards) {
+    return this.types(player_cards).join(' ')
   }
 
   stack_name() {
@@ -40,18 +44,19 @@ Card = class Card {
       let reserve_card = player_cards.playing.splice(reserve_index, 1)[0]
       delete reserve_card.prince
       if (reserve_card.misfit) {
-        reserve_card = ClassCreator.create('Band Of Misfits').to_h()
+        reserve_card = reserve_card.misfit
       }
       player_cards.tavern.push(reserve_card)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(this)} on their Tavern`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(reserve_card)} on their Tavern`)
     }
   }
 
-  to_h() {
+  to_h(player_cards) {
     return {
       name: this.name(),
+      inherited_name: this.inherited_name(player_cards),
       image: this.image(),
-      types: this.type_class(),
+      types: this.type_class(player_cards),
       coin_cost: this.coin_cost(),
       potion_cost: this.potion_cost(),
       purchasable: this.is_purchasable(),

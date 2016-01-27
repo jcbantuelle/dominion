@@ -8,7 +8,7 @@ AttackEventProcessor = class AttackEventProcessor {
     let attack_events = []
 
     _.each(player_cards.hand, (card) => {
-      if (_.contains(AttackEventProcessor.attack_reactions(), card.name)) {
+      if (_.contains(AttackEventProcessor.attack_reactions(), card.inherited_name)) {
         attack_events.push(card)
       }
     })
@@ -42,7 +42,11 @@ AttackEventProcessor = class AttackEventProcessor {
 
   static attack_event(game, player_cards, selected_cards, attack_event_processor) {
     if (!_.isEmpty(selected_cards)) {
-      let selected_card = ClassCreator.create(selected_cards[0].name)
+      let card_name = selected_cards[0].name
+      if (card_name === 'Estate' && player_cards.tokens.estate) {
+        card_name = 'InheritedEstate'
+      }
+      let selected_card = ClassCreator.create(card_name)
       selected_card.attack_event(game, player_cards)
 
       GameModel.update(game._id, game)

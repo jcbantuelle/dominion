@@ -22,18 +22,24 @@ BuyEventProcessor = class BuyEventProcessor {
 
   constructor(buyer) {
     this.buyer = buyer
+    this.bought_card_name = this.buyer.card.name()
+    this.bought_card = this.buyer.card.to_h()
+    if (this.bought_card_name === 'Estate' && this.buyer.player_cards.tokens.estate) {
+      this.bought_card_name = this.buyer.player_cards.tokens.estate.name
+      this.bought_card = ClassCreator.create('Inherited Estate').to_h(this.buyer.player_cards)
+    }
     this.find_buy_events()
   }
 
   find_buy_events() {
     this.buy_events = []
-    if (_.contains(BuyEventProcessor.event_cards(), this.buyer.card.name())) {
-      if (this.buyer.card.name() === 'Messenger') {
+    if (_.contains(BuyEventProcessor.event_cards(), this.bought_card_name)) {
+      if (this.bought_card_name === 'Messenger') {
         if (_.size(this.buyer.game.turn.bought_cards) === 1) {
-          this.buy_events.push(this.buyer.card.to_h())
+          this.buy_events.push(this.bought_card)
         }
       } else {
-        this.buy_events.push(this.buyer.card.to_h())
+        this.buy_events.push(this.bought_card)
       }
     }
 
@@ -44,7 +50,7 @@ BuyEventProcessor = class BuyEventProcessor {
     _.each(this.buyer.player_cards.hand, (card) => {
       if (_.contains(BuyEventProcessor.reaction_cards(), card.name)) {
         if (card.name === 'Hovel') {
-          if (_.contains(this.buyer.card.types(), 'victory')) {
+          if (_.contains(this.buyer.card.types(this.buyer.player_cards), 'victory')) {
             this.buy_events.push(card)
           }
         }
@@ -52,14 +58,14 @@ BuyEventProcessor = class BuyEventProcessor {
     })
 
     _.each(this.buyer.player_cards.in_play, (card) => {
-      if (_.contains(BuyEventProcessor.in_play_event_cards(), card.name)) {
-        if (card.name === 'Talisman') {
+      if (_.contains(BuyEventProcessor.in_play_event_cards(), card.inherited_name)) {
+        if (card.inherited_name === 'Talisman') {
           let cost = CostCalculator.calculate(this.buyer.game, this.buyer.card)
-          if (cost <= 4 && this.buyer.card.potion_cost() === 0 && !_.contains(this.buyer.card.types(), 'victory')) {
+          if (cost <= 4 && this.buyer.card.potion_cost() === 0 && !_.contains(this.buyer.card.types(this.buyer.player_cards), 'victory')) {
             this.buy_events.push(card)
           }
-        } else if (card.name === 'Hoard') {
-          if (_.contains(this.buyer.card.types(), 'victory')) {
+        } else if (card.inherited_name === 'Hoard') {
+          if (_.contains(this.buyer.card.types(this.buyer.player_cards), 'victory')) {
             this.buy_events.push(card)
           }
         } else {
@@ -85,7 +91,7 @@ BuyEventProcessor = class BuyEventProcessor {
   process() {
     if (!_.isEmpty(this.buy_events)) {
       let mandatory_buy_events = _.filter(this.buy_events, function(event) {
-        return _.contains(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()), event.name)
+        return _.contains(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()), event.inherited_name)
       })
       if (_.size(this.buy_events) === 1 && !_.isEmpty(mandatory_buy_events)) {
         BuyEventProcessor.buy_event(this.buyer.game, this.buyer.player_cards, this.buy_events, this)
@@ -137,8 +143,12 @@ BuyEventProcessor = class BuyEventProcessor {
           game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
         }
       } else {
-        let selected_card = ClassCreator.create(selected_cards[0].name)
-        if (_.contains(BuyEventProcessor.reaction_cards(), selected_card.name())) {
+        let card_name = selected_cards[0].name
+        if (card_name === 'Estate' && player_cards.tokens.estate) {
+          card_name = 'InheritedEstate'
+        }
+        let selected_card = ClassCreator.create(card_name)
+        if (_.contains(BuyEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
           selected_card.buy_reaction(game, player_cards, buy_event_processor.buyer)
         } else {
           selected_card.buy_event(buy_event_processor.buyer)

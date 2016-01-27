@@ -33,7 +33,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
 
     let reserve_events = _.filter(this.player_cards.tavern, function(card) {
       card.start_event_type = 'Reserve'
-      return _.contains(StartTurnEventProcessor.reserve_events(), card.name)
+      return _.contains(StartTurnEventProcessor.reserve_events(), card.inherited_name)
     })
 
     this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events)
@@ -68,7 +68,10 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         return event.name === event_name
       })
       let event = events.splice(event_index, 1)[0]
-      let selected_event = ClassCreator.create(event.name)
+      if (event_name === 'Estate' && player_cards.tokens.estate) {
+        event_name = 'InheritedEstate'
+      }
+      let selected_event = ClassCreator.create(event_name)
       if (event.prince || event.summon) {
         delete event.summon
         player_cards.hand.push(event)
@@ -80,7 +83,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         selected_event.duration(game, player_cards, event)
       } else if (event.start_event_type === 'Reserve') {
         delete event.start_event_type
-        selected_event.reserve(game, player_cards, event)
+        selected_event.reserve(game, player_cards)
       }
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)

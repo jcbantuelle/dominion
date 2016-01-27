@@ -21,6 +21,7 @@ CardGainer = class CardGainer {
         this.travelling_fair(this.gained_card)
       }
       this.possessed()
+      this.convert_estate()
       this.player_cards[this.destination].unshift(this.gained_card)
       this.game.trash.splice(card_index, 1)
       this.update_log()
@@ -79,8 +80,9 @@ CardGainer = class CardGainer {
         this.travelling_fair(game_card)
       }
       this.possessed()
-      this.player_cards[this.destination].unshift(game_card.top_card)
       this.gained_card = _.clone(game_card.top_card)
+      this.convert_estate()
+      this.player_cards[this.destination].unshift(this.gained_card)
       this.update_log()
       this.track_gained_card()
       game_card.count -= 1
@@ -110,6 +112,12 @@ CardGainer = class CardGainer {
     }
   }
 
+  convert_estate() {
+    if (this.gained_card.name === 'Estate' && this.player_cards.tokens.estate) {
+      this.gained_card = ClassCreator.create('Inherited Estate').to_h(this.player_cards)
+    }
+  }
+
   find_card(source) {
     return _.find(source, (card) => {
       return card.name === this.card_name
@@ -131,6 +139,9 @@ CardGainer = class CardGainer {
   gain_destination(destination) {
     if (_.contains(this.gain_destination_cards, this.card_name)) {
       let gained_card = ClassCreator.create(this.card_name)
+      return gained_card.destination()
+    } else if (this.card_name === 'Estate' && this.player_cards.tokens.estate && _.contains(this.gain_destination_cards, this.player_cards.tokens.estate.name)) {
+      let gained_card = ClassCreator.create(this.player_cards.tokens.estate.name)
       return gained_card.destination()
     } else {
       return destination

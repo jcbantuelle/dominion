@@ -43,6 +43,9 @@ Masquerade = class Masquerade extends Card {
         let next_player_cards = _.find(ordered_player_cards, function(player) {
           return player.player_id === next_player._id
         })
+        if (next_player_cards.tokens.estate && other_player_cards.masquerade.name === 'Estate') {
+          other_player_cards.masquerade = ClassCreator.create('Inherited Estate').to_h(next_player_cards)
+        }
         next_player_cards.hand.push(other_player_cards.masquerade)
         game.log.push(`&nbsp;&nbsp;<strong>${other_player_cards.username}</strong> passes a card to ${next_player.username}`)
         delete other_player_cards.masquerade
@@ -79,6 +82,9 @@ Masquerade = class Masquerade extends Card {
       return card.name === selected_cards[0].name
     })
     player_cards.masquerade = player_cards.hand.splice(passed_card_index, 1)[0]
+    if (player_cards.tokens.estate && player_cards.masquerade.name === 'Estate') {
+      player_cards.masquerade = ClassCreator.create('Estate').to_h()
+    }
   }
 
   static trash_cards(game, player_cards, selected_cards) {

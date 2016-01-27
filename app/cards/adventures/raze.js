@@ -8,7 +8,7 @@ Raze = class Raze extends Card {
     return 2
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
@@ -18,10 +18,10 @@ Raze = class Raze extends Card {
       return new_card
     })
     let raze_in_play = _.any(player_cards.playing, function(card) {
-      return card.name === 'Raze'
+      return card.name === player.card.name()
     })
     if (raze_in_play) {
-      let raze = this.to_h()
+      let raze = player.card.to_h(player_cards)
       raze.source = 'P'
       trashable_cards.push(raze)
     }

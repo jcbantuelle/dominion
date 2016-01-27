@@ -16,8 +16,8 @@ Page = class Page extends Traveller {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
   }
 
-  discard_event(discarder) {
-    this.choose_exchange(discarder.game, discarder.player_cards, 'Page', 'Treasure Hunter')
+  discard_event(discarder, card_name = 'Page') {
+    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Treasure Hunter')
   }
 
 }

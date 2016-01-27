@@ -48,8 +48,8 @@ Disciple = class Disciple extends Traveller {
     }
   }
 
-  discard_event(discarder) {
-    this.choose_exchange(discarder.game, discarder.player_cards, 'Disciple', 'Teacher')
+  discard_event(discarder, card_name = 'Disciple') {
+    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Teacher')
   }
 
 }

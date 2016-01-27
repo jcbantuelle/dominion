@@ -26,7 +26,7 @@ Hermit = class Hermit extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Hermit.trash_card)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
+      game.log.push(`&nbsp;&nbsp;but there are no eligible cards to trash`)
     }
 
     let all_player_cards = PlayerCardsModel.find(game._id)
@@ -55,8 +55,8 @@ Hermit = class Hermit extends Card {
     }
   }
 
-  discard_event(discarder) {
-    let card_trasher = new CardTrasher(discarder.game, discarder.player_cards, 'discarding', 'Hermit')
+  discard_event(discarder, card_name = 'Hermit') {
+    let card_trasher = new CardTrasher(discarder.game, discarder.player_cards, 'discarding', card_name)
     card_trasher.trash()
 
     let card_gainer = new CardGainer(discarder.game, discarder.player_cards, 'discard', 'Madman')

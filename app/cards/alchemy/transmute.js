@@ -36,7 +36,12 @@ Transmute = class Transmute extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
     card_trasher.trash()
 
-    let selected_card_types = _.words(selected_cards[0].types)
+    let trashed_card = selected_cards[0]
+    if (player_cards.tokens.estate && trashed_card.name === 'Estate') {
+      trashed_card = ClassCreator.create('Estate').to_h()
+    }
+
+    let selected_card_types = _.words(trashed_card.types)
 
     if (_.contains(selected_card_types, 'action')) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
