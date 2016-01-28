@@ -118,6 +118,14 @@ GainEventProcessor = class GainEventProcessor {
       let selected_card = ClassCreator.create(card_name)
       if (_.contains(GainEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
         selected_card.gain_reaction(game, player_cards, gain_event_processor.gainer)
+        if (card_name === 'Fools Gold') {
+          let fools_gold = _.filter(player_cards.hand, function(card) {
+            return card.name === 'Fools Gold'
+          })
+          gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
+            return event.inherited_name !== 'Fools Gold'
+          }).concat(fools_gold)
+        }
       } else {
         selected_card.gain_event(gain_event_processor.gainer)
         let gain_event_index = _.findIndex(gain_event_processor.gain_events, function(event) {
