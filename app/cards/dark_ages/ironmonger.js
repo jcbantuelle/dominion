@@ -15,6 +15,8 @@ Ironmonger = class Ironmonger extends Card {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
+    PlayerCardsModel.update(game._id, player_cards)
+
     this.reveal(game, player_cards)
 
     let gains = []
