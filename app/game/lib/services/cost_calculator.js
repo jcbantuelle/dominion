@@ -29,12 +29,12 @@ CostCalculator = class CostCalculator {
     }
 
     let highways = _.size(_.filter(in_play_cards, function(player_card) {
-      return player_card.name === 'Highway'
+      return player_card.inherited_name === 'Highway'
     }))
     cost -= highways
 
     let bridge_trolls = _.size(_.filter(current_player_in_play_cards, function(player_card) {
-      return player_card.name === 'Bridge Troll'
+      return player_card.inherited_name === 'Bridge Troll'
     }))
     cost -= bridge_trolls
 
