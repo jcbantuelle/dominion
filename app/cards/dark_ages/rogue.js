@@ -9,6 +9,9 @@ Rogue = class Rogue extends Card {
   }
 
   play(game, player_cards) {
+    let gained_coins = CoinGainer.gain(game, player_cards, 2)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+
     let all_player_cards = PlayerCardsModel.find(game._id)
 
     let eligible_cards = _.filter(game.trash, function(card) {
