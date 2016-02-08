@@ -30,7 +30,7 @@ CardTrasher = class CardTrasher {
       turn_event_processor.process(CardTrasher.order_cards)
     }
 
-    if (!events) {
+    if (!events && !_.isEmpty(this.player_cards.trash)) {
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> trashes ${CardView.render(this.player_cards.trash)}`)
     }
 
