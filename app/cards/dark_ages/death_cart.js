@@ -41,7 +41,7 @@ DeathCart = class DeathCart extends Card {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
       card_trasher.trash()
     } else {
-      let card_trasher = new CardTrasher(game, player_cards, 'playing', player.card.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'playing', player.card.name())
       card_trasher.trash()
     }
   }
