@@ -24,7 +24,6 @@ CardPlayer = class CardPlayer {
         this.update_log()
         this.update_db()
       }
-      this.token_effects()
       this.play_response = this.play_card(auto_update)
       if (this.play_response === 'duration') {
         this.mark_played_card_as_duration()
@@ -65,6 +64,7 @@ CardPlayer = class CardPlayer {
   }
 
   play_card(auto_update = true) {
+    this.token_effects()
     if (_.contains(this.card.types(this.player_cards), 'action') && this.game.turn.player._id === this.player_cards.player_id) {
       this.game.turn.played_actions += 1
     }
