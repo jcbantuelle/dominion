@@ -16,6 +16,7 @@ Cartographer = class Cartographer extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
     GameModel.update(game._id, game)
+    PlayerCardsModel.update(game._id, player_cards)
 
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
