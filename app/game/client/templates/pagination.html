@@ -1,0 +1,19 @@
+<template name="pagination">
+  <nav>
+    <ul class="pagination">
+      <li>
+        <span data-page="{{previous_page page_name}}" data-page-name="{{page_name}}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </span>
+      </li>
+      {{#each times pages}}
+        <li><span data-page="{{this}}" data-page-name="{{../page_name}}">{{this}}</span></li>
+      {{/each}}
+      <li>
+        <span data-page="{{next_page page_name}}" data-page-name="{{page_name}}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </span>
+      </li>
+    </ul>
+  </nav>
+</template>
