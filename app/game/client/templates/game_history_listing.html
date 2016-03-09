@@ -7,6 +7,7 @@
         <th>Players</th>
         <th>Winner</th>
         <th>View</th>
+        <th>Cards</th>
       </tr>
     </thead>
     <tbody>
@@ -20,6 +21,11 @@
           </td>
           <td>{{winners}}</td>
           <td><a href="/game_history/{{_id}}">View</a></td>
+          <td>
+            {{#each card_list}}
+              <span class="lobby-card {{types}}">{{name}}</span>
+            {{/each}}
+          </td>
         </tr>
       {{/each}}
     </tbody>
