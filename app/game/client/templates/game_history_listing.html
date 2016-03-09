@@ -25,6 +25,9 @@
             {{#each card_list}}
               <span class="lobby-card {{types}}">{{name}}</span>
             {{/each}}
+            {{#each this.events}}
+              <span class="lobby-card event">{{name}}</span>
+            {{/each}}
           </td>
         </tr>
       {{/each}}
