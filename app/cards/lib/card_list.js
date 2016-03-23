@@ -57,12 +57,16 @@ CardList = class CardList {
   }
 
   static full_list(exclusions = []) {
+    return CardList.kingdom_cards(exclusions).concat(CardList.events())
+  }
+
+  static kingdom_cards(exclusions = []) {
     return _.reduce(CardList.sets(), function(card_list, set) {
       if (!_.contains(exclusions, set)) {
         card_list = card_list.concat(CardList[set]())
       }
       return card_list
-    }, []).concat(CardList.events())
+    }, [])
   }
   static events() {
     return [

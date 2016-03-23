@@ -386,7 +386,7 @@ GameCreator = class GameCreator {
     let used_card_names = _.map(kingdom_cards, function(card) {
       return _.titleize(card.name)
     })
-    let available_cards = _.shuffle(_.difference(CardList.full_list(), used_card_names))
+    let available_cards = _.shuffle(_.difference(CardList.kingdom_cards(), used_card_names))
 
     let black_market_card_names = _.take(available_cards, 25)
     let knight_index = _.findIndex(black_market_card_names, function(name) {
