@@ -51,6 +51,7 @@ Tournament = class Tournament extends Card {
           username: player_cards.username,
           type: 'choose_cards',
           player_cards: true,
+          show_images: true,
           instructions: `Choose a prize to gain:`,
           cards: game.prizes,
           minimum: 1,
