@@ -36,7 +36,7 @@ SirMichael = class SirMichael extends Knights {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> only has ${_.size(player_cards.hand)} cards in hand`)
     }
 
-    super(game, player_cards)
+    super.attack(game, player_cards)
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
