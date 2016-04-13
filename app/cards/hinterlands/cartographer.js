@@ -53,7 +53,7 @@ Cartographer = class Cartographer extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(selected_cards, 'name'))
       card_discarder.discard()
 
       if (_.size(player_cards.revealed) > 0) {

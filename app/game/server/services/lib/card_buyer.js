@@ -31,7 +31,7 @@ CardBuyer = class CardBuyer {
   }
 
   update_phase() {
-    if (_.contains(['action', 'treasure'], this.game.turn.phase)) {
+    if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
       this.game.turn.phase = 'buy'
     }
   }
@@ -110,7 +110,7 @@ CardBuyer = class CardBuyer {
   }
 
   is_contraband() {
-    return _.contains(this.game.turn.contraband, this.card.name())
+    return _.includes(this.game.turn.contraband, this.card.name())
   }
 
   has_remaining_stock() {

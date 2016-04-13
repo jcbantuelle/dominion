@@ -22,7 +22,7 @@ twbs:bootstrap
 ejson
 mizzao:user-status
 mizzao:timesync
-stevezhu:lodash
+stevezhu:lodash@4.9.0
 meteorhacks:kadira
 rubaxa:sortable
 yuukan:streamy

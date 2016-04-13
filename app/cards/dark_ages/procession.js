@@ -10,7 +10,7 @@ Procession = class Procession extends Card {
 
   play(game, player_cards) {
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'action')
+      return _.includes(_.words(card.types), 'action')
     })
 
     if (_.size(eligible_cards) > 0) {
@@ -52,7 +52,7 @@ Procession = class Procession extends Card {
 
       let eligible_cards = _.filter(game.cards, function(card) {
         let game_card_coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && _.contains(_.words(card.top_card.types), 'action') && game_card_coin_cost === (selected_card_coin_cost + 1) && card.top_card.potion_cost === selected_card.potion_cost
+        return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && game_card_coin_cost === (selected_card_coin_cost + 1) && card.top_card.potion_cost === selected_card.potion_cost
       })
 
       if (_.size(eligible_cards) > 0) {

@@ -33,10 +33,10 @@ Rabble = class Rabble extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
       let discarded_cards = _.filter(player_cards.revealed, function(card) {
-        return _.contains(_.words(card.types), 'action') || _.contains(_.words(card.types), 'treasure')
+        return _.includes(_.words(card.types), 'action') || _.includes(_.words(card.types), 'treasure')
       })
 
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(discarded_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(discarded_cards, 'name'))
       card_discarder.discard()
 
       if (!_.isEmpty(player_cards.revealed)) {

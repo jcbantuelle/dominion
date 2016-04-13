@@ -26,14 +26,14 @@ Magpie = class Magpie extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
 
       let card_types = _.words(revealed_card.types)
-      if (_.contains(card_types, 'treasure')) {
+      if (_.includes(card_types, 'treasure')) {
         player_cards.hand.push(revealed_card)
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(revealed_card)} in their hand`)
       } else {
         player_cards.deck.unshift(revealed_card)
       }
 
-      if (_.contains(card_types, 'action') || _.contains(card_types, 'victory')) {
+      if (_.includes(card_types, 'action') || _.includes(card_types, 'victory')) {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Magpie')
         card_gainer.gain_game_card()
       }

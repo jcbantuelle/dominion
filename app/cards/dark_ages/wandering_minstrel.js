@@ -31,10 +31,10 @@ WanderingMinstrel = class WanderingMinstrel extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
       player_cards.minstrel_actions = _.filter(player_cards.revealed, function(card) {
-        return _.contains(_.words(card.types), 'action')
+        return _.includes(_.words(card.types), 'action')
       })
       player_cards.revealed = _.filter(player_cards.revealed, function(card) {
-        return !_.contains(_.words(card.types), 'action')
+        return !_.includes(_.words(card.types), 'action')
       })
 
       if (_.size(player_cards.minstrel_actions) > 1) {

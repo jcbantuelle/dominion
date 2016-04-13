@@ -8,7 +8,7 @@ AttackEventProcessor = class AttackEventProcessor {
     let attack_events = []
 
     _.each(player_cards.hand, (card) => {
-      if (_.contains(AttackEventProcessor.attack_reactions(), card.inherited_name)) {
+      if (_.includes(AttackEventProcessor.attack_reactions(), card.inherited_name)) {
         attack_events.push(card)
       }
     })

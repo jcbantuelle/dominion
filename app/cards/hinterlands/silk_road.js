@@ -14,7 +14,7 @@ SilkRoad = class SilkRoad extends Card {
 
   point_variable(player_cards) {
     return _.size(_.filter(player_cards, function(card) {
-      return _.contains(_.words(card.types), 'victory')
+      return _.includes(_.words(card.types), 'victory')
     }))
   }
 

@@ -20,7 +20,7 @@ Haggler = class Haggler extends Card {
     let potion_value = buyer.card.potion_cost()
     let eligible_cards = _.filter(buyer.game.cards, function(card) {
       let coin_cost = CostCalculator.calculate(buyer.game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && !_.contains(_.words(card.top_card.types), 'victory') && ((coin_cost < coin_value && card.top_card.potion_cost <= potion_value) || (coin_cost === coin_value && card.top_card.potion_cost < potion_value))
+      return card.count > 0 && card.top_card.purchasable && !_.includes(_.words(card.top_card.types), 'victory') && ((coin_cost < coin_value && card.top_card.potion_cost <= potion_value) || (coin_cost === coin_value && card.top_card.potion_cost < potion_value))
     })
     if (_.size(eligible_cards) > 0) {
       let turn_event_id = TurnEventModel.insert({

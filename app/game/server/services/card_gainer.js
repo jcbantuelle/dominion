@@ -87,7 +87,7 @@ CardGainer = class CardGainer {
       this.track_gained_card()
       game_card.count -= 1
       if (game_card.count > 0) {
-        game_card.top_card = _.first(game_card.stack)
+        game_card.top_card = _.head(game_card.stack)
       }
       this.gain_events()
       this.trade_route_token(game_card)
@@ -137,10 +137,10 @@ CardGainer = class CardGainer {
   }
 
   gain_destination(destination) {
-    if (_.contains(this.gain_destination_cards, this.card_name)) {
+    if (_.includes(this.gain_destination_cards, this.card_name)) {
       let gained_card = ClassCreator.create(this.card_name)
       return gained_card.destination()
-    } else if (this.card_name === 'Estate' && this.player_cards.tokens.estate && _.contains(this.gain_destination_cards, this.player_cards.tokens.estate.name)) {
+    } else if (this.card_name === 'Estate' && this.player_cards.tokens.estate && _.includes(this.gain_destination_cards, this.player_cards.tokens.estate.name)) {
       let gained_card = ClassCreator.create(this.player_cards.tokens.estate.name)
       return gained_card.destination()
     } else {

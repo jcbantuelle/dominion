@@ -13,7 +13,7 @@ TokenPlacer = class TokenPlacer {
   }
 
   place() {
-    if (_.contains(this.pile_tokens(), this.token)) {
+    if (_.includes(this.pile_tokens(), this.token)) {
       this.remove_old_pile_token()
       this.remove_old_player_token()
       this.place_new_pile_token()

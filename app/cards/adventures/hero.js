@@ -17,7 +17,7 @@ Hero = class Hero extends Traveller {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && _.contains(_.words(card.top_card.types), 'treasure')
+      return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'treasure')
     })
 
     if (_.size(eligible_cards) > 0) {

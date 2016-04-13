@@ -31,14 +31,14 @@ HuntingParty = class HuntingParty extends Card {
 
   reveal(game, player_cards) {
     let revealed_cards = []
-    let hand_cards = _.pluck(player_cards.hand, 'name')
+    let hand_cards = _.map(player_cards.hand, 'name')
     while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.revealed_card) {
       if (_.size(player_cards.deck) === 0) {
         DeckShuffler.shuffle(game, player_cards)
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      if (!_.contains(hand_cards, card.name)) {
+      if (!_.includes(hand_cards, card.name)) {
         player_cards.hand.push(card)
         player_cards.revealed_card = card
       } else {

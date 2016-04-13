@@ -10,7 +10,7 @@ Taxman = class Taxman extends Card {
 
   play(game, player_cards) {
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'treasure')
+      return _.includes(_.words(card.types), 'treasure')
     })
     if (_.size(eligible_cards) > 0) {
       let turn_event_id = TurnEventModel.insert({
@@ -42,7 +42,7 @@ Taxman = class Taxman extends Card {
 
       let eligible_cards = _.filter(game.cards, function(card) {
         let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && _.contains(_.words(card.top_card.types), 'treasure') && coin_cost <= (trashed_cost + 3) && card.top_card.potion_cost <= game.turn.taxman_trash.potion_cost
+        return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'treasure') && coin_cost <= (trashed_cost + 3) && card.top_card.potion_cost <= game.turn.taxman_trash.potion_cost
       })
 
       if (_.size(eligible_cards) > 0) {

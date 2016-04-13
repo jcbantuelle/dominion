@@ -10,7 +10,7 @@ Stables = class Stables extends Card {
 
   play(game, player_cards) {
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'treasure')
+      return _.includes(_.words(card.types), 'treasure')
     })
     if (_.size(eligible_cards) > 0) {
       let turn_event_id = TurnEventModel.insert({
@@ -33,7 +33,7 @@ Stables = class Stables extends Card {
 
   static discard_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
       card_discarder.discard()
 
       let card_drawer = new CardDrawer(game, player_cards)

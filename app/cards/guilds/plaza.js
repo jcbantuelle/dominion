@@ -16,7 +16,7 @@ Plaza = class Plaza extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
 
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'treasure')
+      return _.includes(_.words(card.types), 'treasure')
     })
     if (_.size(eligible_cards) > 0) {
       PlayerCardsModel.update(game._id, player_cards)

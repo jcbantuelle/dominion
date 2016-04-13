@@ -44,7 +44,7 @@ ScoutingParty = class ScoutingParty extends Event {
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(selected_cards, 'name'))
     card_discarder.discard()
 
     if (_.size(player_cards.revealed) > 1) {
@@ -59,7 +59,7 @@ ScoutingParty = class ScoutingParty extends Event {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(ScoutingParty.replace_cards)
     } else if (_.size(player_cards.revealed) === 1) {
-      ScoutingParty.replace_cards(game, player_cards, _.pluck(player_cards.revealed, 'name'))
+      ScoutingParty.replace_cards(game, player_cards, _.map(player_cards.revealed, 'name'))
     }
   }
 

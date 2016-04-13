@@ -12,7 +12,7 @@ PoorHouse = class PoorHouse extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
 
     let treasures = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'treasure')
+      return _.includes(_.words(card.types), 'treasure')
     })
 
     let coins = 4 - _.size(treasures)

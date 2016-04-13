@@ -33,7 +33,7 @@ HauntedWoods = class HauntedWoods extends Card {
     if (_.size(buyer.player_cards.hand) === 0) {
       buyer.game.log.push(`&nbsp;&nbsp;<strong>${buyer.player_cards.username}</strong> has no cards in hand for ${CardView.render(this)}`)
     } else if (_.size(buyer.player_cards.hand) === 1) {
-      HauntedWoods.replace_cards(buyer.game, buyer.player_cards, _.pluck(buyer.player_cards.hand, 'name'))
+      HauntedWoods.replace_cards(buyer.game, buyer.player_cards, _.map(buyer.player_cards.hand, 'name'))
     } else {
       let turn_event_id = TurnEventModel.insert({
         game_id: buyer.game._id,

@@ -40,13 +40,13 @@ Inn = class Inn extends Card {
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
     card_discarder.discard()
   }
 
   gain_event(gainer) {
     let eligible_cards = _.filter(gainer.player_cards.discard, function(card) {
-      return _.contains(_.words(card.types), 'action')
+      return _.includes(_.words(card.types), 'action')
     })
 
     if (_.size(eligible_cards) > 0) {

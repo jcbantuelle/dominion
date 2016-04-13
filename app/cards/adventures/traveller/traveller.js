@@ -42,7 +42,7 @@ Traveller = class Traveller extends Card {
 
         old_card_pile.count += 1
         old_card_pile.stack.unshift(old_card)
-        old_card_pile.top_card = _.first(old_card_pile.stack)
+        old_card_pile.top_card = _.head(old_card_pile.stack)
 
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(old_card)}`)
 

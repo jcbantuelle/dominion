@@ -18,7 +18,7 @@ FarmingVillage = class FarmingVillage extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed_card)} in their hand`)
     }
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
     card_discarder.discard()
 
     delete player_cards.revealed_card
@@ -32,7 +32,7 @@ FarmingVillage = class FarmingVillage extends Card {
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      if (_.contains(_.words(card.types), 'treasure') || _.contains(_.words(card.types), 'action')) {
+      if (_.includes(_.words(card.types), 'treasure') || _.includes(_.words(card.types), 'action')) {
         player_cards.hand.push(card)
         player_cards.revealed_card = card
       } else {

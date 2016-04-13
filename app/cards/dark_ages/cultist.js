@@ -15,7 +15,7 @@ Cultist = class Cultist extends Card {
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 
-    let cultists = _.any(player_cards.hand, function(card) {
+    let cultists = _.some(player_cards.hand, function(card) {
       return card.name === 'Cultist'
     })
     if (cultists) {

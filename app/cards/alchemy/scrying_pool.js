@@ -35,7 +35,7 @@ ScryingPool = class ScryingPool extends Card {
       }
       let card = player_cards.deck.shift()
       player_cards.revealed.push(card)
-      if (!_.contains(_.words(card.types), 'action')) {
+      if (!_.includes(_.words(card.types), 'action')) {
         non_action = true
       }
     }
@@ -78,7 +78,7 @@ ScryingPool = class ScryingPool extends Card {
 
   static discard_card(game, player_cards, response) {
     if (response === 'yes') {
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
       card_discarder.discard()
     } else {
       let card = player_cards.revealed[0]

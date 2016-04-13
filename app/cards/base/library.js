@@ -26,7 +26,7 @@ Library = class Library extends Card {
   static draw_cards(game, player_cards) {
     if (_.size(player_cards.hand) >= 7 || (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0)) {
       if (_.size(player_cards.aside) > 0) {
-        let card_discarder = new CardDiscarder(game, player_cards, 'aside', _.pluck(player_cards.aside, 'name'))
+        let card_discarder = new CardDiscarder(game, player_cards, 'aside', _.map(player_cards.aside, 'name'))
         card_discarder.discard()
       }
       delete player_cards.aside
@@ -35,7 +35,7 @@ Library = class Library extends Card {
         DeckShuffler.shuffle(game, player_cards)
       }
       let top_card = player_cards.deck.shift()
-      if (_.contains(_.words(top_card.types), 'action')) {
+      if (_.includes(_.words(top_card.types), 'action')) {
         player_cards.pending = top_card
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,

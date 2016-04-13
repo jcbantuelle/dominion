@@ -49,7 +49,7 @@ Rebuild = class Rebuild extends Card {
 
         let eligible_cards = _.filter(game.cards, function(card) {
           let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-          return card.count > 0 && card.top_card.purchasable && coin_cost <= (trashed_cost + 3) && card.top_card.potion_cost <= player_cards.revealed_victory_card.potion_cost && _.contains(_.words(card.top_card.types), 'victory')
+          return card.count > 0 && card.top_card.purchasable && coin_cost <= (trashed_cost + 3) && card.top_card.potion_cost <= player_cards.revealed_victory_card.potion_cost && _.includes(_.words(card.top_card.types), 'victory')
         })
 
         if (_.size(eligible_cards) > 0) {
@@ -89,7 +89,7 @@ Rebuild = class Rebuild extends Card {
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      if (_.contains(_.words(card.types), 'victory') && card.name !== game.turn.rebuild_named_card.name) {
+      if (_.includes(_.words(card.types), 'victory') && card.name !== game.turn.rebuild_named_card.name) {
         player_cards.revealed_victory_card = card
       } else {
         player_cards.revealed.push(card)

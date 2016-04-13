@@ -14,7 +14,7 @@ Storyteller = class Storyteller extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$${gained_coins}`)
 
     let eligible_treasures = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'treasure')
+      return _.includes(_.words(card.types), 'treasure')
     })
     if (_.size(eligible_treasures) > 0) {
       GameModel.update(game._id, game)
@@ -43,7 +43,7 @@ Storyteller = class Storyteller extends Card {
 
   static choose_treasures(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let non_bulk_playable_treasures = _.difference(_.pluck(selected_cards, 'name'), AllCoinPlayer.bulk_playable_treasures())
+      let non_bulk_playable_treasures = _.difference(_.map(selected_cards, 'name'), AllCoinPlayer.bulk_playable_treasures())
       if (!_.isEmpty(non_bulk_playable_treasures && _.size(selected_cards) > 1)) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
@@ -56,7 +56,7 @@ Storyteller = class Storyteller extends Card {
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Storyteller.play_treasures)
       } else {
-        Storyteller.play_treasures(game, player_cards, _.pluck(selected_cards, 'name'))
+        Storyteller.play_treasures(game, player_cards, _.map(selected_cards, 'name'))
       }
     }
   }

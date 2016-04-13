@@ -51,7 +51,7 @@ Doctor = class Doctor extends Card {
       return card.name === selected_card.name
     })
 
-    let card_trasher = new CardTrasher(game, player_cards, 'revealed', _.pluck(matches, 'name'))
+    let card_trasher = new CardTrasher(game, player_cards, 'revealed', _.map(matches, 'name'))
     card_trasher.trash()
 
     if (_.size(player_cards.revealed) > 1) {
@@ -67,7 +67,7 @@ Doctor = class Doctor extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Doctor.replace_cards)
     } else if (_.size(player_cards.revealed) === 1) {
-      Doctor.replace_cards(game, player_cards, _.pluck(player_cards.revealed, 'name'))
+      Doctor.replace_cards(game, player_cards, _.map(player_cards.revealed, 'name'))
     }
   }
 

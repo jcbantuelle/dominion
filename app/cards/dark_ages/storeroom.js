@@ -54,7 +54,7 @@ Storeroom = class Storeroom extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
       card_discarder.discard()
 
       let card_drawer = new CardDrawer(game, player_cards)
@@ -66,7 +66,7 @@ Storeroom = class Storeroom extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
       card_discarder.discard()
 
       let gained_coins = CoinGainer.gain(game, player_cards, _.size(selected_cards))

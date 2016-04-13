@@ -17,7 +17,7 @@ Golem = class Golem extends Card {
 
     if (has_cards) {
 
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
       card_discarder.discard()
 
       GameModel.update(game._id, game)
@@ -57,7 +57,7 @@ Golem = class Golem extends Card {
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      if (_.contains(_.words(card.types), 'action') && card.name !== 'Golem') {
+      if (_.includes(_.words(card.types), 'action') && card.name !== 'Golem') {
         if (player_cards.first_golem_card) {
           player_cards.second_golem_card = card
         } else {

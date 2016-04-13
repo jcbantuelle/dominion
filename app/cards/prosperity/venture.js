@@ -35,7 +35,7 @@ Venture = class Venture extends Card {
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      if (_.contains(_.words(card.types), 'treasure')) {
+      if (_.includes(_.words(card.types), 'treasure')) {
         revealed_treasure = card
       } else {
         player_cards.revealed.push(card)

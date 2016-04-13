@@ -27,7 +27,7 @@ Quest = class Quest extends Event {
     response = response[0]
     if (response === 'attack') {
       let attacks = _.filter(player_cards.hand, function(card) {
-        return _.contains(_.words(card.types), 'attack')
+        return _.includes(_.words(card.types), 'attack')
       })
       if (_.size(attacks) > 1) {
         let turn_event_id = TurnEventModel.insert({
@@ -84,7 +84,7 @@ Quest = class Quest extends Event {
   }
 
   static discard_cards(game, player_cards, selected_cards, selection) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
     card_discarder.discard()
 
     if ((selection === 'attack' && !_.isEmpty(selected_cards)) || (selection === 'curses' && _.size(selected_cards) === 2) || (selection === 'cards' && _.size(selected_cards) === 6)) {

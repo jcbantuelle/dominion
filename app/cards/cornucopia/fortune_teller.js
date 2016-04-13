@@ -39,7 +39,7 @@ FortuneTeller = class FortuneTeller extends Card {
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      if (_.contains(_.words(card.types), 'victory') || _.contains(card.types, 'curse')) {
+      if (_.includes(_.words(card.types), 'victory') || _.includes(card.types, 'curse')) {
         player_cards.top_card = card
       } else {
         player_cards.revealed.push(card)

@@ -17,7 +17,7 @@ BlackMarket = class BlackMarket extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(game.black_market_revealed)} from the ${CardView.render(this)} deck`)
 
     let eligible_treasures = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'treasure')
+      return _.includes(_.words(card.types), 'treasure')
     })
     if (_.size(eligible_treasures) > 0) {
       GameModel.update(game._id, game)
@@ -40,7 +40,7 @@ BlackMarket = class BlackMarket extends Card {
 
     let eligible_buys = _.filter(game.black_market_revealed, function(card) {
       let coin_cost = CostCalculator.calculate(game, card, all_player_cards)
-      return !game.turn.mission_turn && coin_cost <= game.turn.coins && card.potion_cost <= game.turn.potions && !_.contains(game.turn.contraband, card.name) && (card.name !== 'Grand Market' || !_.contains(_.pluck(player_cards.in_play, 'name'), 'Copper'))
+      return !game.turn.mission_turn && coin_cost <= game.turn.coins && card.potion_cost <= game.turn.potions && !_.includes(game.turn.contraband, card.name) && (card.name !== 'Grand Market' || !_.includes(_.map(player_cards.in_play, 'name'), 'Copper'))
     })
     if (_.size(eligible_buys) > 0) {
       let turn_event_id = TurnEventModel.insert({
@@ -86,7 +86,7 @@ BlackMarket = class BlackMarket extends Card {
 
   static choose_treasures(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let non_bulk_playable_treasures = _.difference(_.pluck(selected_cards, 'name'), AllCoinPlayer.bulk_playable_treasures())
+      let non_bulk_playable_treasures = _.difference(_.map(selected_cards, 'name'), AllCoinPlayer.bulk_playable_treasures())
       if (!_.isEmpty(non_bulk_playable_treasures && _.size(selected_cards) > 1)) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
@@ -99,7 +99,7 @@ BlackMarket = class BlackMarket extends Card {
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(BlackMarket.play_treasures)
       } else {
-        BlackMarket.play_treasures(game, player_cards, _.pluck(selected_cards, 'name'))
+        BlackMarket.play_treasures(game, player_cards, _.map(selected_cards, 'name'))
       }
     }
   }

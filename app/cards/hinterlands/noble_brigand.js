@@ -55,11 +55,11 @@ NobleBrigand = class NobleBrigand extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
       let revealed_treasures = _.filter(player_cards.revealed, function(card) {
-        return _.contains(['Silver', 'Gold'], card.name)
+        return _.includes(['Silver', 'Gold'], card.name)
       })
       if (_.isEmpty(revealed_treasures)) {
-        let any_treasures = _.any(player_cards.revealed, function(card) {
-          return _.contains(_.words(card.types), 'treasure')
+        let any_treasures = _.some(player_cards.revealed, function(card) {
+          return _.includes(_.words(card.types), 'treasure')
         })
         let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
         card_discarder.discard()

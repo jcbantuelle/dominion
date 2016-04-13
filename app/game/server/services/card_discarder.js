@@ -5,7 +5,7 @@ CardDiscarder = class CardDiscarder {
     this.player_cards = player_cards
     this.source = source
     if (!card_names) {
-      this.card_names = _.pluck(player_cards[source], 'name')
+      this.card_names = _.map(player_cards[source], 'name')
     } else {
       this.card_names = _.isArray(card_names) ? card_names : [card_names]
     }
@@ -78,7 +78,7 @@ CardDiscarder = class CardDiscarder {
   }
 
   has_events() {
-    let has_event_cards = _.any(this.player_cards.to_discard, (card) => {
+    let has_event_cards = _.some(this.player_cards.to_discard, (card) => {
       let discard_event_processor = new DiscardEventProcessor(this, card)
       return !_.isEmpty(discard_event_processor.discard_events)
     })

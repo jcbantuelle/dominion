@@ -15,7 +15,7 @@ BandOfMisfits = class BandOfMisfits extends Card {
 
     let eligible_cards = _.filter(game.cards, function(card) {
       let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost < self_cost && card.top_card.potion_cost === 0 && _.contains(_.words(card.top_card.types), 'action')
+      return card.count > 0 && card.top_card.purchasable && coin_cost < self_cost && card.top_card.potion_cost === 0 && _.includes(_.words(card.top_card.types), 'action')
     })
 
     if (_.size(eligible_cards) > 0) {

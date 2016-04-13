@@ -7,7 +7,7 @@ Alms = class Alms extends Event {
   buy(game, player_cards) {
     game.turn.forbidden_events.push(this.name())
     let treasures = _.filter(player_cards.in_play, function(card) {
-      return _.contains(_.words(card.types), 'treasure')
+      return _.includes(_.words(card.types), 'treasure')
     })
     if (_.size(treasures) === 0) {
       let all_player_cards = PlayerCardsModel.find(game._id)

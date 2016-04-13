@@ -18,7 +18,7 @@ CostCalculator = class CostCalculator {
     }
     let current_player_in_play_cards = current_player_cards.in_play.concat(current_player_cards.duration).concat(current_player_cards.permanent)
 
-    let in_play_cards = _.flatten(_.pluck(player_cards, 'in_play').concat(_.pluck(player_cards, 'duration')).concat(_.pluck(player_cards, 'permanent')))
+    let in_play_cards = _.flatten(_.map(player_cards, 'in_play').concat(_.map(player_cards, 'duration')).concat(_.map(player_cards, 'permanent')))
 
     let discount_token = _.find(current_player_cards.tokens.pile, function(token) {
       return token.effect === 'discount'
@@ -43,7 +43,7 @@ CostCalculator = class CostCalculator {
     }))
     cost -= (princesses * 2)
 
-    if (_.contains(_.words(type), 'action')) {
+    if (_.includes(_.words(type), 'action')) {
       let quarries = _.size(_.filter(in_play_cards, function(player_card) {
         return player_card.name === 'Quarry'
       }))
@@ -52,7 +52,7 @@ CostCalculator = class CostCalculator {
 
     if (name === 'Peddler' && (game.turn.phase === 'buy' || buy_phase)) {
       let action_count = _.size(_.filter(in_play_cards, function(player_card) {
-        return _.contains(_.words(player_card.types), 'action')
+        return _.includes(_.words(player_card.types), 'action')
       }))
       cost -= (action_count * 2)
     }

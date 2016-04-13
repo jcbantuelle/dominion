@@ -31,7 +31,7 @@ Watchtower = class Watchtower extends Card {
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_options',
-      instructions: `Trash ${CardView.render(_.first(player_cards[gainer.destination]))} or put it on top of your deck?`,
+      instructions: `Trash ${CardView.render(_.head(player_cards[gainer.destination]))} or put it on top of your deck?`,
       minimum: 1,
       maximum: 1,
       options: [
@@ -51,7 +51,7 @@ Watchtower = class Watchtower extends Card {
       gainer.card_name = ''
     } else if (response === 'deck') {
       player_cards.deck.unshift(player_cards[gainer.destination].shift())
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(_.first(player_cards.deck))} on top of their deck`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(_.head(player_cards.deck))} on top of their deck`)
       gainer.destination = 'deck'
     }
   }

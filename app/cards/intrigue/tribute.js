@@ -37,13 +37,13 @@ Tribute = class Tribute extends Card {
     let actions = 0
     let gains = []
     _.each(revealed_cards, function(card) {
-      if (_.contains(_.words(card.types), 'action')) {
+      if (_.includes(_.words(card.types), 'action')) {
         actions += 2
       }
-      if (_.contains(_.words(card.types), 'treasure')) {
+      if (_.includes(_.words(card.types), 'treasure')) {
         coins += 2
       }
-      if (_.contains(_.words(card.types), 'victory')) {
+      if (_.includes(_.words(card.types), 'victory')) {
         cards += 2
       }
     })

@@ -30,11 +30,11 @@ Thief = class Thief extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
       let revealed_treasures = _.filter(player_cards.revealed, function(card) {
-        return _.contains(_.words(card.types), 'treasure')
+        return _.includes(_.words(card.types), 'treasure')
       })
       if (_.isEmpty(revealed_treasures)) {
         game.log.push(`&nbsp;&nbsp;but there are no treasures to trash`)
-        let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+        let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
         card_discarder.discard()
       } else if (_.size(revealed_treasures) === 1) {
         return Thief.trash_treasure(game, player_cards, revealed_treasures[0])
@@ -66,7 +66,7 @@ Thief = class Thief extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'revealed', trashed_treasure.name)
     card_trasher.trash()
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(player_cards.revealed, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
     card_discarder.discard()
 
     GameModel.update(game._id, game)

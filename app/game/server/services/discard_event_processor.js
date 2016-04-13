@@ -25,25 +25,25 @@ DiscardEventProcessor = class DiscardEventProcessor {
 
   find_discard_events() {
     this.discard_events = []
-    if (_.contains(DiscardEventProcessor.event_cards(), this.card.inherited_name)) {
+    if (_.includes(DiscardEventProcessor.event_cards(), this.card.inherited_name)) {
       if (this.card.inherited_name === 'Tunnel' && this.discarder.game.turn.phase !== 'cleanup') {
         this.discard_events.push(this.card)
       } else if (this.card.inherited_name === 'Treasury' && this.discarder.source === 'in_play') {
-        let no_bought_victory_cards = !_.any(this.discarder.game.turn.bought_cards, function(card) {
-          return _.contains(_.words(card.types), 'victory')
+        let no_bought_victory_cards = !_.some(this.discarder.game.turn.bought_cards, function(card) {
+          return _.includes(_.words(card.types), 'victory')
         })
         if (no_bought_victory_cards) {
           this.discard_events.push(this.card)
         }
       } else if (this.card.inherited_name === 'Herbalist' && this.discarder.source === 'in_play') {
-        let has_treasures = _.any(this.discarder.player_cards.to_discard, function(card) {
-          return _.contains(_.words(card.types), 'treasure')
+        let has_treasures = _.some(this.discarder.player_cards.to_discard, function(card) {
+          return _.includes(_.words(card.types), 'treasure')
         })
         if (has_treasures) {
           this.discard_events.push(this.card)
         }
       } else if (this.card.inherited_name === 'Alchemist' && this.discarder.source === 'in_play') {
-        let has_potions = _.any(this.discarder.player_cards.to_discard, function(card) {
+        let has_potions = _.some(this.discarder.player_cards.to_discard, function(card) {
           return card.name === 'Potion'
         })
         if (has_potions) {
@@ -64,7 +64,7 @@ DiscardEventProcessor = class DiscardEventProcessor {
         let upgrade_stack = _.find(this.discarder.game.cards, function(stack) {
           return stack.name === traveller.upgrade
         })
-        let discarding_upgrades = _.any(this.discarder.player_cards.to_discard, function(card) {
+        let discarding_upgrades = _.some(this.discarder.player_cards.to_discard, function(card) {
           return card.name === traveller.upgrade
         })
         if (upgrade_stack.count > 0 || discarding_upgrades) {

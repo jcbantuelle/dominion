@@ -25,7 +25,7 @@ Herald = class Herald extends Card {
       let top_card = player_cards.deck[0]
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(top_card)}`)
 
-      if (_.contains(_.words(top_card.types), 'action')) {
+      if (_.includes(_.words(top_card.types), 'action')) {
         player_cards.hand.push(player_cards.deck.shift())
         let card_player = new CardPlayer(game, player_cards, top_card.name, true)
         card_player.play()

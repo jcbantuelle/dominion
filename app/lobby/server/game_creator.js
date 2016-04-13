@@ -3,12 +3,12 @@ GameCreator = class GameCreator {
   constructor(players, cards) {
     this.players = players
     let events = _.filter(cards, function(card) {
-      return _.contains(CardList.events(), _.titleize(card.name))
+      return _.includes(CardList.events(), _.titleize(card.name))
     })
 
     this.events = this.event_cards(events)
     this.cards = _.reject(cards, function(card) {
-      return _.contains(CardList.events(), _.titleize(card.name))
+      return _.includes(CardList.events(), _.titleize(card.name))
     })
     this.colors = ['red', 'blue', 'yellow', 'green']
   }
@@ -52,7 +52,7 @@ GameCreator = class GameCreator {
 
   create_turn() {
     this.game.turn = {
-      player: _.first(this.game.players),
+      player: _.head(this.game.players),
       actions: 1,
       buys: 1,
       coins: 0,
@@ -250,7 +250,7 @@ GameCreator = class GameCreator {
       name: card.name,
       count: _.size(card_stack),
       embargos: 0,
-      top_card: _.first(card_stack),
+      top_card: _.head(card_stack),
       stack: card_stack,
       source: source,
       bane: card.bane,
@@ -271,9 +271,9 @@ GameCreator = class GameCreator {
   }
 
   stack_size(card) {
-    if (_.contains(_.words(card.types), 'victory')) {
+    if (_.includes(_.words(card.types), 'victory')) {
       return _.size(this.players) < 3 ? 8 : 12
-    } else if (_.contains(['Curse', 'Ruins'], card.name)) {
+    } else if (_.includes(['Curse', 'Ruins'], card.name)) {
       return _.size(this.players) === 1 ? 10 : _.size(this.players) * 10 - 10
     } else if (card.name === 'Copper') {
       return 60
@@ -291,7 +291,7 @@ GameCreator = class GameCreator {
       return 20
     } else if (card.name === 'Port') {
       return 12
-    } else if (_.contains(['Treasure Hunter', 'Warrior', 'Hero', 'Champion', 'Soldier', 'Fugitive', 'Disciple', 'Teacher'], card.name)) {
+    } else if (_.includes(['Treasure Hunter', 'Warrior', 'Hero', 'Champion', 'Soldier', 'Fugitive', 'Disciple', 'Teacher'], card.name)) {
       return 5
     } else {
       return 10
@@ -356,7 +356,7 @@ GameCreator = class GameCreator {
     if (this.black_market_deck && card_name !== 'Duchess') {
       cards = cards.concat(this.black_market_deck)
     }
-    return _.any(cards, function(card) {
+    return _.some(cards, function(card) {
       return card.name === card_name
     })
   }
@@ -364,12 +364,12 @@ GameCreator = class GameCreator {
   has_looters() {
     let black_market_looters = false
     if (this.black_market_deck) {
-      black_market_looters = _.any(this.black_market_deck, function(card) {
-        return _.contains(_.words(card.types), 'looter')
+      black_market_looters = _.some(this.black_market_deck, function(card) {
+        return _.includes(_.words(card.types), 'looter')
       })
     }
-    return black_market_looters || _.any(this.selected_kingdom_cards, function(card) {
-      return _.contains(_.words(card.top_card.types), 'looter')
+    return black_market_looters || _.some(this.selected_kingdom_cards, function(card) {
+      return _.includes(_.words(card.top_card.types), 'looter')
     })
   }
 
@@ -377,8 +377,8 @@ GameCreator = class GameCreator {
     if (this.black_market_deck) {
       cards = cards.concat(this.black_market_deck)
     }
-    return _.any(cards, function(card) {
-      return _.contains(['Marauder', 'Bandit Camp', 'Pillage'], card.name)
+    return _.some(cards, function(card) {
+      return _.includes(['Marauder', 'Bandit Camp', 'Pillage'], card.name)
     })
   }
 
@@ -402,14 +402,14 @@ GameCreator = class GameCreator {
   }
 
   bane_card(cards) {
-    let game_card_names = _.pluck(cards, 'name')
+    let game_card_names = _.map(cards, 'name')
     if (this.black_market_deck) {
-      game_card_names = game_card_names.concat(_.pluck(this.black_market_deck, 'name'))
+      game_card_names = game_card_names.concat(_.map(this.black_market_deck, 'name'))
     }
     var card
     do {
       card = CardList.pull_one()
-    } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.contains(game_card_names, card.name))
+    } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.includes(game_card_names, card.name))
     card.bane = true
     return this.game_card(card, 'kingdom')
   }
@@ -417,7 +417,7 @@ GameCreator = class GameCreator {
   prosperity_game() {
     let card_names = CardList.prosperity()
     let prosperity_count = _.size(_.filter(this.selected_kingdom_cards, function(card) {
-      return _.contains(card_names, _.titleize(card.name))
+      return _.includes(card_names, _.titleize(card.name))
     }))
     let random_number = this.random_number(1, _.size(this.selected_kingdom_cards))
     return prosperity_count >= random_number
@@ -426,27 +426,27 @@ GameCreator = class GameCreator {
   dark_ages_game() {
     let card_names = CardList.dark_ages()
     let dark_ages_count = _.size(_.filter(this.selected_kingdom_cards, function(card) {
-      return _.contains(card_names, _.titleize(card.name))
+      return _.includes(card_names, _.titleize(card.name))
     }))
     let random_number = this.random_number(1, _.size(this.selected_kingdom_cards))
     return dark_ages_count >= random_number
   }
 
   potion_game() {
-    return _.any(this.selected_kingdom_cards, function(card) {
+    return _.some(this.selected_kingdom_cards, function(card) {
       return card.top_card.potion_cost > 0
     })
   }
 
   journey_game() {
-    return _.any(this.selected_kingdom_cards.concat(this.events), function(card) {
-      return _.contains(['Ranger', 'Giant', 'Pilgrimage'], card.name)
+    return _.some(this.selected_kingdom_cards.concat(this.events), function(card) {
+      return _.includes(['Ranger', 'Giant', 'Pilgrimage'], card.name)
     })
   }
 
   color_game() {
-    return _.any(this.selected_kingdom_cards.concat(this.events), function(card) {
-      return _.contains(['Peasant', 'Ferry', 'Plan', 'Seaway', 'Lost Arts', 'Training', 'Pathfinding'], card.name)
+    return _.some(this.selected_kingdom_cards.concat(this.events), function(card) {
+      return _.includes(['Peasant', 'Ferry', 'Plan', 'Seaway', 'Lost Arts', 'Training', 'Pathfinding'], card.name)
     })
   }
 
@@ -456,7 +456,7 @@ GameCreator = class GameCreator {
   }
 
   set_trade_route_token(card) {
-    if (card.name != 'Knights' && _.contains(_.words(card.top_card.types), 'victory')) {
+    if (card.name != 'Knights' && _.includes(_.words(card.top_card.types), 'victory')) {
       card.has_trade_route_token = true
     }
     return card

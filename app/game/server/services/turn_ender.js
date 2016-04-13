@@ -182,7 +182,7 @@ TurnEnder = class TurnEnder {
   }
 
   is_possessed_next_turn() {
-    let next_extra_turn = _.first(this.game.extra_turns)
+    let next_extra_turn = _.head(this.game.extra_turns)
     if (next_extra_turn && next_extra_turn.type === 'Possession') {
       let next_player_query = new NextPlayerQuery(this.game, next_extra_turn.player._id)
       return next_player_query.next_player()._id === this.game.turn.player._id

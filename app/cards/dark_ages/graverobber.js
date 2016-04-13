@@ -57,7 +57,7 @@ Graverobber = class Graverobber extends Card {
       }
     } else if (response === 'trash') {
       let eligible_cards = _.filter(player_cards.hand, function(card) {
-        return _.contains(_.words(card.types), 'action')
+        return _.includes(_.words(card.types), 'action')
       })
       if (_.size(eligible_cards) > 1) {
         let turn_event_id = TurnEventModel.insert({

@@ -5,7 +5,7 @@ CardTrasher = class CardTrasher {
     this.player_cards = player_cards
     this.source = source
     if (!card_names) {
-      this.card_names = _.pluck(player_cards[source], 'name')
+      this.card_names = _.map(player_cards[source], 'name')
     } else {
       this.card_names = _.isArray(card_names) ? card_names : [card_names]
     }
@@ -48,11 +48,11 @@ CardTrasher = class CardTrasher {
   }
 
   has_events() {
-    let has_event_cards = _.any(this.card_names, (card_name) => {
-      return _.contains(TrashEventProcessor.event_cards(), card_name)
+    let has_event_cards = _.some(this.card_names, (card_name) => {
+      return _.includes(TrashEventProcessor.event_cards(), card_name)
     })
-    let has_reaction_cards = _.any(this.player_cards.hand, (card) => {
-      return _.contains(TrashEventProcessor.reaction_cards(), card.name)
+    let has_reaction_cards = _.some(this.player_cards.hand, (card) => {
+      return _.includes(TrashEventProcessor.reaction_cards(), card.name)
     })
     return has_event_cards || has_reaction_cards
   }

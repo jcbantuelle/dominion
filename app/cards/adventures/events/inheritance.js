@@ -9,7 +9,7 @@ Inheritance = class Inheritance extends Event {
 
     let eligible_cards = _.filter(game.cards, function(card) {
       let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost <= 4 && card.top_card.potion_cost === 0 && _.contains(_.words(card.top_card.types), 'action') && !_.contains(_.words(card.top_card.types), 'victory')
+      return card.count > 0 && card.top_card.purchasable && coin_cost <= 4 && card.top_card.potion_cost === 0 && _.includes(_.words(card.top_card.types), 'action') && !_.includes(_.words(card.top_card.types), 'victory')
     })
 
     if (_.size(eligible_cards) > 0) {
@@ -39,7 +39,7 @@ Inheritance = class Inheritance extends Event {
     game.cards[stack_index].stack.shift()
     game.cards[stack_index].count -= 1
     if (game.cards[stack_index].count > 0) {
-      game.cards[stack_index].top_card = _.first(game.cards[stack_index].stack)
+      game.cards[stack_index].top_card = _.head(game.cards[stack_index].stack)
     }
     player_cards.tokens.estate = selected_cards[0].top_card
     player_cards.estate.push(inherited_card)

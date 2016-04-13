@@ -53,7 +53,7 @@ RoyalCarriage = class RoyalCarriage extends Card {
       let replayed_destination = card_player.play()
 
       let reserve_destination = 'in_play'
-      if (_.contains(['duration', 'permanent'], replayed_destination)) {
+      if (_.includes(['duration', 'permanent'], replayed_destination)) {
         reserve_destination = replayed_destination
       }
       player_cards[reserve_destination].push(reserve)

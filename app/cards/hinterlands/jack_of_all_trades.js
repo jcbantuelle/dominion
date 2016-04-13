@@ -56,7 +56,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     } else {
       let eligible_cards = _.filter(player_cards.hand, function(card) {
-        return !_.contains(_.words(card.types), 'treasure')
+        return !_.includes(_.words(card.types), 'treasure')
       })
       if (_.size(eligible_cards) > 0) {
         let turn_event_id = TurnEventModel.insert({

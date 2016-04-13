@@ -29,7 +29,7 @@ Spoils = class Spoils extends Card {
 
       spoils_pile.count += 1
       spoils_pile.stack.unshift(spoils_card)
-      spoils_pile.top_card = _.first(spoils_pile.stack)
+      spoils_pile.top_card = _.head(spoils_pile.stack)
 
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(this)} to the Spoils pile`)
     }

@@ -14,7 +14,7 @@ Soldier = class Soldier extends Traveller {
 
   play(game, player_cards) {
     let attack_count = _.size(_.filter(player_cards.in_play.concat(player_cards.duration).concat(player_cards.permanent), function(card) {
-      return _.contains(_.words(card.types), 'attack')
+      return _.includes(_.words(card.types), 'attack')
     }))
 
     let gained_coins = CoinGainer.gain(game, player_cards, 2 + attack_count)
@@ -45,7 +45,7 @@ Soldier = class Soldier extends Traveller {
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
     card_discarder.discard()
   }
 

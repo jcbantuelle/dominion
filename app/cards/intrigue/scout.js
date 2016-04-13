@@ -29,7 +29,7 @@ Scout = class Scout extends Card {
 
       let victory_cards = []
       _.each(revealed_cards, function(card) {
-        if (_.contains(_.words(card.types), 'victory')) {
+        if (_.includes(_.words(card.types), 'victory')) {
           victory_cards.push(card)
         } else {
           player_cards.revealed.push(card)

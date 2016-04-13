@@ -10,7 +10,7 @@ KingsCourt = class KingsCourt extends Card {
 
   play(game, player_cards) {
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'action')
+      return _.includes(_.words(card.types), 'action')
     })
 
     if (_.size(eligible_cards) > 0) {

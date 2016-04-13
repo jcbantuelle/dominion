@@ -20,7 +20,7 @@ GameEnder = class GameEnder {
   }
 
   update_players() {
-    let player_ids = _.pluck(this.game.players, '_id')
+    let player_ids = _.map(this.game.players, '_id')
     Meteor.users.update({_id: {$in: player_ids}}, {$unset: {current_game: ''}}, {multi: true})
   }
 
@@ -29,10 +29,10 @@ GameEnder = class GameEnder {
   }
 
   update_player_rankings() {
-    let usernames = _.pluck(this.game.players, 'username')
+    let usernames = _.map(this.game.players, 'username')
     let player_rankings = PlayerRankings.find({username: {$in: usernames}}).fetch()
     _.each(player_rankings, (player_ranking) => {
-      let winner = _.contains(this.game.winners, player_ranking.username)
+      let winner = _.includes(this.game.winners, player_ranking.username)
       if (winner) {
         player_ranking.wins += 1
       } else {
@@ -101,9 +101,9 @@ GameEnder = class GameEnder {
       return {
         name: card_name,
         count: _.size(cards),
-        types: _.first(cards).types,
-        point_variable: _.first(cards).point_variable,
-        points: _.first(cards).points * _.size(cards)
+        types: _.head(cards).types,
+        point_variable: _.head(cards).point_variable,
+        points: _.head(cards).points * _.size(cards)
       }
     }).value()
   }
@@ -115,7 +115,7 @@ GameEnder = class GameEnder {
       return {
         name: card_name,
         count: _.size(cards),
-        types: _.first(cards).types
+        types: _.head(cards).types
       }
     }).value()
   }
@@ -127,7 +127,7 @@ GameEnder = class GameEnder {
   }
 
   top_score() {
-    return _.first(this.game.scores).points
+    return _.head(this.game.scores).points
   }
 
   winners() {
@@ -137,7 +137,7 @@ GameEnder = class GameEnder {
     if (_.size(winners) > 1) {
       winners = this.tiebreaker(winners)
     }
-    return _.pluck(winners, 'username').join(', ')
+    return _.map(winners, 'username').join(', ')
   }
 
   tiebreaker(top_scorers) {

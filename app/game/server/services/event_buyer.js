@@ -16,7 +16,7 @@ EventBuyer = class EventBuyer {
   }
 
   update_phase() {
-    if (_.contains(['action', 'treasure'], this.game.turn.phase)) {
+    if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
       this.game.turn.phase = 'buy'
     }
   }
@@ -45,7 +45,7 @@ EventBuyer = class EventBuyer {
   }
 
   not_forbidden() {
-    return !_.contains(this.game.turn.forbidden_events, this.event.name()) && !(this.event.name() === 'Inheritance' && this.player_cards.tokens.estate)
+    return !_.includes(this.game.turn.forbidden_events, this.event.name()) && !(this.event.name() === 'Inheritance' && this.player_cards.tokens.estate)
   }
 
   update_log() {

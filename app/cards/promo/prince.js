@@ -39,7 +39,7 @@ Prince = class Prince extends Card {
 
       let eligible_cards = _.filter(player_cards.hand, function(card) {
         let coin_cost = CostCalculator.calculate(game, card, all_player_cards)
-        return coin_cost <= 4 && card.potion_cost === 0 && _.contains(_.words(card.types), 'action')
+        return coin_cost <= 4 && card.potion_cost === 0 && _.includes(_.words(card.types), 'action')
       })
 
       if (_.size(eligible_cards) > 0) {

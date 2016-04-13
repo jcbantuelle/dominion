@@ -17,7 +17,7 @@ Warrior = class Warrior extends Traveller {
     card_drawer.draw(2)
 
     game.turn.traveller_count = _.size(_.filter(player_cards.in_play.concat(player_cards.playing), function(card) {
-      return _.contains(_.words(card.types), 'traveller')
+      return _.includes(_.words(card.types), 'traveller')
     }))
 
     this.all_player_cards = PlayerCardsModel.find(game._id)

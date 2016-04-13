@@ -31,7 +31,7 @@ CardPlayer = class CardPlayer {
         this.mark_played_card_as_permanent()
       }
 
-      if (_.contains(_.words(this.card.types), 'action')) {
+      if (_.includes(_.words(this.card.types), 'action')) {
         this.action_resolution_events()
       }
       if (!this.free_play) {
@@ -65,7 +65,7 @@ CardPlayer = class CardPlayer {
 
   play_card(auto_update = true) {
     this.token_effects()
-    if (_.contains(this.card.types(this.player_cards), 'action') && this.game.turn.player._id === this.player_cards.player_id) {
+    if (_.includes(this.card.types(this.player_cards), 'action') && this.game.turn.player._id === this.player_cards.player_id) {
       this.game.turn.played_actions += 1
     }
     let result = this.card.play(this.game, this.player_cards, this)
@@ -81,7 +81,7 @@ CardPlayer = class CardPlayer {
 
   update_phase() {
     if (!this.free_play) {
-      if (this.game.turn.phase == 'action' && _.contains(this.card.types(this.player_cards), 'treasure')) {
+      if (this.game.turn.phase == 'action' && _.includes(this.card.types(this.player_cards), 'treasure')) {
         this.game.turn.phase = 'treasure'
       }
     }
@@ -117,7 +117,7 @@ CardPlayer = class CardPlayer {
 
   use_action() {
     if (!this.free_play) {
-      if (_.contains(this.card.types(this.player_cards), 'action')) {
+      if (_.includes(this.card.types(this.player_cards), 'action')) {
         this.game.turn.actions -= 1
       }
     }
@@ -137,9 +137,9 @@ CardPlayer = class CardPlayer {
   }
 
   is_valid_play() {
-    if (_.contains(this.card.types(this.player_cards), 'action')) {
+    if (_.includes(this.card.types(this.player_cards), 'action')) {
       return this.is_valid_action()
-    } else if (_.contains(this.card.types(this.player_cards), 'treasure')) {
+    } else if (_.includes(this.card.types(this.player_cards), 'treasure')) {
       return this.is_valid_treasure()
     }
   }
@@ -149,7 +149,7 @@ CardPlayer = class CardPlayer {
   }
 
   is_valid_treasure() {
-    return _.contains(['action', 'treasure'], this.game.turn.phase)
+    return _.includes(['action', 'treasure'], this.game.turn.phase)
   }
 
   card_exists() {

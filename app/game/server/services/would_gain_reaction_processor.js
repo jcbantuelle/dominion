@@ -7,7 +7,7 @@ WouldGainReactionProcessor = class WouldGainReactionProcessor {
 
   process() {
     let reaction_cards = _.filter(this.gainer.player_cards.hand, (card) => {
-      return _.contains(this.would_gain_reaction_cards, card.inherited_name)
+      return _.includes(this.would_gain_reaction_cards, card.inherited_name)
     })
     if (!_.isEmpty(reaction_cards)) {
       let gained_card = ClassCreator.create(this.gainer.card_name)

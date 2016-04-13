@@ -13,7 +13,7 @@ Counterfeit = class Counterfeit extends Card {
     game.turn.buys += 1
 
     let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'treasure')
+      return _.includes(_.words(card.types), 'treasure')
     })
 
     if (_.size(eligible_cards) > 0) {

@@ -12,7 +12,7 @@ Crossroads = class Crossroads extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
 
     let victory_cards = _.filter(player_cards.hand, function(card) {
-      return _.contains(_.words(card.types), 'victory')
+      return _.includes(_.words(card.types), 'victory')
     })
     if (_.size(victory_cards) > 0) {
       let card_drawer = new CardDrawer(game, player_cards)

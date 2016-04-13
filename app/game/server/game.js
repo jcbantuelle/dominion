@@ -7,7 +7,7 @@ UserStatus.events.on('connectionLogout', function(player) {
 
 Meteor.methods({
   sendGameMessage: function(message, game_id) {
-    let player_ids = _.pluck(game(game_id).players, '_id')
+    let player_ids = _.map(game(game_id).players, '_id')
     Streamy.sessionsForUsers(player_ids).emit('game_message', {
       username: Meteor.user().username,
       message: message
@@ -152,7 +152,7 @@ function snapshot() {
 function player_connection_message(game_id, username, direction) {
   let game = GameModel.findOne(game_id)
   if (game) {
-    let player_ids = _.pluck(game.players, '_id')
+    let player_ids = _.map(game.players, '_id')
     Streamy.sessionsForUsers(player_ids).emit('game_message', {
       message: `<em>${username} has ${direction} the game</em>`
     })

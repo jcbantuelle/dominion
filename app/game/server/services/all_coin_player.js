@@ -24,7 +24,7 @@ AllCoinPlayer = class AllCoinPlayer {
 
   find_playable_cards() {
     return _.filter(this.player_cards.hand, (card) => {
-      return _.contains(AllCoinPlayer.bulk_playable_treasures(), card.name)
+      return _.includes(AllCoinPlayer.bulk_playable_treasures(), card.name)
     })
   }
 

@@ -28,7 +28,7 @@ Madman = class Madman extends Card {
 
       madman_pile.count += 1
       madman_pile.stack.unshift(madman_card)
-      madman_pile.top_card = _.first(madman_pile.stack)
+      madman_pile.top_card = _.head(madman_pile.stack)
 
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(madman_card)} to the Madman pile`)
 

@@ -47,7 +47,7 @@ Margrave = class Margrave extends Card {
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
     card_discarder.discard()
   }
 

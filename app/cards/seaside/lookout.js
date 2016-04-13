@@ -73,7 +73,7 @@ Lookout = class Lookout extends Card {
   }
 
   static discard_card(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.pluck(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(selected_cards, 'name'))
     card_discarder.discard()
 
     player_cards.deck.unshift(player_cards.revealed[0])

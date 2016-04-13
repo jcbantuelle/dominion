@@ -38,7 +38,7 @@ Apothecary = class Apothecary extends Card {
 
       let coppers_and_potions = []
       _.each(revealed_cards, function(card) {
-        if (_.contains(['Copper', 'Potion'], card.name)) {
+        if (_.includes(['Copper', 'Potion'], card.name)) {
           coppers_and_potions.push(card)
         } else {
           player_cards.revealed.push(card)

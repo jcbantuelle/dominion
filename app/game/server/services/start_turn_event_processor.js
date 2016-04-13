@@ -33,7 +33,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
 
     let reserve_events = _.filter(this.player_cards.tavern, function(card) {
       card.start_event_type = 'Reserve'
-      return _.contains(StartTurnEventProcessor.reserve_events(), card.inherited_name)
+      return _.includes(StartTurnEventProcessor.reserve_events(), card.inherited_name)
     })
 
     this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events)
@@ -53,7 +53,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this.start_turn_events)
         turn_event_processor.process(StartTurnEventProcessor.event_order)
       } else {
-        StartTurnEventProcessor.event_order(this.game, this.player_cards, _.pluck(this.start_turn_events, 'name'), this.start_turn_events)
+        StartTurnEventProcessor.event_order(this.game, this.player_cards, _.map(this.start_turn_events, 'name'), this.start_turn_events)
       }
 
       this.player_cards.duration_effects = []

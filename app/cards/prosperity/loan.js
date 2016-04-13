@@ -46,7 +46,7 @@ Loan = class Loan extends Card {
       }
       let card = player_cards.deck.shift()
       player_cards.revealed.push(card)
-      if (_.contains(_.words(card.types), 'treasure')) {
+      if (_.includes(_.words(card.types), 'treasure')) {
         player_cards.revealed_treasure = card
       }
     }

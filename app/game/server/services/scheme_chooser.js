@@ -2,7 +2,7 @@ SchemeChooser = class SchemeChooser {
 
   static choose(game, player_cards) {
     let action_cards = _.filter(player_cards.in_play, (card) => {
-      return _.contains(_.words(card.types), 'action')
+      return _.includes(_.words(card.types), 'action')
     })
     if (!_.isEmpty(action_cards)) {
       let turn_event_id = TurnEventModel.insert({

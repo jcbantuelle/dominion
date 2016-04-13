@@ -21,7 +21,7 @@ CoinTokenPlayer = class CoinTokenPlayer {
   }
 
   can_play() {
-    return _.contains(['action', 'treasure'], this.game.turn.phase) && this.player_cards.coin_tokens > 0
+    return _.includes(['action', 'treasure'], this.game.turn.phase) && this.player_cards.coin_tokens > 0
   }
 
 }

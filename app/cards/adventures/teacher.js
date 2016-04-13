@@ -63,7 +63,7 @@ Teacher = class Teacher extends Card {
     let token = response[0]
 
     let eligible_piles = _.filter(game.cards, function(card) {
-      let has_player_token = _.any(card.tokens, function(token) {
+      let has_player_token = _.some(card.tokens, function(token) {
         return token.username === player_cards.username
       })
       return !has_player_token && card.top_card.purchasable

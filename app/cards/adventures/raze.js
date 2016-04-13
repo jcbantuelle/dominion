@@ -17,7 +17,7 @@ Raze = class Raze extends Card {
       new_card.source = 'H'
       return new_card
     })
-    let raze_in_play = _.any(player_cards.playing, function(card) {
+    let raze_in_play = _.some(player_cards.playing, function(card) {
       return card.name === player.card.name()
     })
     if (raze_in_play) {

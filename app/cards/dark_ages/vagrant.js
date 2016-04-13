@@ -25,7 +25,7 @@ Vagrant = class Vagrant extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
 
       let types = _.words(revealed_card.types)
-      if (_.contains(types, 'curse') || _.contains(types, 'ruins') || _.contains(types, 'shelter') || _.contains(types, 'victory')) {
+      if (_.includes(types, 'curse') || _.includes(types, 'ruins') || _.includes(types, 'shelter') || _.includes(types, 'victory')) {
         player_cards.hand.push(revealed_card)
         game.log.push(`&nbsp;&nbsp;and puts it in their hand`)
       } else {

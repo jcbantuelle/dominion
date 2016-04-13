@@ -42,15 +42,15 @@ Ironworks = class Ironworks extends Card {
     let types = _.words(gained_card.types)
 
     let gains = []
-    if (_.contains(types, 'action')) {
+    if (_.includes(types, 'action')) {
       game.turn.actions += 1
       gains.push('+1 action')
     }
-    if (_.contains(types, 'treasure')) {
+    if (_.includes(types, 'treasure')) {
       let gained_coins = CoinGainer.gain(game, player_cards, 1)
       gains.push(`+$${gained_coins}`)
     }
-    if (_.contains(types, 'victory')) {
+    if (_.includes(types, 'victory')) {
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(1)
     }

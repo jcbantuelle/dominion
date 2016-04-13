@@ -25,7 +25,7 @@ Trade = class Trade extends Event {
   }
 
   static trash_cards(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', _.pluck(selected_cards, 'name'))
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
     card_trasher.trash()
 
     _.times(_.size(selected_cards), function() {

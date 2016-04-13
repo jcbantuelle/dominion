@@ -25,7 +25,7 @@ GainEventProcessor = class GainEventProcessor {
   find_gain_events() {
     this.gain_events = []
 
-    if (this.gainer.player_cards._id === this.player_cards._id && _.contains(GainEventProcessor.event_cards(), this.gainer.gained_card.inherited_name)) {
+    if (this.gainer.player_cards._id === this.player_cards._id && _.includes(GainEventProcessor.event_cards(), this.gainer.gained_card.inherited_name)) {
       if (this.gainer.gained_card.name === 'Duchy') {
         if (this.gainer.game.duchess) {
           this.gain_events.push(this.gainer.gained_card)
@@ -36,13 +36,13 @@ GainEventProcessor = class GainEventProcessor {
     }
 
     _.each(this.player_cards.hand, (card) => {
-      if (_.contains(GainEventProcessor.reaction_cards(), card.inherited_name)) {
+      if (_.includes(GainEventProcessor.reaction_cards(), card.inherited_name)) {
         if (card.name === 'Fools Gold') {
           if (this.player_cards._id !== this.gainer.player_cards._id && _.last(this.gainer.game.turn.gain_event_stack) === 'Province') {
             this.gain_events.push(card)
           }
         } else if (card.inherited_name === 'Watchtower') {
-          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.first(this.player_cards[this.gainer.destination]).name === this.gainer.card_name) {
+          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).name === this.gainer.card_name) {
             this.gain_events.push(card)
           }
         }
@@ -50,9 +50,9 @@ GainEventProcessor = class GainEventProcessor {
     })
 
     _.each(this.player_cards.in_play, (card) => {
-      if (_.contains(GainEventProcessor.in_play_event_cards(), card.inherited_name)) {
+      if (_.includes(GainEventProcessor.in_play_event_cards(), card.inherited_name)) {
         if (card.inherited_name === 'Royal Seal') {
-          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.first(this.player_cards[this.gainer.destination]).name === this.gainer.card_name) {
+          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).name === this.gainer.card_name) {
             this.gain_events.push(card)
           }
         } else {
@@ -62,7 +62,7 @@ GainEventProcessor = class GainEventProcessor {
     })
 
     _.each(this.player_cards.tavern, (card) => {
-      if (_.contains(GainEventProcessor.reserve_cards(), card.inherited_name)) {
+      if (_.includes(GainEventProcessor.reserve_cards(), card.inherited_name)) {
         if (card.inherited_name === 'Duplicate') {
           if (this.player_cards._id === this.gainer.player_cards._id) {
             let card_cost = CostCalculator.calculate(this.gainer.game, this.gainer.gained_card)
@@ -80,7 +80,7 @@ GainEventProcessor = class GainEventProcessor {
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, function(event) {
-        return _.contains(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()), event.inherited_name)
+        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()), event.inherited_name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.gainer.player_cards, this.gain_events, this)
@@ -116,7 +116,7 @@ GainEventProcessor = class GainEventProcessor {
         card_name = 'InheritedEstate'
       }
       let selected_card = ClassCreator.create(card_name)
-      if (_.contains(GainEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
+      if (_.includes(GainEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
         selected_card.gain_reaction(game, player_cards, gain_event_processor.gainer)
         if (card_name === 'Fools Gold') {
           let fools_gold = _.filter(player_cards.hand, function(card) {
@@ -134,7 +134,7 @@ GainEventProcessor = class GainEventProcessor {
         gain_event_processor.gain_events.splice(gain_event_index, 1)
       }
 
-      if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.first(player_cards[gain_event_processor.gainer.destination]).name !== gain_event_processor.gainer.card_name) {
+      if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).name !== gain_event_processor.gainer.card_name) {
         gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
           return event.inherited_name !== 'Watchtower' && event.name !== 'Royal Seal'
         })
