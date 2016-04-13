@@ -30,7 +30,7 @@ TokenPlacer = class TokenPlacer {
       return token_index !== -1
     })
     if (old_pile_index !== -1) {
-      delete this.game.cards[old_pile_index].tokens[token_index]
+      this.game.cards[old_pile_index].tokens.splice(token_index, 1)
     }
   }
 
@@ -39,7 +39,7 @@ TokenPlacer = class TokenPlacer {
       return token.effect === this.token
     })
     if (token_index !== -1) {
-      delete this.player_cards.tokens.pile[token_index]
+      this.player_cards.tokens.pile.splice(token_index, 1)
     }
   }
 
