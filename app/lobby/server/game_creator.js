@@ -1,14 +1,16 @@
 GameCreator = class GameCreator {
 
-  constructor(players, cards) {
+  constructor(players, cards, exclusions) {
     this.players = players
+    this.exclusions = exclusions
+    console.log(this.exclusions)
     let events = _.filter(cards, function(card) {
-      return _.includes(CardList.events(), _.titleize(card.name))
+      return _.includes(CardList.event_cards(), _.titleize(card.name))
     })
 
     this.events = this.event_cards(events)
     this.cards = _.reject(cards, function(card) {
-      return _.includes(CardList.events(), _.titleize(card.name))
+      return _.includes(CardList.event_cards(), _.titleize(card.name))
     })
     this.colors = ['red', 'blue', 'yellow', 'green']
   }
@@ -408,7 +410,7 @@ GameCreator = class GameCreator {
     }
     var card
     do {
-      card = CardList.pull_one()
+      card = CardList.pull_one(this.exclusions)
     } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.includes(game_card_names, card.name))
     card.bane = true
     return this.game_card(card, 'kingdom')

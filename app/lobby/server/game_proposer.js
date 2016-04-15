@@ -19,7 +19,8 @@ GameProposer = class GameProposer {
         username: Meteor.user().username
       },
       players: this.players,
-      cards: this.cards
+      cards: this.cards,
+      exclusions: this.exclusions
     })
   }
 

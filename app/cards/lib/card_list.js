@@ -7,12 +7,12 @@ CardList = class CardList {
   pull_set() {
     let game_cards = _.sampleSize(this.cards, 10)
     let events = _.filter(game_cards, function(card_name) {
-      return _.includes(CardList.events(), _.titleize(card_name))
+      return _.includes(CardList.event_cards(), _.titleize(card_name))
     })
     let event_count = _.size(events)
     if (event_count > 2) {
       game_cards = _.reject(game_cards, function(card_name) {
-        return _.includes(CardList.events(), _.titleize(card_name))
+        return _.includes(CardList.event_cards(), _.titleize(card_name))
       })
       game_cards.push(events[0])
       game_cards.push(events[1])
@@ -31,9 +31,9 @@ CardList = class CardList {
     _.times(replacement_count, function() {
       do {
         invalid_replacement = true
-        let replacement_card_name = CardList.pull_one().name
+        let replacement_card_name = CardList.pull_one(this.exclusions).name
         if (!_.includes(game_cards, _.titleize(replacement_card_name))) {
-          if (_.includes(CardList.events(), _.titleize(replacement_card_name))) {
+          if (_.includes(CardList.event_cards(), _.titleize(replacement_card_name))) {
             if (event_count < 2) {
               game_cards.push(replacement_card_name)
               event_count += 1
@@ -52,12 +52,16 @@ CardList = class CardList {
     return ['base', 'intrigue', 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures']
   }
 
-  static pull_one() {
-    return ClassCreator.create(_.sampleSize(CardList.full_list(), 1)[0]).to_h()
+  static event_sets() {
+    return ['adventures', 'promo']
+  }
+
+  static pull_one(exclusions = []) {
+    return ClassCreator.create(_.sampleSize(CardList.full_list(exclusions), 1)[0]).to_h()
   }
 
   static full_list(exclusions = []) {
-    return CardList.kingdom_cards(exclusions).concat(CardList.events())
+    return CardList.kingdom_cards(exclusions).concat(CardList.event_cards(exclusions))
   }
 
   static kingdom_cards(exclusions = []) {
@@ -68,7 +72,17 @@ CardList = class CardList {
       return card_list
     }, [])
   }
-  static events() {
+
+  static event_cards(exclusions = []) {
+    return _.reduce(CardList.event_sets(), function(card_list, set) {
+      if (!_.includes(exclusions, set)) {
+        card_list = card_list.concat(CardList[`${set}_events`]())
+      }
+      return card_list
+    }, [])
+  }
+
+  static adventures_events() {
     return [
       'Alms',
       'Borrow',
@@ -86,11 +100,16 @@ CardList = class CardList {
       'Raid',
       'Seaway',
       'Trade',
-      'Summon',
       'LostArts',
       'Training',
       'Inheritance',
       'Pathfinding'
+    ]
+  }
+
+  static promo_events() {
+    return [
+      'Summon'
     ]
   }
 
