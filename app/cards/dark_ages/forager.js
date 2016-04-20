@@ -34,9 +34,7 @@ Forager = class Forager extends Card {
     let trashed_treasures = _.filter(game.trash, function(card) {
       return _.includes(_.words(card.types), 'treasure')
     })
-    let unique_treasure_count = _.size(_.uniq(trashed_treasures, function(card) {
-      return card.name
-    }))
+    let unique_treasure_count = _.size(_.uniqBy(trashed_treasures, 'name'))
 
     let gained_coins = CoinGainer.gain(game, player_cards, unique_treasure_count)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)

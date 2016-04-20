@@ -10,9 +10,7 @@ Journeyman = class Journeyman extends Card {
 
   play(game, player_cards) {
     if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
-      let unique_cards = _.uniq(AllPlayerCardsQuery.find(player_cards), function(card) {
-        return card.name
-      })
+      let unique_cards = _.uniqBy(AllPlayerCardsQuery.find(player_cards), 'name')
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,

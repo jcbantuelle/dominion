@@ -12,7 +12,7 @@ Pilgrimage = class Pilgrimage extends Event {
 
     if (player_cards.tokens.journey === 'up') {
       let cards_in_play = player_cards.in_play.concat(player_cards.duration).concat(player_cards.permanent)
-      let unique_cards = _.uniq(cards_in_play, 'name')
+      let unique_cards = _.uniqBy(cards_in_play, 'name')
       if (_.size(unique_cards) > 0) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,

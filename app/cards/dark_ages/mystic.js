@@ -16,9 +16,7 @@ Mystic = class Mystic extends Card {
     if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
       PlayerCardsModel.update(game._id, player_cards)
 
-      let unique_cards = _.uniq(AllPlayerCardsQuery.find(player_cards), function(card) {
-        return card.name
-      })
+      let unique_cards = _.uniqBy(AllPlayerCardsQuery.find(player_cards), 'name')
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,

@@ -14,9 +14,7 @@ Menagerie = class Menagerie extends Card {
 
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
 
-    let unique_cards = _.uniq(player_cards.hand, function(card) {
-      return card.name
-    })
+    let unique_cards = _.uniqBy(player_cards.hand, 'name')
 
     let card_count = _.size(unique_cards) === _.size(player_cards.hand) ? 3 : 1
 

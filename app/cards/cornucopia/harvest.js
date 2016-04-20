@@ -24,9 +24,7 @@ Harvest = class Harvest extends Card {
 
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
-      let unique_cards = _.uniq(player_cards.revealed, function(card) {
-        return card.name
-      })
+      let unique_cards = _.uniqBy(player_cards.revealed, 'name')
 
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()

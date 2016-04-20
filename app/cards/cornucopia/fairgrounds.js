@@ -13,9 +13,7 @@ Fairgrounds = class Fairgrounds extends Card {
   }
 
   point_variable(player_cards) {
-    let unique_cards = _.uniq(player_cards, function(card) {
-      return card.name
-    })
+    let unique_cards = _.uniqBy(player_cards, 'name')
     return _.size(unique_cards)
   }
 

@@ -9,9 +9,7 @@ HornOfPlenty = class HornOfPlenty extends Card {
   }
 
   play(game, player_cards) {
-    let unique_cards = _.uniq(player_cards.in_play.concat(player_cards.playing), function(card) {
-      return card.name
-    })
+    let unique_cards = _.uniqBy(player_cards.in_play.concat(player_cards.playing), 'name')
 
     let all_player_cards = PlayerCardsModel.find(game._id)
 

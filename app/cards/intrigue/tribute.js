@@ -25,9 +25,7 @@ Tribute = class Tribute extends Card {
 
     game.log.push(`&nbsp;&nbsp;<strong>${next_player_cards.username}</strong> reveals ${CardView.render(next_player_cards.revealed)}`)
 
-    let revealed_cards = _.uniq(next_player_cards.revealed, function(card) {
-      return card.name
-    })
+    let revealed_cards = _.uniqBy(next_player_cards.revealed, 'name')
     let card_discarder = new CardDiscarder(game, next_player_cards, 'revealed')
     card_discarder.discard()
     PlayerCardsModel.update(game._id, next_player_cards)

@@ -14,10 +14,7 @@ Contraband = class Contraband extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
 
     let eligible_cards = _.reduce(game.cards, function(cards, card) {
-      cards = cards.concat(_.uniq(card.stack, function(stack_card) {
-        return stack_card.name
-      }))
-      return cards
+      return cards.concat(_.uniqBy(card.stack, 'name'))
     }, [])
     if (game.black_market_deck) {
       eligible_cards = eligible_cards.concat(game.black_market_deck)
