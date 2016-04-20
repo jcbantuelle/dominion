@@ -31,7 +31,7 @@ CardTrasher = class CardTrasher {
     }
 
     if (!events && !_.isEmpty(this.player_cards.trash)) {
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> trashes ${CardView.render(this.player_cards.trash)}`)
+      this.update_log(this.player_cards.trash)
     }
 
     _.each(this.player_cards.trash, (trashed_card) => {
@@ -75,7 +75,7 @@ CardTrasher = class CardTrasher {
       if (trashed_card.misfit) {
         trashed_card = trashed_card.misfit
       }
-      if (this.game.turn.possessed) {
+      if (this.game.turn.possessed && this.player_cards.player_id === this.game.turn.player._id) {
         this.player_cards.possession_trash.push(trashed_card)
       } else {
         if (trashed_card.name === 'Estate' && this.player_cards.tokens.estate) {
@@ -86,10 +86,10 @@ CardTrasher = class CardTrasher {
     }
   }
 
-  update_log(card) {
-    let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> trashes ${CardView.render(card)}`
-    if (this.game.turn.possessed) {
-      log_message += ', setting the cards aside'
+  update_log(cards) {
+    let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> trashes ${CardView.render(cards)}`
+    if (this.game.turn.possessed && this.player_cards.player_id === this.game.turn.player._id) {
+      log_message += ', setting the card(s) aside'
     }
     this.game.log.push(log_message)
   }

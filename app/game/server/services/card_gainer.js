@@ -190,7 +190,7 @@ CardGainer = class CardGainer {
   update_log() {
     if (!this.buy || this.gain_from_game_cards) {
       let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(this.gained_card)}`
-      if (this.game.turn.possessed) {
+      if (this.game.turn.possessed && this.possessed_player !== this.player_cards.username) {
         log_message += ` instead of ${this.possessed_player}`
       }
       if (this.destination === 'hand') {
