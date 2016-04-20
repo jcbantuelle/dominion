@@ -3,7 +3,6 @@ GameCreator = class GameCreator {
   constructor(players, cards, exclusions) {
     this.players = players
     this.exclusions = exclusions
-    console.log(this.exclusions)
     let events = _.filter(cards, function(card) {
       return _.includes(CardList.event_cards(), _.titleize(card.name))
     })
