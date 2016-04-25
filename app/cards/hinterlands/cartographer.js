@@ -55,19 +55,19 @@ Cartographer = class Cartographer extends Card {
     } else {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(selected_cards, 'name'))
       card_discarder.discard()
+    }
 
-      if (_.size(player_cards.revealed) > 0) {
-        let turn_event_id = TurnEventModel.insert({
-          game_id: game._id,
-          player_id: player_cards.player_id,
-          username: player_cards.username,
-          type: 'sort_cards',
-          instructions: 'Choose order to place cards on deck: (leftmost will be top card)',
-          cards: player_cards.revealed
-        })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        turn_event_processor.process(Cartographer.replace_cards)
-      }
+    if (_.size(player_cards.revealed) > 0) {
+      let turn_event_id = TurnEventModel.insert({
+        game_id: game._id,
+        player_id: player_cards.player_id,
+        username: player_cards.username,
+        type: 'sort_cards',
+        instructions: 'Choose order to place cards on deck: (leftmost will be top card)',
+        cards: player_cards.revealed
+      })
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      turn_event_processor.process(Cartographer.replace_cards)
     }
   }
 
