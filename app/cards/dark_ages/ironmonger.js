@@ -71,7 +71,8 @@ Ironmonger = class Ironmonger extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
     } else {
-      player_cards.deck.unshift(player_cards.revealed_card)
+      player_cards.deck = player_cards.revealed.concat(player_cards.deck)
+      player_cards.revealed = []
       game.log.push(`&nbsp;&nbsp;and puts it back on top of their deck`)
     }
   }
