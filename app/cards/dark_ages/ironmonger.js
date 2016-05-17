@@ -19,25 +19,27 @@ Ironmonger = class Ironmonger extends Card {
 
     this.reveal(game, player_cards)
 
-    let gains = []
-    let types = _.words(player_cards.revealed_card.types)
-    if (_.includes(types, 'action')) {
-      game.turn.actions += 1
-      gains.push('+1 action')
-    }
-    if (_.includes(types, 'treasure')) {
-      let gained_coins = CoinGainer.gain(game, player_cards, 1)
-      gains.push(`+$${gained_coins}`)
-    }
-    if (_.includes(types, 'victory')) {
-      let card_drawer = new CardDrawer(game, player_cards)
-      card_drawer.draw(1)
-    }
-    if (!_.isEmpty(gains)) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets ${gains.join(' and ')}`)
-    }
+    if (player_cards.revealed_card) {
+      let gains = []
+      let types = _.words(player_cards.revealed_card.types)
+      if (_.includes(types, 'action')) {
+        game.turn.actions += 1
+        gains.push('+1 action')
+      }
+      if (_.includes(types, 'treasure')) {
+        let gained_coins = CoinGainer.gain(game, player_cards, 1)
+        gains.push(`+$${gained_coins}`)
+      }
+      if (_.includes(types, 'victory')) {
+        let card_drawer = new CardDrawer(game, player_cards)
+        card_drawer.draw(1)
+      }
+      if (!_.isEmpty(gains)) {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets ${gains.join(' and ')}`)
+      }
 
-    delete player_cards.revealed_card
+      delete player_cards.revealed_card
+    }
   }
 
   reveal(game, player_cards) {
