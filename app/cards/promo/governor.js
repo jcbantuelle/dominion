@@ -55,9 +55,9 @@ Governor = class Governor extends Card {
             username: current_player_cards.username,
             type: 'choose_cards',
             player_cards: true,
-            instructions: 'Choose a card to trash:',
+            instructions: 'Choose a card to trash (or none to skip):',
             cards: current_player_cards.hand,
-            minimum: 1,
+            minimum: 0,
             maximum: 1
           })
           let turn_event_processor = new TurnEventProcessor(game, current_player_cards, turn_event_id)
@@ -72,39 +72,43 @@ Governor = class Governor extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let is_active_player = game.turn.player._id === player_cards.player_id
-    let remodel_amount = is_active_player ? 2 : 1
+    if (!_.isEmpty(selected_cards)) {
+      let is_active_player = game.turn.player._id === player_cards.player_id
+      let remodel_amount = is_active_player ? 2 : 1
 
-    let selected_card = selected_cards[0]
+      let selected_card = selected_cards[0]
 
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
-    card_trasher.trash()
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
+      card_trasher.trash()
 
-    let all_player_cards = PlayerCardsModel.find(game._id)
+      let all_player_cards = PlayerCardsModel.find(game._id)
 
-    let trashed_cost = CostCalculator.calculate(game, selected_card, all_player_cards)
+      let trashed_cost = CostCalculator.calculate(game, selected_card, all_player_cards)
 
-    let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost === (trashed_cost + remodel_amount) && card.top_card.potion_cost === selected_card.potion_cost
-    })
-
-    if (_.size(eligible_cards) > 0) {
-      let turn_event_id = TurnEventModel.insert({
-        game_id: game._id,
-        player_id: player_cards.player_id,
-        username: player_cards.username,
-        type: 'choose_cards',
-        game_cards: true,
-        instructions: 'Choose a card to gain:',
-        cards: eligible_cards,
-        minimum: 1,
-        maximum: 1
+      let eligible_cards = _.filter(game.cards, function(card) {
+        let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
+        return card.count > 0 && card.top_card.purchasable && coin_cost === (trashed_cost + remodel_amount) && card.top_card.potion_cost === selected_card.potion_cost
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(Governor.gain_card)
+
+      if (_.size(eligible_cards) > 0) {
+        let turn_event_id = TurnEventModel.insert({
+          game_id: game._id,
+          player_id: player_cards.player_id,
+          username: player_cards.username,
+          type: 'choose_cards',
+          game_cards: true,
+          instructions: 'Choose a card to gain:',
+          cards: eligible_cards,
+          minimum: 1,
+          maximum: 1
+        })
+        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+        turn_event_processor.process(Governor.gain_card)
+      } else {
+        game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
+      }
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
+      game.log.push(`&nbsp;&nbsp;but <strong>${player_cards.username}</strong> chooses not trash anything`)
     }
   }
 
