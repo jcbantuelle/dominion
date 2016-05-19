@@ -24,13 +24,13 @@ TurnEnder = class TurnEnder {
       GameModel.update(this.game._id, this.game)
       this.start_turn_events()
       this.move_duration_cards()
-      this.update_db()
+      this.update_db(false)
     }
   }
 
-  update_db() {
+  update_db(update_current_player = true) {
     GameModel.update(this.game._id, this.game)
-    if (this.player_cards._id !== this.next_player_cards._id) {
+    if (this.player_cards._id !== this.next_player_cards._id && update_current_player) {
       PlayerCardsModel.update(this.game._id, this.player_cards)
     }
     PlayerCardsModel.update(this.game._id, this.next_player_cards)
