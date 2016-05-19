@@ -11,6 +11,7 @@ CardPlayer = class CardPlayer {
     this.card_index = _.findIndex(this.player_cards.hand, (card) => {
       return card.name === this.card.name()
     })
+    this.resolve = !this.free_play || this.player_cards.hand[this.card_index].prince
   }
 
   play(auto_update = true) {
@@ -34,7 +35,7 @@ CardPlayer = class CardPlayer {
       if (_.includes(_.words(this.card.types), 'action')) {
         this.action_resolution_events()
       }
-      if (!this.free_play) {
+      if (this.resolve) {
         this.resolve_played_cards()
       }
       if (auto_update) {
