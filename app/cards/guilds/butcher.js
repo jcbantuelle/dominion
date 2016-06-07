@@ -22,7 +22,7 @@ Butcher = class Butcher extends Card {
         player_cards: true,
         instructions: 'Choose a card to trash (Or none to skip):',
         cards: player_cards.hand,
-        minimum: 1,
+        minimum: 0,
         maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
