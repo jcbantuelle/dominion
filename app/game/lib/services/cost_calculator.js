@@ -16,9 +16,9 @@ CostCalculator = class CostCalculator {
     if (!current_player_cards) {
       return 0
     }
-    let current_player_in_play_cards = current_player_cards.in_play.concat(current_player_cards.duration).concat(current_player_cards.permanent)
+    let current_player_in_play_cards = current_player_cards.in_play.concat(current_player_cards.duration).concat(current_player_cards.permanent).concat(current_player_cards.to_discard)
 
-    let in_play_cards = _.flatten(_.map(player_cards, 'in_play').concat(_.map(player_cards, 'duration')).concat(_.map(player_cards, 'permanent')))
+    let in_play_cards = _.flatten(_.map(player_cards, 'in_play').concat(_.map(player_cards, 'duration')).concat(_.map(player_cards, 'permanent')).concat(_.map(player_cards, 'to_discard')))
 
     let discount_token = _.find(current_player_cards.tokens.pile, function(token) {
       return token.effect === 'discount'
