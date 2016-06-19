@@ -335,11 +335,7 @@ GameCreator = class GameCreator {
   }
 
   prizes(cards) {
-    let tournament = _.find(cards, function(card) {
-      return card.name === 'Tournament'
-    })
-
-    if (tournament) {
+    if (this.game_has_card(cards, 'Tournament')) {
       let prizes = [
         new BagOfGold(),
         new Diadem(),
@@ -434,19 +430,30 @@ GameCreator = class GameCreator {
   }
 
   potion_game() {
-    return _.some(this.selected_kingdom_cards, function(card) {
+    if (this.black_market_deck) {
+      black_market_potion = _.some(this.black_market_deck, function(card) {
+        return card.potion_cost > 0
+      })
+    }
+    return black_market_potion || _.some(this.selected_kingdom_cards, function(card) {
       return card.top_card.potion_cost > 0
     })
   }
 
   journey_game() {
-    return _.some(this.selected_kingdom_cards.concat(this.events), function(card) {
+    let game_cards = this.selected_kingdom_cards.concat(this.events)
+    if (this.black_market_deck) game_cards = game_cards.concat(this.black_market_deck)
+
+    return _.some(game_cards, function(card) {
       return _.includes(['Ranger', 'Giant', 'Pilgrimage'], card.name)
     })
   }
 
   color_game() {
-    return _.some(this.selected_kingdom_cards.concat(this.events), function(card) {
+    let game_cards = this.selected_kingdom_cards.concat(this.events)
+    if (this.black_market_deck) game_cards = game_cards.concat(this.black_market_deck)
+
+    return _.some(game_cards, function(card) {
       return _.includes(['Peasant', 'Ferry', 'Plan', 'Seaway', 'Lost Arts', 'Training', 'Pathfinding'], card.name)
     })
   }
