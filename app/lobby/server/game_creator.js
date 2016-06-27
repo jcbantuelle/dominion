@@ -430,6 +430,7 @@ GameCreator = class GameCreator {
   }
 
   potion_game() {
+    let black_market_potion = false
     if (this.black_market_deck) {
       black_market_potion = _.some(this.black_market_deck, function(card) {
         return card.potion_cost > 0
