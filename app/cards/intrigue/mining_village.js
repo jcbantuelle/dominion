@@ -16,7 +16,7 @@ MiningVillage = class MiningVillage extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
 
     let mining_village = _.find(player_cards.playing, function(card) {
-      return card.name === 'Mining Village'
+      return card.inherited_name === 'Mining Village'
     })
 
     if (mining_village) {
