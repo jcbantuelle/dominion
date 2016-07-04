@@ -5,13 +5,15 @@
       <tr>
         <th>Username</th>
         <th>Approve</th>
+        <th>Disable</th>
       </tr>
     </thead>
     <tbody>
       {{#each unapproved_players}}
         <tr>
           <td>{{username}}</td>
-          <td><button type="submit" id="{{_id}}" class="btn btn-success">Approve</button></td>
+          <td><button type="submit" data-player-id="{{_id}}" class="btn btn-success approve">Approve</button></td>
+          <td><button type="submit" data-player-id="{{_id}}" class="btn btn-warning disable">Disable</button></td>
         </tr>
       {{/each}}
     </tbody>
@@ -22,13 +24,32 @@
       <tr>
         <th>Username</th>
         <th>Unapprove</th>
+        <th>Disable</th>
       </tr>
     </thead>
     <tbody>
       {{#each approved_players}}
         <tr>
           <td>{{username}}</td>
-          <td><button type="submit" id="{{_id}}" class="btn btn-danger">Unpprove</button></td>
+          <td><button type="submit" data-player-id="{{_id}}" class="btn btn-danger unapprove">Unpprove</button></td>
+          <td><button type="submit" data-player-id="{{_id}}" class="btn btn-warning disable">Disable</button></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <h2>Disabled Players</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Enable</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each disabled_players}}
+        <tr>
+          <td>{{username}}</td>
+          <td><button type="submit" data-player-id="{{_id}}" class="btn btn-success enable">Enable</button></td>
         </tr>
       {{/each}}
     </tbody>
