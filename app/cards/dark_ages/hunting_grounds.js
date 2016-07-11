@@ -1,4 +1,4 @@
-HuntingGrounds = class HuntingGrounds extends Knights {
+HuntingGrounds = class HuntingGrounds extends Card {
 
   types() {
     return ['action']
