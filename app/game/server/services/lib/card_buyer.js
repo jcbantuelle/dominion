@@ -27,7 +27,7 @@ CardBuyer = class CardBuyer {
   }
 
   can_buy() {
-    return this.is_purchasable() && this.is_valid_buy() && !this.is_contraband() && !this.game.turn.mission_turn
+    return this.is_debt_free() && this.is_purchasable() && this.is_valid_buy() && !this.is_contraband() && !this.game.turn.mission_turn
   }
 
   update_phase() {
@@ -51,6 +51,7 @@ CardBuyer = class CardBuyer {
     this.game.turn.buys -= 1
     this.game.turn.coins -= CostCalculator.calculate(this.game, this.game_card.top_card, this.all_player_cards, true)
     this.game.turn.potions -= this.game_card.top_card.potion_cost
+    this.player_cards.debt_tokens += this.game_card.top_card.debt_cost
   }
 
   track_bought_card(card) {
@@ -92,6 +93,10 @@ CardBuyer = class CardBuyer {
       this.player_cards.coin_tokens += merchant_guild_count
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.card_html('action', 'Merchant Guild')}`)
     }
+  }
+
+  is_debt_free() {
+    return this.player_cards.debt_tokens === 0
   }
 
   is_purchasable() {

@@ -17,6 +17,7 @@ BlackMarketCardBuyer = class BlackMarketCardBuyer extends CardBuyer{
   update_turn() {
     this.game.turn.coins -= CostCalculator.calculate(this.game, this.game_card, this.all_player_cards, true)
     this.game.turn.potions -= this.game_card.potion_cost
+    this.player_cards.debt_tokens += this.game_card.debt_cost
   }
 
   track_bought_card() {

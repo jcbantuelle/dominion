@@ -8,6 +8,10 @@
       Coin Tokens: <strong>{{../player_cards.coin_tokens}}</strong> {{#if allow_treasures}}<button id="play-coin-token" class="btn btn-xs btn-warning">+</button>{{/if}}
       <br />
     {{/if}}
+    {{#if ../player_cards.debt_tokens}}
+      Debt Tokens: <strong>{{../player_cards.debt_tokens}}</strong> {{#if allow_debt}}<button id="play-debt-token" class="btn btn-xs btn-warning btn-debt">+</button>{{/if}}
+      <br />
+    {{/if}}
     To Spend: <strong>${{coins}}</strong>
     {{#each times potions}}
       &oplus;

@@ -30,10 +30,15 @@ EventBuyer = class EventBuyer {
   update_turn() {
     this.game.turn.buys -= 1
     this.game.turn.coins -= this.event.coin_cost()
+    this.player_cards.debt_tokens += this.event.debt_cost()
   }
 
   is_valid_buy() {
-    return this.has_enough_buys() && this.has_enough_money() && this.not_forbidden()
+    return this.is_debt_free() && this.has_enough_buys() && this.has_enough_money() && this.not_forbidden()
+  }
+
+  is_debt_free() {
+    return this.player_cards.debt_tokens === 0
   }
 
   has_enough_buys() {

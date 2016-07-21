@@ -11,6 +11,9 @@
       {{#each times top_card.potion_cost}}
         &oplus;
       {{/each}}
+      {{#if top_card.debt_cost}}
+        <span class="debt">${{top_card.debt_cost}}</span>
+      {{/if}}
       <br />
       <span class="remaining">({{count}})</span>
     </div>

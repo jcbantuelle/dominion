@@ -110,6 +110,7 @@ GameCreator = class GameCreator {
       deck: deck,
       hand: hand,
       coin_tokens: coin_tokens,
+      debt_tokens: 0,
       tokens: {pile: []},
       turns: (this.game.turn.player._id === player._id) ? 1 : 0
     }
@@ -171,7 +172,7 @@ GameCreator = class GameCreator {
       if (card.name === 'Knights') {
         return -4.5
       } else {
-        return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
+        return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1) + (card.top_card.debt_cost * .001))
       }
     })
   }
