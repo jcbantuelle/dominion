@@ -8,6 +8,10 @@ Card = class Card {
     return 0
   }
 
+  debt_cost() {
+    return 0
+  }
+
   victory_points() {
     return 0
   }
@@ -59,6 +63,7 @@ Card = class Card {
       types: this.type_class(player_cards),
       coin_cost: this.coin_cost(),
       potion_cost: this.potion_cost(),
+      debt_cost: this.debt_cost(),
       purchasable: this.is_purchasable(),
       stack_name: this.stack_name()
     }

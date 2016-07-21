@@ -5,11 +5,8 @@ Inheritance = class Inheritance extends Event {
   }
 
   buy(game, player_cards) {
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
     let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost <= 4 && card.top_card.potion_cost === 0 && _.includes(_.words(card.top_card.types), 'action') && !_.includes(_.words(card.top_card.types), 'victory')
+      return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && !_.includes(_.words(card.top_card.types), 'victory') && CardCostComparer.coin_less_than(game, card.top_card, 5)
     })
 
     if (_.size(eligible_cards) > 0) {

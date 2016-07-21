@@ -35,11 +35,8 @@ Prince = class Prince extends Card {
       player_cards.prince.push(prince)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(prince)}`)
 
-      let all_player_cards = PlayerCardsModel.find(game._id)
-
       let eligible_cards = _.filter(player_cards.hand, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card, all_player_cards)
-        return coin_cost <= 4 && card.potion_cost === 0 && _.includes(_.words(card.types), 'action')
+        return _.includes(_.words(card.types), 'action') && CardCostComparer.coin_less_than(game, card, 5)
       })
 
       if (_.size(eligible_cards) > 0) {

@@ -81,13 +81,8 @@ Governor = class Governor extends Card {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
       card_trasher.trash()
 
-      let all_player_cards = PlayerCardsModel.find(game._id)
-
-      let trashed_cost = CostCalculator.calculate(game, selected_card, all_player_cards)
-
       let eligible_cards = _.filter(game.cards, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && coin_cost === (trashed_cost + remodel_amount) && card.top_card.potion_cost === selected_card.potion_cost
+        return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_equal_to(game, selected_card, card.top_card, remodel_amount)
       })
 
       if (_.size(eligible_cards) > 0) {

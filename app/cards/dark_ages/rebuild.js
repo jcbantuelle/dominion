@@ -41,13 +41,8 @@ Rebuild = class Rebuild extends Card {
         let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.revealed_victory_card.name)
         card_trasher.trash()
 
-        let all_player_cards = PlayerCardsModel.find(game._id)
-
-        let trashed_cost = CostCalculator.calculate(game, player_cards.revealed_victory_card, all_player_cards)
-
         let eligible_cards = _.filter(game.cards, function(card) {
-          let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-          return card.count > 0 && card.top_card.purchasable && coin_cost <= (trashed_cost + 3) && card.top_card.potion_cost <= player_cards.revealed_victory_card.potion_cost && _.includes(_.words(card.top_card.types), 'victory')
+          return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'victory') && CardCostComparer.card_less_than(game, player_cards.revealed_victory_card, card.top_card, 4)
         })
 
         if (_.size(eligible_cards) > 0) {

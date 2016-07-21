@@ -55,25 +55,23 @@ Develop = class Develop extends Card {
 
   static process_response(game, player_cards, response) {
     response = response[0]
-    let coin_cost = CostCalculator.calculate(game, game.turn.develop_card)
 
     let first_cost = response === 'gain_more' ? 1 : -1
-    let second_cost = response === 'gain_more' ? -1 : 1
+    let second_cost = first_cost * -1
 
-    Develop.choose_card(game, player_cards, coin_cost + first_cost, game.turn.develop_card.potion_cost)
+    Develop.choose_card(game, player_cards, first_cost)
     GameModel.update(game._id, game)
-    Develop.choose_card(game, player_cards, coin_cost + second_cost, game.turn.develop_card.potion_cost)
+    Develop.choose_card(game, player_cards, second_cost)
   }
 
-  static choose_card(game, player_cards, coin_cost, potion_cost) {
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
+  static choose_card(game, player_cards, coin_modifier) {
     let eligible_cards = _.filter(game.cards, function(card) {
-      let game_card_coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && game_card_coin_cost === coin_cost && card.top_card.potion_cost === 0
+      return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_equal_to(game, game.turn.develop_card, card.top_card, coin_modifier)
     })
 
-    let potion_symbols = _.times(potion_cost, function() {
+    let coin_cost = CostCalculator.calculate(game, game.turn.develop_card) + coin_modifier
+    let debt_cost = game.turn.develop_card.debt_cost > 0 ? `<span class="debt">${game.turn.develop_card.debt_cost}</span>` : ''
+    let potion_symbols = _.times(game.turn.develop_card.potion_cost, function() {
       return '&oplus;'
     }).join('')
 
@@ -84,7 +82,7 @@ Develop = class Develop extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         game_cards: true,
-        instructions: `Choose a card costing $${coin_cost}${potion_symbols} to gain:`,
+        instructions: `Choose a card costing $${coin_cost}${debt_cost}${potion_symbols} to gain:`,
         cards: eligible_cards,
         minimum: 1,
         maximum: 1
@@ -92,7 +90,7 @@ Develop = class Develop extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Develop.gain_card)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no available cards costing $${coin_cost}${potion_symbols}`)
+      game.log.push(`&nbsp;&nbsp;but there are no available cards costing $${coin_cost}${debt_cost}${potion_symbols}`)
     }
   }
 

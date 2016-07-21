@@ -60,8 +60,7 @@ BuyEventProcessor = class BuyEventProcessor {
     _.each(this.buyer.player_cards.in_play, (card) => {
       if (_.includes(BuyEventProcessor.in_play_event_cards(), card.inherited_name)) {
         if (card.inherited_name === 'Talisman') {
-          let cost = CostCalculator.calculate(this.buyer.game, this.buyer.card)
-          if (cost <= 4 && this.buyer.card.potion_cost() === 0 && !_.includes(this.buyer.card.types(this.buyer.player_cards), 'victory')) {
+          if (!_.includes(this.buyer.card.types(this.buyer.player_cards), 'victory') && CardCostComparer.coin_less_than(this.buyer.game, this.buyer.card.to_h(), 5)) {
             this.buy_events.push(card)
           }
         } else if (card.inherited_name === 'Hoard') {

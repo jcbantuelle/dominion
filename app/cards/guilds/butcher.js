@@ -68,13 +68,8 @@ Butcher = class Butcher extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> pays ${amount} coin tokens`)
     player_cards.coin_tokens -= amount
 
-    all_player_cards = PlayerCardsModel.find(game._id)
-
-    let trashed_cost = CostCalculator.calculate(game, game.turn.butcher_card, all_player_cards)
-
     let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost <= (trashed_cost + amount) && card.top_card.potion_cost <= game.turn.butcher_card.potion_cost
+      return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(game, game.turn.butcher_card, card.top_card, amount + 1)
     })
 
     if (_.size(eligible_cards) > 0) {

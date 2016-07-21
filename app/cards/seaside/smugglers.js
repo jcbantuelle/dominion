@@ -12,14 +12,11 @@ Smugglers = class Smugglers extends Card {
     let previous_player_query = new PreviousPlayerQuery(game, player_cards.player_id)
     let previous_player_cards = PlayerCardsModel.findOne(game._id, previous_player_query.previous_player()._id)
 
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
     let eligible_cards = _.filter(previous_player_cards.last_turn_gained_cards, function(gained_card) {
       let game_stack = _.find(game.cards, function(stack) {
         return stack.name === gained_card.stack_name
       })
-      let coin_cost = CostCalculator.calculate(game, game_stack.top_card, all_player_cards)
-      return coin_cost <= 6 && game_stack.top_card.potion_cost === 0
+      return gained_card.name === game_stack.top_card.name && CardCostComparer.coin_less_than(game, game_stack.top_card, 7)
     })
 
     if (_.size(eligible_cards) > 0) {

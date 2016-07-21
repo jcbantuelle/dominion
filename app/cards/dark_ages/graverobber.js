@@ -29,11 +29,8 @@ Graverobber = class Graverobber extends Card {
   static process_response(game, player_cards, response) {
     response = response[0]
     if (response === 'gain') {
-      let all_player_cards = PlayerCardsModel.find(game._id)
-
       let eligible_cards = _.filter(game.trash, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card, all_player_cards)
-        return coin_cost >= 3 && coin_cost <= 6 && card.potion_cost === 0
+        return CardCostComparer.coin_between(game, card, 3, 6)
       })
 
       if (_.size(eligible_cards) > 1) {
@@ -87,13 +84,8 @@ Graverobber = class Graverobber extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
     card_trasher.trash()
 
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
-    let trashed_cost = CostCalculator.calculate(game, selected_card, all_player_cards)
-
     let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost <= (trashed_cost + 3) && card.top_card.potion_cost <= selected_card.potion_cost
+      return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(game, selected_card, card.top_card, 4)
     })
 
     if (_.size(eligible_cards) > 0) {

@@ -36,14 +36,9 @@ Stonemason = class Stonemason extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
     card_trasher.trash()
 
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
-    let trashed_cost = CostCalculator.calculate(game, selected_card, all_player_cards)
-
     _.times(2, function() {
       let eligible_cards = _.filter(game.cards, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && coin_cost < trashed_cost && card.top_card.potion_cost <= selected_card.potion_cost
+        return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(game, selected_card, card.top_card)
       })
 
       if (_.size(eligible_cards) > 0) {
@@ -92,11 +87,9 @@ Stonemason = class Stonemason extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> overpays by $${amount}`)
     game.turn.coins -= amount
 
-    let all_player_cards = PlayerCardsModel.find(game._id)
     _.times(2, function() {
       let eligible_cards = _.filter(game.cards, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && coin_cost === amount && card.top_card.potion_cost === 0 && _.includes(_.words(card.top_card.types), 'action')
+        return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && CardCostComparer.coin_equal_to(game, card.top_card, amount)
       })
 
       if (_.size(eligible_cards) > 0) {

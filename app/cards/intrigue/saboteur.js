@@ -9,8 +9,6 @@ Saboteur = class Saboteur extends Card {
   }
 
   play(game, player_cards) {
-    this.all_player_cards = PlayerCardsModel.find(game._id)
-
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
   }
@@ -23,11 +21,8 @@ Saboteur = class Saboteur extends Card {
       card_trasher.trash()
       GameModel.update(game._id, game)
 
-      let trashed_cost = CostCalculator.calculate(game, player_cards.trashed_card, this.all_player_cards)
-
       let eligible_cards = _.filter(game.cards, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card.top_card, this.all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && coin_cost <= (trashed_cost - 2) && card.top_card.potion_cost <= player_cards.trashed_card.potion_cost
+        return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(game, player_cards.trashed_card, card.top_card, -1)
       })
       if (_.size(eligible_cards) > 0) {
         let turn_event_id = TurnEventModel.insert({
@@ -50,7 +45,6 @@ Saboteur = class Saboteur extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> does not have any cards costing $3 or more in their deck`)
     }
     delete player_cards.trashed_card
-    delete player_cards.trashed_card_coin_cost
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard()
@@ -62,11 +56,9 @@ Saboteur = class Saboteur extends Card {
         DeckShuffler.shuffle(game, player_cards)
       }
       let card = player_cards.deck.shift()
-      let coin_cost = CostCalculator.calculate(game, card, this.all_player_cards)
       player_cards.revealed.push(card)
-      if (coin_cost > 2) {
+      if (CardCostComparer.coin_greater_than(game, card, 2)) {
         player_cards.trashed_card = card
-        player_cards.trashed_card_coin_cost = coin_cost
       }
     }
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)

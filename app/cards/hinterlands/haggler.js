@@ -14,13 +14,8 @@ Haggler = class Haggler extends Card {
   }
 
   buy_event(buyer) {
-    let all_player_cards = PlayerCardsModel.find(buyer.game._id)
-
-    let coin_value = CostCalculator.calculate(buyer.game, buyer.card, all_player_cards)
-    let potion_value = buyer.card.potion_cost()
     let eligible_cards = _.filter(buyer.game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(buyer.game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && !_.includes(_.words(card.top_card.types), 'victory') && ((coin_cost < coin_value && card.top_card.potion_cost <= potion_value) || (coin_cost === coin_value && card.top_card.potion_cost < potion_value))
+      return card.count > 0 && card.top_card.purchasable && !_.includes(_.words(card.top_card.types), 'victory') && CardCostComparer.card_less_than(buyer.game, buyer.card.to_h(), card.top_card)
     })
     if (_.size(eligible_cards) > 0) {
       let turn_event_id = TurnEventModel.insert({
@@ -37,7 +32,7 @@ Haggler = class Haggler extends Card {
       let turn_event_processor = new TurnEventProcessor(buyer.game, buyer.player_cards, turn_event_id)
       turn_event_processor.process(Haggler.gain_card)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no available cards to gain from ${CardView.render(this)}`)
+      buyer.game.log.push(`&nbsp;&nbsp;but there are no available cards to gain from ${CardView.render(this)}`)
     }
   }
 

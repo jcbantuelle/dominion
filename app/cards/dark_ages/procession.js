@@ -47,12 +47,8 @@ Procession = class Procession extends Card {
         card_trasher.trash()
       }
 
-      let all_player_cards = PlayerCardsModel.find(game._id)
-      let selected_card_coin_cost = CostCalculator.calculate(game, selected_card, all_player_cards)
-
       let eligible_cards = _.filter(game.cards, function(card) {
-        let game_card_coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && game_card_coin_cost === (selected_card_coin_cost + 1) && card.top_card.potion_cost === selected_card.potion_cost
+        return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && CardCostComparer.card_equal_to(game, selected_card, card.top_card, 1)
       })
 
       if (_.size(eligible_cards) > 0) {

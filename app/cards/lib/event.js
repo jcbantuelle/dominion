@@ -8,6 +8,10 @@ Event = class Event {
     return _.snakeCase(this.constructor.name)
   }
 
+  debt_cost() {
+    return 0
+  }
+
   type_class() {
     return 'event'
   }
@@ -17,7 +21,8 @@ Event = class Event {
       name: this.name(),
       image: this.image(),
       types: 'event',
-      coin_cost: this.coin_cost()
+      coin_cost: this.coin_cost(),
+      debt_cost: this.debt_cost()
     }
   }
 }

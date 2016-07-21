@@ -43,8 +43,7 @@ Messenger = class Messenger extends Card {
     let all_player_cards = PlayerCardsModel.find(buyer.game._id)
 
     let eligible_cards = _.filter(buyer.game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(buyer.game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost <= 4 && card.top_card.potion_cost === 0
+      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(buyer.game, card.top_card, 5)
     })
 
     if (_.size(eligible_cards) > 0) {

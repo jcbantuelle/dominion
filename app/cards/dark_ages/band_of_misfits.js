@@ -9,13 +9,8 @@ BandOfMisfits = class BandOfMisfits extends Card {
   }
 
   play(game, player_cards, player) {
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
-    let self_cost = CostCalculator.calculate(game, player.card.to_h(player_cards), all_player_cards)
-
     let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost < self_cost && card.top_card.potion_cost === 0 && _.includes(_.words(card.top_card.types), 'action')
+      return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && CardCostComparer.card_less_than(game, player.card.to_h(player_cards), card.top_card)
     })
 
     if (_.size(eligible_cards) > 0) {

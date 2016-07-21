@@ -36,8 +36,7 @@ Giant = class Giant extends Card {
         let revealed_card = player_cards.deck.shift()
         player_cards.revealed.push(revealed_card)
 
-        let revealed_cost = CostCalculator.calculate(game, revealed_card, this.all_player_cards)
-        if (revealed_cost >= 3 && revealed_cost <= 6 && revealed_card.potion_cost === 0) {
+        if (CardCostComparer.coin_between(game, revealed_card, 3, 6)) {
           let card_trasher = new CardTrasher(game, player_cards, 'revealed', revealed_card.name)
           card_trasher.trash()
         } else {

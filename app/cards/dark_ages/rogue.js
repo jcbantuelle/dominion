@@ -12,11 +12,8 @@ Rogue = class Rogue extends Card {
     let gained_coins = CoinGainer.gain(game, player_cards, 2)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
     let eligible_cards = _.filter(game.trash, function(card) {
-      let coin_cost = CostCalculator.calculate(game, card, all_player_cards)
-      return coin_cost >= 3 && coin_cost <= 6 && card.potion_cost === 0
+      return CardCostComparer.coin_between(game, card, 3, 6)
     })
 
     if (_.size(eligible_cards) > 1) {
@@ -66,11 +63,8 @@ Rogue = class Rogue extends Card {
 
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
-        let all_player_cards = PlayerCardsModel.find(game._id)
-
         let eligible_cards = _.filter(player_cards.revealed, function(card) {
-          let coin_cost = CostCalculator.calculate(game, card, all_player_cards)
-          return coin_cost >= 3 && coin_cost <= 6 && card.potion_cost === 0
+          return CardCostComparer.coin_between(game, card, 3, 6)
         })
 
         if (_.isEmpty(eligible_cards)) {

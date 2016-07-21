@@ -65,8 +65,7 @@ GainEventProcessor = class GainEventProcessor {
       if (_.includes(GainEventProcessor.reserve_cards(), card.inherited_name)) {
         if (card.inherited_name === 'Duplicate') {
           if (this.player_cards._id === this.gainer.player_cards._id) {
-            let card_cost = CostCalculator.calculate(this.gainer.game, this.gainer.gained_card)
-            if (card_cost <= 6 && this.gainer.gained_card.potion_cost === 0) {
+            if (CardCostComparer.coin_less_than(this.gainer.game, this.gainer.gained_card, 7)) {
               this.gain_events.push(card)
             }
           }

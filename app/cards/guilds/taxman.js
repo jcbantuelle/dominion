@@ -36,13 +36,8 @@ Taxman = class Taxman extends Card {
     player_attacker.attack(player_cards)
 
     if (game.turn.taxman_trash) {
-      let all_player_cards = PlayerCardsModel.find(game._id)
-
-      let trashed_cost = CostCalculator.calculate(game, game.turn.taxman_trash, all_player_cards)
-
       let eligible_cards = _.filter(game.cards, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'treasure') && coin_cost <= (trashed_cost + 3) && card.top_card.potion_cost <= game.turn.taxman_trash.potion_cost
+        return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'treasure') && CardCostComparer.card_less_than(game, game.turn.taxman_trash, card.top_card, 4)
       })
 
       if (_.size(eligible_cards) > 0) {

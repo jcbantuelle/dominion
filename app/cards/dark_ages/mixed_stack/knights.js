@@ -28,11 +28,8 @@ Knights = class Knights extends Card {
 
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
 
-      let all_player_cards = PlayerCardsModel.find(game._id)
-
       let eligible_cards = _.filter(player_cards.revealed, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card, all_player_cards)
-        return coin_cost >= 3 && coin_cost <= 6 && card.potion_cost === 0
+        return CardCostComparer.coin_between(game, card, 3, 6)
       })
 
       if (_.isEmpty(eligible_cards)) {

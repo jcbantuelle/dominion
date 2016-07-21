@@ -70,13 +70,8 @@ Transmogrify = class Transmogrify extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
     card_trasher.trash()
 
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
-    let coin_cost = CostCalculator.calculate(game, selected_cards[0], all_player_cards)
-
     let eligible_cards = _.filter(game.cards, function(card) {
-      let game_card_coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && game_card_coin_cost <= (coin_cost + 1) && card.top_card.potion_cost <= selected_cards[0].potion_cost
+      return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(game, selected_cards[0], card.top_card, 2)
     })
 
     if (_.size(eligible_cards) > 1) {

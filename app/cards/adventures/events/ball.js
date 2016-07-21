@@ -12,15 +12,12 @@ Ball = class Ball extends Event {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has their -$1 token`)
     }
 
-    let all_player_cards = PlayerCardsModel.find(game._id)
+    _.times(2, function() {
+      let eligible_cards = _.filter(game.cards, function(card) {
+        return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 5)
+      })
 
-    let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost <= 4 && card.top_card.potion_cost === 0
-    })
-
-    if (_.size(eligible_cards) > 0) {
-      _.times(2, function() {
+      if (_.size(eligible_cards) > 0) {
         GameModel.update(game._id, game)
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
@@ -35,10 +32,10 @@ Ball = class Ball extends Event {
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Ball.gain_card)
-      })
-    } else {
-      game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
-    }
+      } else {
+        game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
+      }
+    })
   }
 
   static gain_card(game, player_cards, selected_cards) {

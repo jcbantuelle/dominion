@@ -24,13 +24,8 @@ Swindler = class Swindler extends Card {
         DeckShuffler.shuffle(game, player_cards)
       }
 
-      let all_player_cards = PlayerCardsModel.find(game._id)
-
       let top_card = player_cards.deck.shift()
       player_cards.revealed.push(top_card)
-
-      let top_card_coin_cost = CostCalculator.calculate(game, top_card, all_player_cards)
-      let top_card_potion_cost = top_card.potion_cost
 
       let card_trasher = new CardTrasher(game, player_cards, 'revealed', top_card.name)
       card_trasher.trash()
@@ -38,8 +33,7 @@ Swindler = class Swindler extends Card {
       GameModel.update(game._id, game)
 
       let eligible_cards = _.filter(game.cards, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && coin_cost === top_card_coin_cost && card.top_card.potion_cost === top_card_potion_cost
+        return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_equal_to(game, top_card, card.top_card)
       })
 
       if (_.size(eligible_cards) > 0) {

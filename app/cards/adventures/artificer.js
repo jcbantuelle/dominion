@@ -42,31 +42,28 @@ Artificer = class Artificer extends Card {
     } else {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
       card_discarder.discard()
+    }
 
-      let all_player_cards = PlayerCardsModel.find(game._id)
+    let eligible_cards = _.filter(game.cards, function(card) {
+      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_equal_to(game, card.top_card, _.size(selected_cards))
+    })
 
-      let eligible_cards = _.filter(game.cards, function(card) {
-        let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-        return card.count > 0 && card.top_card.purchasable && coin_cost === _.size(selected_cards) && card.top_card.potion_cost === 0
+    if (_.size(eligible_cards) > 0) {
+      let turn_event_id = TurnEventModel.insert({
+        game_id: game._id,
+        player_id: player_cards.player_id,
+        username: player_cards.username,
+        type: 'choose_cards',
+        game_cards: true,
+        instructions: 'Choose a card to gain (Or none to skip):',
+        cards: eligible_cards,
+        minimum: 0,
+        maximum: 1
       })
-
-      if (_.size(eligible_cards) > 0) {
-        let turn_event_id = TurnEventModel.insert({
-          game_id: game._id,
-          player_id: player_cards.player_id,
-          username: player_cards.username,
-          type: 'choose_cards',
-          game_cards: true,
-          instructions: 'Choose a card to gain (Or none to skip):',
-          cards: eligible_cards,
-          minimum: 0,
-          maximum: 1
-        })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        turn_event_processor.process(Artificer.gain_card)
-      } else {
-        game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
-      }
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      turn_event_processor.process(Artificer.gain_card)
+    } else {
+      game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
   }
 

@@ -26,15 +26,13 @@ Sage = class Sage extends Card {
 
   reveal(game, player_cards) {
     let revealed_cards = []
-    let all_player_cards = PlayerCardsModel.find(game._id)
     while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.revealed_card) {
       if (_.size(player_cards.deck) === 0) {
         DeckShuffler.shuffle(game, player_cards)
       }
       let card = player_cards.deck.shift()
       revealed_cards.push(card)
-      let coin_cost = CostCalculator.calculate(game, card, all_player_cards)
-      if (coin_cost >= 3) {
+      if (CardCostComparer.coin_greater_than(game, card, 2)) {
         player_cards.hand.push(card)
         player_cards.revealed_card = card
       } else {

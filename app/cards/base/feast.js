@@ -12,11 +12,8 @@ Feast = class Feast extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Feast')
     card_trasher.trash()
 
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
     let eligible_cards = _.filter(game.cards, function(card) {
-      let coin_cost = CostCalculator.calculate(game, card.top_card, all_player_cards)
-      return card.count > 0 && card.top_card.purchasable && coin_cost <= 5 && card.top_card.potion_cost === 0
+      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 6)
     })
 
     if (_.size(eligible_cards) > 0) {
