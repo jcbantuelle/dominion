@@ -49,11 +49,15 @@ CardList = class CardList {
   }
 
   static sets() {
-    return ['base', 'intrigue', 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures']
+    return ['base', 'intrigue', 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures', 'empires']
   }
 
   static event_sets() {
-    return ['adventures', 'promo']
+    return ['adventures', 'promo', 'empires']
+  }
+
+  static landmark_sets() {
+    return ['empires']
   }
 
   static pull_one(exclusions = []) {
@@ -80,6 +84,32 @@ CardList = class CardList {
       }
       return card_list
     }, [])
+  }
+
+  static empires_landmarks() {
+    return [
+      /*'Aqueduct',
+      'Arena',
+      'BanditFort',
+      'Basilica',
+      'Baths',
+      'Battlefield',
+      'Colonnade',
+      'DefiledShrine',
+      'Fountain',
+      'Keep',
+      'Labyrinth',
+      'MountainPass',
+      'Museum',
+      'Obelisk',
+      'Orchard',
+      'Palace',
+      'Tomb',
+      'Tower',
+      'TriumphalArch',
+      'Wall',
+      'WolfDen'*/
+    ]
   }
 
   static adventures_events() {
@@ -110,6 +140,53 @@ CardList = class CardList {
   static promo_events() {
     return [
       'Summon'
+    ]
+  }
+
+  static empires_events() {
+    return [
+      /*'Triumph',
+      'Annex',
+      'Donate',
+      'Advance',
+      'Delve',
+      'Tax',
+      'Banquet',
+      'Ritual',
+      'SaltTheEarth',
+      'Wedding',
+      'Windfall',
+      'Conquest',
+      'Dominate'*/
+    ]
+  }
+
+  static empires() {
+    return [
+      'Engineer',
+      /*'CityQuarter',
+      'Overlord',
+      'RoyalBlacksmith',
+      'Encampment',
+      'Patrician',
+      'Settlers',
+      'Castles',
+      'Catapult',
+      'ChariotRace',
+      'Enchantress',
+      'FarmersMarket',
+      'Gladiator',
+      'Sacrifice',
+      'Temple',
+      'Villa',
+      'Archive',
+      'Capital',
+      'Charm',
+      'Crown',
+      'Forum',
+      'Groundskeeper',
+      'Legionary',
+      'WildHunt'*/
     ]
   }
 
