@@ -165,8 +165,8 @@ CardList = class CardList {
     return [
       'Engineer',
       'CityQuarter',
-      /*'Overlord',
-      'RoyalBlacksmith',
+      'Overlord',
+      /*'RoyalBlacksmith',
       'Encampment',
       'Patrician',
       'Settlers',
