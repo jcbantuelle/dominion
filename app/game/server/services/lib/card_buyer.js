@@ -37,8 +37,8 @@ CardBuyer = class CardBuyer {
   }
 
   buy_card() {
-    this.update_turn()
     this.update_log()
+    this.update_turn()
     this.track_bought_card()
     this.buy_events()
     this.gain_card()
@@ -51,7 +51,17 @@ CardBuyer = class CardBuyer {
     this.game.turn.buys -= 1
     this.game.turn.coins -= CostCalculator.calculate(this.game, this.game_card.top_card, this.all_player_cards, true)
     this.game.turn.potions -= this.game_card.top_card.potion_cost
-    this.player_cards.debt_tokens += this.game_card.top_card.debt_cost
+
+    if (this.game_card.top_card.debt_cost > 0) {
+      if (this.game.turn.possessed) {
+        possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
+        possessing_player_cards.debt_tokens += this.game_card.top_card.debt_cost
+        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes ${this.game_card.top_card.debt_cost} debt tokens`)
+        PlayerCardsModel.update(this.game._id, possessing_player_cards)
+      } else {
+        this.player_cards.debt_tokens += this.game_card.top_card.debt_cost
+      }
+    }
   }
 
   track_bought_card(card) {
@@ -80,8 +90,15 @@ CardBuyer = class CardBuyer {
       return card.name === 'Goons'
     }))
     if (goon_count > 0) {
-      this.player_cards.victory_tokens += goon_count
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
+      if (this.game.turn.possessed) {
+        possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
+        possessing_player_cards.victory_tokens += goon_count
+        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
+        PlayerCardsModel.update(this.game._id, possessing_player_cards)
+      } else {
+        this.player_cards.victory_tokens += goon_count
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
+      }
     }
   }
 
@@ -90,8 +107,15 @@ CardBuyer = class CardBuyer {
       return card.name === 'Merchant Guild'
     }))
     if (merchant_guild_count > 0) {
-      this.player_cards.coin_tokens += merchant_guild_count
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.card_html('action', 'Merchant Guild')}`)
+      if (this.game.turn.possessed) {
+        possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
+        possessing_player_cards.coin_tokens += merchant_guild_count
+        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.card_html('action', 'Merchant Guild')}`)
+        PlayerCardsModel.update(this.game._id, possessing_player_cards)
+      } else {
+        this.player_cards.coin_tokens += merchant_guild_count
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.card_html('action', 'Merchant Guild')}`)
+      }
     }
   }
 

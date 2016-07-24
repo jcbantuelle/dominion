@@ -10,8 +10,15 @@ Bishop = class Bishop extends Card {
 
   play(game, player_cards) {
     let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    player_cards.victory_tokens += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} and +1 &nabla;`)
+    if (game.turn.possessed) {
+      possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
+      possessing_player_cards.victory_tokens += 1
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} and <strong>${possessing_player_cards.username}</strong> gets +1 &nabla;`)
+      PlayerCardsModel.update(game._id, possessing_player_cards)
+    } else {
+      player_cards.victory_tokens += 1
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} and +1 &nabla;`)
+    }
 
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({
@@ -67,8 +74,16 @@ Bishop = class Bishop extends Card {
 
       if (game.turn.player._id === player_cards.player_id) {
         let victory_tokens = Math.floor(coin_cost / 2)
-        player_cards.victory_tokens += victory_tokens
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
+
+        if (game.turn.possessed) {
+          possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
+          possessing_player_cards.victory_tokens += victory_tokens
+          game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
+          PlayerCardsModel.update(game._id, possessing_player_cards)
+        } else {
+          player_cards.victory_tokens += victory_tokens
+          game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
+        }
       }
     }
   }

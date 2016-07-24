@@ -9,8 +9,15 @@ Butcher = class Butcher extends Card {
   }
 
   play(game, player_cards) {
-    player_cards.coin_tokens += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes 2 coin tokens`)
+    if (game.turn.possessed) {
+      possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
+      possessing_player_cards.coin_tokens += 2
+      game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes 2 coin tokens`)
+      PlayerCardsModel.update(game._id, possessing_player_cards)
+    } else {
+      player_cards.coin_tokens += 2
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes 2 coin tokens`)
+    }
 
     if (_.size(player_cards.hand) > 0) {
       GameModel.update(game._id, game)

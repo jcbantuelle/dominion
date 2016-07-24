@@ -32,21 +32,28 @@ Plaza = class Plaza extends Card {
         maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(Plaza.trash_card)
+      turn_event_processor.process(Plaza.discard_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     }
   }
 
-  static trash_card(game, player_cards, selected_cards) {
+  static discard_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
       let selected_card = selected_cards[0]
 
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_card.name)
       card_discarder.discard()
 
-      player_cards.coin_tokens += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes a coin token`)
+      if (game.turn.possessed) {
+        possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
+        possessing_player_cards.coin_tokens += 1
+        game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes a coin token`)
+        PlayerCardsModel.update(game._id, possessing_player_cards)
+      } else {
+        player_cards.coin_tokens += 1
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes a coin token`)
+      }
     } else {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     }

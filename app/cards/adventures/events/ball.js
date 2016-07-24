@@ -5,11 +5,22 @@ Ball = class Ball extends Event {
   }
 
   buy(game, player_cards) {
-    if (!player_cards.tokens.minus_coin) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes their -$1 token`)
-      player_cards.tokens.minus_coin = true
+    if (game.turn.possessed) {
+      possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
+      if (!possessing_player_cards.tokens.minus_coin) {
+        game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes their -$1 token`)
+        possessing_player_cards.tokens.minus_coin = true
+        PlayerCardsModel.update(game._id, possessing_player_cards)
+      } else {
+        game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> already has their -$1 token`)
+      }
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has their -$1 token`)
+      if (!player_cards.tokens.minus_coin) {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes their -$1 token`)
+        player_cards.tokens.minus_coin = true
+      } else {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has their -$1 token`)
+      }
     }
 
     _.times(2, function() {

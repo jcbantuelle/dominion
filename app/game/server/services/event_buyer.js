@@ -22,15 +22,25 @@ EventBuyer = class EventBuyer {
   }
 
   buy_event() {
-    this.update_turn()
     this.update_log()
+    this.update_turn()
     this.event.buy(this.game, this.player_cards)
   }
 
   update_turn() {
     this.game.turn.buys -= 1
     this.game.turn.coins -= this.event.coin_cost()
-    this.player_cards.debt_tokens += this.event.debt_cost()
+
+    if (this.event.debt_cost() > 0) {
+      if (this.game.turn.possessed) {
+        possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
+        possessing_player_cards.debt_tokens += this.event.debt_cost()
+        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes ${this.event.debt_cost()} debt tokens`)
+        PlayerCardsModel.update(this.game._id, possessing_player_cards)
+      } else {
+        this.player_cards.debt_tokens += this.event.debt_cost()
+      }
+    }
   }
 
   is_valid_buy() {
