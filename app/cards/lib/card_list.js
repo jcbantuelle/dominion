@@ -164,8 +164,8 @@ CardList = class CardList {
   static empires() {
     return [
       'Engineer',
-      /*'CityQuarter',
-      'Overlord',
+      'CityQuarter',
+      /*'Overlord',
       'RoyalBlacksmith',
       'Encampment',
       'Patrician',
