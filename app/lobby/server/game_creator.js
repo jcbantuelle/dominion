@@ -266,6 +266,8 @@ GameCreator = class GameCreator {
       return this.ruins_stack(card)
     } else if (card.name === 'Knights') {
       return this.knights_stack(card)
+    } else if (card.name === 'Castles') {
+      return this.castles_stack(card)
     } else if (_.includes(['Encampment', 'Patrician', 'Settlers', 'Catapult', 'Gladiator'], card.name)) {
       return this.split_stack(card)
     } else {
@@ -336,6 +338,30 @@ GameCreator = class GameCreator {
     return _.shuffle(_.map(knights_cards, function(knight) {
       return knight.to_h()
     }))
+  }
+
+  castles_stack(card) {
+    let castle_cards = [
+      new HumbleCastle(),
+      new CrumblingCastle(),
+      new SmallCastle(),
+      new HauntedCastle(),
+      new OpulentCastle(),
+      new SprawlingCastle(),
+      new GrandCastle(),
+      new KingsCastle()
+    ]
+
+    if (_.size(this.players) > 2) {
+      castle_cards.splice(0, 0, new HumbleCastle())
+      castle_cards.splice(3, 0, new SmallCastle())
+      castle_cards.splice(6, 0, new OpulentCastle())
+      castle_cards.splice(10, 0, new KingsCastle())
+    }
+
+    return _.map(castle_cards, function(castle) {
+      return castle.to_h()
+    })
   }
 
   split_stack(card) {
