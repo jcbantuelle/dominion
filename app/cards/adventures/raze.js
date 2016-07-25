@@ -21,7 +21,7 @@ Raze = class Raze extends Card {
       return card.name === player.card.name()
     })
     if (raze_in_play) {
-      let raze = player.card.to_h(player_cards)
+      let raze = _.clone(player.card.to_h(player_cards))
       raze.source = 'P'
       trashable_cards.push(raze)
     }

@@ -28,8 +28,9 @@ Bonfire = class Bonfire extends Event {
   cards_in_play(player_cards) {
     return _.reduce(['in_play', 'duration', 'permanent'], function(in_play_cards, source) {
       let source_cards = _.map(player_cards[source], function(card) {
-        card.source = _.startCase(source)
-        return card
+        let new_card = _.clone(card)
+        new_card.source = _.startCase(source)
+        return new_card
       })
       return in_play_cards.concat(source_cards)
     }, [])
