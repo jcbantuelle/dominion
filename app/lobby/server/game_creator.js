@@ -254,6 +254,7 @@ GameCreator = class GameCreator {
       embargos: 0,
       top_card: _.head(card_stack),
       stack: card_stack,
+      stack_name: card.stack_name,
       source: source,
       bane: card.bane,
       tokens: []
@@ -265,6 +266,8 @@ GameCreator = class GameCreator {
       return this.ruins_stack(card)
     } else if (card.name === 'Knights') {
       return this.knights_stack(card)
+    } else if (_.includes(['Encampment', 'Patrician', 'Settlers', 'Catapult', 'Gladiator'], card.name)) {
+      return this.split_stack(card)
     } else {
       return _.times(this.stack_size(card), function(counter) {
         return card
@@ -333,6 +336,35 @@ GameCreator = class GameCreator {
     return _.shuffle(_.map(knights_cards, function(knight) {
       return knight.to_h()
     }))
+  }
+
+  split_stack(card) {
+    let top_card, bottom_card
+    if (card.name === 'Encampment') {
+      top_card = 'Encampment'
+      bottom_card = 'Plunder'
+    } else if (card.name === 'Patrician') {
+      top_card = 'Patrician'
+      bottom_card = 'Emporium'
+    } else if (card.name === 'Settlers') {
+      top_card = 'Settlers'
+      bottom_card = 'Bustling Village'
+    } else if (card.name === 'Catapult') {
+      top_card = 'Catapult'
+      bottom_card = 'Rocks'
+    } else if (card.name === 'Gladiator') {
+      top_card = 'Gladiator'
+      bottom_card = 'Fortune'
+    }
+
+    let top_stack = _.times(5, function(counter) {
+      return ClassCreator.create(top_card).to_h()
+    })
+    let bottom_stack = _.times(5, function(counter) {
+      return ClassCreator.create(bottom_card).to_h()
+    })
+
+    return top_stack.concat(bottom_stack)
   }
 
   prizes(cards) {

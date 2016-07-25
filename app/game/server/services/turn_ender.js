@@ -43,6 +43,26 @@ TurnEnder = class TurnEnder {
     if (!_.isEmpty(walled_villages)) {
       WalledVillageResolver.resolve(this.game, this.player_cards, walled_villages)
     }
+    if (!_.isEmpty(this.player_cards.encampments)) {
+      _.each(this.player_cards.encampments, (encampment) => {
+        let stack_name = encampment.misfit ? encampment.misfit.stack_name : encampment.stack_name
+        let encampment_stack = _.find(this.game.cards, function(card) {
+          return card.stack_name === stack_name
+        })
+        if (encampment_stack) {
+          delete encampment.scheme
+          delete encampment.prince
+          if (encampment.misfit) {
+            encampment = encampment.misfit
+          }
+          encampment_stack.count += 1
+          encampment_stack.stack.unshift(encampment)
+          encampment_stack.top_card = _.head(encampment_stack.stack)
+          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> returns ${CardView.render(encampment)} to the supply`)
+        }
+      })
+      this.player_cards.encampments = []
+    }
     if (this.game.turn.schemes > 0) {
       SchemeChooser.choose(this.game, this.player_cards)
     }

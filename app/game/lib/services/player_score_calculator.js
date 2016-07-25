@@ -2,7 +2,7 @@ PlayerScoreCalculator = class PlayerScoreCalculator {
 
   constructor(player_cards) {
     this.player_cards = player_cards
-    this.card_sources = ['hand', 'discard', 'deck', 'playing', 'in_play', 'revealed', 'duration', 'haven', 'native_village', 'island', 'save', 'gear', 'permanent', 'tavern', 'prince', 'princed', 'discarding', 'to_discard', 'horse_traders', 'estate']
+    this.card_sources = ['hand', 'discard', 'deck', 'playing', 'in_play', 'revealed', 'duration', 'haven', 'native_village', 'island', 'save', 'gear', 'permanent', 'tavern', 'prince', 'princed', 'discarding', 'to_discard', 'horse_traders', 'estate', 'encampments']
   }
 
   calculate() {
