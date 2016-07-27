@@ -257,6 +257,7 @@ GameCreator = class GameCreator {
       stack_name: card.stack_name,
       source: source,
       bane: card.bane,
+      victory_tokens: 0,
       tokens: []
     }
   }

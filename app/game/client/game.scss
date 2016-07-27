@@ -44,7 +44,7 @@ body {
   padding-bottom: $card_height + 5px;
 }
 
-.card-container.empty-pile .card-name span {
+.card-container.empty-pile .card-name span.stack-name {
   text-decoration: line-through;
 }
 

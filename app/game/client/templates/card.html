@@ -21,10 +21,13 @@
       {{#each tokens}}
         <span class="{{color}} token">{{text}}</span>
       {{/each}}
+      {{#if victory_tokens}}
+        <span class="token">{{victory_tokens}}x&nabla;</span>
+      {{/if}}
       {{#if bane}}
         <span class="bane">&diams;</span>&nbsp;
       {{/if}}
-      <span>{{stack_name}}</span>
+      <span class="stack-name">{{stack_name}}</span>
       {{#if has_trade_route_token}}
         <span class="trade-token">$</span>&nbsp;
       {{/if}}
