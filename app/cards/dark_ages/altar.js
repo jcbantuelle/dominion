@@ -30,7 +30,7 @@ Altar = class Altar extends Card {
     }
 
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(buyer.game, card.top_card, 6)
+      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 6)
     })
 
     if (_.size(eligible_cards) > 0) {
