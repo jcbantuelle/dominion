@@ -69,7 +69,16 @@ CardPlayer = class CardPlayer {
     if (_.includes(this.card.types(this.player_cards), 'action') && this.game.turn.player._id === this.player_cards.player_id) {
       this.game.turn.played_actions += 1
     }
-    let result = this.card.play(this.game, this.player_cards, this)
+    let result
+    if (!this.game.turn.enchantress_attack && _.includes(this.card.types(this.player_cards), 'action') && _.includes(_.map(this.player_cards.duration_attacks, 'name'), 'Enchantress')) {
+      this.game.turn.enchantress_attack = true
+      let card_drawer = new CardDrawer(this.game, this.player_cards)
+      card_drawer.draw(1, false)
+      this.game.turn.actions += 1
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +1 card and +1 action instead due to ${CardView.card_html('duration', 'Enchantress')}`)
+    } else {
+      result = this.card.play(this.game, this.player_cards, this)
+    }
     if (auto_update) {
       this.update_db()
     }
