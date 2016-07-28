@@ -30,7 +30,7 @@ Forge = class Forge extends Card {
 
   static trash_cards(game, player_cards, selected_cards) {
     let cost = _.reduce(selected_cards, function(total_cost, card) {
-      return total_cost + CostCalculator.calculate(game, card, all_player_cards)
+      return total_cost + CostCalculator.calculate(game, card)
     }, 0)
 
     let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))

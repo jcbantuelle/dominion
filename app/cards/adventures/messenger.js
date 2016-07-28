@@ -40,8 +40,6 @@ Messenger = class Messenger extends Card {
   }
 
   buy_event(buyer) {
-    let all_player_cards = PlayerCardsModel.find(buyer.game._id)
-
     let eligible_cards = _.filter(buyer.game.cards, function(card) {
       return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(buyer.game, card.top_card, 5)
     })

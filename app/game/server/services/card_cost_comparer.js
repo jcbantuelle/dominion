@@ -18,14 +18,12 @@ CardCostComparer = class CardCostComparer {
   }
 
   static card_equal_to(game, comparer, comparee, coin_modifier = 0) {
-    let all_player_cards = PlayerCardsModel.find(game._id)
-    return comparee.potion_cost === comparer.potion_cost && comparee.debt_cost === comparer.debt_cost && CostCalculator.calculate(game, comparee, all_player_cards) === (CostCalculator.calculate(game, comparer, all_player_cards) + coin_modifier)
+    return comparee.potion_cost === comparer.potion_cost && comparee.debt_cost === comparer.debt_cost && CostCalculator.calculate(game, comparee) === (CostCalculator.calculate(game, comparer) + coin_modifier)
   }
 
   static card_less_than(game, comparer, comparee, coin_modifier = 0) {
-    let all_player_cards = PlayerCardsModel.find(game._id)
-    let comparer_coin_cost = CostCalculator.calculate(game, comparer, all_player_cards) + coin_modifier
-    let comparee_coin_cost = CostCalculator.calculate(game, comparee, all_player_cards)
+    let comparer_coin_cost = CostCalculator.calculate(game, comparer) + coin_modifier
+    let comparee_coin_cost = CostCalculator.calculate(game, comparee)
 
     let less_coin = (comparee.potion_cost <= comparer.potion_cost && comparee.debt_cost <= comparer.debt_cost && comparee_coin_cost < comparer_coin_cost)
     let less_potion = (comparee.potion_cost < comparer.potion_cost && comparee.debt_cost <= comparer.debt_cost && comparee_coin_cost <= comparer_coin_cost)

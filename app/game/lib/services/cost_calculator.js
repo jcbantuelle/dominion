@@ -1,6 +1,6 @@
 CostCalculator = class CostCalculator {
 
-  static calculate(game, card, player_cards = undefined, buy_phase = false) {
+  static calculate(game, card, buy_phase = false, player_cards = undefined) {
     let cost = _.isPlainObject(card) ? card.coin_cost : card.coin_cost()
     let type = _.isPlainObject(card) ? card.types : card.type_class()
     let name = _.isPlainObject(card) ? card.name : card.name()

@@ -20,8 +20,6 @@ Warrior = class Warrior extends Traveller {
       return _.includes(_.words(card.types), 'traveller')
     }))
 
-    this.all_player_cards = PlayerCardsModel.find(game._id)
-
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 

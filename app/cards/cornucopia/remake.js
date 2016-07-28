@@ -38,8 +38,6 @@ Remake = class Remake extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let all_player_cards = PlayerCardsModel.find(game._id)
-
     let trashed_card = selected_cards[0]
 
     let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
