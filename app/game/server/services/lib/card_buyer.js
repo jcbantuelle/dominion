@@ -38,12 +38,18 @@ CardBuyer = class CardBuyer {
   buy_card() {
     this.update_log()
     this.update_turn()
+    this.charm_events()
     this.track_bought_card()
     this.buy_events()
     this.gain_card()
     this.embargo()
     this.goons()
     this.merchant_guild()
+  }
+
+  charm_events() {
+    let charm_events_processor = new CharmEventsProcessor(this)
+    charm_events_processor.process()
   }
 
   update_turn() {

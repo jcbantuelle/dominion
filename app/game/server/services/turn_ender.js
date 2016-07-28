@@ -119,6 +119,7 @@ TurnEnder = class TurnEnder {
       played_actions: 0,
       coppersmiths: 0,
       expeditions: 0,
+      charms: 0,
       previous_player: this.game.turn.player
     }
 
