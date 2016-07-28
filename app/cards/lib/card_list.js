@@ -1,7 +1,8 @@
 CardList = class CardList {
 
   constructor(exclusions) {
-    this.cards = CardList.full_list(exclusions)
+    // this.cards = CardList.full_list(exclusions)
+    this.cards = CardList.test_events().concat(CardList.test())
   }
 
   pull_set() {
@@ -84,6 +85,26 @@ CardList = class CardList {
       }
       return card_list
     }, [])
+  }
+
+  static test_events() {
+    return [
+      'Borrow',
+      'Inheritance'
+    ]
+  }
+
+  static test() {
+    return [
+      'Messenger',
+      'Warrior',
+      'Remake',
+      'BlackMarket',
+      'Forge',
+      'Chapel',
+      'Plaza',
+      'PoorHouse'
+    ]
   }
 
   static empires_landmarks() {

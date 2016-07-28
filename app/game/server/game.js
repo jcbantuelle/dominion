@@ -48,7 +48,7 @@ Meteor.methods({
           if (current_game.turn.phase === 'buy' && current_game.turn.buys === 0 && (current_player_cards.debt_tokens === 0 || current_game.turn.coins === 0)) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
-            // snapshot()
+            snapshot()
           }
           ActionLock[game_id] = false
         }
@@ -67,7 +67,7 @@ Meteor.methods({
           if (current_game.turn.phase === 'buy' && current_game.turn.buys === 0 && (current_player_cards.debt_tokens === 0 || current_game.turn.coins === 0)) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
-            // snapshot()
+            snapshot()
           }
           ActionLock[game_id] = false
         }
@@ -82,7 +82,7 @@ Meteor.methods({
           ActionLock[game_id] = true
           let turn_ender = new TurnEnder(current_game, player_cards(current_game))
           turn_ender.end_turn()
-          // snapshot()
+          snapshot()
           ActionLock[game_id] = false
         }
       }
