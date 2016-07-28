@@ -202,10 +202,10 @@ CardList = class CardList {
       'Villa',
       'Archive',
       'Capital',
-      /*'Charm',
+      'Charm',
       'Crown',
       'Forum',
-      'Groundskeeper',
+      /*'Groundskeeper',
       'Legionary',
       'WildHunt'*/
     ]
