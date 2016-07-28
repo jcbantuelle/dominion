@@ -92,7 +92,25 @@ CardPlayer = class CardPlayer {
   update_phase() {
     if (!this.free_play) {
       if (this.game.turn.phase == 'action' && _.includes(this.card.types(this.player_cards), 'treasure')) {
-        this.game.turn.phase = 'treasure'
+        if (_.includes(this.card.types(this.player_cards), 'action')) {
+          let turn_event_id = TurnEventModel.insert({
+            game_id: this.game._id,
+            player_id: this.player_cards.player_id,
+            username: this.player_cards.username,
+            type: 'choose_options',
+            instructions: `Choose to play as an action or treasure:`,
+            minimum: 1,
+            maximum: 1,
+            options: [
+              {text: 'Action', value: 'action'},
+              {text: 'Treasure', value: 'treasure'}
+            ]
+          })
+          let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+          turn_event_processor.process(CardPlayer.action_or_treasure)
+        } else {
+          this.game.turn.phase = 'treasure'
+        }
       }
     }
   }
@@ -183,6 +201,12 @@ CardPlayer = class CardPlayer {
     if (permanent_card_index !== -1) {
       this.player_cards.playing[permanent_card_index].destination = 'permanent'
       this.player_cards.playing[permanent_card_index].processed = true
+    }
+  }
+
+  static action_or_treasure(game, player_cards, response) {
+    if (response[0] === 'treasure') {
+      game.turn.phase = 'treasure'
     }
   }
 

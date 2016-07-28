@@ -182,8 +182,8 @@ CardList = class CardList {
       'Archive',
       'Capital',
       'Charm',
-      /*'Crown',
-      'Forum',
+      'Crown',
+      /*'Forum',
       'Groundskeeper',
       'Legionary',
       'WildHunt'*/
