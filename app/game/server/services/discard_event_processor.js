@@ -1,7 +1,7 @@
 DiscardEventProcessor = class DiscardEventProcessor {
 
   static event_cards() {
-    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel']
+    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital']
   }
 
   static traveller_cards() {
@@ -49,6 +49,8 @@ DiscardEventProcessor = class DiscardEventProcessor {
         if (has_potions) {
           this.discard_events.push(this.card)
         }
+      } else if (this.card.inherited_name === 'Capital' && this.discarder.source === 'in_play') {
+        this.discard_events.push(this.card)
       } else if (this.card.inherited_name === 'Hermit' && this.discarder.source === 'in_play') {
         if (_.isEmpty(this.discarder.game.turn.bought_cards)) {
           this.discard_events.push(this.card)
