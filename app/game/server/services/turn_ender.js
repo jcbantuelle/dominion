@@ -306,12 +306,22 @@ TurnEnder = class TurnEnder {
 
   move_duration_cards() {
     if (!_.isEmpty(this.next_player_cards.duration)) {
-      let duration_cards = _.map(this.next_player_cards.duration, function(card) {
+      let archive_effect_count = _.size(_.filter(this.next_player_cards.duration_effects, function(effect) {
+        return effect.name === 'Archive'
+      }))
+      let duration_cards_to_move = []
+      let duration_cards_remaining = []
+      _.each(this.next_player_cards.duration, function(card) {
         delete card.prince
-        return card
+        if (card.name === 'Archive' && archive_effect_count > 0) {
+          duration_cards_remaining.push(card)
+          archive_effect_count -= 1
+        } else {
+          duration_cards_to_move.push(card)
+        }
       })
-      this.next_player_cards.in_play = this.next_player_cards.in_play.concat(duration_cards)
-      this.next_player_cards.duration = []
+      this.next_player_cards.in_play = this.next_player_cards.in_play.concat(duration_cards_to_move)
+      this.next_player_cards.duration = duration_cards_remaining
     }
   }
 

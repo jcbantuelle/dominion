@@ -56,7 +56,6 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         StartTurnEventProcessor.event_order(this.game, this.player_cards, _.map(this.start_turn_events, 'name'), this.start_turn_events)
       }
 
-      this.player_cards.duration_effects = []
       this.player_cards.princed = []
       this.player_cards.summon = []
     }
@@ -80,6 +79,10 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       } else if (event.start_event_type === 'Horse Traders') {
         selected_event.start_turn_event(game, player_cards, player_cards.horse_traders.pop())
       } else if (event.start_event_type === 'Duration') {
+        let duration_effect_index = _.findIndex(player_cards.duration_effects, function(duration_effect) {
+          return duration_effect.name === selected_event.name()
+        })
+        player_cards.duration_effects.splice(duration_effect_index, 1)
         selected_event.duration(game, player_cards, event)
       } else if (event.start_event_type === 'Reserve') {
         delete event.start_event_type
