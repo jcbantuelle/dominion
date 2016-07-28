@@ -43,6 +43,14 @@
     <br />
     <br />
   {{/if}}
+  {{#if player_cards.archive}}
+    Archive:
+    {{#each player_cards.archive}}
+      <span class="{{types}}">{{name}}</span>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
   {{#each public_info}}
     <strong class="{{color}}">{{username}}</strong><br />
     Score: {{points}}
