@@ -109,6 +109,8 @@ TurnEnder = class TurnEnder {
   donate() {
     if (this.game.turn.donate) {
       this.player_cards.hand = this.player_cards.hand.concat(this.player_cards.discard).concat(this.player_cards.deck)
+      this.player_cards.discard = []
+      this.player_cards.deck = []
       if (_.size(this.player_cards.hand) > 0) {
         let turn_event_id = TurnEventModel.insert({
           game_id: this.game._id,
