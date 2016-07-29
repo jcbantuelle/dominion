@@ -249,6 +249,7 @@ GameCreator = class GameCreator {
 
   game_card(card, source) {
     let card_stack = this.create_card_stack(card)
+    let debt_token = this.game_has_event(this.events, 'Tax') && _.head(card_stack).purchasable ? 1 : 0
     return {
       name: card.name,
       count: _.size(card_stack),
@@ -259,6 +260,7 @@ GameCreator = class GameCreator {
       source: source,
       bane: card.bane,
       victory_tokens: 0,
+      debt_tokens: debt_token,
       tokens: []
     }
   }
@@ -416,6 +418,12 @@ GameCreator = class GameCreator {
     }
     return _.some(cards, function(card) {
       return card.name === card_name
+    })
+  }
+
+  game_has_event(events, event_name) {
+    return _.some(events, function(event) {
+      return event.name === event_name
     })
   }
 
