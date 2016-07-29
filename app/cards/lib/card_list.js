@@ -145,8 +145,8 @@ CardList = class CardList {
 
   static empires_events() {
     return [
-      /*'Triumph',
-      'Annex',
+      'Triumph',
+      /*'Annex',
       'Donate',
       'Advance',
       'Delve',
