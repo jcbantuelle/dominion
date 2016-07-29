@@ -186,7 +186,7 @@ CardList = class CardList {
       'Forum',
       'Groundskeeper',
       'Legionary',
-      /*'WildHunt'*/
+      'WildHunt'
     ]
   }
 
