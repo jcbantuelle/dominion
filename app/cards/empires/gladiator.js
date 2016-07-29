@@ -72,20 +72,8 @@ Gladiator = class Gladiator extends Card {
       let gained_coins = CoinGainer.gain(game, player_cards, 1)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
-      let gladiator_index = _.findIndex(game.cards, (card) => {
-        return card.stack_name === 'Gladiator/Fortune'
-      })
-      if (gladiator_index != -1 && game.cards[gladiator_index].top_card.name === 'Gladiator') {
-        game.trash.push(game.cards[gladiator_index].top_card)
-        game.cards[gladiator_index].stack.shift()
-        game.cards[gladiator_index].count -= 1
-        if (game.cards[gladiator_index].count > 0) {
-          game.cards[gladiator_index].top_card = _.head(game.cards[gladiator_index].stack)
-        }
-        game.log.push(`&nbsp;&nbsp;${CardView.card_html('action', 'Gladiator')} is trashed from the supply`)
-      } else {
-        game.log.push(`&nbsp;&nbsp;but there is no ${CardView.card_html('action', 'Gladiator')} to trash`)
-      }
+      let supply_card_trasher = new SupplyCardTrasher(game, player_cards, 'Gladiator/Fortune', ClassCreator.create('Gladiator').to_h())
+      supply_card_trasher.trash()
     }
   }
 
