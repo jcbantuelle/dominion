@@ -24,6 +24,7 @@ CardGainer = class CardGainer {
       this.convert_estate()
       this.player_cards[this.destination].unshift(this.gained_card)
       this.game.trash.splice(card_index, 1)
+      this.groundskeepers()
       this.update_log()
       this.gain_events()
       this.update_cards()
@@ -43,6 +44,7 @@ CardGainer = class CardGainer {
       this.possessed()
       this.player_cards[this.destination].unshift(this.gained_card)
       delete this.game.black_market_bought_card
+      this.groundskeepers()
       this.update_log()
       this.gain_events()
       this.update_cards()
@@ -63,6 +65,7 @@ CardGainer = class CardGainer {
       this.possessed()
       this.player_cards[this.destination].unshift(this.gained_card)
       this.game.prizes.splice(card_index, 1)
+      this.groundskeepers()
       this.update_log()
       this.gain_events()
       this.update_cards()
@@ -90,6 +93,7 @@ CardGainer = class CardGainer {
         game_card.top_card = _.head(game_card.stack)
       }
       this.gain_events()
+      this.groundskeepers()
       this.trade_route_token(game_card)
       this.update_cards()
       return this.gained_card
@@ -203,6 +207,25 @@ CardGainer = class CardGainer {
       this.game.log.push(log_message)
     } else if (this.buy && this.game.turn.travelling_fair && !this.game.turn.possessed && this.destination === 'deck') {
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places the card on top of their deck from ${CardView.card_html('event', 'Travelling Fair')}`)
+    }
+  }
+
+  groundskeepers() {
+    if (_.includes(_.words(this.gained_card.types), 'victory')) {
+      let groundskeeper_count = _.size(_.filter(this.player_cards.in_play, function(card) {
+        return card.name === 'Groundskeeper'
+      }))
+      if (groundskeeper_count > 0) {
+        if (this.game.turn.possessed) {
+          possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
+          possessing_player_cards.victory_tokens += groundskeeper_count
+          this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${groundskeeper_count} &nabla; from ${CardView.card_html('action', 'Groundskeeper')}`)
+          PlayerCardsModel.update(this.game._id, possessing_player_cards)
+        } else {
+          this.player_cards.victory_tokens += groundskeeper_count
+          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${groundskeeper_count} &nabla; from ${CardView.card_html('action', 'Groundskeeper')}`)
+        }
+      }
     }
   }
 
