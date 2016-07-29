@@ -147,8 +147,8 @@ CardList = class CardList {
     return [
       'Triumph',
       'Annex',
-      /*'Donate',
-      'Advance',
+      'Donate',
+      /*'Advance',
       'Delve',
       'Tax',
       'Banquet',

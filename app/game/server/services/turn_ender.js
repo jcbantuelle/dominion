@@ -19,6 +19,11 @@ TurnEnder = class TurnEnder {
     } else {
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, this.player_cards)
+      if (this.game.turn.possessed) {
+        delete this.game.turn.possessed
+        GameModel.update(this.game._id, this.game)
+      }
+      this.donate()
       this.set_next_turn()
       this.clear_duration_attacks()
       GameModel.update(this.game._id, this.game)
@@ -101,6 +106,45 @@ TurnEnder = class TurnEnder {
     this.player_cards.last_turn_gained_cards = this.game.turn.gained_cards
   }
 
+  donate() {
+    if (this.game.turn.donate) {
+      this.player_cards.hand = this.player_cards.hand.concat(this.player_cards.discard).concat(this.player_cards.deck)
+      if (_.size(this.player_cards.hand) > 0) {
+        let turn_event_id = TurnEventModel.insert({
+          game_id: this.game._id,
+          player_id: this.player_cards.player_id,
+          username: this.player_cards.username,
+          type: 'choose_cards',
+          player_cards: true,
+          instructions: 'Choose any number of cards to trash:',
+          cards: this.player_cards.hand,
+          minimum: 0,
+          maximum: 0
+        })
+        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+        turn_event_processor.process(TurnEnder.trash_cards)
+      } else {
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> has no cards to trash from ${CardView.card_html('event', 'Donate')}`)
+      }
+      GameModel.update(this.game._id, this.game)
+      PlayerCardsModel.update(this.game._id, this.player_cards)
+    }
+  }
+
+  static trash_cards(game, player_cards, selected_cards) {
+    if (_.size(selected_cards) === 0) {
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to trash anything from ${CardView.card_html('event', 'Donate')}`)
+    } else {
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      card_trasher.trash()
+    }
+    player_cards.deck = _.shuffle(player_cards.hand)
+    player_cards.hand = []
+    let card_drawer = new CardDrawer(game, player_cards)
+    card_drawer.draw(5, false)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> shuffles their hand into their deck and draws a new hand`)
+  }
+
   set_next_turn() {
     this.new_turn = {
       actions: 1,
@@ -121,11 +165,6 @@ TurnEnder = class TurnEnder {
       expeditions: 0,
       charms: 0,
       previous_player: this.game.turn.player
-    }
-
-    if (this.game.turn.possessed) {
-      delete this.game.turn.possessed
-      GameModel.update(this.game._id, this.game)
     }
 
     this.set_up_extra_turns()
