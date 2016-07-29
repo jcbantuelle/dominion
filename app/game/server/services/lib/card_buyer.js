@@ -43,6 +43,7 @@ CardBuyer = class CardBuyer {
     this.buy_events()
     this.gain_card()
     this.embargo()
+    this.debt_tokens()
     this.goons()
     this.merchant_guild()
   }
@@ -88,6 +89,14 @@ CardBuyer = class CardBuyer {
       let card_gainer = new CardGainer(this.game, this.player_cards, 'discard', 'Curse')
       card_gainer.gain_game_card()
     })
+  }
+
+  debt_tokens() {
+    if (this.game_card.debt_tokens > 0) {
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${this.game_card.debt_tokens} debt token(s)`)
+      this.player_cards.debt_tokens += this.game_card.debt_tokens
+      this.game_card.debt_tokens = 0
+    }
   }
 
   goons() {
