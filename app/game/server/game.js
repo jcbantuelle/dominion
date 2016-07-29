@@ -89,43 +89,49 @@ Meteor.methods({
     })).detach()
   },
   playAllCoin: function(game_id) {
-    if (!ActionLock[game_id]) {
-      let current_game = game(game_id)
-      if (allowed_to_play(current_game)) {
-        ActionLock[game_id] = true
-        let all_coin_player = new AllCoinPlayer(current_game, player_cards(current_game))
-        all_coin_player.play()
-        ActionLock[game_id] = false
+    Future.task(Meteor.bindEnvironment(function() {
+      if (!ActionLock[game_id]) {
+        let current_game = game(game_id)
+        if (allowed_to_play(current_game)) {
+          ActionLock[game_id] = true
+          let all_coin_player = new AllCoinPlayer(current_game, player_cards(current_game))
+          all_coin_player.play()
+          ActionLock[game_id] = false
+        }
       }
-    }
+    })).detach()
   },
   playCoinToken: function(game_id) {
-    if (!ActionLock[game_id]) {
-      let current_game = game(game_id)
-      if (allowed_to_play(current_game)) {
-        ActionLock[game_id] = true
-        let coin_token_player = new CoinTokenPlayer(current_game, player_cards(current_game))
-        coin_token_player.play()
-        ActionLock[game_id] = false
+    Future.task(Meteor.bindEnvironment(function() {
+      if (!ActionLock[game_id]) {
+        let current_game = game(game_id)
+        if (allowed_to_play(current_game)) {
+          ActionLock[game_id] = true
+          let coin_token_player = new CoinTokenPlayer(current_game, player_cards(current_game))
+          coin_token_player.play()
+          ActionLock[game_id] = false
+        }
       }
-    }
+    })).detach()
   },
   playDebtToken: function(game_id) {
-    if (!ActionLock[game_id]) {
-      let current_game = game(game_id)
-      if (allowed_to_play(current_game)) {
-        ActionLock[game_id] = true
-        let debt_token_player = new DebtTokenPlayer(current_game, player_cards(current_game))
-        debt_token_player.play()
-        let current_player_cards = player_cards(current_game)
-        if (current_game.turn.buys === 0 && (current_player_cards.debt_tokens === 0 || current_game.turn.coins === 0)) {
-          let turn_ender = new TurnEnder(current_game, current_player_cards)
-          turn_ender.end_turn()
-          snapshot()
+    Future.task(Meteor.bindEnvironment(function() {
+      if (!ActionLock[game_id]) {
+        let current_game = game(game_id)
+        if (allowed_to_play(current_game)) {
+          ActionLock[game_id] = true
+          let debt_token_player = new DebtTokenPlayer(current_game, player_cards(current_game))
+          debt_token_player.play()
+          let current_player_cards = player_cards(current_game)
+          if (current_game.turn.buys === 0 && (current_player_cards.debt_tokens === 0 || current_game.turn.coins === 0)) {
+            let turn_ender = new TurnEnder(current_game, current_player_cards)
+            turn_ender.end_turn()
+            snapshot()
+          }
+          ActionLock[game_id] = false
         }
-        ActionLock[game_id] = false
       }
-    }
+    })).detach()
   },
   turnEvent: function(selected_cards, turn_event_id) {
     TurnEventFutures[turn_event_id].return(selected_cards)
