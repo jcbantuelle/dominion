@@ -153,8 +153,8 @@ CardList = class CardList {
       'Tax',
       'Banquet',
       'Ritual',
-      /*'SaltTheEarth',
-      'Wedding',
+      'SaltTheEarth',
+      /*'Wedding',
       'Windfall',
       'Conquest',
       'Dominate'*/
