@@ -48,11 +48,15 @@ body {
   opacity: 0.4;
 }
 
-.card-container div {
+.card-thumbnail,
+.card-details {
   float: right;
 }
 
 .card-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
   height: $card_height;
 }
 
@@ -75,11 +79,25 @@ body {
   padding-bottom: $event_height + 5px;
 }
 
-.event-container > div, .landmark-container > div {
+.event-thumbnail,
+.event-details,
+.landmark-thumbnail,
+.landmark-details {
   float: right;
 }
 
-.event-details, .landmark-details {
+.landmark-name,
+.event-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  height: $event_height;
+  line-height: 15px;
+  padding-top: 7px;
+}
+
+.landmark-details,
+.event-details {
   text-align: center;
   padding-left: 8px;
   padding-right: 8px;
