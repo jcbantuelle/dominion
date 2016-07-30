@@ -2,3 +2,4 @@
 mup.json
 lib/server/smtp.js
 settings-prod.json
+settings.json
