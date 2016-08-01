@@ -2,7 +2,7 @@ CardList = class CardList {
 
   constructor(exclusions) {
     // this.cards = CardList.full_list(exclusions)
-    this.cards = CardList.test_events().concat(CardList.test())
+    this.cards = CardList.test_landmarks().concat(CardList.test_events()).concat(CardList.test())
   }
 
   pull_set() {
@@ -87,17 +87,22 @@ CardList = class CardList {
     }, [])
   }
 
+  static test_landmarks() {
+    return [
+      'Aqueduct'
+    ]
+  }
+
   static test_events() {
     return [
-      'Borrow',
-      'Inheritance'
+      'Borrow'
     ]
   }
 
   static test() {
     return [
       'Messenger',
-      'Warrior',
+      'Cellar',
       'Remake',
       'BlackMarket',
       'Forge',
