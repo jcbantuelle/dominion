@@ -1,5 +1,6 @@
 $action: lightgrey;
 $event: silver;
+$landmark: #00b300;
 $victory: lightgreen;
 $reaction: lightblue;
 $treasure: gold;
@@ -87,6 +88,10 @@ hr {
 
 .event {
   background-color: $event;
+}
+
+.landmark {
+  background-color: $landmark;
 }
 
 .action.victory {

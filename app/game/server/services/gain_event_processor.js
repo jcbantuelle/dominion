@@ -16,6 +16,10 @@ GainEventProcessor = class GainEventProcessor {
     return ['Duplicate']
   }
 
+  static landmark_cards() {
+    return ['Aqueduct']
+  }
+
   constructor(gainer, player_cards) {
     this.gainer = gainer
     this.player_cards = player_cards
@@ -74,12 +78,36 @@ GainEventProcessor = class GainEventProcessor {
         }
       }
     })
+
+    _.each(this.gainer.game.landmarks, (card) => {
+      if (this.gainer.player_cards._id === this.player_cards._id && _.includes(GainEventProcessor.landmark_cards(), card.name)) {
+        if (card.name === 'Aqueduct') {
+          let aqueduct_event = false
+          if (_.includes(_.words(this.gainer.gained_card.types), 'treasure')) {
+            let card_stack = _.find(this.gainer.game.cards, (card) => {
+              return card.stack_name === this.gainer.gained_card.stack_name
+            })
+            if (card_stack && card_stack.victory_tokens > 0) {
+              this.gain_events.push(card)
+              aqueduct_event = true
+            }
+          } else if (!aqueduct_event && _.includes(_.words(this.gainer.gained_card.types), 'victory')) {
+            let aqueduct = _.find(this.gainer.game.landmarks, (card) => {
+              return card.name === 'Aqueduct'
+            })
+            if (aqueduct && aqueduct.victory_tokens > 0) {
+              this.gain_events.push(card)
+            }
+          }
+        }
+      }
+    })
   }
 
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, function(event) {
-        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()), event.inherited_name)
+        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()), event.inherited_name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.gainer.player_cards, this.gain_events, this)
