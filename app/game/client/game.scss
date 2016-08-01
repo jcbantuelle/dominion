@@ -78,16 +78,16 @@ body {
   padding-top: 5px;
 }
 
-.event-container {
+.event-container, .landmark-container {
   height: $event_height;
   padding-bottom: $event_height + 5px;
 }
 
-.event-container > div {
+.event-container > div, .landmark-container > div {
   float: right;
 }
 
-.event-details {
+.event-details, .landmark-details {
   text-align: center;
   padding-left: 8px;
   padding-right: 8px;

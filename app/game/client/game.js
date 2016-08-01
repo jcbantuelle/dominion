@@ -24,7 +24,7 @@ function registerStreams() {
 
 function createPopovers() {
   $('body').popover({
-    selector: '.card-container .card, .event-container .card, .hand-card, .prize-card, .black-market-card, .choose-card',
+    selector: '.card-container .card, .event-container .card, .hand-card, .prize-card, .black-market-card, .choose-card, .landmark-container .card',
     html: true,
     content: function() {
       return $(this).next('.card-tooltip').html()

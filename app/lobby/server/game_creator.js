@@ -6,10 +6,14 @@ GameCreator = class GameCreator {
     let events = _.filter(cards, function(card) {
       return _.includes(CardList.event_cards(), _.titleize(card.name))
     })
-
     this.events = this.event_cards(events)
+
+    this.landmarks = _.filter(cards, function(card) {
+      return _.includes(CardList.landmark_cards(), _.titleize(card.name))
+    })
+
     this.cards = _.reject(cards, function(card) {
-      return _.includes(CardList.event_cards(), _.titleize(card.name))
+      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card.name))
     })
     this.colors = ['red', 'blue', 'yellow', 'green']
   }
@@ -30,6 +34,7 @@ GameCreator = class GameCreator {
       players: _.shuffle(this.players),
       cards: cards,
       events: this.events,
+      landmarks: this.landmarks,
       duchess: this.game_has_card(cards, 'Duchess'),
       prizes: this.prizes(cards)
     }
@@ -249,7 +254,9 @@ GameCreator = class GameCreator {
 
   game_card(card, source) {
     let card_stack = this.create_card_stack(card)
-    let debt_token = this.game_has_event(this.events, 'Tax') && _.head(card_stack).purchasable ? 1 : 0
+    let debt_token = this.game_has_event_or_landmark(this.events, 'Tax') && _.head(card_stack).purchasable ? 1 : 0
+
+    let victory_tokens = this.game_card_victory_tokens(card_stack, source)
     return {
       name: card.name,
       count: _.size(card_stack),
@@ -259,10 +266,18 @@ GameCreator = class GameCreator {
       stack_name: card.stack_name,
       source: source,
       bane: card.bane,
-      victory_tokens: 0,
+      victory_tokens: victory_tokens,
       debt_tokens: debt_token,
       tokens: []
     }
+  }
+
+  game_card_victory_tokens(card, source) {
+    let victory_tokens = 0
+    if (this.game_has_event_or_landmark(this.landmarks, 'Aqueduct') && _.includes(['Silver', 'Gold'], _.head(card).name)) {
+      victory_tokens += 8
+    }
+    return victory_tokens
   }
 
   create_card_stack(card) {
@@ -421,9 +436,9 @@ GameCreator = class GameCreator {
     })
   }
 
-  game_has_event(events, event_name) {
-    return _.some(events, function(event) {
-      return event.name === event_name
+  game_has_event_or_landmark(cards, card_name) {
+    return _.some(cards, function(card) {
+      return card.name === card_name
     })
   }
 

@@ -6,26 +6,26 @@ CardList = class CardList {
 
   pull_set() {
     let game_cards = _.sampleSize(this.cards, 10)
-    let events = _.filter(game_cards, function(card_name) {
-      return _.includes(CardList.event_cards(), _.titleize(card_name))
+    let events_and_landmarks = _.filter(game_cards, function(card_name) {
+      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card_name))
     })
-    let event_count = _.size(events)
-    if (event_count > 2) {
+    let event_and_landmark_count = _.size(events_and_landmarks)
+    if (event_and_landmark_count > 2) {
       game_cards = _.reject(game_cards, function(card_name) {
-        return _.includes(CardList.event_cards(), _.titleize(card_name))
+        return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card_name))
       })
-      game_cards.push(events[0])
-      game_cards.push(events[1])
+      game_cards.push(events_and_landmarks[0])
+      game_cards.push(events_and_landmarks[1])
     }
-    if (event_count > 0) {
-      game_cards = this.replace_events(game_cards, event_count)
+    if (event_and_landmark_count > 0) {
+      game_cards = this.replace_events_and_landmarks(game_cards, event_and_landmark_count)
     }
     return _.map(game_cards, function(card_name) {
       return ClassCreator.create(card_name).to_h()
     })
   }
 
-  replace_events(game_cards, replacement_count) {
+  replace_events_and_landmarks(game_cards, replacement_count) {
     let event_count = replacement_count
     var invalid_replacement
     _.times(replacement_count, function() {
@@ -33,7 +33,7 @@ CardList = class CardList {
         invalid_replacement = true
         let replacement_card_name = CardList.pull_one(this.exclusions).name
         if (!_.includes(game_cards, _.titleize(replacement_card_name))) {
-          if (_.includes(CardList.event_cards(), _.titleize(replacement_card_name))) {
+          if (_.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(replacement_card_name))) {
             if (event_count < 2) {
               game_cards.push(replacement_card_name)
               event_count += 1
@@ -65,7 +65,7 @@ CardList = class CardList {
   }
 
   static full_list(exclusions = []) {
-    return CardList.kingdom_cards(exclusions).concat(CardList.event_cards(exclusions))
+    return CardList.kingdom_cards(exclusions).concat(CardList.event_cards(exclusions)).concat(CardList.landmark_cards(exclusions))
   }
 
   static kingdom_cards(exclusions = []) {
@@ -86,10 +86,19 @@ CardList = class CardList {
     }, [])
   }
 
+  static landmark_cards(exclusions = []) {
+    return _.reduce(CardList.landmark_sets(), function(card_list, set) {
+      if (!_.includes(exclusions, set)) {
+        card_list = card_list.concat(CardList[`${set}_landmarks`]())
+      }
+      return card_list
+    }, [])
+  }
+
   static empires_landmarks() {
     return [
-      /*'Aqueduct',
-      'Arena',
+      'Aqueduct',
+      /*'Arena',
       'BanditFort',
       'Basilica',
       'Baths',
