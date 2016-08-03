@@ -2,34 +2,37 @@
 
   <div class="row">
 
-    <!-- Kingdom Cards -->
-    <div class="col-xs-3" id="kingdom-cards">
-      {{#each game.kingdom_cards}}
-        {{> card}}
-      {{/each}}
-    </div>
+    <div class="col-xs-5" id="cards-area">
+      <div class="row">
 
-    <div class="col-xs-2" id="common-cards">
-      <!-- Common Cards -->
-      <div id="common-cards">
-        {{#each game.common_cards}}
-          {{> card}}
-        {{/each}}
-      </div>
+        <!-- Kingdom Cards -->
+        <div class="col-xs-6 col-lg-4" id="kingdom-cards">
+          {{#each game.kingdom_cards}}
+            {{> card}}
+          {{/each}}
+        </div>
 
-      <hr/>
+        <!-- Common Cards -->
+        <div class="col-xs-6 col-lg-4" id="common-cards">
+          {{#each game.common_cards}}
+            {{> card}}
+          {{/each}}
+        </div>
 
-      <!-- Not Supply Cards -->
-      <div id="not-supply-cards">
-        {{#each game.not_supply_cards}}
-          {{> card}}
-        {{/each}}
-        {{#each game.events}}
-          {{> event}}
-        {{/each}}
-      {{#each game.landmarks}}
-        {{> landmark}}
-      {{/each}}
+        <!-- Not Supply Cards -->
+        <div class="col-xs-6 col-lg-4" id="not-supply-cards">
+          <hr class="hidden-lg" />
+          {{#each game.not_supply_cards}}
+            {{> card}}
+          {{/each}}
+          {{#each game.events}}
+            {{> event}}
+          {{/each}}
+          {{#each game.landmarks}}
+            {{> landmark}}
+          {{/each}}
+        </div>
+
       </div>
     </div>
 
