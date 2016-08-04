@@ -236,7 +236,7 @@ CardList = class CardList {
 
   static promo() {
     return [
-      'BlackMarket',
+      //'BlackMarket',
       'Envoy',
       'WalledVillage',
       'Governor',
@@ -360,11 +360,11 @@ CardList = class CardList {
       'ScryingPool',
       'University',
       'Alchemist',
-      'Familiar',
+      //'Familiar',
       'PhilosophersStone',
       'Golem',
       'Apprentice',
-      'Possession'
+      //'Possession'
     ]
   }
 
