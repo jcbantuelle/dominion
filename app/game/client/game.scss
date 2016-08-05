@@ -49,20 +49,24 @@ body {
 }
 
 .card-thumbnail,
-.card-details {
+.card-details,
+.event-thumbnail,
+.event-details,
+.landmark-thumbnail,
+.landmark-details {
   float: right;
 }
 
 .card-name {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   text-align: right;
   height: $card_height;
 }
 
 .card-name span {
-  display: inline-block;
-  margin-top: 10px;
+  line-height: $card_height;
   padding: 1px;
 }
 
@@ -79,21 +83,18 @@ body {
   padding-bottom: $event_height + 5px;
 }
 
-.event-thumbnail,
-.event-details,
-.landmark-thumbnail,
-.landmark-details {
-  float: right;
-}
-
 .landmark-name,
 .event-name {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   text-align: right;
   height: $event_height;
-  line-height: 15px;
-  padding-top: 7px;
+}
+
+.landmark-name span,
+.event-name span {
+  line-height: $event_height;
 }
 
 .landmark-details,
