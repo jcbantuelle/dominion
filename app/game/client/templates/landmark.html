@@ -1,16 +1,19 @@
 <template name="landmark">
   <div class="landmark-container">
-    <div>
+    <div class="landmark-thumbnail">
       <img src="http://images.mudbugmedia.com/dominion/images/cards/{{image}}.jpg" width="46" height="29" class="card" data-name="{{name}}" />
       <div class="card-tooltip">
         <img src="http://images.mudbugmedia.com/dominion/images/cards/{{image}}.jpg" width="341" height="220" />
       </div>
     </div>
-    <div class="landmark-details">
+
+    <div class="landmark-details"></div>
+
+    <div class="landmark-name">
       {{#if victory_tokens}}
         <span class="token">{{victory_tokens}}x&nabla;</span>
       {{/if}}
-      {{name}}
+      <span class="stack-name">{{name}}</span>
     </div>
   </div>
 </template>
