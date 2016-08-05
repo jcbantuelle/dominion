@@ -22,14 +22,14 @@
         <!-- Not Supply Cards -->
         <div class="col-xs-6 col-lg-4 col-lg-pull-8" id="not-supply-cards">
           <hr class="hidden-lg" />
-          {{#each game.not_supply_cards}}
-            {{> card}}
-          {{/each}}
           {{#each game.events}}
             {{> event}}
           {{/each}}
           {{#each game.landmarks}}
             {{> landmark}}
+          {{/each}}
+          {{#each game.not_supply_cards}}
+            {{> card}}
           {{/each}}
         </div>
 
