@@ -26,20 +26,12 @@ body {
   color: green;
 }
 
-.container {
-  width: 1410px;
-}
-
-#kingdom-cards {
-  width: 300px;
-}
-
 #game-over {
-  width: 700px;
   margin-top: 20px;
 }
 
 .card-container {
+  clear: both;
   height: $card_height;
   padding-bottom: $card_height + 5px;
 }
@@ -56,17 +48,25 @@ body {
   opacity: 0.4;
 }
 
-.card-container div {
+.card-thumbnail,
+.card-details,
+.event-thumbnail,
+.event-details,
+.landmark-thumbnail,
+.landmark-details {
   float: right;
 }
 
 .card-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
   height: $card_height;
 }
 
 .card-name span {
-  display: inline-block;
-  margin-top: 10px;
+  line-height: $card_height;
   padding: 1px;
 }
 
@@ -83,11 +83,22 @@ body {
   padding-bottom: $event_height + 5px;
 }
 
-.event-container > div, .landmark-container > div {
-  float: right;
+.landmark-name,
+.event-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  height: $event_height;
 }
 
-.event-details, .landmark-details {
+.landmark-name span,
+.event-name span {
+  line-height: $event_height;
+}
+
+.landmark-details,
+.event-details {
   text-align: center;
   padding-left: 8px;
   padding-right: 8px;
@@ -104,22 +115,15 @@ body {
   color: lightblue;
 }
 
-#common-cards, #not-supply-cards {
-  width: 210px;
-}
-
 #game-log {
   height: 250px;
+  margin-bottom: 20px;
   overflow: auto;
-  width: 700px;
-}
-
-#action-response {
-  width: 700px;
 }
 
 #hand {
   padding-top: 5px;
+  margin-bottom: 100px;
 }
 
 #hand ul {
@@ -164,17 +168,12 @@ body {
   padding: 1px;
 }
 
-#game-area {
-  width: 650px;
-}
-
 #game-chat {
   height: 100px;
   overflow: auto;
 }
 
 #game-chat, #message {
-  width: 1170px;
   margin-left: auto;
   margin-right: auto;
 }
