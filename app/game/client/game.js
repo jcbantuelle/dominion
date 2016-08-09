@@ -13,8 +13,7 @@ Template.game.events({
   "click #play-all-coin": playAllCoin,
   "click #play-coin-token": playCoinToken,
   "click #play-debt-token": playDebtToken,
-  "submit #turn-event": turnEvent,
-  "click #destroy-game": destroyGame,
+  "submit #turn-event": turnEvent
   "click": removePopover,
 })
 
@@ -114,10 +113,6 @@ function turnEvent(event) {
     alert(turn_event_submission.error_message())
   }
 
-}
-
-function destroyGame() {
-  Meteor.call('destroyGame')
 }
 
 function removePopover() {

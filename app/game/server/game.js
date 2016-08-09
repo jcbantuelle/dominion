@@ -135,14 +135,6 @@ Meteor.methods({
   },
   turnEvent: function(selected_cards, turn_event_id) {
     TurnEventFutures[turn_event_id].return(selected_cards)
-  },
-  destroyGame: function() {
-    if (Meteor.user().admin) {
-      Meteor.users.update({}, {$unset: {current_game: ''}}, {multi: true})
-      PlayerCardsModel.remove()
-      GameModel.remove()
-      TurnEventModel.remove()
-    }
   }
 })
 
