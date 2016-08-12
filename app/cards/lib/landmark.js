@@ -16,6 +16,14 @@ Landmark = class Landmark {
     return this.name()
   }
 
+  victory_points() {
+    return 0
+  }
+
+  point_variable() {
+    return false
+  }
+
   to_h() {
     return {
       name: this.name(),
