@@ -98,8 +98,8 @@ CardList = class CardList {
   static empires_landmarks() {
     return [
       'Aqueduct',
-      /*'Arena',
-      'BanditFort',
+      'Arena',
+      /*'BanditFort',
       'Basilica',
       'Baths',
       'Battlefield',
