@@ -82,20 +82,18 @@ GainEventProcessor = class GainEventProcessor {
     _.each(this.gainer.game.landmarks, (card) => {
       if (this.gainer.player_cards._id === this.player_cards._id && _.includes(GainEventProcessor.landmark_cards(), card.name)) {
         if (card.name === 'Aqueduct') {
-          let aqueduct_event = false
           if (_.includes(_.words(this.gainer.gained_card.types), 'treasure')) {
             let card_stack = _.find(this.gainer.game.cards, (card) => {
               return card.stack_name === this.gainer.gained_card.stack_name
             })
             if (card_stack && card_stack.victory_tokens > 0) {
               this.gain_events.push(card)
-              aqueduct_event = true
             }
-          } else if (!aqueduct_event && _.includes(_.words(this.gainer.gained_card.types), 'victory')) {
-            let aqueduct = _.find(this.gainer.game.landmarks, (card) => {
-              return card.name === 'Aqueduct'
-            })
-            if (aqueduct && aqueduct.victory_tokens > 0) {
+          } else if (_.includes(_.words(this.gainer.gained_card.types), 'victory')) {
+            if (card.victory_tokens > 0) {
+              this.gain_events.push(card)
+            }
+          }
               this.gain_events.push(card)
             }
           }
