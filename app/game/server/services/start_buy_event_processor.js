@@ -1,0 +1,68 @@
+StartBuyEventProcessor = class StartBuyEventProcessor {
+
+  static landmark_events() {
+    return ['Arena']
+  }
+
+  constructor(game, player_cards) {
+    this.game = game
+    this.player_cards = player_cards
+    this.find_start_buy_events()
+  }
+
+  find_start_buy_events() {
+    let landmark_events = _.filter(this.game.landmarks, (card) => {
+      if (_.includes(StartBuyEventProcessor.landmark_events(), card.name)) {
+        if (card.name === 'Arena') {
+          let eligible_cards = _.filter(this.player_cards.hand, function(card) {
+            return _.includes(_.words(card.types), 'action')
+          })
+          return _.size(eligible_cards) > 0
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    })
+
+    this.start_buy_events = landmark_events
+  }
+
+  process() {
+    if (!_.isEmpty(this.start_buy_events)) {
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> starts their buy phase`)
+      if (_.size(this.start_buy_events) > 1) {
+        let turn_event_id = TurnEventModel.insert({
+          game_id: this.game._id,
+          player_id: this.player_cards.player_id,
+          username: this.player_cards.username,
+          type: 'sort_cards',
+          instructions: 'Choose order to resolve start of buy phase events (leftmost will be first):',
+          cards: this.start_buy_events
+        })
+        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this.start_buy_events)
+        turn_event_processor.process(StartBuyEventProcessor.event_order)
+      } else {
+        StartBuyEventProcessor.event_order(this.game, this.player_cards, _.map(this.start_buy_events, 'name'), this.start_buy_events)
+      }
+    }
+  }
+
+  static event_order(game, player_cards, event_name_order, events) {
+    _.each(event_name_order, function(event_name) {
+      let event_index = _.findIndex(events, function(event) {
+        return event.name === event_name
+      })
+      let event = events.splice(event_index, 1)[0]
+      if (event_name === 'Estate' && player_cards.tokens.estate) {
+        event_name = 'InheritedEstate'
+      }
+      let selected_event = ClassCreator.create(event_name)
+      selected_event.start_buy_event(game, player_cards)
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
+    })
+  }
+
+}

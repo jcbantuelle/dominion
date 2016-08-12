@@ -17,6 +17,8 @@ EventBuyer = class EventBuyer {
 
   update_phase() {
     if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
+      let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
+      start_buy_event_processor.process()
       this.game.turn.phase = 'buy'
     }
   }

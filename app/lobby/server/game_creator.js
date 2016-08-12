@@ -8,9 +8,10 @@ GameCreator = class GameCreator {
     })
     this.events = this.event_cards(events)
 
-    this.landmarks = _.filter(cards, function(card) {
+    let landmarks = _.filter(cards, function(card) {
       return _.includes(CardList.landmark_cards(), _.titleize(card.name))
     })
+    this.landmarks = this.landmark_cards(landmarks)
 
     this.cards = _.reject(cards, function(card) {
       return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card.name))
@@ -143,6 +144,17 @@ GameCreator = class GameCreator {
   event_cards(events) {
     return _.sortBy(events, function(event) {
       return -event.coin_cost
+    })
+  }
+
+  landmark_cards(landmarks) {
+    return _.map(landmarks, (landmark) => {
+      if (landmark.name === 'Arena') {
+        landmark.victory_tokens = 6 * _.size(this.players)
+        return landmark
+      } else {
+        return landmark
+      }
     })
   }
 
