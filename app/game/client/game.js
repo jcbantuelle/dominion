@@ -13,7 +13,7 @@ Template.game.events({
   "click #play-all-coin": playAllCoin,
   "click #play-coin-token": playCoinToken,
   "click #play-debt-token": playDebtToken,
-  "submit #turn-event": turnEvent
+  "submit #turn-event": turnEvent,
   "click": removePopover,
 })
 
