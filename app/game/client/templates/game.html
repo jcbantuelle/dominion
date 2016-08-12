@@ -106,16 +106,15 @@
         </div>
         <div class="modal-body" id="extra-info">
           {{> game_info game=game player_cards=player_cards public_info=public_info}}
-
-          {{#if currentUser.admin}}
-            <button id="destroy-game" class="btn btn-danger btn-xs">
-              Destroy Game
-            </button>
-          {{/if}}
-
         </div>
       </div>
     </div>
   </div>
+
+  {{#if currentUser.admin}}
+    <button id="destroy-game" class="btn btn-danger btn-xs">
+      Destroy Game
+    </button>
+  {{/if}}
 
 </template>
