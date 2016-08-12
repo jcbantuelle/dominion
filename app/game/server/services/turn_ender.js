@@ -10,6 +10,7 @@ TurnEnder = class TurnEnder {
     this.game.turn.phase = 'cleanup'
     this.discard_hand()
     this.clean_up_cards_in_play()
+    this.end_turn_events()
     this.draw_new_hand()
     this.track_gained_cards()
     this.game.log.push(`<strong>${this.game.turn.player.username}</strong> ends their turn`)
@@ -43,6 +44,11 @@ TurnEnder = class TurnEnder {
   end_buy_events() {
     let end_buy_event_processor = new EndBuyEventProcessor(this.game, this.player_cards)
     end_buy_event_processor.process()
+  }
+
+  end_turn_events() {
+    let end_turn_event_processor = new EndTurnEventProcessor(this.game, this.player_cards)
+    end_turn_event_processor.process()
   }
 
   clean_up_cards_in_play() {
