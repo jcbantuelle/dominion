@@ -17,7 +17,7 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static landmark_cards() {
-    return ['Aqueduct']
+    return ['Aqueduct', 'Battlefield']
   }
 
   constructor(gainer, player_cards) {
@@ -94,6 +94,9 @@ GainEventProcessor = class GainEventProcessor {
               this.gain_events.push(card)
             }
           }
+        } else if (card.name === 'Battlefield') {
+          if (_.includes(_.words(this.gainer.gained_card.types), 'victory')) {
+            if (card.victory_tokens > 0) {
               this.gain_events.push(card)
             }
           }
