@@ -149,7 +149,7 @@ GameCreator = class GameCreator {
 
   landmark_cards(landmarks) {
     return _.map(landmarks, (landmark) => {
-      if (landmark.name === 'Arena') {
+      if (_.includes(['Arena', 'Basilica'], landmark.name)) {
         landmark.victory_tokens = 6 * _.size(this.players)
         return landmark
       } else {

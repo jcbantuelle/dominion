@@ -4,6 +4,10 @@ BuyEventProcessor = class BuyEventProcessor {
     return ['Hovel']
   }
 
+  static landmark_cards() {
+    return ['Basilica']
+  }
+
   static event_cards() {
     return ['Noble Brigand', 'Farmland', 'Mint', 'Messenger', 'Port', 'Forum']
   }
@@ -42,6 +46,14 @@ BuyEventProcessor = class BuyEventProcessor {
         this.buy_events.push(this.bought_card)
       }
     }
+
+    _.each(this.buyer.game.landmarks, (card) => {
+      if (_.includes(BuyEventProcessor.landmark_cards(), card.name)) {
+        if (card.name === 'Basilica' && card.victory_tokens > 0 && this.buyer.game.turn.coins >= 2) {
+            this.buy_events.push(card)
+        }
+      }
+    })
 
     if (_.includes(BuyEventProcessor.overpay_cards(), this.buyer.card.name()) && this.buyer.game.turn.coins > 0) {
       this.buy_events.push(this.buyer.card.to_h())
@@ -90,7 +102,7 @@ BuyEventProcessor = class BuyEventProcessor {
   process() {
     if (!_.isEmpty(this.buy_events)) {
       let mandatory_buy_events = _.filter(this.buy_events, function(event) {
-        return _.includes(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()), event.inherited_name)
+        return _.includes(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()).concat(BuyEventProcessor.landmark_cards()), event.inherited_name)
       })
       if (_.size(this.buy_events) === 1 && !_.isEmpty(mandatory_buy_events)) {
         BuyEventProcessor.buy_event(this.buyer.game, this.buyer.player_cards, this.buy_events, this)
