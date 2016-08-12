@@ -15,6 +15,13 @@
         <span class="{{types}}">{{name}}</span> x {{count}} {{#if point_variable}}({{point_variable}}){{/if}}&nbsp;
       {{/each}}
       <br />
+      {{#if landmark_cards}}
+        <strong>Landmarks:</strong>
+        {{#each landmark_cards}}
+          <span class="{{types}}">{{name}}</span> ({{point_variable}})&nbsp;
+        {{/each}}
+        <br />
+      {{/if}}
       <strong>Deck Breakdown:</strong>
       {{#each deck_breakdown}}
         <span class="{{types}}">{{name}}</span> x {{count}}&nbsp;&nbsp;

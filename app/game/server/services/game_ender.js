@@ -67,16 +67,20 @@ GameEnder = class GameEnder {
     return _.chain(this.players_cards).map((player_cards) => {
       let all_cards = AllPlayerCardsQuery.find(player_cards, true)
       let point_cards = this.point_cards(all_cards)
+      let landmark_cards = this.landmark_cards(all_cards)
       let deck_breakdown = this.deck_breakdown(all_cards)
       let player_score = {
         username: player_cards.username,
         point_cards: point_cards,
-        points: this.card_score(point_cards) + player_cards.victory_tokens,
+        points: this.card_score(point_cards.concat(landmark_cards)) + player_cards.victory_tokens,
         turns: player_cards.turns,
         deck_breakdown: deck_breakdown
       }
       if (player_cards.victory_tokens > 0) {
         player_score.victory_tokens = player_cards.victory_tokens
+      }
+      if (_.size(landmark_cards) > 0) {
+        player_score.landmark_cards = landmark_cards
       }
       return player_score
     }).sortBy(function(score) {
@@ -105,6 +109,20 @@ GameEnder = class GameEnder {
         point_variable: _.head(cards).point_variable,
         points: _.head(cards).points * _.size(cards)
       }
+    }).value()
+  }
+
+  landmark_cards(player_cards) {
+    return _.chain(this.game.landmarks).map(function(landmark) {
+      let landmark_card = ClassCreator.create(landmark.name)
+      return {
+        name: landmark_card.name(),
+        types: landmark_card.type_class(),
+        points: landmark_card.victory_points(player_cards),
+        point_variable: landmark_card.point_variable(player_cards)
+      }
+    }).filter(function(point_card) {
+      return point_card.points !== 0
     }).value()
   }
 

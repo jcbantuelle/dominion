@@ -125,8 +125,8 @@ CardList = class CardList {
     return [
       'Aqueduct',
       'Arena',
-      /*'BanditFort',
-      'Basilica',
+      'BanditFort',
+      /*'Basilica',
       'Baths',
       'Battlefield',
       'Colonnade',
