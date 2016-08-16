@@ -5,7 +5,7 @@ BuyEventProcessor = class BuyEventProcessor {
   }
 
   static landmark_cards() {
-    return ['Basilica']
+    return ['Basilica', 'Colonnade']
   }
 
   static event_cards() {
@@ -50,6 +50,8 @@ BuyEventProcessor = class BuyEventProcessor {
     _.each(this.buyer.game.landmarks, (card) => {
       if (_.includes(BuyEventProcessor.landmark_cards(), card.name)) {
         if (card.name === 'Basilica' && card.victory_tokens > 0 && this.buyer.game.turn.coins >= 2) {
+            this.buy_events.push(card)
+        } else if (card.name === 'Colonnade' && card.victory_tokens > 0 && _.includes(this.buyer.card.types(), 'action') && _.some(this.buyer.player_cards.in_play.concat(this.buyer.player_cards.duration).concat(this.buyer.player_cards.permanent), (card) => {return card.name === this.bought_card_name})) {
             this.buy_events.push(card)
         }
       }
