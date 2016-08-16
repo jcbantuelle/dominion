@@ -11,12 +11,18 @@ SupplyCardTrasher = class SupplyCardTrasher {
 
   trash() {
     this.update_log()
-    this.trash_events()
-    this.put_card_in_trash()
+    if (this.trashable()) {
+      this.trash_events()
+      this.put_card_in_trash()
+    }
+  }
+
+  trashable() {
+    return this.trash_stack && this.trash_stack.count > 0 && this.trash_stack.top_card.name === this.card.name
   }
 
   update_log() {
-    if (this.trash_stack && this.trash_stack.count > 0 && this.trash_stack.top_card.name === this.card.name) {
+    if (this.trashable()) {
       this.game.log.push(`&nbsp;&nbsp;${CardView.render(this.trash_stack.top_card)} is trashed from the supply`)
     } else {
       this.game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(this.card)} to trash`)
