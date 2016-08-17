@@ -7,7 +7,7 @@ Training = class Training extends Event {
   buy(game, player_cards) {
     let eligible_piles = _.filter(game.cards, function(card) {
       let has_player_token = _.some(card.tokens, function(token) {
-        return token.username === player_cards.username
+        return token.name === 'coin' && token.username === player_cards.username
       })
       return !has_player_token && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action')
     })

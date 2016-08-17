@@ -6,7 +6,10 @@ Seaway = class Seaway extends Event {
 
   buy(game, player_cards) {
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && CardCostComparer.coin_less_than(game, card.top_card, 5)
+      let has_player_token = _.some(card.tokens, function(token) {
+        return token.name === 'buy' && token.username === player_cards.username
+      })
+      return !has_player_token && card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && CardCostComparer.coin_less_than(game, card.top_card, 5)
     })
 
     if (_.size(eligible_cards) > 0) {
