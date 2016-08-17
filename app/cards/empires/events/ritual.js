@@ -12,7 +12,7 @@ Ritual = class Ritual extends Event {
       return !_.includes(_.words(card.top_card.types), 'victory') && card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 6)
     })
 
-    if (gained) {
+    if (gained && gained.name === 'Curse') {
       if (_.size(player_cards.hand) > 0) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
@@ -30,8 +30,6 @@ Ritual = class Ritual extends Event {
       } else {
         game.log.push(`&nbsp;&nbsp;but <strong>${player_cards.username}</strong> has no cards in hand`)
       }
-    } else {
-      game.log.push(`&nbsp;&nbsp;but there is no ${CardView.card_html('curse', 'Curse')} to gain`)
     }
   }
 
