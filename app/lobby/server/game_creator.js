@@ -289,6 +289,9 @@ GameCreator = class GameCreator {
     if (this.game_has_event_or_landmark(this.landmarks, 'Aqueduct') && _.includes(['Silver', 'Gold'], _.head(card).name)) {
       victory_tokens += 8
     }
+    if (this.game_has_event_or_landmark(this.landmarks, 'Defiled Shrine') && _.includes(_.words(_.head(card).types), 'action') && !_.includes(_.words(_.head(card).types), 'gathering')) {
+      victory_tokens += 2
+    }
     return victory_tokens
   }
 

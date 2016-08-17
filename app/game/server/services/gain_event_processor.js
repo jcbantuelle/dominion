@@ -17,7 +17,7 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static landmark_cards() {
-    return ['Aqueduct', 'Battlefield']
+    return ['Aqueduct', 'Battlefield', 'Defiled Shrine']
   }
 
   constructor(gainer, player_cards) {
@@ -97,6 +97,15 @@ GainEventProcessor = class GainEventProcessor {
         } else if (card.name === 'Battlefield') {
           if (_.includes(_.words(this.gainer.gained_card.types), 'victory')) {
             if (card.victory_tokens > 0) {
+              this.gain_events.push(card)
+            }
+          }
+        } else if (card.name === 'Defiled Shrine') {
+          if (_.includes(_.words(this.gainer.gained_card.types), 'action')) {
+            let card_stack = _.find(this.gainer.game.cards, (card) => {
+              return card.stack_name === this.gainer.gained_card.stack_name
+            })
+            if (card_stack && card_stack.victory_tokens > 0) {
               this.gain_events.push(card)
             }
           }
