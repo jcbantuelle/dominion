@@ -391,7 +391,9 @@ GameCreator = class GameCreator {
     }
 
     return _.map(castle_cards, function(castle) {
-      return castle.to_h()
+      castle = castle.to_h()
+      castle.bane = card.bane
+      return castle
     })
   }
 
@@ -414,11 +416,16 @@ GameCreator = class GameCreator {
       bottom_card = 'Fortune'
     }
 
+    top_card = ClassCreator.create(top_card).to_h()
+    top_card.bane = card.bane
     let top_stack = _.times(5, function(counter) {
-      return ClassCreator.create(top_card).to_h()
+      return top_card
     })
+
+    bottom_card = ClassCreator.create(bottom_card).to_h()
+    bottom_card.bane = card.bane
     let bottom_stack = _.times(5, function(counter) {
-      return ClassCreator.create(bottom_card).to_h()
+      return bottom_card
     })
 
     return top_stack.concat(bottom_stack)
@@ -503,6 +510,7 @@ GameCreator = class GameCreator {
     do {
       card = CardList.pull_one(this.exclusions)
     } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.includes(game_card_names, card.name))
+    card = ClassCreator.create('Castles').to_h()
     card.bane = true
     return this.game_card(card, 'kingdom')
   }
