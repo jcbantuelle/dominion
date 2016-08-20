@@ -113,13 +113,13 @@ GameEnder = class GameEnder {
   }
 
   landmark_cards(player_cards) {
-    return _.chain(this.game.landmarks).map(function(landmark) {
+    return _.chain(this.game.landmarks).map((landmark) => {
       let landmark_card = ClassCreator.create(landmark.name)
       return {
         name: landmark_card.name(),
         types: landmark_card.type_class(),
-        points: landmark_card.victory_points(player_cards),
-        point_variable: landmark_card.point_variable(player_cards)
+        points: landmark_card.victory_points(player_cards, this.game),
+        point_variable: landmark_card.point_variable(player_cards, this.game)
       }
     }).filter(function(point_card) {
       return point_card.points !== 0
