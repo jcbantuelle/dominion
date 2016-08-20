@@ -17,7 +17,7 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static landmark_cards() {
-    return ['Aqueduct', 'Battlefield', 'Defiled Shrine']
+    return ['Aqueduct', 'Battlefield', 'Defiled Shrine', 'Labyrinth']
   }
 
   constructor(gainer, player_cards) {
@@ -96,6 +96,12 @@ GainEventProcessor = class GainEventProcessor {
           }
         } else if (card.name === 'Battlefield') {
           if (_.includes(_.words(this.gainer.gained_card.types), 'victory')) {
+            if (card.victory_tokens > 0) {
+              this.gain_events.push(card)
+            }
+          }
+        } else if (card.name === 'Labyrinth') {
+          if (_.size(this.gainer.game.turn.gained_cards) === 2) {
             if (card.victory_tokens > 0) {
               this.gain_events.push(card)
             }
