@@ -174,7 +174,16 @@ GainEventProcessor = class GainEventProcessor {
         let gain_event_index = _.findIndex(gain_event_processor.gain_events, function(event) {
           return event.name === selected_cards[0].name
         })
-        gain_event_processor.gain_events.splice(gain_event_index, 1)
+        if (card_name === 'Duplicate') {
+          let duplicates = _.filter(player_cards.tavern, function(card) {
+            return card.name === 'Duplicate'
+          })
+          gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
+            return event.inherited_name !== 'Duplicate'
+          }).concat(duplicates)
+        } else {
+          gain_event_processor.gain_events.splice(gain_event_index, 1)
+        }
       }
 
       if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).name !== gain_event_processor.gainer.card_name) {

@@ -25,7 +25,7 @@ Duplicate = class Duplicate extends Card {
       player_id: gainer.player_cards.player_id,
       username: gainer.player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Call ${CardView.render(tavern_card)}? to gain a copy of ${CardView.render(gained_card)}`,
+      instructions: `Call ${CardView.render(tavern_card)} to gain a copy of ${CardView.render(gained_card)}?`,
       minimum: 1,
       maximum: 1
     })
