@@ -24,7 +24,7 @@ NobleBrigand = class NobleBrigand extends Card {
 
   buy_event(buyer) {
     buyer.game.turn.trashed_treasures = []
-    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(buyer.game)
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(buyer.game, buyer.player_cards)
     ordered_player_cards.shift()
     _.each(ordered_player_cards, (other_player_cards) => {
       this.attack(buyer.game, other_player_cards)

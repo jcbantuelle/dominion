@@ -13,7 +13,7 @@ HauntedCastle = class HauntedCastle extends Castles {
       let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'discard', 'Gold')
       card_gainer.gain_game_card()
 
-      let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(gainer.game)
+      let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(gainer.game, gainer.player_cards)
       ordered_player_cards.shift()
       _.each(ordered_player_cards, (other_player_cards) => {
         this.attack(gainer.game, other_player_cards)

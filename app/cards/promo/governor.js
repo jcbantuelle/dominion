@@ -31,8 +31,7 @@ Governor = class Governor extends Card {
   }
 
   static process_response(game, player_cards, response) {
-    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)
-    ordered_player_cards[0] = player_cards
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
 
     response = response[0]
     _.each(ordered_player_cards, function(current_player_cards) {

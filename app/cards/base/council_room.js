@@ -15,7 +15,7 @@ CouncilRoom = class CouncilRoom extends Card {
     game.turn.buys += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
 
-    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
     ordered_player_cards.shift()
     _.each(ordered_player_cards, function(other_player_cards) {
       let other_player_card_drawer = new CardDrawer(game, other_player_cards)

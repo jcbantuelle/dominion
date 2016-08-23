@@ -14,8 +14,7 @@ Masquerade = class Masquerade extends Card {
 
     PlayerCardsModel.update(game._id, player_cards)
 
-    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)
-    ordered_player_cards.splice(0, 1, player_cards)
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
     _.each(ordered_player_cards, function(other_player_cards) {
       if (_.size(other_player_cards.hand) > 0) {
         let next_player_query = new NextPlayerQuery(game, other_player_cards.player_id)

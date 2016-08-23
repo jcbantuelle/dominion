@@ -67,7 +67,7 @@ Messenger = class Messenger extends Card {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
     card_gainer.gain_game_card()
 
-    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
     ordered_player_cards.shift()
     _.each(ordered_player_cards, function(other_player_cards) {
       let other_player_card_gainer = new CardGainer(game, other_player_cards, 'discard', selected_cards[0].name)

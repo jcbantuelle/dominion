@@ -21,7 +21,7 @@ Contraband = class Contraband extends Card {
     }
 
     if (_.size(eligible_cards) > 0) {
-      let player_to_left = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)[1]
+      let player_to_left = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)[1]
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
