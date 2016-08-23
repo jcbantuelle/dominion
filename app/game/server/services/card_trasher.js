@@ -15,6 +15,7 @@ CardTrasher = class CardTrasher {
     _.each(this.card_names, (card_name) => {
       this.player_cards.trash.push(this.find_card(card_name))
     })
+    this.player_cards.trash = _.compact(this.player_cards.trash)
 
     let events = this.has_events()
     if (_.size(this.player_cards.trash) > 1 && events) {
@@ -61,7 +62,7 @@ CardTrasher = class CardTrasher {
     let card_index = _.findIndex(this.player_cards[this.source], (card) => {
       return card.name === card_name
     })
-    return this.player_cards[this.source].splice(card_index, 1)[0]
+    return card_index === -1 ? undefined : this.player_cards[this.source].splice(card_index, 1)[0]
   }
 
   track_trashed_card(trashed_card) {
