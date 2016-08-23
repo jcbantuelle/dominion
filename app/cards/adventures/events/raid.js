@@ -13,7 +13,7 @@ Raid = class Raid extends Event {
       card_gainer.gain_game_card()
     })
 
-    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
     ordered_player_cards.shift()
     _.each(ordered_player_cards, function(other_player_cards) {
       if (!other_player_cards.tokens.minus_card) {

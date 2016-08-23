@@ -15,8 +15,7 @@ Tournament = class Tournament extends Card {
     game.turn.self_revealed_province = false
     game.turn.opponent_revealed_province = false
 
-    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game)
-    ordered_player_cards.splice(0, 1, player_cards)
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
     _.each(ordered_player_cards, function(other_player_cards) {
       let province = _.find(other_player_cards.hand, function(card) {
         return card.name === 'Province'
