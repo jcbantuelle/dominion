@@ -1,6 +1,6 @@
 CardPlayer = class CardPlayer {
 
-  constructor(game, player_cards, card_name, free_play = false) {
+  constructor(game, player_cards, card_name, free_play = false, misfit = false) {
     if (card_name === 'Estate' && player_cards.tokens.estate) {
       card_name = 'InheritedEstate'
     }
@@ -9,7 +9,7 @@ CardPlayer = class CardPlayer {
     this.player_cards = player_cards
     this.free_play = free_play
     this.card_index = _.findIndex(this.player_cards.hand, (card) => {
-      return card.name === this.card.name()
+      return card.name === this.card.name() && (!misfit || card.misfit)
     })
     this.resolve = !this.free_play || this.player_cards.hand[this.card_index].prince
   }
