@@ -43,22 +43,22 @@ Tournament = class Tournament extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
 
-      if (!_.isEmpty(game.prizes)) {
-        let turn_event_id = TurnEventModel.insert({
-          game_id: game._id,
-          player_id: player_cards.player_id,
-          username: player_cards.username,
-          type: 'choose_cards',
-          player_cards: true,
-          show_images: true,
-          instructions: `Choose a prize to gain:`,
-          cards: game.prizes,
-          minimum: 1,
-          maximum: 1
-        })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        turn_event_processor.process(Tournament.gain_prize)
-      }
+      let duchy = new Duchy()
+
+      let turn_event_id = TurnEventModel.insert({
+        game_id: game._id,
+        player_id: player_cards.player_id,
+        username: player_cards.username,
+        type: 'choose_cards',
+        player_cards: true,
+        show_images: true,
+        instructions: `Choose a prize or ${CardView.render(duchy)} to gain:`,
+        cards: game.prizes.concat(duchy.to_h()),
+        minimum: 1,
+        maximum: 1
+      })
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      turn_event_processor.process(Tournament.gain_prize)
     }
 
     if (!game.turn.opponent_revealed_province) {
@@ -85,8 +85,13 @@ Tournament = class Tournament extends Card {
   }
 
   static gain_prize(game, player_cards, selected_cards) {
-    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_prize_card()
+    let selected_card = selected_cards[0]
+    let card_gainer = new CardGainer(game, player_cards, 'deck', selected_card.name)
+    if (selected_card.name === 'Duchy') {
+      card_gainer.gain_game_card()
+    } else {
+      card_gainer.gain_prize_card()
+    }
   }
 
 }
