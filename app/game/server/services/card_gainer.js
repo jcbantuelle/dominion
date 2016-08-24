@@ -138,6 +138,15 @@ CardGainer = class CardGainer {
     if (this.game.turn.player._id === this.player_cards.player_id && !this.game.turn.possessed) {
       this.game.turn.gained_cards.push(this.gained_card)
     }
+    if (this.gained_card.name === 'Province' && !this.game.first_province) {
+      this.game.first_province = true
+      let has_mountain_pass = _.find(this.game.landmarks, function(landmark) {
+        return landmark.name === 'Mountain Pass'
+      })
+      if (has_mountain_pass) {
+        this.game.mountain_pass = this.player_cards
+      }
+    }
   }
 
   gain_destination(destination) {
