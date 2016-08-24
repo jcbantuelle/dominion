@@ -24,6 +24,7 @@ TurnEnder = class TurnEnder {
         GameModel.update(this.game._id, this.game)
       }
       this.donate()
+      this.mountain_pass()
       this.set_next_turn()
       this.clear_duration_attacks()
       GameModel.update(this.game._id, this.game)
@@ -140,6 +141,13 @@ TurnEnder = class TurnEnder {
       }
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, this.player_cards)
+    }
+  }
+
+  mountain_pass() {
+    if (this.game.mountain_pass) {
+      let mountain_pass = new MountainPass()
+      mountain_pass.start_bid(this.game)
     }
   }
 
