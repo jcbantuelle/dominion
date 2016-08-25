@@ -42,6 +42,9 @@ GameCreator = class GameCreator {
     if (this.black_market_deck) {
       game_attributes.black_market_deck = this.black_market_deck
     }
+    if (this.obelisk) {
+      game_attributes.obelisk = this.obelisk
+    }
     return GameModel.insert(game_attributes)
   }
 
@@ -184,6 +187,15 @@ GameCreator = class GameCreator {
 
     if (this.game_has_card(kingdom_cards, 'Young Witch')) {
       kingdom_cards.push(this.bane_card(kingdom_cards))
+    }
+
+    if (this.game_has_event_or_landmark(this.landmarks, 'Obelisk')) {
+      let obelisk_card
+      do {
+        obelisk_card = _.sample(kingdom_cards)
+      } while (!_.includes(_.words(obelisk_card.top_card.types), 'action'))
+      this.obelisk = obelisk_card.stack_name
+      obelisk_card.obelisk = true
     }
 
     return _.sortBy(kingdom_cards, function(card) {
