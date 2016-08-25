@@ -4,6 +4,10 @@ TrashEventProcessor = class BuyEventProcessor {
     return ['Market Square']
   }
 
+  static landmark_cards() {
+    return ['Tomb']
+  }
+
   static event_cards() {
     return ['Overgrown Estate', 'Squire', 'Feodum', 'Fortress', 'Sir Vander', 'Cultist', 'Hunting Grounds', 'Rats', 'Catacombs', 'Crumbling Castle', 'Rocks']
   }
@@ -20,6 +24,12 @@ TrashEventProcessor = class BuyEventProcessor {
       this.trash_events.push(this.card)
     }
 
+    _.each(this.trasher.game.landmarks, (landmark) => {
+      if (_.includes(TrashEventProcessor.landmark_cards(), landmark.name)) {
+        this.trash_events.push(landmark)
+      }
+    })
+
     _.each(this.trasher.player_cards.hand, (card) => {
       if (_.includes(TrashEventProcessor.reaction_cards(), card.inherited_name)) {
         this.trash_events.push(card)
@@ -30,7 +40,7 @@ TrashEventProcessor = class BuyEventProcessor {
   process() {
     if (!_.isEmpty(this.trash_events)) {
       let mandatory_trash_events = _.filter(this.trash_events, function(event) {
-        return _.includes(TrashEventProcessor.event_cards(), event.inherited_name)
+        return _.includes(TrashEventProcessor.event_cards().concat(TrashEventProcessor.landmark_cards()), event.inherited_name)
       })
       if (_.size(this.trash_events) === 1 && !_.isEmpty(mandatory_trash_events)) {
         TrashEventProcessor.trash_event(this.trasher.game, this.trasher.player_cards, this.trash_events, this)
