@@ -141,8 +141,8 @@ CardList = class CardList {
       'Palace',
       'Tomb',
       'Tower',
-      /*'TriumphalArch',
-      'Wall',
+      'TriumphalArch',
+      /*'Wall',
       'WolfDen'*/
     ]
   }
