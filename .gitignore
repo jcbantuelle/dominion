@@ -4,3 +4,4 @@ lib/server/smtp.js
 settings-prod.json
 settings.json
 mup.js
+node_modules
