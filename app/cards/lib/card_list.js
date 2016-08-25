@@ -62,7 +62,7 @@ CardList = class CardList {
   }
 
   static pull_one(exclusions = []) {
-    return ClassCreator.create(_.sampleSize(CardList.full_list(exclusions), 1)[0]).to_h()
+    return ClassCreator.create(_.sample(CardList.full_list(exclusions))).to_h()
   }
 
   static full_list(exclusions = []) {
