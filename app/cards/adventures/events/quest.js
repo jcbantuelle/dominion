@@ -84,10 +84,11 @@ Quest = class Quest extends Event {
   }
 
   static discard_cards(game, player_cards, selected_cards, selection) {
+    let discard_count = _.size(selected_cards)
     let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
     card_discarder.discard()
 
-    if ((selection === 'attack' && !_.isEmpty(selected_cards)) || (selection === 'curses' && _.size(selected_cards) === 2) || (selection === 'cards' && _.size(selected_cards) === 6)) {
+    if ((selection === 'attack' && discard_count > 0) || (selection === 'curses' && discard_count === 2) || (selection === 'cards' && discard_count === 6)) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
       card_gainer.gain_game_card()
     }
