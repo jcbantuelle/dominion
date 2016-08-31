@@ -67,11 +67,12 @@ Transmogrify = class Transmogrify extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
+    let selected_card = _.clone(selected_cards[0])
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
     card_trasher.trash()
 
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(game, selected_cards[0], card.top_card, 2)
+      return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(game, selected_card, card.top_card, 2)
     })
 
     if (_.size(eligible_cards) > 1) {
