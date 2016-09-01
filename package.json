@@ -1,0 +1,24 @@
+{
+  "name": "dominion",
+  "version": "1.0.0",
+  "description": "A website implementation of the board game Dominion, based off the former site dominion.isotropic.org.",
+  "main": "mup.js",
+  "dependencies": {
+    "bcrypt": "^0.8.7",
+    "bcrypt-nodejs": "^0.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcbantuelle/dominion-meteor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jcbantuelle/dominion-meteor/issues"
+  },
+  "homepage": "https://github.com/jcbantuelle/dominion-meteor#readme"
+}
