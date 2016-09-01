@@ -171,19 +171,23 @@ GainEventProcessor = class GainEventProcessor {
         }
       } else {
         selected_card.gain_event(gain_event_processor.gainer)
+        if (card_name === 'Duplicate') {
+          let tavern_duplicates = _.filter(player_cards.tavern, function(card) {
+            return card.name === 'Duplicate'
+          })
+          let gain_event_duplicates = _.filter(gain_event_processor.gain_events, function(event) {
+            return event.inherited_name === 'Duplicate'
+          })
+          if (_.size(tavern_duplicates) < _.size(gain_event_duplicates)) {
+            gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
+              return event.inherited_name !== 'Duplicate'
+            }).concat(tavern_duplicates)
+          }
+        }
         let gain_event_index = _.findIndex(gain_event_processor.gain_events, function(event) {
           return event.name === selected_cards[0].name
         })
-        if (card_name === 'Duplicate') {
-          let duplicates = _.filter(player_cards.tavern, function(card) {
-            return card.name === 'Duplicate'
-          })
-          gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
-            return event.inherited_name !== 'Duplicate'
-          }).concat(duplicates)
-        } else {
-          gain_event_processor.gain_events.splice(gain_event_index, 1)
-        }
+        gain_event_processor.gain_events.splice(gain_event_index, 1)
       }
 
       if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).name !== gain_event_processor.gainer.card_name) {
