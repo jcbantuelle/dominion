@@ -91,8 +91,8 @@ CardPlayer = class CardPlayer {
 
   update_phase() {
     if (!this.free_play) {
-      if (this.game.turn.phase == 'action' && _.includes(this.card.types(this.player_cards), 'treasure')) {
-        if (_.includes(this.card.types(this.player_cards), 'action')) {
+      if (this.game.turn.phase === 'action' && _.includes(this.card.types(this.player_cards), 'treasure')) {
+        if (_.includes(this.card.types(this.player_cards), 'action') && this.game.turn.actions > 0) {
           let turn_event_id = TurnEventModel.insert({
             game_id: this.game._id,
             player_id: this.player_cards.player_id,
@@ -144,7 +144,7 @@ CardPlayer = class CardPlayer {
   }
 
   use_action() {
-    if (!this.free_play) {
+    if (!this.free_play && this.game.turn.phase === 'action') {
       if (_.includes(this.card.types(this.player_cards), 'action')) {
         this.game.turn.actions -= 1
       }
@@ -165,10 +165,10 @@ CardPlayer = class CardPlayer {
   }
 
   is_valid_play() {
-    if (_.includes(this.card.types(this.player_cards), 'action')) {
-      return this.is_valid_action()
-    } else if (_.includes(this.card.types(this.player_cards), 'treasure')) {
+    if (_.includes(this.card.types(this.player_cards), 'treasure')) {
       return this.is_valid_treasure()
+    } else if (_.includes(this.card.types(this.player_cards), 'action')) {
+      return this.is_valid_action()
     }
   }
 
