@@ -6,6 +6,7 @@ CardList = class CardList {
 
   pull_set() {
     let game_cards = _.sampleSize(this.cards, 10)
+
     let events_and_landmarks = _.filter(game_cards, function(card_name) {
       return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card_name))
     })
@@ -20,6 +21,38 @@ CardList = class CardList {
     if (event_and_landmark_count > 0) {
       game_cards = this.replace_events_and_landmarks(game_cards, event_and_landmark_count)
     }
+    return _.map(game_cards, function(card_name) {
+      return ClassCreator.create(card_name).to_h()
+    })
+  }
+
+  pull_from_history(game_id) {
+    // let naszId = 'jGQDx9gkfGtg9Sx7m';
+    let game_history = GameHistory.findOne(game_id, {
+      transform: function(game) {
+        game.kingdom_cards = []
+        game.common_cards = []
+        game.not_supply_cards = []
+        game.log = [game.log.join('<br />')]
+        if (game.black_market_deck) {
+          game.black_market_deck = _.shuffle(game.black_market_deck)
+        }
+        return game
+      }
+    })
+
+    let game_cards = _.map(_.filter(game_history.cards, function(card) {
+      return card.source === 'kingdom';
+    }), function(card) {
+      return card.name;
+    });
+
+    game_cards = game_cards.concat(_.map(game_history.events, function(ev) {
+      return ev.name;
+    })).concat(_.map(game_history.landmarks, function(lndmrk) {
+      return lndmrk.name;
+    }));
+
     return _.map(game_cards, function(card_name) {
       return ClassCreator.create(card_name).to_h()
     })
