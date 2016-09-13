@@ -146,8 +146,10 @@ TurnEnder = class TurnEnder {
 
   mountain_pass() {
     if (this.game.mountain_pass) {
+      PlayerCardsModel.update(this.game._id, this.player_cards)
       let mountain_pass = new MountainPass()
       mountain_pass.start_bid(this.game)
+      this.player_cards = PlayerCardsModel.findOne(this.game._id, this.player_cards.player_id)
     }
   }
 
