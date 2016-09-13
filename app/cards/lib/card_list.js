@@ -27,7 +27,6 @@ CardList = class CardList {
   }
 
   pull_from_history(game_id) {
-    // let naszId = 'jGQDx9gkfGtg9Sx7m';
     let game_history = GameHistory.findOne(game_id, {
       transform: function(game) {
         game.kingdom_cards = []
