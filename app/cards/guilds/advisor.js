@@ -50,8 +50,10 @@ Advisor = class Advisor extends Card {
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(selected_cards, 'name'))
     card_discarder.discard()
 
-    player_cards.hand = player_cards.hand.concat(player_cards.revealed)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} in their hand`)
+    if (_.size(player_cards.revealed) > 0) {
+      player_cards.hand = player_cards.hand.concat(player_cards.revealed)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} in their hand`)
+    }
 
     player_cards.revealed = []
   }
