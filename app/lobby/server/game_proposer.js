@@ -1,31 +1,16 @@
 GameProposer = class GameProposer {
 
-  constructor(player_ids, exclusions) {
+  constructor(player_ids, exclusions, kingdom_id) {
     this.players = this.find_players(player_ids)
     this.exclusions = exclusions
+    this.kingdom_id = kingdom_id
   }
 
-  propose(kingdom_id) {
-    if (typeof kingdom_id === 'undefined') {
-      this.select_cards()
-      this.proposal_id = this.create_proposal()
-      this.update_players()
-      this.set_proposal_timeout()
-    } else {
-      try {
-        this.select_cards_from_kingdom(kingdom_id)
-        this.proposal_id = this.create_proposal()
-        this.update_players()
-        this.set_proposal_timeout()
-      } catch(e) {
-        _.each(this.players, function(player) {
-          Meteor.users.update(player._id, {
-            $unset: {has_proposal: ''},
-            $set: {declined_proposal: 'Wrong kingdom id!'}
-          })
-        })
-      }
-    }
+  propose() {
+    this.select_cards()
+    this.proposal_id = this.create_proposal()
+    this.update_players()
+    this.set_proposal_timeout()
   }
 
   create_proposal(proposal_cards) {
@@ -42,14 +27,11 @@ GameProposer = class GameProposer {
 
   select_cards() {
     card_list = new CardList(this.exclusions)
-    this.cards = card_list.pull_set()
-  }
-
-  select_cards_from_kingdom(kingdom_id) {
-    card_list = new CardList()
-    this.cards = card_list.pull_from_history(kingdom_id)
-
-
+    if (this.kingdom_id === '') {
+      this.cards = card_list.pull_set()
+    } else {
+      this.cards = card_list.pull_from_history(this.kingdom_id)
+    }
   }
 
   update_players() {

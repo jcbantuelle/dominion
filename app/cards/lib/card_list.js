@@ -27,33 +27,14 @@ CardList = class CardList {
   }
 
   pull_from_history(game_id) {
-    let game_history = GameHistory.findOne(game_id, {
-      transform: function(game) {
-        game.kingdom_cards = []
-        game.common_cards = []
-        game.not_supply_cards = []
-        game.log = [game.log.join('<br />')]
-        if (game.black_market_deck) {
-          game.black_market_deck = _.shuffle(game.black_market_deck)
-        }
-        return game
-      }
-    })
+    let game_history = GameHistory.findOne(game_id)
 
-    let game_cards = _.map(_.filter(game_history.cards, function(card) {
-      return card.source === 'kingdom';
-    }), function(card) {
-      return card.name;
-    });
+    let game_cards = game_history.events.concat(game_history.landmarks).concat(_.filter(game_history.cards, function(card) {
+      return card.source === 'kingdom'
+    }))
 
-    game_cards = game_cards.concat(_.map(game_history.events, function(ev) {
-      return ev.name;
-    })).concat(_.map(game_history.landmarks, function(lndmrk) {
-      return lndmrk.name;
-    }));
-
-    return _.map(game_cards, function(card_name) {
-      return ClassCreator.create(card_name).to_h()
+    return _.map(game_cards, function(card) {
+      return ClassCreator.create(card.name).to_h()
     })
   }
 
