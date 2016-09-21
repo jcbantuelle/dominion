@@ -7,6 +7,7 @@ CardList = class CardList {
 
   pull_set() {
     let game_cards = _.sampleSize(this.cards, 10)
+
     let events_and_landmarks = _.filter(game_cards, function(card_name) {
       return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card_name))
     })
@@ -23,6 +24,18 @@ CardList = class CardList {
     }
     return _.map(game_cards, function(card_name) {
       return ClassCreator.create(card_name).to_h()
+    })
+  }
+
+  pull_from_history(game_id) {
+    let game_history = GameHistory.findOne(game_id)
+
+    let game_cards = game_history.events.concat(game_history.landmarks).concat(_.filter(game_history.cards, function(card) {
+      return card.source === 'kingdom'
+    }))
+
+    return _.map(game_cards, function(card) {
+      return ClassCreator.create(card.name).to_h()
     })
   }
 

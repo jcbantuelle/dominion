@@ -17,6 +17,10 @@ function updateChatWindow(data) {
   chat_window.scrollTop(chat_window[0].scrollHeight)
 }
 
+function isValidKingdom(kingdom_id) {
+  return GameHistory.findOne(kingdom_id)
+}
+
 function sendMessage(event) {
   event.preventDefault()
   Streamy.broadcast('lobby_message', {
@@ -37,12 +41,16 @@ function proposeGame(event) {
     return $(this).val()
   }).get()
 
+  kingdom_id = _.trim($('.kingdom-id').val())
+
   if (player_ids.length > 3) {
     alert('Game can not have more than 4 players.')
   } else if (player_ids.length < 1) {
     alert('Game must have at least 2 players.')
+  } else if (kingdom_id !== '' && !isValidKingdom(kingdom_id)) {
+    alert('Game ID is invalid.')
   } else {
-    Meteor.call('proposeGame', player_ids, exclusions)
+    Meteor.call('proposeGame', player_ids, exclusions, kingdom_id)
   }
 }
 
