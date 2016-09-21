@@ -1,6 +1,6 @@
 Meteor.methods({
-  proposeGame: function(player_ids, exclusions) {
-    let game_proposer = new GameProposer(player_ids, exclusions)
+  proposeGame: function(player_ids, exclusions, kingdom_id) {
+    let game_proposer = new GameProposer(player_ids, exclusions, kingdom_id)
     game_proposer.propose()
   },
   declineProposal: function(proposal_id) {
@@ -18,4 +18,3 @@ Meteor.methods({
     Meteor.users.update(Meteor.userId(), {$unset: {lobby: ''}})
   }
 })
-

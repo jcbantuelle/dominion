@@ -1,8 +1,9 @@
 GameProposer = class GameProposer {
 
-  constructor(player_ids, exclusions) {
+  constructor(player_ids, exclusions, kingdom_id) {
     this.players = this.find_players(player_ids)
     this.exclusions = exclusions
+    this.kingdom_id = kingdom_id
   }
 
   propose() {
@@ -26,7 +27,11 @@ GameProposer = class GameProposer {
 
   select_cards() {
     card_list = new CardList(this.exclusions)
-    this.cards = card_list.pull_set()
+    if (this.kingdom_id === '') {
+      this.cards = card_list.pull_set()
+    } else {
+      this.cards = card_list.pull_from_history(this.kingdom_id)
+    }
   }
 
   update_players() {
