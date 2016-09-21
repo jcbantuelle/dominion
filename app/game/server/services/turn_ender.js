@@ -6,6 +6,9 @@ TurnEnder = class TurnEnder {
   }
 
   end_turn() {
+    if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
+      this.start_buy_events()
+    }
     this.end_buy_events()
     this.game.turn.phase = 'cleanup'
     this.discard_hand()
@@ -40,6 +43,12 @@ TurnEnder = class TurnEnder {
       PlayerCardsModel.update(this.game._id, this.player_cards)
     }
     PlayerCardsModel.update(this.game._id, this.next_player_cards)
+  }
+
+  start_buy_events() {
+    let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
+    start_buy_event_processor.process()
+    this.game.turn.phase = 'buy'
   }
 
   end_buy_events() {
