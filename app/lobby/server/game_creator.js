@@ -505,7 +505,7 @@ GameCreator = class GameCreator {
 
     let black_market_card_names = _.take(available_cards, 25)
     let knight_index = _.findIndex(black_market_card_names, function(name) {
-      name === 'Knights'
+      return name === 'Knights'
     })
     if (knight_index !== -1) {
       let knight_names = _.shuffle(['SirMartin', 'DameAnna', 'DameJosephine', 'DameMolly', 'DameNatalie', 'DameSylvia', 'SirBailey', 'SirDestry', 'SirMichael', 'SirVander'])
