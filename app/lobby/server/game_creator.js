@@ -462,7 +462,7 @@ GameCreator = class GameCreator {
   }
 
   game_has_card(cards, card_name) {
-    if (this.black_market_deck && card_name !== 'Duchess') {
+    if (this.black_market_deck && !_.includes(['Duchess', 'Page', 'Peasant'], card_name)) {
       cards = cards.concat(this.black_market_deck)
     }
     return _.some(cards, function(card) {

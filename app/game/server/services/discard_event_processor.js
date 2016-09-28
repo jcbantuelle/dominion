@@ -63,14 +63,19 @@ DiscardEventProcessor = class DiscardEventProcessor {
         return traveller_card.name === this.card.inherited_name
       })
       if (traveller) {
-        let upgrade_stack = _.find(this.discarder.game.cards, function(stack) {
-          return stack.name === traveller.upgrade
+        let traveller_stack = _.find(this.discarder.game.cards, function(card) {
+          return card.name === traveller.name
         })
-        let discarding_upgrades = _.some(this.discarder.player_cards.to_discard, function(card) {
-          return card.name === traveller.upgrade
-        })
-        if (upgrade_stack.count > 0 || discarding_upgrades) {
-          this.discard_events.push(this.card)
+        if (traveller_stack) {
+          let upgrade_stack = _.find(this.discarder.game.cards, function(stack) {
+            return stack.name === traveller.upgrade
+          })
+          let discarding_upgrades = _.some(this.discarder.player_cards.to_discard, function(card) {
+            return card.name === traveller.upgrade
+          })
+          if (upgrade_stack.count > 0 || discarding_upgrades) {
+            this.discard_events.push(this.card)
+          }
         }
       }
     }
