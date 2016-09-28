@@ -6,7 +6,7 @@ Summon = class Summon extends Event {
 
   buy(game, player_cards) {
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 5)
+      return _.includes(_.words(card.top_card.types), 'action') && card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 5)
     })
 
     if (_.size(eligible_cards) > 0) {
