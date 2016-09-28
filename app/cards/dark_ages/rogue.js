@@ -22,7 +22,7 @@ Rogue = class Rogue extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_cards',
-        game_cards: true,
+        player_cards: true,
         instructions: 'Choose a card to gain:',
         cards: eligible_cards,
         minimum: 1,
