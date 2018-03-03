@@ -1,0 +1,19 @@
+version: "3"
+services:
+  mongo:
+    image: mongo:3.2
+    volumes:
+      - db:/data/db
+      - configdb:/data/configdb
+  meteor:
+    build: ../
+    image: local/domi
+    depends_on:
+      - mongo
+    env_file:
+      - meteor.env
+    ports:
+      - 3000:3000
+volumes:
+  db:
+  configdb:
