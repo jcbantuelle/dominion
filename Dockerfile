@@ -1,18 +1,30 @@
-FROM node:6
-
-RUN apt-get update \
-    && apt-get install -y bsdtar \
-    && ln -sf $(which bsdtar) $(which tar) \
-    && curl "https://install.meteor.com/?release=1.4.1.1" | sh
-
+FROM node:6-slim as dev
+RUN curl "https://install.meteor.com/?release=1.4.1.1" | sh
 COPY . /app/src
 WORKDIR /app/src
 
-RUN npm install \
-    && meteor build /app/dist --directory --architecture os.linux.x86_64
+FROM dev as build
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        python \
+    && npm install \
+    && /root/.meteor/meteor build /app/dist --directory \
+    && apt-get remove --purge -y \
+        build-essential \
+        python \
+    && apt-get autoremove -y \
+    && apt-get clean
 
-WORKDIR /app/dist/bundle
-RUN cd programs/server \
-    && npm install
+FROM node:6-alpine as production
+COPY --from=build /app/dist/bundle /bundle
+WORKDIR /bundle
+RUN apk add --no-cache --virtual bundle-deps \
+        build-base \
+        python \
+    && cd programs/server \
+    && npm install \
+    && apk del bundle-deps
 
-ENTRYPOINT ["node", "main.js"]
+ENTRYPOINT ["node"]
+CMD ["main.js"]
