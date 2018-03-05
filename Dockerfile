@@ -3,6 +3,8 @@ RUN curl "https://install.meteor.com/?release=1.4.1.1" | sh
 COPY . /app/src
 WORKDIR /app/src
 
+# Build the bundle on a glibc system because meteor build uses its own
+# dynamically-linked node binary which doesn't work on node:alpine.
 FROM dev as build
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -16,7 +18,8 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && apt-get clean
 
-FROM node:6-alpine as production
+# In production we need to build Node Fibers against musl-linked node.
+FROM node:6-alpine as prod
 COPY --from=build /app/dist/bundle /bundle
 WORKDIR /bundle
 RUN apk add --no-cache --virtual bundle-deps \

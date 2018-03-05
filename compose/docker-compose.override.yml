@@ -1,0 +1,12 @@
+version: "3.4"
+services:
+  meteor:
+    image: local/dominion:dev
+    build:
+      context: ../
+      target: dev
+    command: ["meteor", "run", "--settings=settings-dev.json"]
+    ports:
+      - 3000:3000
+    volumes:
+      - ..:/app/src

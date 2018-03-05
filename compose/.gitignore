@@ -1,0 +1,6 @@
+*.env
+*.yml
+
+# Base config + development config
+!docker-compose.yml
+!docker-compose.override.yml
