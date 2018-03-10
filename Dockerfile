@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && apt-get clean
 
-# In production we need to build Node Fibers against musl-linked node.
+# In production build Node Fibers against the musl-compatible node.
 FROM node:6-alpine as prod
 COPY --from=build /app/dist/bundle /bundle
 WORKDIR /bundle

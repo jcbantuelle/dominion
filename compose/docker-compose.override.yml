@@ -1,3 +1,4 @@
+# Development config for docker-compose and docker stack.
 version: "3.4"
 services:
   meteor:
