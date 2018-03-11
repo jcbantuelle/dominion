@@ -2,7 +2,7 @@
 version: "3.4"
 services:
   meteor:
-    image: local/dominion:dev
+    image: jcbantuelle/dominion:dev
     build:
       context: ../
       target: dev
