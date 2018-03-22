@@ -334,7 +334,7 @@ CardList = class CardList {
     ]
   }
 
-  static intrigue() {
+  static intrigue1() {
     return [
       'Courtyard',
       'Pawn',
@@ -364,6 +364,37 @@ CardList = class CardList {
     ]
   }
 
+  static intrigue2() {
+    return [
+      'Courtyard',
+      'Lurker',
+      'Pawn',
+      'Masquerade',
+      'ShantyTown',
+      'Steward',
+      'Swindler',
+      'WishingWell',
+      'Baron',
+      'Bridge',
+      'Conspirator',
+      'Ironworks',
+      'Diplomat',
+      'Mill',
+      'SecretPassage',
+      'MiningVillage',
+      'Duke',
+      'Minion',
+      'Torturer',
+      'Courtier',
+      'Patrol',
+      'Replace',
+      'TradingPost',
+      'Upgrade',
+      'Harem',
+      'Nobles'
+    ]
+  }
+
   static alchemy() {
     return [
       'Transmute',
@@ -381,7 +412,7 @@ CardList = class CardList {
     ]
   }
 
-  static base() {
+  static base1() {
     return [
       'Cellar',
       'Chapel',
@@ -408,6 +439,37 @@ CardList = class CardList {
       'Mine',
       'Witch',
       'Adventurer'
+    ]
+  }
+
+  static base2() {
+    return [
+      'Cellar',
+      'Chapel',
+      'Moat',
+      'Village',
+      'Harbinger',
+      'Merchant',
+      'Vassal',
+      'Workshop',
+      'Bureaucrat',
+      'Poacher',
+      'Gardens',
+      'Militia',
+      'Moneylender',
+      'Remodel',
+      'Smithy',
+      'ThroneRoom',
+      'CouncilRoom',
+      'Festival',
+      'Laboratory',
+      'Bandit',
+      'Sentry',
+      'Library',
+      'Market',
+      'Mine',
+      'Witch',
+      'Artisan'
     ]
   }
 
