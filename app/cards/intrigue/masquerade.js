@@ -19,6 +19,17 @@ Masquerade = class Masquerade extends Card {
       if (_.size(other_player_cards.hand) > 0) {
         let next_player_query = new NextPlayerQuery(game, other_player_cards.player_id)
         let next_player = next_player_query.next_player()
+        let next_player_cards = _.find(ordered_player_cards, function(player) {
+          return player.player_id === next_player._id
+        })
+        while(_.size(next_player_cards.hand) === 0) {
+          next_player_query = new NextPlayerQuery(game, next_player_cards.player_id)
+          next_player = next_player_query.next_player()
+          next_player_cards = _.find(ordered_player_cards, function(player) {
+            return player.player_id === next_player._id
+          })
+        }
+
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: other_player_cards.player_id,
@@ -42,6 +53,14 @@ Masquerade = class Masquerade extends Card {
         let next_player_cards = _.find(ordered_player_cards, function(player) {
           return player.player_id === next_player._id
         })
+        while(_.size(next_player_cards.hand) === 0) {
+          next_player_query = new NextPlayerQuery(game, next_player_cards.player_id)
+          next_player = next_player_query.next_player()
+          next_player_cards = _.find(ordered_player_cards, function(player) {
+            return player.player_id === next_player._id
+          })
+        }
+
         if (next_player_cards.tokens.estate && other_player_cards.masquerade.name === 'Estate') {
           other_player_cards.masquerade = ClassCreator.create('Inherited Estate').to_h(next_player_cards)
         }
