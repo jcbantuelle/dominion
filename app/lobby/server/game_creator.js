@@ -1,8 +1,9 @@
 GameCreator = class GameCreator {
 
-  constructor(players, cards, exclusions) {
+  constructor(players, cards, exclusions, edition) {
     this.players = players
     this.exclusions = exclusions
+    this.edition = edition
     let events = _.filter(cards, function(card) {
       return _.includes(CardList.event_cards(), _.titleize(card.name))
     })
@@ -523,7 +524,7 @@ GameCreator = class GameCreator {
     }
     var card
     do {
-      card = CardList.pull_one(this.exclusions)
+      card = CardList.pull_one(this.exclusions, this.edition)
     } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.includes(game_card_names, card.name))
     card = ClassCreator.create('Castles').to_h()
     card.bane = true
