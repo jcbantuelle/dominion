@@ -2,18 +2,8 @@ CardList = class CardList {
 
   constructor(exclusions, edition) {
     this.edition = edition
-    this.exclusions = this.exclusions_for_edition(exclusions)
+    this.exclusions = exclusions
     this.cards = CardList.full_list(this.exclusions, this.edition)
-  }
-
-  exclusions_for_edition(exclusions) {
-    return _.map(exclusions, (exclusion) => {
-      if (_.includes(['base', 'intrigue'], exclusion)) {
-        return exclusion + this.edition
-      } else {
-        return exclusion
-      }
-    })
   }
 
   pull_set() {
@@ -94,8 +84,12 @@ CardList = class CardList {
   }
 
   static kingdom_cards(exclusions = [], edition) {
+    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
     return _.reduce(CardList.sets(edition), function(card_list, set) {
-      if (!_.includes(exclusions, set)) {
+      if (!_.includes(exclusions_for_edition, set)) {
+        if (_.includes(['base', 'intrigue'], set)) {
+          set = set+edition
+        }
         card_list = card_list.concat(CardList[set]())
       }
       return card_list
@@ -103,8 +97,12 @@ CardList = class CardList {
   }
 
   static event_cards(exclusions = [], edition) {
+    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
     return _.reduce(CardList.event_sets(edition), function(card_list, set) {
-      if (!_.includes(exclusions, set)) {
+      if (!_.includes(exclusions_for_edition, set)) {
+        if (_.includes(['base', 'intrigue'], set)) {
+          set = set+edition
+        }
         card_list = card_list.concat(CardList[`${set}_events`]())
       }
       return card_list
@@ -112,12 +110,26 @@ CardList = class CardList {
   }
 
   static landmark_cards(exclusions = [], edition) {
+    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
     return _.reduce(CardList.landmark_sets(edition), function(card_list, set) {
-      if (!_.includes(exclusions, set)) {
+      if (!_.includes(exclusions_for_edition, set)) {
+        if (_.includes(['base', 'intrigue'], set)) {
+          set = set+edition
+        }
         card_list = card_list.concat(CardList[`${set}_landmarks`]())
       }
       return card_list
     }, [])
+  }
+
+  static exclusions_for_edition(exclusions, edition) {
+    return _.map(exclusions, (exclusion) => {
+      if (_.includes(['base', 'intrigue'], exclusion)) {
+        return exclusion + edition
+      } else {
+        return exclusion
+      }
+    })
   }
 
   static empires_landmarks() {
@@ -266,7 +278,9 @@ CardList = class CardList {
       'WalledVillage',
       'Governor',
       'Stash',
-      'Prince'
+      'Prince',
+      'Dismantle',
+      'Sauna'
     ]
   }
 

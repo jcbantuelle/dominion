@@ -315,7 +315,7 @@ GameCreator = class GameCreator {
       return this.knights_stack(card)
     } else if (card.name === 'Castles') {
       return this.castles_stack(card)
-    } else if (_.includes(['Encampment', 'Patrician', 'Settlers', 'Catapult', 'Gladiator'], card.name)) {
+    } else if (_.includes(['Encampment', 'Patrician', 'Settlers', 'Catapult', 'Gladiator', 'Sauna'], card.name)) {
       return this.split_stack(card)
     } else {
       return _.times(this.stack_size(card), function(counter) {
@@ -430,6 +430,9 @@ GameCreator = class GameCreator {
     } else if (card.name === 'Gladiator') {
       top_card = 'Gladiator'
       bottom_card = 'Fortune'
+    } else if (card.name === 'Sauna') {
+      top_card = 'Sauna'
+      bottom_card = 'Avanto'
     }
 
     top_card = ClassCreator.create(top_card).to_h()
@@ -502,7 +505,7 @@ GameCreator = class GameCreator {
     let used_card_names = _.map(kingdom_cards, function(card) {
       return _.titleize(card.name)
     })
-    let available_cards = _.shuffle(_.difference(CardList.kingdom_cards(), used_card_names))
+    let available_cards = _.shuffle(_.difference(CardList.kingdom_cards(this.exclusions, this.edition), used_card_names))
 
     let black_market_card_names = _.take(available_cards, 25)
     let knight_index = _.findIndex(black_market_card_names, function(name) {
