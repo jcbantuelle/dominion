@@ -315,7 +315,7 @@ GameCreator = class GameCreator {
       return this.knights_stack(card)
     } else if (card.name === 'Castles') {
       return this.castles_stack(card)
-    } else if (_.includes(['Encampment', 'Patrician', 'Settlers', 'Catapult', 'Gladiator'], card.name)) {
+    } else if (_.includes(['Encampment', 'Patrician', 'Settlers', 'Catapult', 'Gladiator', 'Sauna'], card.name)) {
       return this.split_stack(card)
     } else {
       return _.times(this.stack_size(card), function(counter) {
@@ -430,6 +430,9 @@ GameCreator = class GameCreator {
     } else if (card.name === 'Gladiator') {
       top_card = 'Gladiator'
       bottom_card = 'Fortune'
+    } else if (card.name === 'Sauna') {
+      top_card = 'Sauna'
+      bottom_card = 'Avanto'
     }
 
     top_card = ClassCreator.create(top_card).to_h()
