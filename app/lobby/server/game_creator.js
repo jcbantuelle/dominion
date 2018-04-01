@@ -43,6 +43,12 @@ GameCreator = class GameCreator {
     if (this.black_market_deck) {
       game_attributes.black_market_deck = this.black_market_deck
     }
+    if (this.druid_boons) {
+      game_attributes.druid_boons = this.druid_boons
+    }
+    if (this.boons_deck) {
+      game_attributes.boons_deck = this.boons_deck
+    }
     if (this.obelisk) {
       game_attributes.obelisk = this.obelisk
     }
@@ -190,6 +196,14 @@ GameCreator = class GameCreator {
       kingdom_cards.push(this.bane_card(kingdom_cards))
     }
 
+    if (this.game_has_card(kingdom_cards, 'Druid')) {
+      this.select_druid_boons()
+    }
+
+    if (this.has_boons(kingdom_cards)) {
+      this.build_boons_deck()
+    }
+
     if (this.game_has_event_or_landmark(this.landmarks, 'Obelisk')) {
       let obelisk_card
       do {
@@ -230,6 +244,9 @@ GameCreator = class GameCreator {
     }
     if (this.has_spoils(this.selected_kingdom_cards)) {
       not_supply_cards.push(this.game_card((new Spoils()).to_h(), 'not_supply'))
+    }
+    if (this.has_swamps_gift(this.selected_kingdom_cards)) {
+      not_supply_cards.push(this.game_card((new WillOWisp()).to_h(), 'not_supply'))
     }
     return _.sortBy(not_supply_cards, function(card) {
       return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
@@ -344,6 +361,8 @@ GameCreator = class GameCreator {
     } else if (card.name === 'Rats') {
       return 20
     } else if (card.name === 'Port') {
+      return 12
+    } else if (card.name === 'Will O Wisp') {
       return 12
     } else if (_.includes(['Treasure Hunter', 'Warrior', 'Hero', 'Champion', 'Soldier', 'Fugitive', 'Disciple', 'Teacher'], card.name)) {
       return 5
@@ -465,6 +484,26 @@ GameCreator = class GameCreator {
     }
   }
 
+  boons() {
+    let boons = [
+      new TheEarthsGift(),
+      new TheFieldsGift(),
+      new TheFlamesGift(),
+      new TheForestsGift(),
+      new TheMoonsGift(),
+      new TheMountainsGift(),
+      new TheRiversGift(),
+      new TheSeasGift(),
+      new TheSkysGift(),
+      new TheSunsGift(),
+      new TheSwampsGift(),
+      new TheWindsGift()
+    ]
+    return _.map(boons, function(boon) {
+      return boon.to_h()
+    })
+  }
+
   game_has_card(cards, card_name) {
     if (this.black_market_deck && !_.includes(['Duchess', 'Page', 'Peasant'], card_name)) {
       cards = cards.concat(this.black_market_deck)
@@ -477,6 +516,21 @@ GameCreator = class GameCreator {
   game_has_event_or_landmark(cards, card_name) {
     return _.some(cards, function(card) {
       return card.name === card_name
+    })
+  }
+
+  has_boons(cards) {
+    if (this.black_market_deck) {
+      cards = cards.concat(this.black_market_deck)
+    }
+    return _.some(cards, function(card) {
+      return _.includes(_.words(card.types), 'Fate') && card.name != 'Druid'
+    })
+  }
+
+  has_swamps_gift(cards) {
+    return this.has_boons(cards) || _.some(this.druid_boons, function(card) {
+      return card.name === 'The Swamps Gift'
     })
   }
 
@@ -520,6 +574,20 @@ GameCreator = class GameCreator {
     })
   }
 
+  select_druid_boons() {
+    this.druid_boons = _.take(_.shuffle(this.boons()), 3)
+  }
+
+  build_boons_deck() {
+    this.boons_deck = _.shuffle(this.boons())
+    if (this.druid_boons) {
+      druid_boon_names = _.map(this.druid_boons, 'name')
+      this.boons_deck = _.reject(this.boons_deck, (boon) => {
+        return _.includes(druid_boon_names, boon.name)
+      })
+    }
+  }
+
   bane_card(cards) {
     let game_card_names = _.map(cards, 'name')
     if (this.black_market_deck) {
@@ -529,7 +597,6 @@ GameCreator = class GameCreator {
     do {
       card = CardList.pull_one(this.exclusions, this.edition)
     } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.includes(game_card_names, card.name))
-    card = ClassCreator.create('Castles').to_h()
     card.bane = true
     return this.game_card(card, 'kingdom')
   }
