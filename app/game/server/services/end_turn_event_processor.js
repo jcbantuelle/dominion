@@ -4,6 +4,10 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
     return ['Baths']
   }
 
+  static boon_events() {
+    return ['The Rivers Gift']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
@@ -23,7 +27,26 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
       }
     })
 
-    this.end_turn_events = landmark_events
+    boons = []
+    if (this.game.boons) {
+      boons = boons.concat(this.game.boons)
+    }
+    if (this.game.druid_boons) {
+      boons = boons.concat(this.game.druid_boons)
+    }
+    let boon_events = _.filter(boons, (card) => {
+      if (_.includes(EndTurnEventProcessor.boon_events(), card.name)) {
+        if (card.name === 'The Rivers Gift') {
+          return this.game.river_gift
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    })
+
+    this.end_turn_events = landmark_events.concat(boon_events)
   }
 
   process() {
