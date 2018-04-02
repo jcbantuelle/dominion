@@ -77,6 +77,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         let card_player = new CardPlayer(game, player_cards, event.name, true)
         card_player.play()
       } else if (event.start_event_type === 'Horse Traders') {
+        delete event.start_event_type
         selected_event.start_turn_event(game, player_cards, player_cards.horse_traders.pop())
       } else if (event.start_event_type === 'Duration') {
         let duration_effect_index = _.findIndex(player_cards.duration_effects, function(duration_effect) {
