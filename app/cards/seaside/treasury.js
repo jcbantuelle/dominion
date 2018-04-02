@@ -44,7 +44,7 @@ Treasury = class Treasury extends Card {
       delete treasury.scheme
       delete treasury.prince
       if (treasury.misfit) {
-        treasury = treasury,misfit
+        treasury = treasury.misfit
       }
       player_cards.deck.unshift(treasury)
     }
