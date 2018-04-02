@@ -46,7 +46,12 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
       }
     })
 
-    this.end_turn_events = landmark_events.concat(boon_events)
+    let faithful_hound_events = _.map(this.player_cards.faithful_hounds, function(card) {
+      card.end_turn_event_type = 'Faithful Hound'
+      return card
+    })
+
+    this.end_turn_events = landmark_events.concat(boon_events).concat(faithful_hound_events)
   }
 
   process() {
@@ -78,7 +83,12 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
         event_name = 'InheritedEstate'
       }
       let selected_event = ClassCreator.create(event_name)
-      selected_event.end_turn_event(game, player_cards)
+      if (event.end_turn_event_type === 'Faithful Hound') {
+        delete event.end_turn_event_type
+        selected_event.end_turn_event(game, player_cards, player_cards.faithful_hounds.pop())
+      } else {
+        selected_event.end_turn_event(game, player_cards)
+      }
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
     })

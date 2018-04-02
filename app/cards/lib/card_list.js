@@ -209,8 +209,8 @@ CardList = class CardList {
 
   static nocturne() {
     return [
-      'Druid'
-      // 'FaithfulHound',
+      'Druid',
+      'FaithfulHound',
       // 'Guardian',
       // 'Monastery',
       // 'Pixie',

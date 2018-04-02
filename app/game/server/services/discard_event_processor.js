@@ -1,7 +1,7 @@
 DiscardEventProcessor = class DiscardEventProcessor {
 
   static event_cards() {
-    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital']
+    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital', 'Faithful Hound']
   }
 
   static traveller_cards() {
@@ -26,7 +26,7 @@ DiscardEventProcessor = class DiscardEventProcessor {
   find_discard_events() {
     this.discard_events = []
     if (_.includes(DiscardEventProcessor.event_cards(), this.card.inherited_name)) {
-      if (this.card.inherited_name === 'Tunnel' && this.discarder.game.turn.phase !== 'cleanup') {
+      if (_.includes(['Tunnel', 'Faithful Hound'], this.card.inherited_name) && this.discarder.game.turn.phase !== 'cleanup') {
         this.discard_events.push(this.card)
       } else if (this.card.inherited_name === 'Treasury' && this.discarder.source === 'in_play') {
         let no_bought_victory_cards = !_.some(this.discarder.game.turn.bought_cards, function(card) {
