@@ -48,7 +48,6 @@ Meteor.methods({
           if (turn_over(current_game, current_player_cards)) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
-            // snapshot()
           }
           ActionLock[game_id] = false
         }
@@ -67,7 +66,6 @@ Meteor.methods({
           if (turn_over(current_game, current_player_cards)) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
-            // snapshot()
           }
           ActionLock[game_id] = false
         }
@@ -82,7 +80,6 @@ Meteor.methods({
           ActionLock[game_id] = true
           let turn_ender = new TurnEnder(current_game, player_cards(current_game))
           turn_ender.end_turn()
-          // snapshot()
           ActionLock[game_id] = false
         }
       }
@@ -126,7 +123,6 @@ Meteor.methods({
           if (current_game.turn.buys === 0 && (current_player_cards.debt_tokens === 0 || current_game.turn.coins === 0)) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
-            snapshot()
           }
           ActionLock[game_id] = false
         }
@@ -168,16 +164,6 @@ function allowed_to_play(game) {
   } else {
     return Meteor.userId() === game.turn.player._id
   }
-}
-
-function snapshot() {
-  GamesSnapshot.upsert('games_snapshot', {_id: 'games_snapshot', games: Games.all()}, {}, function() {
-    let player_card_snapshot = _.reduce(PlayerCards, function(snapshot, card_set, game_id) {
-      snapshot[game_id] = card_set.all()
-      return snapshot
-    }, {})
-    PlayerCardsSnapshot.upsert('player_cards_snapshot', {_id: 'player_cards_snapshot', games: player_card_snapshot})
-  })
 }
 
 function player_connection_message(game_id, username, direction) {
