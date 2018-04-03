@@ -45,7 +45,7 @@ Meteor.methods({
           let current_player_cards = player_cards(current_game)
           let card_buyer = new CardBuyer(current_game, current_player_cards, card_name)
           card_buyer.buy()
-          if (current_game.turn.phase === 'buy' && current_game.turn.buys === 0 && (current_player_cards.debt_tokens === 0 || current_game.turn.coins === 0)) {
+          if (turn_over(current_game, current_player_cards)) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
             // snapshot()
@@ -64,7 +64,7 @@ Meteor.methods({
           let current_player_cards = player_cards(current_game)
           let event_buyer = new EventBuyer(current_game, current_player_cards, card_name)
           event_buyer.buy()
-          if (current_game.turn.phase === 'buy' && current_game.turn.buys === 0 && (current_player_cards.debt_tokens === 0 || current_game.turn.coins === 0)) {
+          if (turn_over(current_game, current_player_cards)) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
             // snapshot()
@@ -137,6 +137,22 @@ Meteor.methods({
     TurnEventFutures[turn_event_id].return(selected_cards)
   }
 })
+
+function turn_over(game, player_cards) {
+  if (game.turn.phase === 'buy') {
+    return game.turn.buys === 0 && (player_cards.debt_tokens === 0 || game.turn.coins === 0) && !has_night_cards(player_cards)
+  } else if (game.turn.phase === 'night') {
+    return !has_night_cards(player_cards)
+  } else {
+    return false
+  }
+}
+
+function has_night_cards(player_cards) {
+  return _.some(player_cards.hand, function(card) {
+    return _.includes(_.words(card.types), 'night')
+  })
+}
 
 function player_cards(game) {
   return PlayerCardsModel.findOne(game._id, game.turn.player._id)

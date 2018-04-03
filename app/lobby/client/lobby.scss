@@ -6,6 +6,7 @@ $reaction: lightblue;
 $treasure: gold;
 $curse: violet;
 $duration: orange;
+$night: grey;
 $shelter: salmon;
 $ruins: burlywood;
 $reserve: #cdb332;
@@ -71,6 +72,10 @@ hr {
 
 .duration {
   background-color: $duration;
+}
+
+.night {
+  background-color: $night;
 }
 
 .treasure {
@@ -139,6 +144,10 @@ hr {
 
 .duration.reaction {
   @include gradient($duration, $reaction);
+}
+
+.duration.night {
+  @include gradient($duration, $night);
 }
 
 #lobby-chat {

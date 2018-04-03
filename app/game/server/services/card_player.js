@@ -111,6 +111,8 @@ CardPlayer = class CardPlayer {
         } else {
           this.game.turn.phase = 'treasure'
         }
+      } else if (this.game.turn.phase != 'night' && _.includes(this.card.types(this.player_cards), 'night')) {
+        this.game.turn.phase = 'night'
       }
     }
   }
@@ -165,7 +167,9 @@ CardPlayer = class CardPlayer {
   }
 
   is_valid_play() {
-    if (_.includes(this.card.types(this.player_cards), 'treasure')) {
+    if (_.includes(this.card.types(this.player_cards), 'night')) {
+      return true
+    } else if (_.includes(this.card.types(this.player_cards), 'treasure')) {
       return this.is_valid_treasure()
     } else if (_.includes(this.card.types(this.player_cards), 'action')) {
       return this.is_valid_action()
