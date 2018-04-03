@@ -212,7 +212,7 @@ CardList = class CardList {
       'Druid',
       'FaithfulHound',
       'Guardian',
-      // 'Monastery',
+      'Monastery',
       // 'Pixie',
       // 'Tracker',
       // 'Changeling',
