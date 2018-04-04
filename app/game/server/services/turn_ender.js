@@ -103,6 +103,13 @@ TurnEnder = class TurnEnder {
     if (this.player_cards.champions > 0) {
       this.player_cards.champion = true
     }
+
+    if (!_.isEmpty(this.player_cards.boons)) {
+      _.each(this.player_cards.boons, (boon) => {
+        this.game.boons_discard.unshift(boon)
+      })
+      this.player_cards.boons = []
+    }
   }
 
   discard_hand() {

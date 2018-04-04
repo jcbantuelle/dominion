@@ -48,6 +48,7 @@ GameCreator = class GameCreator {
     }
     if (this.boons_deck) {
       game_attributes.boons_deck = this.boons_deck
+      game_attributes.boons_discard = []
     }
     if (this.obelisk) {
       game_attributes.obelisk = this.obelisk
@@ -525,7 +526,7 @@ GameCreator = class GameCreator {
       cards = cards.concat(this.black_market_deck)
     }
     return _.some(cards, function(card) {
-      return _.includes(_.words(card.types), 'Fate') && card.name != 'Druid'
+      return _.includes(_.words(card.top_card.types), 'fate') && card.name != 'Druid'
     })
   }
 
