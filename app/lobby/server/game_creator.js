@@ -100,8 +100,15 @@ GameCreator = class GameCreator {
   }
 
   create_player_cards(player, index) {
+    let starting_treasures = []
+    if (this.game_has_card(this.selected_kingdom_cards, 'Pixie')) {
+      starting_treasures.push(new Goat())
+    }
+
     let copper = new Copper()
-    coppers = _.times(7, function() { return copper.to_h() })
+    let coppers = _.times(7-_.size(starting_treasures), function() { return copper })
+
+    starting_treasures = _.map(starting_treasures.concat(coppers), function(treasure) { return treasure.to_h() })
 
     var victory_cards
     if (this.use_dark_ages_cards) {
@@ -116,7 +123,7 @@ GameCreator = class GameCreator {
       victory_cards = _.times(3, function() { return estate.to_h() })
     }
 
-    deck = _.shuffle(coppers.concat(victory_cards))
+    deck = _.shuffle(starting_treasures.concat(victory_cards))
     hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
