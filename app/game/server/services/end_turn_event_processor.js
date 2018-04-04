@@ -28,8 +28,8 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
     })
 
     boons = []
-    if (this.game.boons) {
-      boons = boons.concat(this.game.boons)
+    if (this.game.boons_deck || this.game.boons_discard || this.player_cards.boons) {
+      boons = boons.concat(this.game.boons_deck).concat(this.game.boons_discard).concat(this.player_cards.boons)
     }
     if (this.game.druid_boons) {
       boons = boons.concat(this.game.druid_boons)
@@ -37,7 +37,7 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
     let boon_events = _.filter(boons, (card) => {
       if (_.includes(EndTurnEventProcessor.boon_events(), card.name)) {
         if (card.name === 'The Rivers Gift') {
-          return this.game.river_gift
+          return this.game.turn.river_gifts > 0
         } else {
           return false
         }
