@@ -16,6 +16,10 @@ GainEventProcessor = class GainEventProcessor {
     return ['Duplicate']
   }
 
+  static supply_cards() {
+    return ['Changeling']
+  }
+
   static landmark_cards() {
     return ['Aqueduct', 'Battlefield', 'Defiled Shrine', 'Labyrinth']
   }
@@ -48,6 +52,16 @@ GainEventProcessor = class GainEventProcessor {
         } else if (card.inherited_name === 'Watchtower') {
           if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).name === this.gainer.card_name) {
             this.gain_events.push(card)
+          }
+        }
+      }
+    })
+
+    _.each(this.gainer.game.cards, (card) => {
+      if (card.source !== 'not_supply' && card.count > 0 && _.includes(GainEventProcessor.supply_cards(), card.name)) {
+        if (card.name === 'Changeling' && this.player_cards._id === this.gainer.player_cards._id) {
+          if (this.gainer.gained_card.stack_name && CardCostComparer.coin_greater_than(this.gainer.game, this.gainer.gained_card, 2)) {
+            this.gain_events.push(card.top_card)
           }
         }
       }
