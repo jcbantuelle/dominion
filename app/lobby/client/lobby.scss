@@ -8,6 +8,7 @@ $curse: violet;
 $duration: orange;
 $night: grey;
 $shelter: salmon;
+$state: peachpuff;
 $ruins: burlywood;
 $reserve: #cdb332;
 $busy: grey;
@@ -72,6 +73,10 @@ hr {
 
 .reaction {
   background-color: $reaction;
+}
+
+.state {
+  background-color: $state;
 }
 
 .duration {

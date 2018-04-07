@@ -101,6 +101,13 @@
       {{/each}}
       <br />
     {{/if}}
+    {{#if states}}
+      States:
+      {{#each states}}
+        <span class="{{types}}">{{name}}</span>
+      {{/each}}
+      <br />
+    {{/if}}
     <br />
   {{/each}}
 </template>
