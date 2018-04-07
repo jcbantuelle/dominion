@@ -10,7 +10,7 @@ Fool = class Fool extends Card {
 
   play(game, player_cards) {
     let lost_in_the_woods_index = _.findIndex(player_cards.states, function(state) {
-      return state.name === 'LostInTheWoods'
+      return state.name === 'Lost In The Woods'
     })
 
     if (lost_in_the_woods_index === -1) {
