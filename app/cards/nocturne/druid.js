@@ -31,7 +31,7 @@ Druid = class Druid extends Card {
 
   static receive_boon(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(selected_card)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(selected_card, true)}`)
     boon = ClassCreator.create(selected_card.name)
     boon.receive(game, player_cards)
   }
