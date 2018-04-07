@@ -107,6 +107,9 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Tracker')) {
       starting_treasures.push(new Pouch())
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Fool')) {
+      starting_treasures.push(new LuckyCoin())
+    }
 
     let copper = new Copper()
     let coppers = _.times(7-_.size(starting_treasures), function() { return copper })

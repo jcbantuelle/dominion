@@ -4,6 +4,10 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
     return ['Teacher', 'Ratcatcher', 'Guide', 'Transmogrify']
   }
 
+  static state_events() {
+    return ['Lost In The Woods']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
@@ -36,7 +40,12 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return _.includes(StartTurnEventProcessor.reserve_events(), card.inherited_name)
     })
 
-    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events)
+    let state_events = _.filter(this.player_cards.states, function(card) {
+      card.start_event_type = 'State'
+      return _.includes(StartTurnEventProcessor.state_events(), card.name)
+    })
+
+    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events).concat(state_events)
   }
 
   process() {
@@ -88,6 +97,9 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       } else if (event.start_event_type === 'Reserve') {
         delete event.start_event_type
         selected_event.reserve(game, player_cards)
+      } else if (event.start_event_type === 'State') {
+        delete event.start_event_type
+        selected_event.start_turn_event(game, player_cards)
       }
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
