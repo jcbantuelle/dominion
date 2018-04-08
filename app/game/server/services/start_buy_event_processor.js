@@ -31,9 +31,8 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     })
 
     let state_events = _.filter(this.player_cards.states, function(card) {
-      return _.includes(StartTurnEventProcessor.state_events(), card.name)
+      return _.includes(StartBuyEventProcessor.state_events(), card.name)
     })
-
     this.start_buy_events = landmark_events.concat(state_events)
   }
 
