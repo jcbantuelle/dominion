@@ -4,6 +4,10 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     return ['Arena']
   }
 
+  static state_events() {
+    return ['Deluded', 'Envious']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
@@ -26,7 +30,11 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
       }
     })
 
-    this.start_buy_events = landmark_events
+    let state_events = _.filter(this.player_cards.states, function(card) {
+      return _.includes(StartTurnEventProcessor.state_events(), card.name)
+    })
+
+    this.start_buy_events = landmark_events.concat(state_events)
   }
 
   process() {
