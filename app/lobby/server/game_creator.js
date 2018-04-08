@@ -50,6 +50,10 @@ GameCreator = class GameCreator {
       game_attributes.boons_deck = this.boons_deck
       game_attributes.boons_discard = []
     }
+    if (this.hexes_deck) {
+      game_attributes.hexes_deck = this.hexes_deck
+      game_attributes.hexes_discard = []
+    }
     if (this.obelisk) {
       game_attributes.obelisk = this.obelisk
     }
@@ -217,6 +221,10 @@ GameCreator = class GameCreator {
 
     if (this.has_boons(kingdom_cards)) {
       this.build_boons_deck()
+    }
+
+    if (this.has_hexes(kingdom_cards)) {
+      this.hexes_deck = _.shuffle(this.hexes())
     }
 
     if (this.game_has_event_or_landmark(this.landmarks, 'Obelisk')) {
@@ -519,6 +527,26 @@ GameCreator = class GameCreator {
     })
   }
 
+  hexes() {
+    let hexes = [
+      new BadOmens(),
+      new Delusion(),
+      new Envy(),
+      new Famine(),
+      new Fear(),
+      new Greed(),
+      new Haunting(),
+      new Locusts(),
+      new Misery(),
+      new Plague(),
+      new Poverty(),
+      new War()
+    ]
+    return _.map(hexes, function(hex) {
+      return hex.to_h()
+    })
+  }
+
   game_has_card(cards, card_name) {
     if (this.black_market_deck && !_.includes(['Duchess', 'Page', 'Peasant'], card_name)) {
       cards = cards.concat(this.black_market_deck)
@@ -540,6 +568,15 @@ GameCreator = class GameCreator {
     }
     return _.some(cards, function(card) {
       return _.includes(_.words(card.top_card.types), 'fate') && card.name != 'Druid'
+    })
+  }
+
+  has_hexes(cards) {
+    if (this.black_market_deck) {
+      cards = cards.concat(this.black_market_deck)
+    }
+    return _.some(cards, function(card) {
+      return _.includes(_.words(card.top_card.types), 'doom')
     })
   }
 
