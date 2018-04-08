@@ -20,8 +20,13 @@ CardView = class CardView {
   static card_html(types, name, image, hover = false) {
     let rendered_html = `<span class="${types}">${name}</span>`
     if (hover) {
-      let width = _.includes(_.words(types), 'boon') || _.includes(_.words(types), 'state') ? 341 : 220
-      let height = _.includes(_.words(types), 'boon') || _.includes(_.words(types), 'state') ? 220 : 341
+      let width = 220
+      let height = 341
+      types = _.words(types)
+      if (_.includes(types, 'boon') || _.includes(types, 'state') || _.includes(types, 'hex')) {
+        width = 341
+        height = 220
+      }
       rendered_html += `<div class="card-tooltip">
         <img src="${Meteor.settings.public.static.cards}${image}.jpg" width="${width}" height="${height}" />
       </div>`
