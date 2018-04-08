@@ -20,7 +20,7 @@ Locusts = class Locusts extends Hex {
       } else {
         GameModel.update(game._id, game)
         let eligible_cards = _.filter(game.cards, function(card) {
-          let intersecting_types = _.intersection(_.words(card.types), _.words(top_card.types))
+          let intersecting_types = _.intersection(_.words(card.top_card.types), _.words(top_card.types))
           return card.count > 0 && card.top_card.purchasable && !_.isEmpty(intersecting_types) && CardCostComparer.card_less_than(game, top_card, card.top_card)
         })
 
