@@ -1,7 +1,7 @@
 Misery = class Misery extends Hex {
 
   receive(game, player_cards) {
-    let miserable_index = _.find(player_cards.states, function(state) {
+    let miserable_index = _.findIndex(player_cards.states, function(state) {
       return _.includes(['Miserable', 'Twice Miserable'], state.name)
     })
     if (miserable_index === -1) {
