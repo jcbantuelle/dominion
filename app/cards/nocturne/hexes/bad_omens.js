@@ -25,7 +25,7 @@ BadOmens = class BadOmens extends Hex {
     })
 
     if (copper_index !== -1) {
-      this.coppers.push(player_cards.discard.splice(copper_index, 1))
+      this.coppers.push(player_cards.discard.splice(copper_index, 1)[0])
     }
   }
 
