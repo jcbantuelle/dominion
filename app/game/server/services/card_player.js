@@ -109,9 +109,15 @@ CardPlayer = class CardPlayer {
           let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
           turn_event_processor.process(CardPlayer.action_or_treasure)
         } else {
+          let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
+          start_buy_event_processor.process()
           this.game.turn.phase = 'treasure'
         }
-      } else if (this.game.turn.phase != 'night' && _.includes(this.card.types(this.player_cards), 'night')) {
+      } else if (this.game.turn.phase !== 'night' && _.includes(this.card.types(this.player_cards), 'night')) {
+        if (this.game.turn.phase === 'action') {
+          let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
+          start_buy_event_processor.process()
+        }
         this.game.turn.phase = 'night'
       }
     }
@@ -210,6 +216,8 @@ CardPlayer = class CardPlayer {
 
   static action_or_treasure(game, player_cards, response) {
     if (response[0] === 'treasure') {
+      let start_buy_event_processor = new StartBuyEventProcessor(game, player_cards)
+      start_buy_event_processor.process()
       game.turn.phase = 'treasure'
     }
   }

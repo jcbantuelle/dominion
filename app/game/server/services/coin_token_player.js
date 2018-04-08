@@ -17,6 +17,8 @@ CoinTokenPlayer = class CoinTokenPlayer {
   }
 
   update_phase() {
+    let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
+    start_buy_event_processor.process()
     this.game.turn.phase = 'treasure'
   }
 

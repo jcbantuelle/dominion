@@ -6,7 +6,7 @@ TurnEnder = class TurnEnder {
   }
 
   end_turn() {
-    if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
+    if (this.game.turn.phase === 'action') {
       this.start_buy_events()
     }
     this.end_buy_events()
