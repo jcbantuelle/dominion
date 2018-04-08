@@ -253,6 +253,9 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Urchin')) {
       not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun')) {
+      not_supply_cards.push(this.game_card((new Wish()).to_h(), 'not_supply'))
+    }
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
       _.each(['Treasure Hunter', 'Warrior', 'Hero', 'Champion'], (card_name) => {
         let card = ClassCreator.create(card_name)
@@ -386,6 +389,8 @@ GameCreator = class GameCreator {
     } else if (card.name === 'Port') {
       return 12
     } else if (card.name === 'Will O Wisp') {
+      return 12
+    } else if (card.name === 'Wish') {
       return 12
     } else if (_.includes(['Treasure Hunter', 'Warrior', 'Hero', 'Champion', 'Soldier', 'Fugitive', 'Disciple', 'Teacher'], card.name)) {
       return 5

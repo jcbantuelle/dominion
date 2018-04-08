@@ -218,7 +218,7 @@ CardList = class CardList {
       'Changeling',
       'Fool',
       'GhostTown',
-      // 'Leprechaun',
+      'Leprechaun',
       // 'NightWatchman',
       // 'SecretCave',
       // 'Bard',
