@@ -9,6 +9,7 @@ Envy = class Envy extends Hex {
     } else {
       let envious = (new Envious()).to_h()
       player_cards.states.push(envious)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(envious, true)}`)
     }
   }
 }
