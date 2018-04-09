@@ -114,6 +114,9 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Fool')) {
       starting_treasures.push(new LuckyCoin())
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
+      starting_treasures.push(new MagicLamp())
+    }
 
     let copper = new Copper()
     let coppers = _.times(7-_.size(starting_treasures), function() { return copper })
@@ -253,7 +256,7 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Urchin')) {
       not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
     }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun')) {
+    if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun') || this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
       not_supply_cards.push(this.game_card((new Wish()).to_h(), 'not_supply'))
     }
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
