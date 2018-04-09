@@ -222,7 +222,7 @@ CardList = class CardList {
       'NightWatchman',
       'SecretCave',
       'Bard',
-      // 'BlessedVillage',
+      'BlessedVillage',
       // 'Cemetery',
       // 'Conclave',
       // 'DevilsWorkshop',

@@ -20,6 +20,11 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return card
     })
 
+    let saved_boon_events = _.map(this.player_cards.saved_boons, function(card) {
+      card.start_event_type = 'Boon'
+      return card
+    })
+
     let duration_events = _.map(this.player_cards.duration_effects.concat(this.player_cards.permanent_duration_effects), function(card) {
       card.start_event_type = 'Duration'
       return card
@@ -45,7 +50,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return _.includes(StartTurnEventProcessor.state_events(), card.name)
     })
 
-    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events).concat(state_events)
+    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events).concat(state_events).concat(saved_boon_events)
   }
 
   process() {
@@ -88,6 +93,20 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       } else if (event.start_event_type === 'Horse Traders') {
         delete event.start_event_type
         selected_event.start_turn_event(game, player_cards, player_cards.horse_traders.pop())
+      } else if (event.start_event_type === 'Boon') {
+        delete event.start_event_type
+        let saved_boon_index = _.findIndex(player_cards.saved_boons, function(boon) {
+          return boon.name === event.name
+        })
+        player_cards.saved_boons.splice(saved_boon_index, 1)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(event, true)}`)
+        GameModel.update(game._id, game)
+        let keep_boon = selected_event.receive(game, player_cards)
+        if (keep_boon) {
+          player_cards.boons.push(event)
+        } else {
+          game.boons_discard.unshift(event)
+        }
       } else if (event.start_event_type === 'Duration') {
         let duration_effect_index = _.findIndex(player_cards.duration_effects, function(duration_effect) {
           return duration_effect.name === selected_event.name()
