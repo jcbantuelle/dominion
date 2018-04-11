@@ -117,6 +117,9 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
       starting_treasures.push(new MagicLamp())
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Cemetery')) {
+      starting_treasures.push(new HauntedMirror())
+    }
 
     let copper = new Copper()
     let coppers = _.times(7-_.size(starting_treasures), function() { return copper })
@@ -255,6 +258,9 @@ GameCreator = class GameCreator {
     }
     if (this.game_has_card(this.selected_kingdom_cards, 'Urchin')) {
       not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Cemetery')) {
+      not_supply_cards.push(this.game_card((new Ghost()).to_h(), 'not_supply'))
     }
     if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun') || this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
       not_supply_cards.push(this.game_card((new Wish()).to_h(), 'not_supply'))
@@ -395,6 +401,8 @@ GameCreator = class GameCreator {
       return 12
     } else if (card.name === 'Wish') {
       return 12
+    } else if (card.name === 'Ghost') {
+      return 6
     } else if (_.includes(['Treasure Hunter', 'Warrior', 'Hero', 'Champion', 'Soldier', 'Fugitive', 'Disciple', 'Teacher'], card.name)) {
       return 5
     } else {
