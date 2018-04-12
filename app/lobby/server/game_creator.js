@@ -259,13 +259,13 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Urchin')) {
       not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
     }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Cemetery')) {
+    if (this.game_has_card(this.selected_kingdom_cards, 'Cemetery') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist')) {
       not_supply_cards.push(this.game_card((new Ghost()).to_h(), 'not_supply'))
     }
     if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun') || this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
       not_supply_cards.push(this.game_card((new Wish()).to_h(), 'not_supply'))
     }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop')) {
+    if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist')) {
       not_supply_cards.push(this.game_card((new Imp()).to_h(), 'not_supply'))
     }
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
@@ -283,7 +283,7 @@ GameCreator = class GameCreator {
     if (this.has_spoils(this.selected_kingdom_cards)) {
       not_supply_cards.push(this.game_card((new Spoils()).to_h(), 'not_supply'))
     }
-    if (this.has_swamps_gift(this.selected_kingdom_cards)) {
+    if (this.has_swamps_gift(this.selected_kingdom_cards) || this.game_has_card(this.selected_kingdom_cards, 'Exorcist')) {
       not_supply_cards.push(this.game_card((new WillOWisp()).to_h(), 'not_supply'))
     }
     return _.sortBy(not_supply_cards, function(card) {

@@ -226,7 +226,7 @@ CardList = class CardList {
       'Cemetery',
       'Conclave',
       'DevilsWorkshop',
-      // 'Exorcist',
+      'Exorcist',
       // 'Necromancer',
       // 'Shepherd',
       // 'Skulk',
