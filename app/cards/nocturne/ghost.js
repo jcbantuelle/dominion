@@ -1,5 +1,9 @@
 Ghost = class Ghost extends Card {
 
+  is_purchasable() {
+    false
+  }
+
   types() {
     return ['night', 'duration', 'spirit']
   }
