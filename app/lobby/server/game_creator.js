@@ -265,6 +265,9 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun') || this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
       not_supply_cards.push(this.game_card((new Wish()).to_h(), 'not_supply'))
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop')) {
+      not_supply_cards.push(this.game_card((new Imp()).to_h(), 'not_supply'))
+    }
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
       _.each(['Treasure Hunter', 'Warrior', 'Hero', 'Champion'], (card_name) => {
         let card = ClassCreator.create(card_name)
@@ -401,6 +404,8 @@ GameCreator = class GameCreator {
       return 12
     } else if (card.name === 'Wish') {
       return 12
+    } else if (card.name === 'Imp') {
+      return 13
     } else if (card.name === 'Ghost') {
       return 6
     } else if (_.includes(['Treasure Hunter', 'Warrior', 'Hero', 'Champion', 'Soldier', 'Fugitive', 'Disciple', 'Teacher'], card.name)) {
