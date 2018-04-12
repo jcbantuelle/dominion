@@ -48,7 +48,6 @@ Fool = class Fool extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        show_images: true,
         boon: true,
         instructions: 'Choose which Boon to receive next:',
         cards: revealed_boons,

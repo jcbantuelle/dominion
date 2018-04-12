@@ -18,7 +18,6 @@ Druid = class Druid extends Card {
       username: player_cards.username,
       type: 'choose_cards',
       player_cards: true,
-      show_images: true,
       boon: true,
       instructions: 'Choose a boon to receive:',
       cards: game.druid_boons,

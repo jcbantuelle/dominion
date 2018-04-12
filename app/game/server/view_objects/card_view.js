@@ -1,6 +1,6 @@
 CardView = class CardView {
 
-  static render(cards, hover = false) {
+  static render(cards, hover = true) {
     if (_.isArray(cards)) {
       return CardView.card_list_html(cards, hover)
     } else if (_.isPlainObject(cards)) {
@@ -11,14 +11,14 @@ CardView = class CardView {
     }
   }
 
-  static card_list_html(cards, hover = false) {
+  static card_list_html(cards, hover = true) {
     return _.map(cards, (card) => {
       return CardView.card_html(card.types, card.name, card.image, hover)
     }).join(' ')
   }
 
-  static card_html(types, name, image, hover = false) {
-    let rendered_html = `<span class="${types}">${name}</span>`
+  static card_html(types, name, image, hover = true) {
+    let rendered_html = `<span class="${types} card">${name}</span>`
     if (hover) {
       let width = 220
       let height = 341

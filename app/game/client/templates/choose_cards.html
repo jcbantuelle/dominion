@@ -6,18 +6,19 @@
         <label for="card_{{@index}}">
           <input type="checkbox" id="card_{{@index}}" value="{{@index}}" />
           {{#if ../game_cards}}
-            <span class="{{top_card.types}}{{#if show_images}} choose-card{{/if}}">{{top_card.name}}</span>
+            <span class="{{top_card.types}} choose-card">{{top_card.name}}</span>
+            <div class="card-tooltip">
+              <img src="{{static_image top_card.image}}" width="220" height="341" />
+            </div>
           {{else}}
-            <span class="{{types}}{{#if ../show_images}} choose-card{{/if}}">{{name}}</span>{{#if source}} ({{source}}){{/if}}
-            {{#if ../show_images}}
-              <div class="card-tooltip">
-                {{#if ../boon}}
-                  <img src="{{static_image image}}" width="341" height="220" />
-                {{else}}
-                  <img src="{{static_image image}}" width="220" height="341" />
-                {{/if}}
-              </div>
-            {{/if}}
+            <span class="{{types}} choose-card">{{name}}</span>{{#if source}} ({{source}}){{/if}}
+            <div class="card-tooltip">
+              {{#if ../boon}}
+                <img src="{{static_image image}}" width="341" height="220" />
+              {{else}}
+                <img src="{{static_image image}}" width="220" height="341" />
+              {{/if}}
+            </div>
           {{/if}}
         </label>
       {{/each}}

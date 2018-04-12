@@ -47,7 +47,6 @@ BlackMarket = class BlackMarket extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        show_images: true,
         instructions: 'Choose a card to buy (Or none to skip):',
         cards: eligible_buys,
         minimum: 0,
