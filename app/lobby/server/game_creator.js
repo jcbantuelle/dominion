@@ -38,7 +38,8 @@ GameCreator = class GameCreator {
       events: this.events,
       landmarks: this.landmarks,
       duchess: this.game_has_card(cards, 'Duchess'),
-      prizes: this.prizes(cards)
+      prizes: this.prizes(cards),
+      trash: []
     }
     if (this.black_market_deck) {
       game_attributes.black_market_deck = this.black_market_deck
@@ -56,6 +57,11 @@ GameCreator = class GameCreator {
     }
     if (this.obelisk) {
       game_attributes.obelisk = this.obelisk
+    }
+    if (this.game_has_card(cards, 'Necromancer')) {
+      game_attributes.trash.push((new ZombieApprentice()).to_h())
+      game_attributes.trash.push((new ZombieMason()).to_h())
+      game_attributes.trash.push((new ZombieSpy()).to_h())
     }
     return GameModel.insert(game_attributes)
   }

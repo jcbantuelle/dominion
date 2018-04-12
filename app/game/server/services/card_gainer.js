@@ -16,6 +16,7 @@ CardGainer = class CardGainer {
     } else {
       let card_index = this.find_card_index(this.game.trash)
       this.gained_card = this.game.trash[card_index]
+      delete this.gained_card.face_down
       this.track_gained_card()
       if (this.game.turn.travelling_fair) {
         this.travelling_fair(this.gained_card)

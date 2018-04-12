@@ -26,6 +26,7 @@ TurnEnder = class TurnEnder {
         delete this.game.turn.possessed
         GameModel.update(this.game._id, this.game)
       }
+      this.flip_trash_cards_face_up()
       this.donate()
       this.mountain_pass()
       this.set_next_turn()
@@ -59,6 +60,12 @@ TurnEnder = class TurnEnder {
   end_turn_events() {
     let end_turn_event_processor = new EndTurnEventProcessor(this.game, this.player_cards)
     end_turn_event_processor.process()
+  }
+
+  flip_trash_cards_face_up() {
+    _.each(this.game.trash, function(card) {
+      delete card.face_down
+    })
   }
 
   clean_up_cards_in_play() {
