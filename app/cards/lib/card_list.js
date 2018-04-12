@@ -229,7 +229,7 @@ CardList = class CardList {
       'Exorcist',
       'Necromancer',
       'Shepherd',
-      // 'Skulk',
+      'Skulk',
       // 'Cobbler',
       // 'Crypt',
       // 'CursedVillage',
