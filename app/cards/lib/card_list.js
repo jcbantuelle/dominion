@@ -232,7 +232,7 @@ CardList = class CardList {
       'Skulk',
       'Cobbler',
       'Crypt',
-      // 'CursedVillage',
+      'CursedVillage',
       // 'DenOfSin',
       // 'Idol',
       // 'Pooka',
