@@ -26,7 +26,7 @@ CardBuyer = class CardBuyer {
   }
 
   can_buy() {
-    return this.is_debt_free() && this.is_purchasable() && this.is_valid_buy() && !this.is_contraband() && !this.game.turn.mission_turn
+    return this.is_debt_free() && this.is_purchasable() && this.is_valid_buy() && !this.is_contraband() && !this.game.turn.mission_turn && (!this.game.turn.deluded || !_.includes(this.card.types(), 'action'))
   }
 
   update_phase() {

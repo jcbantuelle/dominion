@@ -1,7 +1,7 @@
 Deluded = class Deluded extends State {
 
   start_buy_event(game, player_cards) {
-    game.turn.mission_turn = true
+    game.turn.deluded = true
 
     let deluded_index = _.findIndex(player_cards.states, function(state) {
       return state.name === 'Deluded'
