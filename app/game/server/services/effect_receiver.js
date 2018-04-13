@@ -25,6 +25,7 @@ EffectReceiver = class EffectReceiver {
     let player_keeps_effect = this.effect(received_effect).receive(this.game, this.player_cards)
 
     this.discard_effect(received_effect, player_keeps_effect)
+    return received_effect
   }
 
   shuffle_deck() {

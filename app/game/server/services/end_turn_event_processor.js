@@ -69,13 +69,17 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
         delete event.end_turn_event_type
         selected_event.end_turn_event(game, player_cards, player_cards.faithful_hounds.pop())
       } else if (event.end_turn_event_type === 'The Rivers Gift') {
-        let all_player_cards = PlayerCardsModel.find(game._id)
-        let target_player_cards = _.find(all_player_cards, function(player_cards) {
-          return player_cards.player_id === event.target_player_id
-        })
+        let target_player_cards = player_cards
+        if (event.target_player_id !== player_cards.player_id) {
+          let all_player_cards = PlayerCardsModel.find(game._id)
+          target_player_cards = _.find(all_player_cards, function(player_cards) {
+            return player_cards.player_id === event.target_player_id
+          })
+        }
         delete event.target_player_id
         delete event.end_turn_event_type
         selected_event.end_turn_event(game, target_player_cards)
+        PlayerCardsModel.update(game._id, target_player_cards)
       } else {
         selected_event.end_turn_event(game, player_cards)
       }
