@@ -71,7 +71,7 @@ SecretCave = class SecretCave extends Card {
 
   duration(game, player_cards, duration_card) {
     let gained_coins = CoinGainer.gain(game, player_cards, 3)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} from ${CardView.render(duration_card)}`)
   }
 
 }
