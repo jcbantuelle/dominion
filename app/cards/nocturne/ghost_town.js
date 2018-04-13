@@ -15,9 +15,9 @@ GhostTown = class GhostTown extends Card {
 
   duration(game, player_cards, duration_card) {
     let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(1, false)
+    let drawn_count = card_drawer.draw(1, false)
     game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 card and +1 action from ${CardView.render(this)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${drawn_count} card(s) and +1 action from ${CardView.render(this)}`)
   }
 
   destination() {
