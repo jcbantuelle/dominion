@@ -234,7 +234,7 @@ CardList = class CardList {
       'Crypt',
       'CursedVillage',
       'DenOfSin',
-      // 'Idol',
+      'Idol',
       // 'Pooka',
       // 'SacredGrove',
       // 'Tormentor',
