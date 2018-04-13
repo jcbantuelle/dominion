@@ -240,7 +240,7 @@ CardList = class CardList {
       'Tormentor',
       'TragicHero',
       'Vampire',
-      // 'Werewolf',
+      'Werewolf',
       // 'Raider'
     ]
   }

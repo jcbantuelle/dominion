@@ -59,6 +59,10 @@ hr {
   color: #BB0000;
 }
 
+.lobby-card.attack.night {
+  color: #880000;
+}
+
 .action {
   background-color: $action;
 }
@@ -162,6 +166,10 @@ hr {
 
 .duration.night {
   @include gradient($duration, $night);
+}
+
+.action.night {
+  @include gradient($action, $night);
 }
 
 #lobby-chat {
