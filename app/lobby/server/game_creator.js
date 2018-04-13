@@ -277,7 +277,7 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun') || this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
       not_supply_cards.push(this.game_card((new Wish()).to_h(), 'not_supply'))
     }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist')) {
+    if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist') || this.game_has_card(this.selected_kingdom_cards, 'Tormentor')) {
       not_supply_cards.push(this.game_card((new Imp()).to_h(), 'not_supply'))
     }
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
