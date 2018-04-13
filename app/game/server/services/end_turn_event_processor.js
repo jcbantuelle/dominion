@@ -4,10 +4,6 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
     return ['Baths']
   }
 
-  static boon_events() {
-    return ['The Rivers Gift']
-  }
-
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
@@ -27,29 +23,9 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
       }
     })
 
-    boons = []
-    if (!_.isEmpty(this.game.boons_deck)) {
-      boons = boons.concat(this.game.boons_deck)
-    }
-    if (!_.isEmpty(this.game.boons_discard)) {
-      boons = boons.concat(this.game.boons_discard)
-    }
-    if (!_.isEmpty(this.player_cards.boons)) {
-      boons = boons.concat(this.player_cards.boons)
-    }
-    if (!_.isEmpty(this.game.druid_boons)) {
-      boons = boons.concat(this.game.druid_boons)
-    }
-    let boon_events = _.filter(boons, (card) => {
-      if (_.includes(EndTurnEventProcessor.boon_events(), card.name)) {
-        if (card.name === 'The Rivers Gift') {
-          return this.game.turn.river_gifts > 0
-        } else {
-          return false
-        }
-      } else {
-        return false
-      }
+    let river_gift_events = _.map(this.game.turn.river_gifts, function(card) {
+      card.end_turn_event_type = 'The Rivers Gift'
+      return card
     })
 
     let faithful_hound_events = _.map(this.player_cards.faithful_hounds, function(card) {
@@ -57,7 +33,7 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
       return card
     })
 
-    this.end_turn_events = landmark_events.concat(boon_events).concat(faithful_hound_events)
+    this.end_turn_events = landmark_events.concat(river_gift_events).concat(faithful_hound_events)
   }
 
   process() {
@@ -92,6 +68,14 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
       if (event.end_turn_event_type === 'Faithful Hound') {
         delete event.end_turn_event_type
         selected_event.end_turn_event(game, player_cards, player_cards.faithful_hounds.pop())
+      } else if (event.end_turn_event_type === 'The Rivers Gift') {
+        let all_player_cards = PlayerCardsModel.find(game._id)
+        let target_player_cards = _.find(all_player_cards, function(player_cards) {
+          return player_cards.player_id === event.target_player_id
+        })
+        delete event.target_player_id
+        delete event.end_turn_event_type
+        selected_event.end_turn_event(game, target_player_cards)
       } else {
         selected_event.end_turn_event(game, player_cards)
       }
