@@ -241,7 +241,7 @@ CardList = class CardList {
       'TragicHero',
       'Vampire',
       'Werewolf',
-      // 'Raider'
+      'Raider'
     ]
   }
 
