@@ -38,13 +38,30 @@ GameCreator = class GameCreator {
       events: this.events,
       landmarks: this.landmarks,
       duchess: this.game_has_card(cards, 'Duchess'),
-      prizes: this.prizes(cards)
+      prizes: this.prizes(cards),
+      trash: []
     }
     if (this.black_market_deck) {
       game_attributes.black_market_deck = this.black_market_deck
     }
+    if (this.druid_boons) {
+      game_attributes.druid_boons = this.druid_boons
+    }
+    if (this.boons_deck) {
+      game_attributes.boons_deck = this.boons_deck
+      game_attributes.boons_discard = []
+    }
+    if (this.hexes_deck) {
+      game_attributes.hexes_deck = this.hexes_deck
+      game_attributes.hexes_discard = []
+    }
     if (this.obelisk) {
       game_attributes.obelisk = this.obelisk
+    }
+    if (this.game_has_card(cards, 'Necromancer')) {
+      game_attributes.trash.push((new ZombieApprentice()).to_h())
+      game_attributes.trash.push((new ZombieMason()).to_h())
+      game_attributes.trash.push((new ZombieSpy()).to_h())
     }
     return GameModel.insert(game_attributes)
   }
@@ -79,6 +96,7 @@ GameCreator = class GameCreator {
       coin_discount: 0,
       played_actions: 0,
       coppersmiths: 0,
+      river_gifts: [],
       expeditions: 0,
       charms: 0
     }
@@ -92,8 +110,33 @@ GameCreator = class GameCreator {
   }
 
   create_player_cards(player, index) {
+    let starting_treasures = []
+    if (this.game_has_card(this.selected_kingdom_cards, 'Pixie')) {
+      starting_treasures.push(new Goat())
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Tracker')) {
+      starting_treasures.push(new Pouch())
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Fool')) {
+      starting_treasures.push(new LuckyCoin())
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
+      starting_treasures.push(new MagicLamp())
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Cemetery')) {
+      starting_treasures.push(new HauntedMirror())
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Shepherd')) {
+      starting_treasures.push(new Pasture())
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Pooka')) {
+      starting_treasures.push(new CursedGold())
+    }
+
     let copper = new Copper()
-    coppers = _.times(7, function() { return copper.to_h() })
+    let coppers = _.times(7-_.size(starting_treasures), function() { return copper })
+
+    starting_treasures = _.map(starting_treasures.concat(coppers), function(treasure) { return treasure.to_h() })
 
     var victory_cards
     if (this.use_dark_ages_cards) {
@@ -108,7 +151,7 @@ GameCreator = class GameCreator {
       victory_cards = _.times(3, function() { return estate.to_h() })
     }
 
-    deck = _.shuffle(coppers.concat(victory_cards))
+    deck = _.shuffle(starting_treasures.concat(victory_cards))
     hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
@@ -190,6 +233,18 @@ GameCreator = class GameCreator {
       kingdom_cards.push(this.bane_card(kingdom_cards))
     }
 
+    if (this.game_has_card(kingdom_cards, 'Druid')) {
+      this.select_druid_boons()
+    }
+
+    if (this.has_boons(kingdom_cards)) {
+      this.build_boons_deck()
+    }
+
+    if (this.has_hexes(kingdom_cards)) {
+      this.hexes_deck = _.shuffle(this.hexes())
+    }
+
     if (this.game_has_event_or_landmark(this.landmarks, 'Obelisk')) {
       let obelisk_card
       do {
@@ -216,6 +271,18 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Urchin')) {
       not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Cemetery') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist')) {
+      not_supply_cards.push(this.game_card((new Ghost()).to_h(), 'not_supply'))
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun') || this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
+      not_supply_cards.push(this.game_card((new Wish()).to_h(), 'not_supply'))
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Vampire')) {
+      not_supply_cards.push(this.game_card((new Bat()).to_h(), 'not_supply'))
+    }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist') || this.game_has_card(this.selected_kingdom_cards, 'Tormentor')) {
+      not_supply_cards.push(this.game_card((new Imp()).to_h(), 'not_supply'))
+    }
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
       _.each(['Treasure Hunter', 'Warrior', 'Hero', 'Champion'], (card_name) => {
         let card = ClassCreator.create(card_name)
@@ -230,6 +297,9 @@ GameCreator = class GameCreator {
     }
     if (this.has_spoils(this.selected_kingdom_cards)) {
       not_supply_cards.push(this.game_card((new Spoils()).to_h(), 'not_supply'))
+    }
+    if (this.has_swamps_gift(this.selected_kingdom_cards) || this.game_has_card(this.selected_kingdom_cards, 'Exorcist')) {
+      not_supply_cards.push(this.game_card((new WillOWisp()).to_h(), 'not_supply'))
     }
     return _.sortBy(not_supply_cards, function(card) {
       return -(card.top_card.coin_cost + (card.top_card.potion_cost * .1))
@@ -345,6 +415,14 @@ GameCreator = class GameCreator {
       return 20
     } else if (card.name === 'Port') {
       return 12
+    } else if (card.name === 'Will O Wisp') {
+      return 12
+    } else if (card.name === 'Wish') {
+      return 12
+    } else if (card.name === 'Imp') {
+      return 13
+    } else if (card.name === 'Ghost') {
+      return 6
     } else if (_.includes(['Treasure Hunter', 'Warrior', 'Hero', 'Champion', 'Soldier', 'Fugitive', 'Disciple', 'Teacher'], card.name)) {
       return 5
     } else {
@@ -465,6 +543,46 @@ GameCreator = class GameCreator {
     }
   }
 
+  boons() {
+    let boons = [
+      new TheEarthsGift(),
+      new TheFieldsGift(),
+      new TheFlamesGift(),
+      new TheForestsGift(),
+      new TheMoonsGift(),
+      new TheMountainsGift(),
+      new TheRiversGift(),
+      new TheSeasGift(),
+      new TheSkysGift(),
+      new TheSunsGift(),
+      new TheSwampsGift(),
+      new TheWindsGift()
+    ]
+    return _.map(boons, function(boon) {
+      return boon.to_h()
+    })
+  }
+
+  hexes() {
+    let hexes = [
+      new BadOmens(),
+      new Delusion(),
+      new Envy(),
+      new Famine(),
+      new Fear(),
+      new Greed(),
+      new Haunting(),
+      new Locusts(),
+      new Misery(),
+      new Plague(),
+      new Poverty(),
+      new War()
+    ]
+    return _.map(hexes, function(hex) {
+      return hex.to_h()
+    })
+  }
+
   game_has_card(cards, card_name) {
     if (this.black_market_deck && !_.includes(['Duchess', 'Page', 'Peasant'], card_name)) {
       cards = cards.concat(this.black_market_deck)
@@ -477,6 +595,30 @@ GameCreator = class GameCreator {
   game_has_event_or_landmark(cards, card_name) {
     return _.some(cards, function(card) {
       return card.name === card_name
+    })
+  }
+
+  has_boons(cards) {
+    if (this.black_market_deck) {
+      cards = cards.concat(this.black_market_deck)
+    }
+    return _.some(cards, function(card) {
+      return _.includes(_.words(card.top_card.types), 'fate') && card.name != 'Druid'
+    })
+  }
+
+  has_hexes(cards) {
+    if (this.black_market_deck) {
+      cards = cards.concat(this.black_market_deck)
+    }
+    return _.some(cards, function(card) {
+      return _.includes(_.words(card.top_card.types), 'doom')
+    })
+  }
+
+  has_swamps_gift(cards) {
+    return this.has_boons(cards) || _.some(this.druid_boons, function(card) {
+      return card.name === 'The Swamps Gift'
     })
   }
 
@@ -520,6 +662,20 @@ GameCreator = class GameCreator {
     })
   }
 
+  select_druid_boons() {
+    this.druid_boons = _.take(_.shuffle(this.boons()), 3)
+  }
+
+  build_boons_deck() {
+    this.boons_deck = _.shuffle(this.boons())
+    if (this.druid_boons) {
+      druid_boon_names = _.map(this.druid_boons, 'name')
+      this.boons_deck = _.reject(this.boons_deck, (boon) => {
+        return _.includes(druid_boon_names, boon.name)
+      })
+    }
+  }
+
   bane_card(cards) {
     let game_card_names = _.map(cards, 'name')
     if (this.black_market_deck) {
@@ -529,7 +685,6 @@ GameCreator = class GameCreator {
     do {
       card = CardList.pull_one(this.exclusions, this.edition)
     } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.includes(game_card_names, card.name))
-    card = ClassCreator.create('Castles').to_h()
     card.bane = true
     return this.game_card(card, 'kingdom')
   }

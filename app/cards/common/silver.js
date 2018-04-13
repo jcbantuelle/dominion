@@ -9,7 +9,11 @@ Silver = class Silver extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 2)
+    let gained_coin = 2
+    if (game.turn.envious) {
+      gained_coin = 1
+    }
+    CoinGainer.gain(game, player_cards, gained_coin)
 
     if (game.turn.played_merchant && !game.turn.gained_merchant_silver) {
       game.turn.gained_merchant_silver = true

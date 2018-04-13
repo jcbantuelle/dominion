@@ -64,7 +64,7 @@ CardList = class CardList {
   }
 
   static sets(edition = '') {
-    return ['base'+edition, 'intrigue'+edition, 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures', 'empires']
+    return ['base'+edition, 'intrigue'+edition, 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures', 'empires', 'nocturne']
   }
 
   static event_sets(edition = '') {
@@ -204,6 +204,44 @@ CardList = class CardList {
       'Windfall',
       'Conquest',
       'Dominate'
+    ]
+  }
+
+  static nocturne() {
+    return [
+      'Druid',
+      'FaithfulHound',
+      'Guardian',
+      'Monastery',
+      'Pixie',
+      'Tracker',
+      'Changeling',
+      'Fool',
+      'GhostTown',
+      'Leprechaun',
+      'NightWatchman',
+      'SecretCave',
+      'Bard',
+      'BlessedVillage',
+      'Cemetery',
+      'Conclave',
+      'DevilsWorkshop',
+      'Exorcist',
+      'Necromancer',
+      'Shepherd',
+      'Skulk',
+      'Cobbler',
+      'Crypt',
+      'CursedVillage',
+      'DenOfSin',
+      'Idol',
+      'Pooka',
+      'SacredGrove',
+      'Tormentor',
+      'TragicHero',
+      'Vampire',
+      'Werewolf',
+      'Raider'
     ]
   }
 

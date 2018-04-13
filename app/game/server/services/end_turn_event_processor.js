@@ -23,7 +23,17 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
       }
     })
 
-    this.end_turn_events = landmark_events
+    let river_gift_events = _.map(this.game.turn.river_gifts, function(card) {
+      card.end_turn_event_type = 'The Rivers Gift'
+      return card
+    })
+
+    let faithful_hound_events = _.map(this.player_cards.faithful_hounds, function(card) {
+      card.end_turn_event_type = 'Faithful Hound'
+      return card
+    })
+
+    this.end_turn_events = landmark_events.concat(river_gift_events).concat(faithful_hound_events)
   }
 
   process() {
@@ -55,7 +65,24 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
         event_name = 'InheritedEstate'
       }
       let selected_event = ClassCreator.create(event_name)
-      selected_event.end_turn_event(game, player_cards)
+      if (event.end_turn_event_type === 'Faithful Hound') {
+        delete event.end_turn_event_type
+        selected_event.end_turn_event(game, player_cards, player_cards.faithful_hounds.pop())
+      } else if (event.end_turn_event_type === 'The Rivers Gift') {
+        let target_player_cards = player_cards
+        if (event.target_player_id !== player_cards.player_id) {
+          let all_player_cards = PlayerCardsModel.find(game._id)
+          target_player_cards = _.find(all_player_cards, function(player_cards) {
+            return player_cards.player_id === event.target_player_id
+          })
+        }
+        delete event.target_player_id
+        delete event.end_turn_event_type
+        selected_event.end_turn_event(game, target_player_cards)
+        PlayerCardsModel.update(game._id, target_player_cards)
+      } else {
+        selected_event.end_turn_event(game, player_cards)
+      }
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
     })

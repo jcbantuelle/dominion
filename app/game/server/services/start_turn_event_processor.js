@@ -4,6 +4,10 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
     return ['Teacher', 'Ratcatcher', 'Guide', 'Transmogrify']
   }
 
+  static state_events() {
+    return ['Lost In The Woods']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
@@ -13,6 +17,11 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
   find_start_turn_events() {
     let horse_traders_events = _.map(this.player_cards.horse_traders, function(card) {
       card.start_event_type = 'Horse Traders'
+      return card
+    })
+
+    let saved_boon_events = _.map(this.player_cards.saved_boons, function(card) {
+      card.start_event_type = 'Boon'
       return card
     })
 
@@ -36,7 +45,12 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return _.includes(StartTurnEventProcessor.reserve_events(), card.inherited_name)
     })
 
-    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events)
+    let state_events = _.filter(this.player_cards.states, function(card) {
+      card.start_event_type = 'State'
+      return _.includes(StartTurnEventProcessor.state_events(), card.name)
+    })
+
+    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events).concat(state_events).concat(saved_boon_events)
   }
 
   process() {
@@ -77,7 +91,22 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         let card_player = new CardPlayer(game, player_cards, event.name, true)
         card_player.play()
       } else if (event.start_event_type === 'Horse Traders') {
+        delete event.start_event_type
         selected_event.start_turn_event(game, player_cards, player_cards.horse_traders.pop())
+      } else if (event.start_event_type === 'Boon') {
+        delete event.start_event_type
+        let saved_boon_index = _.findIndex(player_cards.saved_boons, function(boon) {
+          return boon.name === event.name
+        })
+        player_cards.saved_boons.splice(saved_boon_index, 1)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(event, true)}`)
+        GameModel.update(game._id, game)
+        let keep_boon = selected_event.receive(game, player_cards)
+        if (keep_boon) {
+          player_cards.boons.push(event)
+        } else {
+          game.boons_discard.unshift(event)
+        }
       } else if (event.start_event_type === 'Duration') {
         let duration_effect_index = _.findIndex(player_cards.duration_effects, function(duration_effect) {
           return duration_effect.name === selected_event.name()
@@ -87,6 +116,9 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       } else if (event.start_event_type === 'Reserve') {
         delete event.start_event_type
         selected_event.reserve(game, player_cards)
+      } else if (event.start_event_type === 'State') {
+        delete event.start_event_type
+        selected_event.start_turn_event(game, player_cards)
       }
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)

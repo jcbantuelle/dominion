@@ -5,15 +5,19 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static event_cards() {
-    return ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village', 'Death Cart', 'Lost City', 'Emporium', 'Crumbling Castle', 'Haunted Castle', 'Sprawling Castle', 'Grand Castle', 'Rocks', 'Fortune', 'Temple', 'Villa']
+    return ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village', 'Death Cart', 'Lost City', 'Emporium', 'Crumbling Castle', 'Haunted Castle', 'Sprawling Castle', 'Grand Castle', 'Rocks', 'Fortune', 'Temple', 'Villa', 'Blessed Village', 'Cemetery', 'Skulk', 'Cursed Village']
   }
 
   static in_play_event_cards() {
-    return ['Royal Seal']
+    return ['Royal Seal', 'Tracker']
   }
 
   static reserve_cards() {
     return ['Duplicate']
+  }
+
+  static supply_cards() {
+    return ['Changeling']
   }
 
   static landmark_cards() {
@@ -53,9 +57,19 @@ GainEventProcessor = class GainEventProcessor {
       }
     })
 
-    _.each(this.player_cards.in_play.concat(this.player_cards.to_discard), (card) => {
+    _.each(this.gainer.game.cards, (card) => {
+      if (card.source !== 'not_supply' && card.count > 0 && _.includes(GainEventProcessor.supply_cards(), card.name)) {
+        if (card.name === 'Changeling' && this.player_cards._id === this.gainer.player_cards._id) {
+          if (this.gainer.gained_card.stack_name && CardCostComparer.coin_greater_than(this.gainer.game, this.gainer.gained_card, 2)) {
+            this.gain_events.push(card.top_card)
+          }
+        }
+      }
+    })
+
+    _.each(this.player_cards.in_play.concat(this.player_cards.to_discard).concat(this.player_cards.playing), (card) => {
       if (_.includes(GainEventProcessor.in_play_event_cards(), card.inherited_name)) {
-        if (card.inherited_name === 'Royal Seal') {
+        if (_.includes(['Royal Seal', 'Tracker'], card.inherited_name)) {
           if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).name === this.gainer.card_name) {
             this.gain_events.push(card)
           }
