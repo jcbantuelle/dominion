@@ -238,7 +238,7 @@ CardList = class CardList {
       'Pooka',
       'SacredGrove',
       'Tormentor',
-      // 'TragicHero',
+      'TragicHero',
       // 'Vampire',
       // 'Werewolf',
       // 'Raider'
