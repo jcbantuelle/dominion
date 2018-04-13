@@ -395,6 +395,9 @@ TurnEnder = class TurnEnder {
       let archive_effect_count = _.size(_.filter(this.next_player_cards.duration_effects, function(effect) {
         return effect.name === 'Archive'
       }))
+      let crypt_effect_count = _.size(_.filter(this.next_player_cards.duration_effects, function(effect) {
+        return effect.name === 'Crypt'
+      }))
       let duration_cards_to_move = []
       let duration_cards_remaining = []
       _.each(this.next_player_cards.duration, function(card) {
@@ -402,6 +405,9 @@ TurnEnder = class TurnEnder {
         if (card.name === 'Archive' && archive_effect_count > 0) {
           duration_cards_remaining.push(card)
           archive_effect_count -= 1
+        } else if (card.name === 'Crypt' && crypt_effect_count > 0) {
+          duration_cards_remaining.push(card)
+          crypt_effect_count -= 1
         } else {
           duration_cards_to_move.push(card)
         }
