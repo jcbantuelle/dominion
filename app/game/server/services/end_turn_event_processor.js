@@ -28,10 +28,16 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
     })
 
     boons = []
-    if (this.game.boons_deck || this.game.boons_discard || this.player_cards.boons) {
-      boons = boons.concat(this.game.boons_deck).concat(this.game.boons_discard).concat(this.player_cards.boons)
+    if (!_.isEmpty(this.game.boons_deck)) {
+      boons = boons.concat(this.game.boons_deck)
     }
-    if (this.game.druid_boons) {
+    if (!_.isEmpty(this.game.boons_discard)) {
+      boons = boons.concat(this.game.boons_discard)
+    }
+    if (!_.isEmpty(this.player_cards.boons)) {
+      boons = boons.concat(this.player_cards.boons)
+    }
+    if (!_.isEmpty(this.game.druid_boons)) {
       boons = boons.concat(this.game.druid_boons)
     }
     let boon_events = _.filter(boons, (card) => {
