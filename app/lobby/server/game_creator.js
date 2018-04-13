@@ -129,6 +129,9 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Shepherd')) {
       starting_treasures.push(new Pasture())
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Pooka')) {
+      starting_treasures.push(new CursedGold())
+    }
 
     let copper = new Copper()
     let coppers = _.times(7-_.size(starting_treasures), function() { return copper })
