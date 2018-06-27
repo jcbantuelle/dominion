@@ -32,6 +32,9 @@ Courtier = class Courtier extends Card {
 
   static reveal_card(game, player_cards, selected_card) {
     revealed_card = selected_card[0]
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(this.revealed_card)}`)
+    GameModel.update(game._id, game)
+
     card_types_count = _.size(_.words(revealed_card.types))
 
     let turn_event_id = TurnEventModel.insert({
