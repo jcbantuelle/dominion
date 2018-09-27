@@ -249,7 +249,8 @@ CardList = class CardList {
     return [
       'MountainVillage',
       'Scholar',
-      'Experiment'
+      'Experiment',
+      'Seer'
     ]
   }
 
