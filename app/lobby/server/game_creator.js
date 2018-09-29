@@ -164,6 +164,7 @@ GameCreator = class GameCreator {
       deck: deck,
       hand: hand,
       coin_tokens: coin_tokens,
+      villagers: 0,
       debt_tokens: 0,
       tokens: {pile: []},
       turns: (this.game.turn.player._id === player._id) ? 1 : 0
