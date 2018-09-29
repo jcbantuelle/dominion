@@ -250,7 +250,8 @@ CardList = class CardList {
       'MountainVillage',
       'Scholar',
       'Experiment',
-      'Seer'
+      'Seer',
+      'Priest'
     ]
   }
 

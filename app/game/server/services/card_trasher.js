@@ -43,6 +43,15 @@ CardTrasher = class CardTrasher {
       let trash_event_processor = new TrashEventProcessor(this, trashed_card)
       trash_event_processor.process()
       this.put_card_in_trash(trashed_card)
+
+      let priests_in_play = _.filter(this.player_cards.in_play, function (card) {
+        return card.name === 'Priest'
+      })
+
+      _.each(priests_in_play, (priest) => {
+        CoinGainer.gain(this.game, this.player_cards, 2)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +$2 from ${CardView.render(priest)}`)
+      })
     })
 
     this.player_cards.trash = []
