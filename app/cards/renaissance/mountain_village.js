@@ -9,6 +9,10 @@ MountainVillage = class MountainVillage extends Card {
     }
 
     play(game, player_cards) {
+
+        game.turn.actions += 2
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+
         let discarded_cards = player_cards.discard
 
         if (_.size(discarded_cards) > 0) {
@@ -29,12 +33,10 @@ MountainVillage = class MountainVillage extends Card {
             turn_event_processor.process(MountainVillage.put_to_hand)
 
         } else {
+            game.log.push(`&nbsp;&nbsp;Discard pile is empty`)
             let card_drawer = new CardDrawer(game, player_cards)
             card_drawer.draw(1)
         }
-
-        game.turn.actions += 2
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
     }
 
     static put_to_hand(game, player_cards, selected_cards) {

@@ -16,7 +16,7 @@ SilkMerchant = class SilkMerchant extends Card {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
     }
 
-    buy_or_trash_event(player) {
+    gain_or_trash_event(player) {
         if (player.game.turn.possessed) {
             possessing_player_cards = PlayerCardsModel.findOne(player.game._id, player.game.turn.possessed._id)
             possessing_player_cards.coin_tokens += 1
@@ -30,8 +30,8 @@ SilkMerchant = class SilkMerchant extends Card {
         }
     }
 
-    buy_event(buyer) {
-        this.buy_or_trash_event(buyer)
+    gain_event(buyer) {
+        this.gain_or_trash_event(buyer)
     }
 
     trash_event(trasher) {

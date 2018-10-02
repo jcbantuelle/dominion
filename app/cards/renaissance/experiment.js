@@ -35,9 +35,13 @@ Experiment = class Experiment extends Card {
         }
     }
 
-    buy_event(buyer) {
-        let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', 'Experiment')
-        card_gainer.gain_game_card()
+    gain_event(buyer) {
+        buyer.game.turn.experiments_gained += 1;
+
+        if (buyer.game.turn.experiments_gained % 2 === 1) {
+            let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', 'Experiment')
+            card_gainer.gain_game_card()
+        }
     }
 
 }

@@ -98,7 +98,9 @@ GameCreator = class GameCreator {
       coppersmiths: 0,
       river_gifts: [],
       expeditions: 0,
-      charms: 0
+      charms: 0,
+      priests: 0,
+      experiments_gained: 0
     }
   }
 

@@ -37,8 +37,16 @@ Sculptor = class Sculptor extends Card {
         card_gainer.gain_game_card()
 
         if (_.includes(_.words(selected_cards[0].top_card.types), 'treasure')) {
-            player_cards.villagers += 1
-            game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 villager`)
+
+            if (game.turn.possessed) {
+                possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
+                possessing_player_cards.villagers += 1
+                game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes a villager`)
+                PlayerCardsModel.update(game._id, possessing_player_cards)
+            } else {
+                player_cards.villagers += 1
+                game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes a villager`)
+            }
         }
     }
 

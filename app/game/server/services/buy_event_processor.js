@@ -9,7 +9,7 @@ BuyEventProcessor = class BuyEventProcessor {
   }
 
   static event_cards() {
-    return ['Noble Brigand', 'Farmland', 'Mint', 'Messenger', 'Port', 'Forum', 'Experiment', 'Silk Merchant', 'Ducat']
+    return ['Noble Brigand', 'Farmland', 'Mint', 'Messenger', 'Port', 'Forum']
   }
 
   static in_play_event_cards() {

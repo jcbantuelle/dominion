@@ -11,11 +11,11 @@ Villain = class Villain extends Card {
     play(game, player_cards) {
         if (game.turn.possessed) {
             possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-            possessing_player_cards.coin_tokens += 1
+            possessing_player_cards.coin_tokens += 2
             game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes a coin token`)
             PlayerCardsModel.update(game._id, possessing_player_cards)
         } else {
-            player_cards.coin_tokens += 1
+            player_cards.coin_tokens += 2
             game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes a coin token`)
         }
 

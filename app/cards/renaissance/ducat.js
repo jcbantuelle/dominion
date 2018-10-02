@@ -23,7 +23,7 @@ Ducat = class Ducat extends Card {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
     }
 
-    buy_event(buyer) {
+    gain_event(buyer) {
         let player_cards = buyer.player_cards
         let game = buyer.game
 
