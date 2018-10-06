@@ -47,9 +47,9 @@ SecretPassage = class SecretPassage extends Card {
       username: player_cards.username,
       type: 'overpay',
       player_cards: true,
-      instructions: `Choose where in your deck to put ${CardView.render(card_to_place_in_deck)} (0 is top of deck):`,
-      minimum: 0,
-      maximum: _.size(player_cards.deck)
+      instructions: `Choose where in your deck to put ${CardView.render(card_to_place_in_deck)} (1 is top of deck):`,
+      minimum: 1,
+      maximum: _.size(player_cards.deck) + 1
     })
     let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_to_place_in_deck)
     turn_event_processor.process(SecretPassage.insert_in_deck)
@@ -62,7 +62,7 @@ SecretPassage = class SecretPassage extends Card {
     player_cards.hand.splice(hand_card_index, 1)[0]
 
     location = Number(location)
-    player_cards.deck.splice(location, 0, selected_card)
+    player_cards.deck.splice(location - 1, 0, selected_card)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> inserts ${CardView.render(selected_card)} as card #${location}`)
   }
 

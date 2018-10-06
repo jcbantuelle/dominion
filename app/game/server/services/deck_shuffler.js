@@ -25,7 +25,7 @@ DeckShuffler = class DeckShuffler {
           player_cards: true,
           instructions: 'Choose where in your deck to put Stash (1 is top of deck):',
           minimum: 1,
-          maximum: _.size(player_cards.deck)
+          maximum: _.size(player_cards.deck) + 1
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, stash)
         turn_event_processor.process(DeckShuffler.insert_stash)

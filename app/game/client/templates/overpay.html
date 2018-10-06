@@ -1,7 +1,7 @@
 <template name="overpay">
   <strong>{{{instructions}}} (Between {{minimum}} &amp; {{maximum}})</strong>
   <form id="turn-event">
-    <input id="overpay-input" type="number" name="overpay" />
+    <input id="overpay-input" type="number" name="overpay" min="{{minimum}}" max="{{maximum}}"/>
     <button type="submit" id="turn-event-button" class="btn btn-primary btn-xs">Submit</button>
   </form>
 </template>
