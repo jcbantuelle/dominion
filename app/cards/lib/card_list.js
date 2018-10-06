@@ -64,7 +64,7 @@ CardList = class CardList {
   }
 
   static sets(edition = '') {
-    return ['base'+edition, 'intrigue'+edition, 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures', 'empires', 'nocturne']
+    return ['base'+edition, 'intrigue'+edition, 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures', 'empires', 'nocturne', 'renaissance']
   }
 
   static event_sets(edition = '') {
@@ -242,6 +242,22 @@ CardList = class CardList {
       'Vampire',
       'Werewolf',
       'Raider'
+    ]
+  }
+
+  static renaissance() {
+    return [
+      'MountainVillage',
+      'Scholar',
+      'Experiment',
+      'Seer',
+      'Priest',
+      'ActingTroupe',
+      'Recruiter',
+      'Sculptor',
+      'SilkMerchant',
+      'Ducat',
+      'Villain'
     ]
   }
 

@@ -43,6 +43,13 @@ CardTrasher = class CardTrasher {
       let trash_event_processor = new TrashEventProcessor(this, trashed_card)
       trash_event_processor.process()
       this.put_card_in_trash(trashed_card)
+
+      if (this.game.turn.priests > 0) {
+        _.each(_.range(0, this.game.turn.priests), () => {
+          CoinGainer.gain(this.game, this.player_cards, 2)
+          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +$2 from ${CardView.card_html(['action'], 'Priest', 'priest')}`)
+        })
+      }
     })
 
     this.player_cards.trash = []

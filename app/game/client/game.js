@@ -12,6 +12,7 @@ Template.game.events({
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
   "click #play-coin-token": playCoinToken,
+  "click #play-villager": playVillager,
   "click #play-debt-token": playDebtToken,
   "submit #turn-event": turnEvent,
   "click": removePopover,
@@ -83,6 +84,10 @@ function playAllCoin() {
 
 function playCoinToken() {
   Meteor.call('playCoinToken', Router.current().params.id)
+}
+
+function playVillager() {
+  Meteor.call('playVillager', Router.current().params.id)
 }
 
 function playDebtToken() {

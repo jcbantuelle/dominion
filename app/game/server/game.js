@@ -116,6 +116,19 @@ Meteor.methods({
       }
     })).detach()
   },
+  playVillager: function(game_id) {
+    Future.task(Meteor.bindEnvironment(function() {
+      if (!ActionLock[game_id]) {
+        let current_game = game(game_id)
+        if (allowed_to_play(current_game)) {
+          ActionLock[game_id] = true
+          let villager_player = new VillagerPlayer(current_game, player_cards(current_game))
+          villager_player.play()
+          ActionLock[game_id] = false
+        }
+      }
+    })).detach()
+  },
   playDebtToken: function(game_id) {
     Future.task(Meteor.bindEnvironment(function() {
       if (!ActionLock[game_id]) {
