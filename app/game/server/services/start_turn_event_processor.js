@@ -8,6 +8,10 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
     return ['Lost In The Woods']
   }
 
+  static artifact_events() {
+    return ['Key']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
@@ -50,7 +54,12 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       return _.includes(StartTurnEventProcessor.state_events(), card.name)
     })
 
-    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events).concat(state_events).concat(saved_boon_events)
+    let artifact_events = _.filter(this.player_cards.artifacts, function(card) {
+      card.start_event_type = 'Artifact'
+      return _.includes(StartTurnEventProcessor.artifact_events(), card.name)
+    })
+
+    this.start_turn_events = horse_traders_events.concat(duration_events).concat(prince_events).concat(reserve_events).concat(summon_events).concat(state_events).concat(saved_boon_events).concat(artifact_events)
   }
 
   process() {
@@ -116,7 +125,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       } else if (event.start_event_type === 'Reserve') {
         delete event.start_event_type
         selected_event.reserve(game, player_cards)
-      } else if (event.start_event_type === 'State') {
+      } else if (event.start_event_type === 'State' || event.start_event_type === 'Artifact') {
         delete event.start_event_type
         selected_event.start_turn_event(game, player_cards)
       }

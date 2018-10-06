@@ -254,6 +254,7 @@ CardList = class CardList {
       'Seer',
       'Priest',
       'ActingTroupe',
+      'Treasurer',
       'Recruiter',
       'Sculptor',
       'SilkMerchant',
