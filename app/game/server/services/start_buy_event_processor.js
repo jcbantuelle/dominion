@@ -4,6 +4,10 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     return ['Arena']
   }
 
+  static artifact_events() {
+    return ['Treasure Chest']
+  }
+
   static state_events() {
     return ['Deluded', 'Envious']
   }
@@ -33,7 +37,12 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     let state_events = _.filter(this.player_cards.states, function(card) {
       return _.includes(StartBuyEventProcessor.state_events(), card.name)
     })
-    this.start_buy_events = landmark_events.concat(state_events)
+
+    let artifact_events = _.filter(this.player_cards.artifacts, function(card) {
+      return _.includes(StartBuyEventProcessor.artifact_events(), card.name)
+    })
+
+    this.start_buy_events = landmark_events.concat(state_events).concat(artifact_events)
   }
 
   process() {

@@ -258,7 +258,8 @@ CardList = class CardList {
       'Sculptor',
       'SilkMerchant',
       'Ducat',
-      'Villain'
+      'Villain',
+      'Swashbuckler'
     ]
   }
 
