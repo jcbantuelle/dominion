@@ -35,6 +35,6 @@ SilkMerchant = class SilkMerchant extends Card {
     }
 
     trash_event(trasher) {
-        this.buy_or_trash_event(trasher)
+        this.gain_or_trash_event(trasher)
     }
 }

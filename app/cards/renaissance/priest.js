@@ -30,16 +30,15 @@ Priest = class Priest extends Card {
             game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
         }
 
+        game.turn.priests += 1
+
         GameModel.update(game._id, game)
     }
 
     static trash_card(game, player_cards, selected_cards) {
         let trashed_card = selected_cards[0]
-        if (trashed_card) {
-            let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
-            card_trasher.trash()
-            game.turn.priests += 1
-        }
+        let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
+        card_trasher.trash()
     }
 
 }
