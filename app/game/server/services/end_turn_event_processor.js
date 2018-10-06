@@ -4,6 +4,10 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
     return ['Baths']
   }
 
+  static artifacts_events() {
+    return ['Flag']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
@@ -23,6 +27,10 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
       }
     })
 
+    let artifacts_events = _.filter(this.player_cards.artifacts, function(artifact) {
+      return _.includes(EndTurnEventProcessor.artifacts_events(), artifact.name)
+    });
+
     let river_gift_events = _.map(this.game.turn.river_gifts, function(card) {
       card.end_turn_event_type = 'The Rivers Gift'
       return card
@@ -33,7 +41,7 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
       return card
     })
 
-    this.end_turn_events = landmark_events.concat(river_gift_events).concat(faithful_hound_events)
+    this.end_turn_events = landmark_events.concat(river_gift_events).concat(faithful_hound_events).concat(artifacts_events)
   }
 
   process() {

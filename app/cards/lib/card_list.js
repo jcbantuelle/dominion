@@ -248,6 +248,7 @@ CardList = class CardList {
   static renaissance() {
     return [
       'MountainVillage',
+      'FlagBearer',
       'Scholar',
       'Experiment',
       'Seer',

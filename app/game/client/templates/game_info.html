@@ -124,6 +124,13 @@
       {{/each}}
       <br />
     {{/if}}
+    {{#if artifacts}}
+      Artifacts:
+      {{#each artifacts}}
+        <span class="{{types}}">{{name}}</span>
+      {{/each}}
+      <br />
+    {{/if}}
     <br />
   {{/each}}
 </template>
