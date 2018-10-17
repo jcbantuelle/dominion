@@ -9,6 +9,7 @@ $duration: orange;
 $night: grey;
 $shelter: salmon;
 $state: peachpuff;
+$artifact: firebrick;
 $ruins: burlywood;
 $reserve: #cdb332;
 $busy: grey;
@@ -118,6 +119,10 @@ hr {
 
 .landmark {
   background-color: $landmark;
+}
+
+.artifact {
+  background-color: $artifact;
 }
 
 .action.victory {

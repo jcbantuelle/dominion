@@ -29,9 +29,9 @@ Treasurer = class Treasurer extends Card {
             minimum: 1,
             maximum: 1,
             options: [
-                { text: 'Trash Treasures from hand', value: 'trash' },
-                { text: 'Gain Treasure from trash', value: 'gain' },
-                { text: 'take the Key', value: 'artifact' }
+                { text: 'Trash a treasures from hand', value: 'trash' },
+                { text: 'Gain a treasure from trash', value: 'gain' },
+                { text: 'Take the Key', value: 'artifact' }
             ]
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
