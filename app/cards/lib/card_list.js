@@ -254,13 +254,18 @@ CardList = class CardList {
       'Seer',
       'Priest',
       'ActingTroupe',
-      'Treasurer',
-      'Recruiter',
-      'Sculptor',
-      'SilkMerchant',
-      'Ducat',
-      'Villain',
-      'Swashbuckler'
+      // 'Treasurer',
+      'Border Guard',
+      // 'Recruiter',
+      // 'OldWitch',
+      'Lackeys',
+      // 'Inventor',
+      // 'Sculptor',
+      // 'SilkMerchant',
+      // 'Ducat',
+      // 'Villain',
+      // 'Swashbuckler',
+      'Spices'
     ]
   }
 
