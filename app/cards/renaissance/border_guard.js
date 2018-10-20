@@ -5,7 +5,7 @@ BorderGuard = class BorderGuard extends Card {
     }
 
     coin_cost() {
-        return 1
+        return 2
     }
 
     play(game, player_cards) {
@@ -114,6 +114,47 @@ BorderGuard = class BorderGuard extends Card {
             let artifact = artifact_instance.to_h()
             player_cards.artifacts.push(artifact)
             game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(artifact, true)}`)
+        }
+    }
+
+    discard_event(discarder) {
+        let game = discarder.game
+        let player_cards = discarder.player_cards
+
+        if (game.turn.horns > 0) {
+            return;
+        }
+
+        let horn_index = _.findIndex(player_cards.artifacts, function (artifact) {
+            return artifact.name === 'Horn'
+        })
+
+        if (horn_index > -1) {
+            let turn_event_id = TurnEventModel.insert({
+                game_id: game._id,
+                player_id: player_cards.player_id,
+                username: player_cards.username,
+                type: 'choose_yes_no',
+                instructions: `Put ${CardView.render(this.to_h())} on top of your deck?`,
+                minimum: 1,
+                maximum: 1
+            })
+            let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+            turn_event_processor.process(BorderGuard.put_on_deck)
+        }
+    }
+
+    static put_on_deck(game, player_cards, response) {
+        if (response === 'yes') {
+            game.turn.horns += 1
+            let card = player_cards.discarding.pop()
+            game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(card)} on top of their deck`)
+            delete card.scheme
+            delete card.prince
+            if (card.misfit) {
+                card = card.misfit
+            }
+            player_cards.deck.unshift(card)
         }
     }
 }

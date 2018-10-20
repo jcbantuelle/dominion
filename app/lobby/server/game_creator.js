@@ -100,6 +100,7 @@ GameCreator = class GameCreator {
       expeditions: 0,
       charms: 0,
       priests: 0,
+      horns: 0,
       experiments_gained: 0
     }
   }

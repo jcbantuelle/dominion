@@ -211,6 +211,7 @@ TurnEnder = class TurnEnder {
       expeditions: 0,
       charms: 0,
       priests: 0,
+      horns: 0,
       experiments_gained: 0,
       previous_player: this.game.turn.player
     }

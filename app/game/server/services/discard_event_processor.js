@@ -1,7 +1,7 @@
 DiscardEventProcessor = class DiscardEventProcessor {
 
   static event_cards() {
-    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital', 'Faithful Hound']
+    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital', 'Faithful Hound', 'Border Guard']
   }
 
   static traveller_cards() {
@@ -55,6 +55,8 @@ DiscardEventProcessor = class DiscardEventProcessor {
         if (_.isEmpty(this.discarder.game.turn.bought_cards)) {
           this.discard_events.push(this.card)
         }
+      } else if (this.discarder.source === 'in_play') {
+        this.discard_events.push(this.card)
       }
     }
 
