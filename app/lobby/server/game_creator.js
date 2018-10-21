@@ -47,6 +47,9 @@ GameCreator = class GameCreator {
     if (this.druid_boons) {
       game_attributes.druid_boons = this.druid_boons
     }
+    if (this.artifacts) {
+      game_attributes.artifacts = this.artifacts
+    }
     if (this.boons_deck) {
       game_attributes.boons_deck = this.boons_deck
       game_attributes.boons_discard = []
@@ -239,6 +242,23 @@ GameCreator = class GameCreator {
 
     if (this.game_has_card(kingdom_cards, 'Druid')) {
       this.select_druid_boons()
+    }
+
+    if (this.game_has_card(kingdom_cards, 'Border Guard')) {
+      this.add_artifact(Horn)
+      this.add_artifact(Lantern)
+    }
+
+    if (this.game_has_card(kingdom_cards, 'Flag Bearer')) {
+      this.add_artifact(Flag)
+    }
+
+    if (this.game_has_card(kingdom_cards, 'Treasurer')) {
+      this.add_artifact(Key)
+    }
+
+    if (this.game_has_card(kingdom_cards, 'Swashbuckler')) {
+      this.add_artifact(TreasureChest)
     }
 
     if (this.has_boons(kingdom_cards)) {
@@ -668,6 +688,11 @@ GameCreator = class GameCreator {
 
   select_druid_boons() {
     this.druid_boons = _.take(_.shuffle(this.boons()), 3)
+  }
+
+  add_artifact(artifact) {
+    this.artifacts = this.artifacts || []
+    this.artifacts.push((new artifact()).to_h())
   }
 
   build_boons_deck() {

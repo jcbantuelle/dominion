@@ -1,0 +1,16 @@
+<template name="artifact">
+  <div class="artifact-container">
+    <div class="artifact-thumbnail">
+      <img src="{{static_image image}}" width="46" height="29" class="card" data-name="{{name}}" />
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="341" height="220" />
+      </div>
+    </div>
+
+    <div class="artifact-details"></div>
+
+    <div class="artifact-name">
+      <span class="stack-name">{{name}}</span>
+    </div>
+  </div>
+</template>
