@@ -10,7 +10,11 @@ BorderGuard = class BorderGuard extends Card {
 
     play(game, player_cards) {
         game.turn.actions += 1
-        let cards_to_reveal = 2
+        let lantern_index = _.findIndex(player_cards.artifacts, function (artifact) {
+            return artifact.name === 'Lantern'
+        })
+
+        let cards_to_reveal = lantern_index > -1 ? 3 : 2;
 
         if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
             game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
@@ -46,16 +50,13 @@ BorderGuard = class BorderGuard extends Card {
     }
 
     static put_in_hand(game, player_cards, selected_cards, are_all_actions) {
-        console.log({ are_all_actions })
         let selected_card = selected_cards[0]
         let selected_card_index = _.findIndex(player_cards.revealed, function(card) {
             return card.name === selected_card.name
         })
 
-        console.log(selected_card_index);
         player_cards.revealed.splice(selected_card_index, 1)
 
-        // console.log({discarded_card})
         player_cards.hand.push(selected_card)
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(selected_card)} in their hand`)
 
