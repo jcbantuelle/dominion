@@ -50,7 +50,7 @@ CostCalculator = class CostCalculator {
       cost -= (quarries * 2)
     }
 
-    if (name === 'Peddler' && (game.turn.phase === 'buy' || buy_phase)) {
+    if (name === 'Peddler' && (game.turn.phase === 'buy' || game.turn.phase === 'treasure' || buy_phase)) {
       let action_count = _.size(_.filter(in_play_cards, function(player_card) {
         return _.includes(_.words(player_card.types), 'action')
       }))
