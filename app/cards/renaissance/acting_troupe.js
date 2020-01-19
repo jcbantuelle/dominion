@@ -9,9 +9,6 @@ ActingTroupe = class ActingTroupe extends Card {
     }
 
     play(game, player_cards) {
-        let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Acting Troupe')
-        card_trasher.trash()
-
         if (game.turn.possessed) {
             possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
             possessing_player_cards.villagers += 4
@@ -21,5 +18,8 @@ ActingTroupe = class ActingTroupe extends Card {
             player_cards.villagers += 4
             game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes 4 villagers`)
         }
+
+        let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Acting Troupe')
+        card_trasher.trash()
     }
 }
