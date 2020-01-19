@@ -3,7 +3,7 @@ CardGainer = class CardGainer {
   constructor(game, player_cards, destination, card_name, buy = false) {
     this.game = game
     this.player_cards = player_cards
-    this.gain_destination_cards = ['Nomad Camp', 'Villa']
+    this.gain_destination_cards = ['Nomad Camp', 'Villa', 'Guardian', 'Ghost Town', 'Night Watchman', 'Den Of Sin']
     this.card_name = card_name
     this.destination = this.gain_destination(destination)
     this.buy = buy
@@ -16,6 +16,7 @@ CardGainer = class CardGainer {
     } else {
       let card_index = this.find_card_index(this.game.trash)
       this.gained_card = this.game.trash[card_index]
+      delete this.gained_card.face_down
       this.track_gained_card()
       if (this.game.turn.travelling_fair) {
         this.travelling_fair(this.gained_card)

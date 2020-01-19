@@ -21,7 +21,7 @@ ProposalAccepter = class ProposalAccepter {
     this.proposal = ProposalModel.findOne(this.proposal_id)
     if (this.all_players_have_accepted()) {
       this.update_players()
-      game_creator = new GameCreator(this.proposal.players, this.proposal.cards, this.proposal.exclusions)
+      game_creator = new GameCreator(this.proposal.players, this.proposal.cards, this.proposal.exclusions, this.proposal.edition)
       game_creator.create()
       ProposalModel.remove(this.proposal._id)
     }

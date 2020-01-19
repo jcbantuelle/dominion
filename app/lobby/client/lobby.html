@@ -57,6 +57,18 @@
           {{/each}}
         </div>
         <hr class="clear" />
+        <div>Choose which edition you would like to play with:</div>
+        <div class="checkbox">
+          <label for="edition_2">
+            <input type="radio" id="edition_2" class="edition" name="edition" value="2" checked="checked" />
+            <span class="set-text">2nd Edition</span>
+          </label>
+          <label for="edition_1">
+            <input type="radio" id="edition_1" class="edition" name="edition" value="1" />
+            <span class="set-text">1st Edition</span>
+          </label>
+        </div>
+        <hr id="edition-hr" class="clear" />
         <div>Select up to 3 other players to play a game with:</div>
         <div id="players" class="checkbox">
           {{#each lobby_players}}
@@ -71,6 +83,7 @@
           {{/each}}
         </div>
         <br class="clear" />
+        <br />
         Replay Old Game: <input class="kingdom-id" placeholder="Game ID">
         <br class="clear" />
         <button id="propose-game" class="btn btn-primary" type="submit" value="Start Game">Propose Game</button>

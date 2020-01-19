@@ -28,10 +28,10 @@ PlayerAttacker = class PlayerAttacker {
 
   lighthouse_in_play(player_cards) {
     let lighthouse_in_play = _.some(player_cards.in_play, function(card) {
-      return card.name === 'Lighthouse'
+      return _.includes(['Lighthouse', 'Guardian'], card.name)
     })
     let lighthouse_in_duration = _.some(player_cards.duration, function(card) {
-      return card.name === 'Lighthouse'
+      return _.includes(['Lighthouse', 'Guardian'], card.name)
     })
     return lighthouse_in_play || (lighthouse_in_duration && player_cards.player_id !== this.game.turn.player._id)
   }

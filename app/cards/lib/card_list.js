@@ -1,20 +1,22 @@
 CardList = class CardList {
 
-  constructor(exclusions) {
-    // this.cards = CardList.full_list(exclusions)
+  constructor(exclusions, edition) {
+    this.edition = edition
+    this.exclusions = exclusions
+    //this.cards = CardList.full_list(this.exclusions, this.edition)
     this.cards = CardList.test_landmarks().concat(CardList.test_events()).concat(CardList.test())
   }
 
   pull_set() {
     let game_cards = _.sampleSize(this.cards, 10)
 
-    let events_and_landmarks = _.filter(game_cards, function(card_name) {
-      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card_name))
+    let events_and_landmarks = _.filter(game_cards, (card_name) => {
+      return _.includes(CardList.event_cards(this.edition).concat(CardList.landmark_cards(this.edition)), _.titleize(card_name))
     })
     let event_and_landmark_count = _.size(events_and_landmarks)
     if (event_and_landmark_count > 2) {
-      game_cards = _.reject(game_cards, function(card_name) {
-        return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card_name))
+      game_cards = _.reject(game_cards, (card_name) => {
+        return _.includes(CardList.event_cards(this.edition).concat(CardList.landmark_cards(this.edition)), _.titleize(card_name))
       })
       game_cards.push(events_and_landmarks[0])
       game_cards.push(events_and_landmarks[1])
@@ -42,12 +44,12 @@ CardList = class CardList {
   replace_events_and_landmarks(game_cards, replacement_count) {
     let event_count = replacement_count
     var invalid_replacement
-    _.times(replacement_count, function() {
+    _.times(replacement_count, () => {
       do {
         invalid_replacement = true
-        let replacement_card_name = CardList.pull_one(this.exclusions).name
+        let replacement_card_name = CardList.pull_one(this.exclusions, this.edition).name
         if (!_.includes(game_cards, _.titleize(replacement_card_name))) {
-          if (_.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(replacement_card_name))) {
+          if (_.includes(CardList.event_cards(this.edition).concat(CardList.landmark_cards(this.edition)), _.titleize(replacement_card_name))) {
             if (event_count < 2) {
               game_cards.push(replacement_card_name)
               event_count += 1
@@ -62,47 +64,59 @@ CardList = class CardList {
     return game_cards
   }
 
-  static sets() {
-    return ['base', 'intrigue', 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures', 'empires']
+  static sets(edition = '') {
+    return ['base'+edition, 'intrigue'+edition, 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures', 'empires', 'nocturne', 'renaissance']
   }
 
-  static event_sets() {
+  static event_sets(edition = '') {
     return ['adventures', 'promo', 'empires']
   }
 
-  static landmark_sets() {
+  static landmark_sets(edition = '') {
     return ['empires']
   }
 
-  static pull_one(exclusions = []) {
-    return ClassCreator.create(_.sample(CardList.full_list(exclusions))).to_h()
+  static pull_one(exclusions = [], edition) {
+    return ClassCreator.create(_.sample(CardList.full_list(exclusions, edition))).to_h()
   }
 
-  static full_list(exclusions = []) {
-    return CardList.kingdom_cards(exclusions).concat(CardList.event_cards(exclusions)).concat(CardList.landmark_cards(exclusions))
+  static full_list(exclusions = [], edition) {
+    return CardList.kingdom_cards(exclusions, edition).concat(CardList.event_cards(exclusions, edition)).concat(CardList.landmark_cards(exclusions, edition))
   }
 
-  static kingdom_cards(exclusions = []) {
-    return _.reduce(CardList.sets(), function(card_list, set) {
-      if (!_.includes(exclusions, set)) {
+  static kingdom_cards(exclusions = [], edition) {
+    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
+    return _.reduce(CardList.sets(edition), function(card_list, set) {
+      if (!_.includes(exclusions_for_edition, set)) {
+        if (_.includes(['base', 'intrigue'], set)) {
+          set = set+edition
+        }
         card_list = card_list.concat(CardList[set]())
       }
       return card_list
     }, [])
   }
 
-  static event_cards(exclusions = []) {
-    return _.reduce(CardList.event_sets(), function(card_list, set) {
-      if (!_.includes(exclusions, set)) {
+  static event_cards(exclusions = [], edition) {
+    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
+    return _.reduce(CardList.event_sets(edition), function(card_list, set) {
+      if (!_.includes(exclusions_for_edition, set)) {
+        if (_.includes(['base', 'intrigue'], set)) {
+          set = set+edition
+        }
         card_list = card_list.concat(CardList[`${set}_events`]())
       }
       return card_list
     }, [])
   }
 
-  static landmark_cards(exclusions = []) {
-    return _.reduce(CardList.landmark_sets(), function(card_list, set) {
-      if (!_.includes(exclusions, set)) {
+  static landmark_cards(exclusions = [], edition) {
+    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
+    return _.reduce(CardList.landmark_sets(edition), function(card_list, set) {
+      if (!_.includes(exclusions_for_edition, set)) {
+        if (_.includes(['base', 'intrigue'], set)) {
+          set = set+edition
+        }
         card_list = card_list.concat(CardList[`${set}_landmarks`]())
       }
       return card_list
@@ -111,13 +125,11 @@ CardList = class CardList {
 
   static test_landmarks() {
     return [
-      'Aqueduct'
     ]
   }
 
   static test_events() {
     return [
-      'Borrow'
     ]
   }
 
@@ -126,12 +138,23 @@ CardList = class CardList {
       'Messenger',
       'Cellar',
       'Remake',
-      'BlackMarket',
+      'Smithy',
       'Forge',
       'Chapel',
       'Plaza',
-      'PoorHouse'
+      'PoorHouse',
+      'Ducat',
+      'Village'
     ]
+
+  static exclusions_for_edition(exclusions, edition) {
+    return _.map(exclusions, (exclusion) => {
+      if (_.includes(['base', 'intrigue'], exclusion)) {
+        return exclusion + edition
+      } else {
+        return exclusion
+      }
+    })
   }
 
   static empires_landmarks() {
@@ -209,6 +232,60 @@ CardList = class CardList {
     ]
   }
 
+  static nocturne() {
+    return [
+      'Druid',
+      'FaithfulHound',
+      'Guardian',
+      'Monastery',
+      'Pixie',
+      'Tracker',
+      'Changeling',
+      'Fool',
+      'GhostTown',
+      'Leprechaun',
+      'NightWatchman',
+      'SecretCave',
+      'Bard',
+      'BlessedVillage',
+      'Cemetery',
+      'Conclave',
+      'DevilsWorkshop',
+      'Exorcist',
+      'Necromancer',
+      'Shepherd',
+      'Skulk',
+      'Cobbler',
+      'Crypt',
+      'CursedVillage',
+      'DenOfSin',
+      'Idol',
+      'Pooka',
+      'SacredGrove',
+      'Tormentor',
+      'TragicHero',
+      'Vampire',
+      'Werewolf',
+      'Raider'
+    ]
+  }
+
+  static renaissance() {
+    return [
+      'MountainVillage',
+      'Scholar',
+      'Experiment',
+      'Seer',
+      'Priest',
+      'ActingTroupe',
+      'Recruiter',
+      'Sculptor',
+      'SilkMerchant',
+      'Ducat',
+      'Villain'
+    ]
+  }
+
   static empires() {
     return [
       'Engineer',
@@ -280,7 +357,9 @@ CardList = class CardList {
       'WalledVillage',
       'Governor',
       'Stash',
-      'Prince'
+      'Prince',
+      'Dismantle',
+      'Sauna'
     ]
   }
 
@@ -360,7 +439,7 @@ CardList = class CardList {
     ]
   }
 
-  static intrigue() {
+  static intrigue1() {
     return [
       'Courtyard',
       'Pawn',
@@ -390,6 +469,37 @@ CardList = class CardList {
     ]
   }
 
+  static intrigue2() {
+    return [
+      'Courtyard',
+      'Lurker',
+      'Pawn',
+      'Masquerade',
+      'ShantyTown',
+      'Steward',
+      'Swindler',
+      'WishingWell',
+      'Baron',
+      'Bridge',
+      'Conspirator',
+      'Ironworks',
+      'Diplomat',
+      'Mill',
+      'SecretPassage',
+      'MiningVillage',
+      'Duke',
+      'Minion',
+      'Torturer',
+      'Courtier',
+      'Patrol',
+      'Replace',
+      'TradingPost',
+      'Upgrade',
+      'Harem',
+      'Nobles'
+    ]
+  }
+
   static alchemy() {
     return [
       'Transmute',
@@ -407,7 +517,7 @@ CardList = class CardList {
     ]
   }
 
-  static base() {
+  static base1() {
     return [
       'Cellar',
       'Chapel',
@@ -434,6 +544,37 @@ CardList = class CardList {
       'Mine',
       'Witch',
       'Adventurer'
+    ]
+  }
+
+  static base2() {
+    return [
+      'Cellar',
+      'Chapel',
+      'Moat',
+      'Village',
+      'Harbinger',
+      'Merchant',
+      'Vassal',
+      'Workshop',
+      'Bureaucrat',
+      'Poacher',
+      'Gardens',
+      'Militia',
+      'Moneylender',
+      'Remodel',
+      'Smithy',
+      'ThroneRoom',
+      'CouncilRoom',
+      'Festival',
+      'Laboratory',
+      'Bandit',
+      'Sentry',
+      'Library',
+      'Market',
+      'Mine',
+      'Witch',
+      'Artisan'
     ]
   }
 

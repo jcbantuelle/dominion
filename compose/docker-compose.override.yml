@@ -1,0 +1,13 @@
+# Development config for docker-compose and docker stack.
+version: "3.4"
+services:
+  meteor:
+    image: jcbantuelle/dominion:dev
+    build:
+      context: ../
+      target: dev
+    command: ["meteor", "run", "--settings=settings-dev.json"]
+    ports:
+      - 3000:3000
+    volumes:
+      - ..:/app/src

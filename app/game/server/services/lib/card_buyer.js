@@ -26,13 +26,15 @@ CardBuyer = class CardBuyer {
   }
 
   can_buy() {
-    return this.is_debt_free() && this.is_purchasable() && this.is_valid_buy() && !this.is_contraband() && !this.game.turn.mission_turn
+    return this.is_debt_free() && this.is_purchasable() && this.is_valid_buy() && !this.is_contraband() && !this.game.turn.mission_turn && (!this.game.turn.deluded || !_.includes(this.card.types(), 'action'))
   }
 
   update_phase() {
     if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
-      let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
-      start_buy_event_processor.process()
+      if (this.game.turn.phase === 'action') {
+        let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
+        start_buy_event_processor.process()
+      }
       this.game.turn.phase = 'buy'
     }
   }

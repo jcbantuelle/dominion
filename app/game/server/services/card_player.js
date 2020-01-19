@@ -109,8 +109,38 @@ CardPlayer = class CardPlayer {
           let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
           turn_event_processor.process(CardPlayer.action_or_treasure)
         } else {
+          let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
+          start_buy_event_processor.process()
           this.game.turn.phase = 'treasure'
         }
+      } else if (this.game.turn.phase === 'action' && _.includes(this.card.types(this.player_cards), 'night')) {
+        if (_.includes(this.card.types(this.player_cards), 'action') && this.game.turn.actions > 0) {
+          let turn_event_id = TurnEventModel.insert({
+            game_id: this.game._id,
+            player_id: this.player_cards.player_id,
+            username: this.player_cards.username,
+            type: 'choose_options',
+            instructions: `Choose to play as an action or night card:`,
+            minimum: 1,
+            maximum: 1,
+            options: [
+              {text: 'Action', value: 'action'},
+              {text: 'Night', value: 'night'}
+            ]
+          })
+          let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+          turn_event_processor.process(CardPlayer.action_or_night)
+        } else {
+          let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
+          start_buy_event_processor.process()
+          this.game.turn.phase = 'night'
+        }
+      } else if (this.game.turn.phase !== 'night' && _.includes(this.card.types(this.player_cards), 'night')) {
+        if (this.game.turn.phase === 'action') {
+          let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
+          start_buy_event_processor.process()
+        }
+        this.game.turn.phase = 'night'
       }
     }
   }
@@ -165,7 +195,9 @@ CardPlayer = class CardPlayer {
   }
 
   is_valid_play() {
-    if (_.includes(this.card.types(this.player_cards), 'treasure')) {
+    if (_.includes(this.card.types(this.player_cards), 'night')) {
+      return true
+    } else if (_.includes(this.card.types(this.player_cards), 'treasure')) {
       return this.is_valid_treasure()
     } else if (_.includes(this.card.types(this.player_cards), 'action')) {
       return this.is_valid_action()
@@ -206,7 +238,17 @@ CardPlayer = class CardPlayer {
 
   static action_or_treasure(game, player_cards, response) {
     if (response[0] === 'treasure') {
+      let start_buy_event_processor = new StartBuyEventProcessor(game, player_cards)
+      start_buy_event_processor.process()
       game.turn.phase = 'treasure'
+    }
+  }
+
+  static action_or_night(game, player_cards, response) {
+    if (response[0] === 'night') {
+      let start_buy_event_processor = new StartBuyEventProcessor(game, player_cards)
+      start_buy_event_processor.process()
+      game.turn.phase = 'night'
     }
   }
 

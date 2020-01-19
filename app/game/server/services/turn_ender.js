@@ -6,7 +6,7 @@ TurnEnder = class TurnEnder {
   }
 
   end_turn() {
-    if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
+    if (this.game.turn.phase === 'action') {
       this.start_buy_events()
     }
     this.end_buy_events()
@@ -15,6 +15,7 @@ TurnEnder = class TurnEnder {
     this.clean_up_cards_in_play()
     this.end_turn_events()
     this.draw_new_hand()
+    this.end_turn_events()
     this.track_gained_cards()
     this.game.log.push(`<strong>${this.game.turn.player.username}</strong> ends their turn`)
     if (this.game_over()) {
@@ -26,6 +27,7 @@ TurnEnder = class TurnEnder {
         delete this.game.turn.possessed
         GameModel.update(this.game._id, this.game)
       }
+      this.flip_trash_cards_face_up()
       this.donate()
       this.mountain_pass()
       this.set_next_turn()
@@ -59,6 +61,12 @@ TurnEnder = class TurnEnder {
   end_turn_events() {
     let end_turn_event_processor = new EndTurnEventProcessor(this.game, this.player_cards)
     end_turn_event_processor.process()
+  }
+
+  flip_trash_cards_face_up() {
+    _.each(this.game.trash, function(card) {
+      delete card.face_down
+    })
   }
 
   clean_up_cards_in_play() {
@@ -102,6 +110,13 @@ TurnEnder = class TurnEnder {
 
     if (this.player_cards.champions > 0) {
       this.player_cards.champion = true
+    }
+
+    if (!_.isEmpty(this.player_cards.boons)) {
+      _.each(this.player_cards.boons, (boon) => {
+        this.game.boons_discard.unshift(boon)
+      })
+      this.player_cards.boons = []
     }
   }
 
@@ -193,8 +208,11 @@ TurnEnder = class TurnEnder {
       coin_discount: 0,
       played_actions: 0,
       coppersmiths: 0,
+      river_gifts: [],
       expeditions: 0,
       charms: 0,
+      priests: 0,
+      experiments_gained: 0,
       previous_player: this.game.turn.player
     }
 
@@ -380,6 +398,9 @@ TurnEnder = class TurnEnder {
       let archive_effect_count = _.size(_.filter(this.next_player_cards.duration_effects, function(effect) {
         return effect.name === 'Archive'
       }))
+      let crypt_effect_count = _.size(_.filter(this.next_player_cards.duration_effects, function(effect) {
+        return effect.name === 'Crypt'
+      }))
       let duration_cards_to_move = []
       let duration_cards_remaining = []
       _.each(this.next_player_cards.duration, function(card) {
@@ -387,6 +408,9 @@ TurnEnder = class TurnEnder {
         if (card.name === 'Archive' && archive_effect_count > 0) {
           duration_cards_remaining.push(card)
           archive_effect_count -= 1
+        } else if (card.name === 'Crypt' && crypt_effect_count > 0) {
+          duration_cards_remaining.push(card)
+          crypt_effect_count -= 1
         } else {
           duration_cards_to_move.push(card)
         }

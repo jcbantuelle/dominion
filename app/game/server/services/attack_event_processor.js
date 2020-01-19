@@ -1,7 +1,7 @@
 AttackEventProcessor = class AttackEventProcessor {
 
   static attack_reactions() {
-    return ['Moat', 'Secret Chamber', 'Horse Traders', 'Beggar', 'Caravan Guard']
+    return ['Moat', 'Secret Chamber', 'Horse Traders', 'Beggar', 'Caravan Guard', 'Diplomat']
   }
 
   static find_attack_events(player_cards) {
@@ -9,7 +9,13 @@ AttackEventProcessor = class AttackEventProcessor {
 
     _.each(player_cards.hand, (card) => {
       if (_.includes(AttackEventProcessor.attack_reactions(), card.inherited_name)) {
-        attack_events.push(card)
+        if (card.inherited_name === 'Diplomat') {
+          if (_.size(player_cards.hand) > 4) {
+            attack_events.push(card)
+          }
+        } else {
+          attack_events.push(card)
+        }
       }
     })
 

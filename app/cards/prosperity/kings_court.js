@@ -28,7 +28,7 @@ KingsCourt = class KingsCourt extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(KingsCourt.play_thrice)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no action cards in hand`)
+      game.log.push(`&nbsp;&nbsp;but does not play an action`)
     }
   }
 
@@ -36,6 +36,8 @@ KingsCourt = class KingsCourt extends Card {
     if (!_.isEmpty(selected_cards)) {
       let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_cards[0].name)
       repeat_card_player.play(3, 'Kings Court')
+    } else {
+      game.log.push(`&nbsp;&nbsp;but does not play an action`)
     }
   }
 

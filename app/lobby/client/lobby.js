@@ -43,6 +43,8 @@ function proposeGame(event) {
 
   kingdom_id = _.trim($('.kingdom-id').val())
 
+  edition = $('.edition:checked').val()
+
   if (player_ids.length > 3) {
     alert('Game can not have more than 4 players.')
   } else if (player_ids.length < 1) {
@@ -50,7 +52,7 @@ function proposeGame(event) {
   } else if (kingdom_id !== '' && !isValidKingdom(kingdom_id)) {
     alert('Game ID is invalid.')
   } else {
-    Meteor.call('proposeGame', player_ids, exclusions, kingdom_id)
+    Meteor.call('proposeGame', player_ids, exclusions, kingdom_id, edition)
   }
 }
 

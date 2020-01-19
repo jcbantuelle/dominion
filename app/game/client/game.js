@@ -12,9 +12,9 @@ Template.game.events({
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
   "click #play-coin-token": playCoinToken,
+  "click #play-villager": playVillager,
   "click #play-debt-token": playDebtToken,
   "submit #turn-event": turnEvent,
-  "click #destroy-game": destroyGame,
   "click": removePopover,
 })
 
@@ -24,7 +24,7 @@ function registerStreams() {
 
 function createPopovers() {
   $('body').popover({
-    selector: '.card-container .card, .event-container .card, .hand-card, .prize-card, .black-market-card, .choose-card, .landmark-container .card',
+    selector: '.card-container .card, .event-container .card, .hand-card, .prize-card, .trash-card, .black-market-card, .choose-card, .landmark-container .card, .boon-container .card, #game-log span.card, #instructions .card, #action-response span.boon, #action-response span.hex',
     html: true,
     content: function() {
       return $(this).next('.card-tooltip').html()
@@ -86,6 +86,10 @@ function playCoinToken() {
   Meteor.call('playCoinToken', Router.current().params.id)
 }
 
+function playVillager() {
+  Meteor.call('playVillager', Router.current().params.id)
+}
+
 function playDebtToken() {
   Meteor.call('playDebtToken', Router.current().params.id)
 }
@@ -114,10 +118,6 @@ function turnEvent(event) {
     alert(turn_event_submission.error_message())
   }
 
-}
-
-function destroyGame() {
-  Meteor.call('destroyGame')
 }
 
 function removePopover() {

@@ -6,7 +6,9 @@ $reaction: lightblue;
 $treasure: gold;
 $curse: violet;
 $duration: orange;
+$night: grey;
 $shelter: salmon;
+$state: peachpuff;
 $ruins: burlywood;
 $reserve: #cdb332;
 $busy: grey;
@@ -35,6 +37,10 @@ hr {
   margin-top: 50px;
 }
 
+#edition-hr {
+  margin-top: 20px;
+}
+
 #propose-game {
   margin-top: 10px;
 }
@@ -53,6 +59,10 @@ hr {
   color: #BB0000;
 }
 
+.lobby-card.attack.night {
+  color: #880000;
+}
+
 .action {
   background-color: $action;
 }
@@ -69,12 +79,29 @@ hr {
   background-color: $reaction;
 }
 
+.state {
+  background-color: $state;
+}
+
 .duration {
   background-color: $duration;
 }
 
+.night {
+  background-color: $night;
+  color: white;
+}
+
 .treasure {
   background-color: $treasure;
+}
+
+.boon {
+  background-color: $treasure;
+}
+
+.hex {
+  background-color: $curse;
 }
 
 .curse {
@@ -135,6 +162,14 @@ hr {
 
 .duration.reaction {
   @include gradient($duration, $reaction);
+}
+
+.duration.night {
+  @include gradient($duration, $night);
+}
+
+.action.night {
+  @include gradient($action, $night);
 }
 
 #lobby-chat {

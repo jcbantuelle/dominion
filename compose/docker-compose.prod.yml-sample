@@ -1,0 +1,13 @@
+# Sample production config for docker-compose and docker stack.
+version: "3.4"
+services:
+  meteor:
+    image: jcbantuelle/dominion:prod
+    build:
+      context: ../
+      target: prod
+    environment:
+      ROOT_URL: http://example.com
+      METEOR_SETTINGS: '{"public": {"static": {"cards": "http://example.com/images/cards/"}}}'
+    ports:
+      - 55555:3000
