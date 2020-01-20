@@ -18,9 +18,7 @@ Experiment = class Experiment extends Card {
         let experiment_index = _.findIndex(player_cards.playing, function (card) {
             return card.name === 'Experiment'
         })
-
         if (experiment_index !== -1) {
-
             let experiment_pile = _.find(game.cards, function (card) {
                 return card.name === 'Experiment'
             })
@@ -35,11 +33,12 @@ Experiment = class Experiment extends Card {
         }
     }
 
-    gain_event(buyer) {
-        buyer.game.turn.experiments_gained += 1;
-
-        if (buyer.game.turn.experiments_gained % 2 === 1) {
-            let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', 'Experiment')
+    gain_event(gainer) {
+        if (gainer.game.turn.experiment_gained) {
+            gainer.game.turn.experiment_gained = false
+        } else {
+            gainer.game.turn.experiment_gained = true
+            let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'discard', 'Experiment')
             card_gainer.gain_game_card()
         }
     }
