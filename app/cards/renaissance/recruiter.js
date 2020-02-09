@@ -12,7 +12,9 @@ Recruiter = class Recruiter extends Card {
         let card_drawer = new CardDrawer(game, player_cards)
         card_drawer.draw(2)
 
-        if (_.size(player_cards.hand) > 0) {
+        PlayerCardsModel.update(game._id, player_cards)
+
+        if (_.size(player_cards.hand) > 1) {
             let turn_event_id = TurnEventModel.insert({
                 game_id: game._id,
                 player_id: player_cards.player_id,
@@ -26,11 +28,11 @@ Recruiter = class Recruiter extends Card {
             })
             let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
             turn_event_processor.process(Recruiter.trash_card)
+        } else if (_.size(player_cards.hand) === 1) {
+            Recruiter.trash_card(game, player_cards, player_cards.hand)
         } else {
             game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
         }
-
-        GameModel.update(game._id, game)
     }
 
     static trash_card(game, player_cards, selected_cards) {
