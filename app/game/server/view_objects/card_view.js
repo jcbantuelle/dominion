@@ -27,6 +27,11 @@ CardView = class CardView {
         width = 341
         height = 220
       }
+
+      if (_.isNil(image)) {
+        image = _.snakeCase(name)
+      }
+
       rendered_html += `<div class="card-tooltip">
         <img src="${Meteor.settings.public.static.cards}${image}.jpg" width="${width}" height="${height}" />
       </div>`
