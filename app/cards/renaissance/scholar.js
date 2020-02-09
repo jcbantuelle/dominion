@@ -13,7 +13,7 @@ Scholar = class Scholar extends Card {
         card_discarder.discard()
 
         let card_drawer = new CardDrawer(game, player_cards)
-        let drawn_count = card_drawer.draw(7)
+        card_drawer.draw(7)
     }
 
 }
