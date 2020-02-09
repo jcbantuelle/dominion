@@ -34,10 +34,10 @@ Sculptor = class Sculptor extends Card {
 
     static gain_card(game, player_cards, selected_cards) {
         let card_gainer = new CardGainer(game, player_cards, 'hand', selected_cards[0].name)
-        card_gainer.gain_game_card()
+        let gained_card = card_gainer.gain_game_card()
+        let types = _.words(gained_card.types)
 
-        if (_.includes(_.words(selected_cards[0].top_card.types), 'treasure')) {
-
+        if (_.includes(types, 'treasure')) {
             if (game.turn.possessed) {
                 possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
                 possessing_player_cards.villagers += 1
