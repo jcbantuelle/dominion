@@ -31,8 +31,6 @@ Priest = class Priest extends Card {
         }
 
         game.turn.priests += 1
-
-        GameModel.update(game._id, game)
     }
 
     static trash_card(game, player_cards, selected_cards) {
