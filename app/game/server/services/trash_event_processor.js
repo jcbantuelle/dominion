@@ -1,4 +1,4 @@
-TrashEventProcessor = class BuyEventProcessor {
+TrashEventProcessor = class TrashEventProcessor {
 
   static reaction_cards() {
     return ['Market Square']
