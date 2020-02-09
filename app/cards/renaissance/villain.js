@@ -30,7 +30,7 @@ Villain = class Villain extends Card {
         return CardCostComparer.coin_greater_than(game, card, 1)
       })
 
-      if (_.size(eligible_cards) > 0) {
+      if (_.size(eligible_cards) > 1) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
@@ -44,6 +44,8 @@ Villain = class Villain extends Card {
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         return turn_event_processor.process(Villain.discard_from_hand)
+      } else if (_.size(eligible_cards) === 1) {
+        Villain.discard_from_hand(game, player_cards, eligible_cards)
       } else {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
       }
