@@ -13,7 +13,6 @@ TurnEnder = class TurnEnder {
     this.game.turn.phase = 'cleanup'
     this.discard_hand()
     this.clean_up_cards_in_play()
-    this.end_turn_events()
     this.draw_new_hand()
     this.end_turn_events()
     this.track_gained_cards()
