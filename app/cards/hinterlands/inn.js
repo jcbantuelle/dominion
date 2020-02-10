@@ -64,7 +64,7 @@ Inn = class Inn extends Card {
       let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id)
       turn_event_processor.process(Inn.shuffle_actions)
     } else {
-      game.log.push(`&nbsp;&nbsp;but <strong>${gainer.player_cards.username}</strong> does not shuffle any actions into their deck`)
+      gainer.game.log.push(`&nbsp;&nbsp;but <strong>${gainer.player_cards.username}</strong> does not shuffle any actions into their deck`)
     }
   }
 

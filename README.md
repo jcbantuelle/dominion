@@ -33,6 +33,9 @@ Install the compiled dependencies and run the app:
 
 Alternatively you may run the game in a Docker Compose stack. Both the development and the production modes are supported. Refer to the `README` in the `compose` directory.
 
+    meteor run --settings=settings-dev.json
+
+
 ## Usage
 
 This game is built with the expectation that it'll be run as a private server. Once a user has signed up, an admin will need to verify the account before they're allowed to play. To create the admin account, just sign up as normal, then in the mongo console, set an attribute of `admin: true`. This will allow you to access the `accounts` page when you're signed in, where you can approve/unapprove users who have signed up.

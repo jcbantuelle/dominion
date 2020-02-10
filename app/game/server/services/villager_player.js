@@ -7,7 +7,7 @@ VillagerPlayer = class VillagerPlayer {
 
   play() {
     if (this.can_play()) {
-      this.game.log.push(`<strong>${this.player_cards.username}</strong> uses a villager, gets +1 action`)
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> uses a villager for +1 action`)
       this.player_cards.villagers -= 1
       this.game.turn.actions += 1
       GameModel.update(this.game._id, this.game)

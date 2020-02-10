@@ -4,6 +4,7 @@ CardList = class CardList {
     this.edition = edition
     this.exclusions = exclusions
     this.cards = CardList.full_list(this.exclusions, this.edition)
+    // this.cards = CardList.test_landmarks().concat(CardList.test_events()).concat(CardList.test())
   }
 
   pull_set() {
@@ -132,285 +133,64 @@ CardList = class CardList {
     })
   }
 
-  static empires_landmarks() {
+  static base1() {
     return [
-      'Aqueduct',
-      'Arena',
-      'BanditFort',
-      'Basilica',
-      'Baths',
-      'Battlefield',
-      'Colonnade',
-      'DefiledShrine',
-      'Fountain',
-      'Keep',
-      'Labyrinth',
-      'MountainPass',
-      'Museum',
-      'Obelisk',
-      'Orchard',
-      'Palace',
-      'Tomb',
-      'Tower',
-      'TriumphalArch',
-      'Wall',
-      'WolfDen'
+      'Cellar',
+      'Chapel',
+      'Moat',
+      'Chancellor',
+      'Village',
+      'Woodcutter',
+      'Workshop',
+      'Bureaucrat',
+      'Feast',
+      'Gardens',
+      'Militia',
+      'Moneylender',
+      'Remodel',
+      'Smithy',
+      'Spy',
+      'Thief',
+      'ThroneRoom',
+      'CouncilRoom',
+      'Festival',
+      'Laboratory',
+      'Library',
+      'Market',
+      'Mine',
+      'Witch',
+      'Adventurer'
     ]
   }
 
-  static adventures_events() {
+  static base2() {
     return [
-      'Alms',
-      'Borrow',
-      'Quest',
-      'Save',
-      'ScoutingParty',
-      'TravellingFair',
-      'Bonfire',
-      'Expedition',
-      'Ferry',
-      'Plan',
-      'Mission',
-      'Pilgrimage',
-      'Ball',
-      'Raid',
-      'Seaway',
-      'Trade',
-      'LostArts',
-      'Training',
-      'Inheritance',
-      'Pathfinding'
-    ]
-  }
-
-  static promo_events() {
-    return [
-      'Summon'
-    ]
-  }
-
-  static empires_events() {
-    return [
-      'Triumph',
-      'Annex',
-      'Donate',
-      'Advance',
-      'Delve',
-      'Tax',
-      'Banquet',
-      'Ritual',
-      'SaltTheEarth',
-      'Wedding',
-      'Windfall',
-      'Conquest',
-      'Dominate'
-    ]
-  }
-
-  static nocturne() {
-    return [
-      'Druid',
-      'FaithfulHound',
-      'Guardian',
-      'Monastery',
-      'Pixie',
-      'Tracker',
-      'Changeling',
-      'Fool',
-      'GhostTown',
-      'Leprechaun',
-      'NightWatchman',
-      'SecretCave',
-      'Bard',
-      'BlessedVillage',
-      'Cemetery',
-      'Conclave',
-      'DevilsWorkshop',
-      'Exorcist',
-      'Necromancer',
-      'Shepherd',
-      'Skulk',
-      'Cobbler',
-      'Crypt',
-      'CursedVillage',
-      'DenOfSin',
-      'Idol',
-      'Pooka',
-      'SacredGrove',
-      'Tormentor',
-      'TragicHero',
-      'Vampire',
-      'Werewolf',
-      'Raider'
-    ]
-  }
-
-  static renaissance() {
-    return [
-      'MountainVillage',
-      'Scholar',
-      'Experiment',
-      'Seer',
-      'Priest',
-      'ActingTroupe',
-      'Recruiter',
-      'Sculptor',
-      'SilkMerchant',
-      'Ducat',
-      'Villain'
-    ]
-  }
-
-  static empires() {
-    return [
-      'Engineer',
-      'CityQuarter',
-      'Overlord',
-      'RoyalBlacksmith',
-      'Encampment',
-      'Patrician',
-      'Settlers',
-      'Castles',
-      'Catapult',
-      'ChariotRace',
-      'Enchantress',
-      'FarmersMarket',
-      'Gladiator',
-      'Sacrifice',
-      'Temple',
-      'Villa',
-      'Archive',
-      'Capital',
-      'Charm',
-      'Crown',
-      'Forum',
-      'Groundskeeper',
-      'Legionary',
-      'WildHunt'
-    ]
-  }
-
-  static adventures() {
-    return [
-      'CoinOfTheRealm',
-      'Page',
-      'Peasant',
-      'Ratcatcher',
-      'Raze',
-      'Amulet',
-      'CaravanGuard',
-      'Dungeon',
-      'Gear',
-      'Guide',
-      'Duplicate',
-      'Magpie',
-      'Messenger',
-      'Miser',
-      'Port',
-      'Ranger',
-      'Transmogrify',
-      'Artificer',
-      'BridgeTroll',
-      'DistantLands',
-      'Giant',
-      'HauntedWoods',
-      'LostCity',
-      'Relic',
-      'RoyalCarriage',
-      'Storyteller',
-      'SwampHag',
-      'TreasureTrove',
-      'WineMerchant',
-      'Hireling'
-    ]
-  }
-
-  static promo() {
-    return [
-      'BlackMarket',
-      'Envoy',
-      'WalledVillage',
-      'Governor',
-      'Stash',
-      'Prince',
-      'Dismantle',
-      'Sauna'
-    ]
-  }
-
-  static guilds() {
-    return [
-      'CandlestickMaker',
-      'Stonemason',
-      'Doctor',
-      'Masterpiece',
-      'Advisor',
-      'Herald',
-      'Plaza',
-      'Taxman',
-      'Baker',
-      'Butcher',
-      'Journeyman',
-      'MerchantGuild',
-      'Soothsayer'
-    ]
-  }
-
-  static dark_ages() {
-    return [
-      'PoorHouse',
-      'Beggar',
-      'Squire',
-      'Vagrant',
-      'Forager',
-      'Hermit',
-      'MarketSquare',
-      'Sage',
-      'Storeroom',
-      'Urchin',
-      'Armory',
-      'DeathCart',
-      'Feodum',
-      'Fortress',
-      'Ironmonger',
-      'Marauder',
-      'Procession',
-      'Rats',
-      'Scavenger',
-      'Knights',
-      'WanderingMinstrel',
-      'BandOfMisfits',
-      'BanditCamp',
-      'Catacombs',
-      'Count',
-      'Counterfeit',
-      'Cultist',
-      'Graverobber',
-      'JunkDealer',
-      'Mystic',
-      'Pillage',
-      'Rebuild',
-      'Rogue',
-      'Altar',
-      'HuntingGrounds'
-    ]
-  }
-
-  static cornucopia() {
-    return [
-      'Hamlet',
-      'FortuneTeller',
-      'Menagerie',
-      'FarmingVillage',
-      'HorseTraders',
-      'Remake',
-      'Tournament',
-      'YoungWitch',
-      'Harvest',
-      'HornOfPlenty',
-      'HuntingParty',
-      'Jester',
-      'Fairgrounds'
+      'Cellar',
+      'Chapel',
+      'Moat',
+      'Village',
+      'Harbinger',
+      'Merchant',
+      'Vassal',
+      'Workshop',
+      'Bureaucrat',
+      'Poacher',
+      'Gardens',
+      'Militia',
+      'Moneylender',
+      'Remodel',
+      'Smithy',
+      'ThroneRoom',
+      'CouncilRoom',
+      'Festival',
+      'Laboratory',
+      'Bandit',
+      'Sentry',
+      'Library',
+      'Market',
+      'Mine',
+      'Witch',
+      'Artisan'
     ]
   }
 
@@ -475,84 +255,6 @@ CardList = class CardList {
     ]
   }
 
-  static alchemy() {
-    return [
-      'Transmute',
-      'Vineyard',
-      'Apothecary',
-      'Herbalist',
-      'ScryingPool',
-      'University',
-      'Alchemist',
-      'Familiar',
-      'PhilosophersStone',
-      'Golem',
-      'Apprentice',
-      'Possession'
-    ]
-  }
-
-  static base1() {
-    return [
-      'Cellar',
-      'Chapel',
-      'Moat',
-      'Chancellor',
-      'Village',
-      'Woodcutter',
-      'Workshop',
-      'Bureaucrat',
-      'Feast',
-      'Gardens',
-      'Militia',
-      'Moneylender',
-      'Remodel',
-      'Smithy',
-      'Spy',
-      'Thief',
-      'ThroneRoom',
-      'CouncilRoom',
-      'Festival',
-      'Laboratory',
-      'Library',
-      'Market',
-      'Mine',
-      'Witch',
-      'Adventurer'
-    ]
-  }
-
-  static base2() {
-    return [
-      'Cellar',
-      'Chapel',
-      'Moat',
-      'Village',
-      'Harbinger',
-      'Merchant',
-      'Vassal',
-      'Workshop',
-      'Bureaucrat',
-      'Poacher',
-      'Gardens',
-      'Militia',
-      'Moneylender',
-      'Remodel',
-      'Smithy',
-      'ThroneRoom',
-      'CouncilRoom',
-      'Festival',
-      'Laboratory',
-      'Bandit',
-      'Sentry',
-      'Library',
-      'Market',
-      'Mine',
-      'Witch',
-      'Artisan'
-    ]
-  }
-
   static seaside() {
     return [
       'Embargo',
@@ -581,6 +283,71 @@ CardList = class CardList {
       'Tactician',
       'Treasury',
       'Wharf'
+    ]
+  }
+
+  static alchemy() {
+    return [
+      'Transmute',
+      'Vineyard',
+      'Apothecary',
+      'Herbalist',
+      'ScryingPool',
+      'University',
+      'Alchemist',
+      'Familiar',
+      'PhilosophersStone',
+      'Golem',
+      'Apprentice',
+      'Possession'
+    ]
+  }
+
+  static prosperity() {
+    return [
+      'Loan',
+      'TradeRoute',
+      'Watchtower',
+      'Bishop',
+      'Monument',
+      'Quarry',
+      'Talisman',
+      'WorkersVillage',
+      'City',
+      'Contraband',
+      'CountingHouse',
+      'Mint',
+      'Mountebank',
+      'Rabble',
+      'RoyalSeal',
+      'Vault',
+      'Venture',
+      'Goons',
+      'GrandMarket',
+      'Hoard',
+      'Bank',
+      'Expand',
+      'Forge',
+      'KingsCourt',
+      'Peddler'
+    ]
+  }
+
+  static cornucopia() {
+    return [
+      'Hamlet',
+      'FortuneTeller',
+      'Menagerie',
+      'FarmingVillage',
+      'HorseTraders',
+      'Remake',
+      'Tournament',
+      'YoungWitch',
+      'Harvest',
+      'HornOfPlenty',
+      'HuntingParty',
+      'Jester',
+      'Fairgrounds'
     ]
   }
 
@@ -615,33 +382,309 @@ CardList = class CardList {
     ]
   }
 
-  static prosperity() {
+  static dark_ages() {
     return [
-      'Loan',
-      'TradeRoute',
-      'Watchtower',
-      'Bishop',
-      'Monument',
-      'Quarry',
-      'Talisman',
-      'WorkersVillage',
-      'City',
-      'Contraband',
-      'CountingHouse',
-      'Mint',
-      'Mountebank',
-      'Rabble',
-      'RoyalSeal',
-      'Vault',
-      'Venture',
-      'Goons',
-      'GrandMarket',
-      'Hoard',
-      'Bank',
-      'Expand',
+      'PoorHouse',
+      'Beggar',
+      'Squire',
+      'Vagrant',
+      'Forager',
+      'Hermit',
+      'MarketSquare',
+      'Sage',
+      'Storeroom',
+      'Urchin',
+      'Armory',
+      'DeathCart',
+      'Feodum',
+      'Fortress',
+      'Ironmonger',
+      'Marauder',
+      'Procession',
+      'Rats',
+      'Scavenger',
+      'Knights',
+      'WanderingMinstrel',
+      'BandOfMisfits',
+      'BanditCamp',
+      'Catacombs',
+      'Count',
+      'Counterfeit',
+      'Cultist',
+      'Graverobber',
+      'JunkDealer',
+      'Mystic',
+      'Pillage',
+      'Rebuild',
+      'Rogue',
+      'Altar',
+      'HuntingGrounds'
+    ]
+  }
+
+  static guilds() {
+    return [
+      'CandlestickMaker',
+      'Stonemason',
+      'Doctor',
+      'Masterpiece',
+      'Advisor',
+      'Herald',
+      'Plaza',
+      'Taxman',
+      'Baker',
+      'Butcher',
+      'Journeyman',
+      'MerchantGuild',
+      'Soothsayer'
+    ]
+  }
+
+  static adventures() {
+    return [
+      'CoinOfTheRealm',
+      'Page',
+      'Peasant',
+      'Ratcatcher',
+      'Raze',
+      'Amulet',
+      'CaravanGuard',
+      'Dungeon',
+      'Gear',
+      'Guide',
+      'Duplicate',
+      'Magpie',
+      'Messenger',
+      'Miser',
+      'Port',
+      'Ranger',
+      'Transmogrify',
+      'Artificer',
+      'BridgeTroll',
+      'DistantLands',
+      'Giant',
+      'HauntedWoods',
+      'LostCity',
+      'Relic',
+      'RoyalCarriage',
+      'Storyteller',
+      'SwampHag',
+      'TreasureTrove',
+      'WineMerchant',
+      'Hireling'
+    ]
+  }
+
+  static adventures_events() {
+    return [
+      'Alms',
+      'Borrow',
+      'Quest',
+      'Save',
+      'ScoutingParty',
+      'TravellingFair',
+      'Bonfire',
+      'Expedition',
+      'Ferry',
+      'Plan',
+      'Mission',
+      'Pilgrimage',
+      'Ball',
+      'Raid',
+      'Seaway',
+      'Trade',
+      'LostArts',
+      'Training',
+      'Inheritance',
+      'Pathfinding'
+    ]
+  }
+
+  static empires() {
+    return [
+      'Engineer',
+      'CityQuarter',
+      'Overlord',
+      'RoyalBlacksmith',
+      'Encampment',
+      'Patrician',
+      'Settlers',
+      'Castles',
+      'Catapult',
+      'ChariotRace',
+      'Enchantress',
+      'FarmersMarket',
+      'Gladiator',
+      'Sacrifice',
+      'Temple',
+      'Villa',
+      'Archive',
+      'Capital',
+      'Charm',
+      'Crown',
+      'Forum',
+      'Groundskeeper',
+      'Legionary',
+      'WildHunt'
+    ]
+  }
+
+  static empires_events() {
+    return [
+      'Triumph',
+      'Annex',
+      'Donate',
+      'Advance',
+      'Delve',
+      'Tax',
+      'Banquet',
+      'Ritual',
+      'SaltTheEarth',
+      'Wedding',
+      'Windfall',
+      'Conquest',
+      'Dominate'
+    ]
+  }
+
+  static empires_landmarks() {
+    return [
+      'Aqueduct',
+      'Arena',
+      'BanditFort',
+      'Basilica',
+      'Baths',
+      'Battlefield',
+      'Colonnade',
+      'DefiledShrine',
+      'Fountain',
+      'Keep',
+      'Labyrinth',
+      'MountainPass',
+      'Museum',
+      'Obelisk',
+      'Orchard',
+      'Palace',
+      'Tomb',
+      'Tower',
+      'TriumphalArch',
+      'Wall',
+      'WolfDen'
+    ]
+  }
+
+  static nocturne() {
+    return [
+      'Druid',
+      'FaithfulHound',
+      'Guardian',
+      'Monastery',
+      'Pixie',
+      'Tracker',
+      'Changeling',
+      'Fool',
+      'GhostTown',
+      'Leprechaun',
+      'NightWatchman',
+      'SecretCave',
+      'Bard',
+      'BlessedVillage',
+      'Cemetery',
+      'Conclave',
+      'DevilsWorkshop',
+      'Exorcist',
+      'Necromancer',
+      'Shepherd',
+      'Skulk',
+      'Cobbler',
+      'Crypt',
+      'CursedVillage',
+      'DenOfSin',
+      'Idol',
+      'Pooka',
+      'SacredGrove',
+      'Tormentor',
+      'TragicHero',
+      'Vampire',
+      'Werewolf',
+      'Raider'
+    ]
+  }
+
+  static renaissance() {
+    return [
+      // 'Border Guard',
+      'Ducat',
+      // 'Lackeys',
+      'ActingTroupe',
+      // 'CargoShip',
+      'Experiment',
+      // 'Improve',
+      // 'FlagBearer',
+      // 'Hideout',
+      // 'Inventor',
+      'MountainVillage',
+      // 'Patron',
+      'Priest',
+      // 'Research',
+      'SilkMerchant',
+      // 'OldWitch',
+      'Recruiter',
+      // 'Scepter',
+      'Scholar',
+      'Sculptor',
+      'Seer',
+      // 'Spices',
+      // 'Swashbuckler',
+      // 'Treasurer',
+      'Villain'
+    ]
+  }
+
+  static promo() {
+    return [
+      'Envoy',
+      'BlackMarket',
+      'Stash',
+      'WalledVillage',
+      'Governor',
+      'Prince',
+      'Sauna',
+      'Dismantle'
+      // Church
+      // Captain
+    ]
+  }
+
+  static promo_events() {
+    return [
+      'Summon'
+    ]
+  }
+
+  // Force specific cards, to test functionality
+  static test_landmarks() {
+    return [
+    ]
+  }
+
+  static test_events() {
+    return [
+    ]
+  }
+
+  static test() {
+    return [
+      'Messenger',
+      'Cellar',
+      'Remake',
+      'Smithy',
       'Forge',
-      'KingsCourt',
-      'Peddler'
+      'Chapel',
+      'Plaza',
+      'PoorHouse',
+      'Ducat',
+      'Village'
     ]
   }
 }
