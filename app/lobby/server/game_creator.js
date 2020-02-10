@@ -687,7 +687,6 @@ GameCreator = class GameCreator {
     do {
       card = CardList.pull_one(this.exclusions, this.edition)
     } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.includes(game_card_names, card.name))
-    card = ClassCreator.create('Castles').to_h()
     card.bane = true
     return this.game_card(card, 'kingdom')
   }
