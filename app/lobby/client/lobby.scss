@@ -9,6 +9,7 @@ $duration: orange;
 $night: grey;
 $shelter: salmon;
 $state: peachpuff;
+$artifact: bisque;
 $ruins: burlywood;
 $reserve: #cdb332;
 $busy: grey;
@@ -81,6 +82,10 @@ hr {
 
 .state {
   background-color: $state;
+}
+
+.artifact {
+  background-color: $artifact;
 }
 
 .duration {
