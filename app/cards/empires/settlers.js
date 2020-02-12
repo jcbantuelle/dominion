@@ -23,6 +23,7 @@ Settlers = class Settlers extends Card {
       return card.inherited_name === 'Copper'
     })
     if (copper_index != -1) {
+      PlayerCardsModel.update(game._id, player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
