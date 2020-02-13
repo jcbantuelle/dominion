@@ -1,7 +1,7 @@
 DiscardEventProcessor = class DiscardEventProcessor {
 
   static event_cards() {
-    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital', 'Faithful Hound']
+    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital', 'Faithful Hound', 'Border Guard']
   }
 
   static traveller_cards() {
@@ -53,6 +53,13 @@ DiscardEventProcessor = class DiscardEventProcessor {
         this.discard_events.push(this.card)
       } else if (this.card.inherited_name === 'Hermit' && this.discarder.source === 'in_play') {
         if (_.isEmpty(this.discarder.game.turn.bought_cards)) {
+          this.discard_events.push(this.card)
+        }
+      } else if (this.card.inherited_name === 'Border Guard' && this.discarder.source === 'in_play' && !this.discarder.game.turn.discarded_border_guard) {
+        let has_horn = _.some(this.discarder.player_cards.artifacts, function(artifact) {
+          return artifact.name == 'Horn'
+        })
+        if (has_horn) {
           this.discard_events.push(this.card)
         }
       }
