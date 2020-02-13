@@ -41,7 +41,10 @@
   {{#if player_cards.native_village}}
     Native Village:
     {{#each player_cards.native_village}}
-      <span class="{{types}}">{{name}}</span>
+      <span class="{{types}} native-village-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="220" height="341" />
+      </div>
     {{/each}}
     <br />
     <br />
@@ -49,7 +52,10 @@
   {{#if player_cards.archive}}
     Archive:
     {{#each player_cards.archive}}
-      <span class="{{types}}">{{name}}</span>
+      <span class="{{types}} archive-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="220" height="341" />
+      </div>
     {{/each}}
     <br />
     <br />
@@ -57,7 +63,10 @@
   {{#if player_cards.crypt}}
     Crypt:
     {{#each player_cards.crypt}}
-      <span class="{{types}}">{{name}}</span>
+      <span class="{{types}} crypt-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="220" height="341" />
+      </div>
     {{/each}}
     <br />
     <br />
@@ -90,7 +99,10 @@
     {{#if island}}
       Island:
       {{#each island}}
-        <span class="{{types}}">{{name}}</span>
+        <span class="{{types}} island-card">{{name}}</span>
+        <div class="card-tooltip">
+          <img src="{{static_image image}}" width="220" height="341" />
+        </div>
       {{/each}}
       <br />
     {{/if}}
@@ -113,21 +125,30 @@
     {{#if tavern}}
       Tavern:
       {{#each tavern}}
-        <span class="{{types}}">{{name}}</span>
+        <span class="{{types}} tavern-card">{{name}}</span>
+        <div class="card-tooltip">
+          <img src="{{static_image image}}" width="220" height="341" />
+        </div>
       {{/each}}
       <br />
     {{/if}}
     {{#if states}}
       States:
       {{#each states}}
-        <span class="{{types}}">{{name}}</span>
+        <span class="{{types}} state-card">{{name}}</span>
+        <div class="card-tooltip">
+          <img src="{{static_image image}}" width="341" height="220" />
+        </div>
       {{/each}}
       <br />
     {{/if}}
     {{#if artifacts}}
       Artifacts:
       {{#each artifacts}}
-        <span class="{{types}}">{{name}}</span>
+        <span class="{{types}} artifact-card">{{name}}</span>
+        <div class="card-tooltip">
+          <img src="{{static_image image}}" width="341" height="220" />
+        </div>
       {{/each}}
       <br />
     {{/if}}
