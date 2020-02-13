@@ -615,7 +615,7 @@ CardList = class CardList {
     return [
       'Border Guard',
       'Ducat',
-      // 'Lackeys',
+      'Lackeys',
       'ActingTroupe',
       // 'CargoShip',
       'Experiment',
