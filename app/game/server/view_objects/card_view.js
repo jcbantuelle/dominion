@@ -23,7 +23,7 @@ CardView = class CardView {
       let width = 220
       let height = 341
       types = _.words(types)
-      if (_.includes(types, 'boon') || _.includes(types, 'state') || _.includes(types, 'hex') || _.includes(types, 'artifact')) {
+      if (_.includes(types, 'boon') || _.includes(types, 'state') || _.includes(types, 'hex') || _.includes(types, 'artifact') || _.includes(types, 'event') || _.includes(types, 'landmark')) {
         width = 341
         height = 220
       }
