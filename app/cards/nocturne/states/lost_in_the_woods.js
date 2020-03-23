@@ -36,6 +36,8 @@ LostInTheWoods = class LostInTheWoods extends State {
     let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
     card_discarder.discard()
 
+    PlayerCardsModel.update(game._id, player_cards)
+
     let boon_receiver = new EffectReceiver(game, player_cards, 'boon')
     boon_receiver.receive()
   }
