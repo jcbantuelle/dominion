@@ -6,6 +6,10 @@ body {
   overflow-y: scroll;
 }
 
+.popover {
+  max-width: none;
+}
+
 .token {
   font-size: 7pt;
 }
