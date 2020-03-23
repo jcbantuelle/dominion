@@ -36,8 +36,8 @@ Fool = class Fool extends Card {
       if (revealed_boon_count < 3 && _.size(game.boons_discard) > 0) {
         game.boons_deck = _.shuffle(game.boons_discard)
         game.boons_discard = []
-        revealed_boons = revealed_boons.concat(_.take(game.boons_deck, 4 - revealed_boon_count))
-        game.boons_deck = _.drop(game.boons_deck, 4 - revealed_boon_count)
+        revealed_boons = revealed_boons.concat(_.take(game.boons_deck, 3 - revealed_boon_count))
+        game.boons_deck = _.drop(game.boons_deck, 3 - revealed_boon_count)
       }
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_boons, true)}`)
       GameModel.update(game._id, game)
