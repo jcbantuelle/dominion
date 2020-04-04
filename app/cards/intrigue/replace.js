@@ -1,7 +1,7 @@
 Replace = class Replace extends Card {
 
   types() {
-    return ['action']
+    return ['action', 'attack']
   }
 
   coin_cost() {
