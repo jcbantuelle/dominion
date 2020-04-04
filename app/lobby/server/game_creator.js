@@ -247,7 +247,7 @@ GameCreator = class GameCreator {
       this.hexes_deck = _.shuffle(this.hexes())
     }
 
-    if (this.game_has_event_or_landmark(this.landmarks, 'Obelisk')) {
+    if (this.game_has_event_or_landmark(this.landmarks, 'Obelisk') && _.some(kingdom_cards, (card) => { return _.includes(_.words(card.top_card.types), 'action') })) {
       let obelisk_card
       do {
         obelisk_card = _.sample(kingdom_cards)
