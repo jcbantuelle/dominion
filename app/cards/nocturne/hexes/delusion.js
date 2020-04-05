@@ -5,11 +5,11 @@ Delusion = class Delusion extends Hex {
       return _.includes(['Deluded', 'Envious'], state.name)
     })
     if (existing_state) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has ${CardView.render(existing_state, true)}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has ${CardView.render(existing_state)}`)
     } else {
       let deluded = (new Deluded()).to_h()
       player_cards.states.push(deluded)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(deluded, true)}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(deluded)}`)
     }
   }
 }

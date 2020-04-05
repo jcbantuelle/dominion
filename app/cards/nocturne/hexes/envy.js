@@ -5,11 +5,11 @@ Envy = class Envy extends Hex {
       return _.includes(['Deluded', 'Envious'], state.name)
     })
     if (existing_state) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has ${CardView.render(existing_state, true)}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has ${CardView.render(existing_state)}`)
     } else {
       let envious = (new Envious()).to_h()
       player_cards.states.push(envious)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(envious, true)}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(envious)}`)
     }
   }
 }

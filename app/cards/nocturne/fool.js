@@ -27,7 +27,7 @@ Fool = class Fool extends Card {
       })
       let lost_in_the_woods = (new LostInTheWoods()).to_h()
       player_cards.states.push(lost_in_the_woods)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(lost_in_the_woods, true)}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(lost_in_the_woods)}`)
 
       revealed_boons = _.take(game.boons_deck, 3)
       game.boons_deck = _.drop(game.boons_deck, 3)
@@ -39,7 +39,7 @@ Fool = class Fool extends Card {
         revealed_boons = revealed_boons.concat(_.take(game.boons_deck, 3 - revealed_boon_count))
         game.boons_deck = _.drop(game.boons_deck, 3 - revealed_boon_count)
       }
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_boons, true)}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_boons)}`)
       GameModel.update(game._id, game)
 
       let turn_event_id = TurnEventModel.insert({
@@ -57,13 +57,13 @@ Fool = class Fool extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, revealed_boons)
       turn_event_processor.process(Fool.receive_boon)
     } else {
-      game.log.push(`&nbsp;&nbsp;but already has ${CardView.render(player_cards.states[lost_in_the_woods_index], true)}`)
+      game.log.push(`&nbsp;&nbsp;but already has ${CardView.render(player_cards.states[lost_in_the_woods_index])}`)
     }
   }
 
   static receive_boon(game, player_cards, selected_cards, revealed_boons) {
     let selected_boon = selected_cards[0]
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(selected_boon, true)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(selected_boon)}`)
     GameModel.update(game._id, game)
     let boon = ClassCreator.create(selected_boon.name)
     let keep_boon = boon.receive(game, player_cards)

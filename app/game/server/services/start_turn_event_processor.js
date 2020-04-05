@@ -99,7 +99,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
           return boon.name === event.name
         })
         player_cards.saved_boons.splice(saved_boon_index, 1)
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(event, true)}`)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(event)}`)
         GameModel.update(game._id, game)
         let keep_boon = selected_event.receive(game, player_cards)
         if (keep_boon) {

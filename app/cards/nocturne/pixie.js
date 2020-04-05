@@ -21,7 +21,7 @@ Pixie = class Pixie extends Card {
     }
 
     discarded_boon = game.boons_deck.shift()
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> discards ${CardView.render(discarded_boon, true)} from the boon deck`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> discards ${CardView.render(discarded_boon)} from the boon deck`)
     PlayerCardsModel.update(game._id, player_cards)
     GameModel.update(game._id, game)
 
@@ -30,7 +30,7 @@ Pixie = class Pixie extends Card {
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Trash ${CardView.render(this)} to receive ${CardView.render(discarded_boon, true)} twice?`,
+      instructions: `Trash ${CardView.render(this)} to receive ${CardView.render(discarded_boon)} twice?`,
       minimum: 1,
       maximum: 1
     })

@@ -23,7 +23,7 @@ BlessedVillage = class BlessedVillage extends Card {
     }
 
     taken_boon = gainer.game.boons_deck.shift()
-    gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> takes ${CardView.render(taken_boon, true)}`)
+    gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> takes ${CardView.render(taken_boon)}`)
     PlayerCardsModel.update(gainer.game._id, gainer.player_cards)
     GameModel.update(gainer.game._id, gainer.game)
 

@@ -6,7 +6,7 @@ Envious = class Envious extends State {
       return state.name === 'Envious'
     })
     player_cards.states.splice(envious_index, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(this, true)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(this)}`)
   }
 
 }

@@ -31,13 +31,13 @@ BorderGuard = class BorderGuard extends Card {
         player_cards.deck = _.drop(player_cards.deck, card_count_to_reveal - revealed_card_count)
       }
 
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed, true)}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
 
       if (_.size(player_cards.revealed) === 1) {
         player_cards.hand = player_cards.hand.concat(player_cards.revealed)
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed, true)} in their hand`)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} in their hand`)
       } else {
         let gain_artifact = _.size(player_cards.revealed) === card_count_to_reveal && _.every(player_cards.revealed, function(card) {
           return _.includes(_.words(card.types), 'action')
@@ -66,7 +66,7 @@ BorderGuard = class BorderGuard extends Card {
     })
 
     player_cards.hand = player_cards.hand.concat(player_cards.revealed.splice(selected_card_index, 1)[0])
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(selected_cards, true)} in their hand`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(selected_cards)} in their hand`)
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard()
@@ -80,7 +80,7 @@ BorderGuard = class BorderGuard extends Card {
       })
 
       if (lantern_index !== -1 && horn_index !== -1) {
-        game.log.push(`&nbsp;&nbsp;but <strong>${player_cards.username}</strong> already has ${CardView.card_html('artifact', 'Lantern')} and ${CardView.card_html('artifact', 'Horn')}`)
+        game.log.push(`&nbsp;&nbsp;but <strong>${player_cards.username}</strong> already has ${CardView.render(new Lantern())} and ${CardView.render(new Horn())}`)
       } else if (lantern_index === -1 && horn_index === -1) {
         let artifacts = [(new Lantern()).to_h(), (new Horn()).to_h()]
         let turn_event_id = TurnEventModel.insert({
