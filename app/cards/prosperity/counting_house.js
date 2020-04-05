@@ -44,7 +44,7 @@ CountingHouse = class CountingHouse extends Card {
     if (copper_count === 0) {
       game.log.push(`&nbsp;&nbsp;but does not put any coppers into their hand`)
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${copper_count} ${CardView.card_html('treasure', 'Copper')} in their hand`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${copper_count} ${CardView.render(new Copper())} in their hand`)
     }
   }
 

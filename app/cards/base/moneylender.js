@@ -19,14 +19,14 @@ Moneylender = class Moneylender extends Card {
         player_id: game.turn.player._id,
         username: game.turn.player.username,
         type: 'choose_yes_no',
-        instructions: `Trash a ${CardView.card_html('treasure', 'Copper')}?`,
+        instructions: `Trash a ${CardView.render(new Copper())}?`,
         minimum: 1,
         maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Moneylender.trash_copper)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.card_html('treasure', 'Copper')}`)
+      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(new Copper())}`)
     }
   }
 
@@ -37,7 +37,7 @@ Moneylender = class Moneylender extends Card {
       let gained_coins = CoinGainer.gain(game, player_cards, 3)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.card_html('treasure', 'Copper')}`)
+      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(new Copper())}`)
     }
   }
 

@@ -128,7 +128,7 @@ TurnEnder = class TurnEnder {
     if (!_.isEmpty(this.player_cards.save)) {
       this.player_cards.hand = this.player_cards.hand.concat(this.player_cards.save)
       this.player_cards.save = []
-      this.game.log.push(`<strong>${this.player_cards.username}</strong> puts thier set aside card in hand from ${CardView.card_html('event', 'Save')}`)
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> puts thier set aside card in hand from ${CardView.render(new Save())}`)
     }
   }
 
@@ -156,7 +156,7 @@ TurnEnder = class TurnEnder {
         let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
         turn_event_processor.process(TurnEnder.trash_cards)
       } else {
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> has no cards to trash from ${CardView.card_html('event', 'Donate')}`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> has no cards to trash from ${CardView.render(new Donate())}`)
       }
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, this.player_cards)
@@ -174,7 +174,7 @@ TurnEnder = class TurnEnder {
 
   static trash_cards(game, player_cards, selected_cards) {
     if (_.size(selected_cards) === 0) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to trash anything from ${CardView.card_html('event', 'Donate')}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to trash anything from ${CardView.render(new Donate())}`)
     } else {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
       card_trasher.trash()
@@ -351,14 +351,14 @@ TurnEnder = class TurnEnder {
   outpost_turn(player) {
     this.new_turn.player = player
     this.new_turn.extra_turn = true
-    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
+    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.render(new Outpost())} -</strong>`)
   }
 
   mission_turn(player) {
     this.new_turn.player = player
     this.new_turn.extra_turn = true
     this.new_turn.mission_turn = true
-    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('event', 'Mission')} -</strong>`)
+    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.render(new Mission())} -</strong>`)
   }
 
   possession_turn(player) {

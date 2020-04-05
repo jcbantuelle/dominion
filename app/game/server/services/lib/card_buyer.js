@@ -111,11 +111,11 @@ CardBuyer = class CardBuyer {
       if (this.game.turn.possessed) {
         possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
         possessing_player_cards.victory_tokens += goon_count
-        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.render(new Goons())}`)
         PlayerCardsModel.update(this.game._id, possessing_player_cards)
       } else {
         this.player_cards.victory_tokens += goon_count
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.render(new Goons())}`)
       }
     }
   }
@@ -128,11 +128,11 @@ CardBuyer = class CardBuyer {
       if (this.game.turn.possessed) {
         possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
         possessing_player_cards.coin_tokens += merchant_guild_count
-        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.card_html('action', 'Merchant Guild')}`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.render(new MerchantGuild())}`)
         PlayerCardsModel.update(this.game._id, possessing_player_cards)
       } else {
         this.player_cards.coin_tokens += merchant_guild_count
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.card_html('action', 'Merchant Guild')}`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.render(new MerchantGuild())}`)
       }
     }
   }

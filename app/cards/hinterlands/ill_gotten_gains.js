@@ -18,7 +18,7 @@ IllGottenGains = class IllGottenGains extends Card {
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Gain a ${CardView.card_html('treasure', 'Copper')}?`,
+      instructions: `Gain a ${CardView.render(new Copper())}?`,
       minimum: 1,
       maximum: 1
     })

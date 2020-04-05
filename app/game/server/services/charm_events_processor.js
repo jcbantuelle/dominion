@@ -31,7 +31,7 @@ CharmEventsProcessor = class CharmEventsProcessor {
           let turn_event_processor = new TurnEventProcessor(this.buyer.game, this.buyer.player_cards, turn_event_id)
           turn_event_processor.process(CharmEventsProcessor.gain_card)
         } else {
-          this.buyer.game.log.push(`&nbsp;&nbsp;but there are no available cards to gain from ${CardView.card_html('treasure', 'Charm')}`)
+          this.buyer.game.log.push(`&nbsp;&nbsp;but there are no available cards to gain from ${CardView.render(new Charm())}`)
         }
       })
       this.buyer.game.turn.charms = 0
@@ -43,7 +43,7 @@ CharmEventsProcessor = class CharmEventsProcessor {
       let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
       card_gainer.gain_game_card()
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to gain a card from ${CardView.card_html('treasure', 'Charm')}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to gain a card from ${CardView.render(new Charm())}`)
     }
     GameModel.update(game._id, game)
   }

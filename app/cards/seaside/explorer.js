@@ -32,7 +32,7 @@ Explorer = class Explorer extends Card {
 
   static reveal_province(game, player_cards, response) {
     if (response === 'yes') {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.card_html('victory', 'Province')}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(new Province())}`)
       Explorer.gain_card(game, player_cards, 'Gold')
     } else {
       Explorer.gain_card(game, player_cards, 'Silver')

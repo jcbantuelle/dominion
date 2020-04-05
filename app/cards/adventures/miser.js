@@ -18,8 +18,8 @@ Miser = class Miser extends Card {
       minimum: 1,
       maximum: 1,
       options: [
-        {text: `Put a ${CardView.card_html('treasure', 'Copper')} on your Tavern`, value: 'copper'},
-        {text: `+$1 per ${CardView.card_html('treasure', 'Copper')} on your Tavern`, value: 'coin'}
+        {text: `Put a ${CardView.render(new Copper())} on your Tavern`, value: 'copper'},
+        {text: `+$1 per ${CardView.render(new Copper())} on your Tavern`, value: 'coin'}
       ]
     })
     let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
@@ -33,8 +33,9 @@ Miser = class Miser extends Card {
         return card.name === 'Copper'
       })
       if (copper_index !== -1) {
-        player_cards.tavern.push(player_cards.hand.splice(copper_index, 1)[0])
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.card_html('treasure', 'Copper')} on their Tavern`)
+        let copper = player_cards.hand.splice(copper_index, 1)[0]
+        player_cards.tavern.push(copper)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(copper)} on their Tavern`)
       } else {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to move a copper, but has none in hand`)
       }

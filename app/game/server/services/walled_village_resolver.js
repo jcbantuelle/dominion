@@ -27,7 +27,7 @@ WalledVillageResolver = class WalledVillageResolver {
         return card.name === 'Walled Village'
       })
       player_cards.deck.unshift(player_cards.in_play.splice(walled_village_index, 1)[0])
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.card_html('action', 'Walled Village')} on top of their deck`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(new WalledVillage())} on top of their deck`)
       GameModel.update(game._id, game)
     }
   }

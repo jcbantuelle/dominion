@@ -68,7 +68,7 @@ CardDiscarder = class CardDiscarder {
       }
       if (discarding_card.prince) {
         destination = 'princed'
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> sets aside ${CardView.render(discarding_card)} from ${CardView.card_html('action', 'Prince')}`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> sets aside ${CardView.render(discarding_card)} from ${CardView.render(new Prince())}`)
       }
       if (discarding_card.misfit) {
         discarding_card = discarding_card.misfit

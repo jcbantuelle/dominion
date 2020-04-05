@@ -11,7 +11,7 @@ SchemeChooser = class SchemeChooser {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: `Choose up to ${game.turn.schemes} Action cards to put on deck from ${CardView.card_html('action', 'Scheme')}:`,
+        instructions: `Choose up to ${game.turn.schemes} Action cards to put on deck from ${CardView.render(new Scheme())}:`,
         cards: action_cards,
         minimum: 0,
         maximum: game.turn.schemes
@@ -19,7 +19,7 @@ SchemeChooser = class SchemeChooser {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(SchemeChooser.mark_for_scheme)
     } else {
-      game.log.push(`There are no action cards in play for ${CardView.card_html('action', 'Scheme')}`)
+      game.log.push(`There are no action cards in play for ${CardView.render(new Scheme())}`)
     }
   }
 
@@ -30,7 +30,7 @@ SchemeChooser = class SchemeChooser {
       })
       player_cards.in_play[scheme_card_index].scheme = true
     })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses ${CardView.render(selected_cards)} for ${CardView.card_html('action', 'Scheme')}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses ${CardView.render(selected_cards)} for ${CardView.render(new Scheme())}`)
   }
 
 }

@@ -215,7 +215,7 @@ CardGainer = class CardGainer {
       }
       this.game.log.push(log_message)
     } else if (this.buy && this.game.turn.travelling_fair && !this.game.turn.possessed && this.destination === 'deck') {
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places the card on top of their deck from ${CardView.card_html('event', 'Travelling Fair')}`)
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places the card on top of their deck from ${CardView.render(new TravellingFair())}`)
     }
   }
 
@@ -228,11 +228,11 @@ CardGainer = class CardGainer {
         if (this.game.turn.possessed) {
           possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
           possessing_player_cards.victory_tokens += groundskeeper_count
-          this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${groundskeeper_count} &nabla; from ${CardView.card_html('action', 'Groundskeeper')}`)
+          this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${groundskeeper_count} &nabla; from ${CardView.render(new Groundskeeper())}`)
           PlayerCardsModel.update(this.game._id, possessing_player_cards)
         } else {
           this.player_cards.victory_tokens += groundskeeper_count
-          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${groundskeeper_count} &nabla; from ${CardView.card_html('action', 'Groundskeeper')}`)
+          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${groundskeeper_count} &nabla; from ${CardView.render(new Groundskeeper())}`)
         }
       }
     }

@@ -18,7 +18,7 @@ Tunnel = class Tunnel extends Card {
       player_id: discarder.player_cards.player_id,
       username: discarder.player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Reveal ${CardView.render(this)} to gain a ${CardView.card_html('treasure', 'Gold')}?`,
+      instructions: `Reveal ${CardView.render(this)} to gain a ${CardView.render(new Gold())}?`,
       minimum: 1,
       maximum: 1
     })
@@ -28,7 +28,7 @@ Tunnel = class Tunnel extends Card {
 
   static gain_gold(game, player_cards, response) {
     if (response === 'yes') {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.card_html('victory reaction', 'Tunnel')}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(new Tunnel())}`)
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
       card_gainer.gain_game_card()
     }

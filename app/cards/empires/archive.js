@@ -65,7 +65,7 @@ Archive = class Archive extends Card {
       return selected_card.name === card.name
     })
     player_cards.hand.push(player_cards.archive.splice(selected_card_index, 1)[0])
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts a set aside card in hand from ${CardView.card_html('duration', 'Archive')}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts a set aside card in hand from ${CardView.render(new Archive())}`)
 
     let duration_card_index = _.findIndex(duration_card.set_aside_cards, function(card) {
       return selected_card.name === card.name

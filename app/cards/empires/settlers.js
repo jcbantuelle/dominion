@@ -36,7 +36,7 @@ Settlers = class Settlers extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, copper_index)
       turn_event_processor.process(Settlers.reveal_copper)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not reveal a ${CardView.card_html('treasure', 'Copper')}`)
+      game.log.push(`&nbsp;&nbsp;but does not reveal a ${CardView.render(new Copper())}`)
     }
   }
 

@@ -13,7 +13,7 @@ BadOmens = class BadOmens extends Hex {
 
     if (_.size(this.coppers) > 0) {
       player_cards.deck = this.coppers
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${_.size(player_cards.deck)} ${CardView.card_html('treasure', 'Copper')} on their deck`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${_.size(player_cards.deck)} ${CardView.render(new Copper())} on their deck`)
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.discard)}`)
     }

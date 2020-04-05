@@ -64,7 +64,7 @@ WildHunt = class WildHunt extends Card {
           game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(this)} pile`)
         }
       } else {
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to gain an ${CardView.card_html('victory', 'Estate')} but there are none`)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to gain an ${CardView.render(new Estate())} but there are none`)
       }
     }
   }

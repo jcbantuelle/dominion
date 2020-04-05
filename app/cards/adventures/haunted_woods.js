@@ -56,7 +56,7 @@ HauntedWoods = class HauntedWoods extends Card {
       let hand_card = player_cards.hand.splice(hand_card_index, 1)[0]
       player_cards.deck.unshift(hand_card)
     })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places their hand on top of their deck from ${CardView.card_html('action attack duration', 'Haunted Woods')}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places their hand on top of their deck from ${CardView.render(new HauntedWoods())}`)
   }
 
 }

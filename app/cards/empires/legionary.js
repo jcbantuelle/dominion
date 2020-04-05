@@ -39,7 +39,7 @@ Legionary = class Legionary extends Card {
 
   static reveal_gold(game, player_cards, response) {
     if (response === 'yes') {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.card_html('treasure', 'Gold')}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(new Gold())}`)
       game.turn.legionary_revealed_gold = true
     }
   }

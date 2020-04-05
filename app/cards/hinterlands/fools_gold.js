@@ -23,7 +23,7 @@ FoolsGold = class FoolsGold extends Card {
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Trash ${CardView.render(this)} to gain a ${CardView.card_html('treasure', 'Gold')}?`,
+      instructions: `Trash ${CardView.render(this)} to gain a ${CardView.render(new Gold())}?`,
       minimum: 1,
       maximum: 1
     })

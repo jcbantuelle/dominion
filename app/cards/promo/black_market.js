@@ -146,6 +146,6 @@ BlackMarket = class BlackMarket extends Card {
       let revealed_card = game.black_market_revealed.splice(revealed_card_index, 1)[0]
       game.black_market_deck.push(revealed_card)
     })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places the remaining cards on the bottom of the ${CardView.card_html('action', 'Black Market')} deck`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places the remaining cards on the bottom of the ${CardView.render(new BlackMarket())} deck`)
   }
 }

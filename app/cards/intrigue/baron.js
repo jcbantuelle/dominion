@@ -22,7 +22,7 @@ Baron = class Baron extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Discard an ${CardView.card_html('victory', 'Estate')}?`,
+        instructions: `Discard an ${CardView.render(new Estate())}?`,
         minimum: 1,
         maximum: 1
       })

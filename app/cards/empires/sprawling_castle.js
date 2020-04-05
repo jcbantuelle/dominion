@@ -18,8 +18,8 @@ SprawlingCastle = class SprawlingCastle extends Castles {
       minimum: 1,
       maximum: 1,
       options: [
-        {text: `Gain a ${CardView.card_html('victory', 'Duchy')}`, value: 'duchy'},
-        {text: `Gain 3 ${CardView.card_html('victory', 'Estate')}`, value: 'estate'}
+        {text: `Gain a ${CardView.render(new Duchy())}`, value: 'duchy'},
+        {text: `Gain 3 ${CardView.render(new Estate())}`, value: 'estate'}
       ]
     })
     let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id)

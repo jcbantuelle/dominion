@@ -27,7 +27,7 @@ Mountebank = class Mountebank extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Discard a ${CardView.card_html('curse', 'Curse')}?`,
+        instructions: `Discard a ${CardView.render(new Curse())}?`,
         minimum: 1,
         maximum: 1
       })

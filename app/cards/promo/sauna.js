@@ -30,7 +30,7 @@ Sauna = class Sauna extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Play ${CardView.card_html('action', 'Avanto')} from hand?`,
+        instructions: `Play ${CardView.render(new Avanto())} from hand?`,
         minimum: 1,
         maximum: 1
       })

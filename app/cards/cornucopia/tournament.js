@@ -74,7 +74,7 @@ Tournament = class Tournament extends Card {
 
   static reveal_province(game, player_cards, response) {
     if (response === 'yes') {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.card_html('victory', 'Province')}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(new Province())}`)
       if (game.turn.player._id === player_cards.player_id) {
         game.turn.self_revealed_province = true
       } else {

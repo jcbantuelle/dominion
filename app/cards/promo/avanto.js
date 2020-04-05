@@ -27,7 +27,7 @@ Avanto = class Avanto extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Play ${CardView.card_html('action', 'Sauna')} from hand?`,
+        instructions: `Play ${CardView.render(new Sauna())} from hand?`,
         minimum: 1,
         maximum: 1
       })

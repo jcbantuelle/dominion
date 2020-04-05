@@ -43,7 +43,7 @@ Contraband = class Contraband extends Card {
 
   static choose_card(game, player_cards, selected_cards) {
     game.turn.contraband.push(selected_cards[0].name)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> selects ${CardView.render(selected_cards)} as ${CardView.card_html('treasure', 'Contraband')}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> selects ${CardView.render(selected_cards)} as ${CardView.render(new Contraband())}`)
   }
 
 }

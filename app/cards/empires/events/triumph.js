@@ -24,7 +24,7 @@ Triumph = class Triumph extends Event {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
       }
     } else {
-      game.log.push(`&nbsp;&nbsp;but there is no ${CardView.card_html('victory', 'Estate')} to gain`)
+      game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(new Estate())} to gain`)
     }
   }
 }

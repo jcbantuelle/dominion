@@ -18,7 +18,7 @@ Duchy = class Duchy extends Card {
       player_id: gainer.player_cards.player_id,
       username: gainer.player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Gain a ${CardView.card_html('action', 'Duchess')}?`,
+      instructions: `Gain a ${CardView.render(new Duchess())}?`,
       minimum: 1,
       maximum: 1
     })

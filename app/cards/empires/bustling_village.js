@@ -35,7 +35,7 @@ BustlingVillage = class BustlingVillage extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, settlers_index)
       turn_event_processor.process(BustlingVillage.reveal_settlers)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not reveal a ${CardView.card_html('action', 'Settlers')}`)
+      game.log.push(`&nbsp;&nbsp;but does not reveal a ${CardView.render(new Settlers())}`)
     }
   }
 

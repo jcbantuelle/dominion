@@ -75,7 +75,7 @@ CardPlayer = class CardPlayer {
       let card_drawer = new CardDrawer(this.game, this.player_cards)
       card_drawer.draw(1, false)
       this.game.turn.actions += 1
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +1 card and +1 action instead due to ${CardView.card_html('duration', 'Enchantress')}`)
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +1 card and +1 action instead due to ${CardView.render(new Enchantress())}`)
     } else {
       result = this.card.play(this.game, this.player_cards, this)
     }
@@ -167,7 +167,7 @@ CardPlayer = class CardPlayer {
   action_resolution_events() {
     if (this.player_cards.champions > 0) {
       this.game.turn.actions += this.player_cards.champions
-      this.game.log.push(`<strong>${this.player_cards.username}</strong> gets +${this.player_cards.champions} action(s) from ${CardView.card_html('action duration', 'Champion')}`)
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> gets +${this.player_cards.champions} action(s) from ${CardView.render(new Champion())}`)
     }
     let action_resolution_event_processor = new ActionResolutionEventProcessor(this.game, this.player_cards, this.card.to_h())
     action_resolution_event_processor.process()

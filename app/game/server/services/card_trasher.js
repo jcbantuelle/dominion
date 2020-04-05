@@ -46,7 +46,7 @@ CardTrasher = class CardTrasher {
 
       _.times(this.game.turn.priests, () => {
         let gained_coins = CoinGainer.gain(this.game, this.player_cards, 2)
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +$${gained_coins} from ${CardView.card_html('action', 'Priest')}`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +$${gained_coins} from ${CardView.render(new Priest())}`)
       })
     })
 
