@@ -73,7 +73,7 @@ Vampire = class Vampire extends Card {
         game.log.push(`&nbsp;&nbsp;but the ${CardView.render(new Bat())} pile is empty`)
       }
     } else {
-      game.log.push(`&nbsp;&nbsp;but ${CardView.render(new Vampire())} is no longer in play`)
+      game.log.push(`&nbsp;&nbsp;but ${CardView.render(this)} is no longer in play`)
     }
   }
 
