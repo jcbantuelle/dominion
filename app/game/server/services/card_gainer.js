@@ -119,7 +119,9 @@ CardGainer = class CardGainer {
 
   convert_estate() {
     if (this.gained_card.name === 'Estate' && this.player_cards.tokens.estate) {
-      this.gained_card = ClassCreator.create('Inherited Estate').to_h(this.player_cards)
+      let estate = ClassCreator.create('Inherited Estate').to_h(this.player_cards)
+      estate.id = this.gained_card.id
+      this.gained_card = estate
     }
   }
 

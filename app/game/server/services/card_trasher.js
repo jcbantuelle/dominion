@@ -85,7 +85,9 @@ CardTrasher = class CardTrasher {
         this.player_cards.possession_trash.push(trashed_card)
       } else {
         if (trashed_card.name === 'Estate' && this.player_cards.tokens.estate) {
-          trashed_card = ClassCreator.create('Estate').to_h()
+          let estate = ClassCreator.create('Estate').to_h()
+          estate.id = trashed_card.id
+          trashed_card = estate
         }
         this.game.trash.push(trashed_card)
       }

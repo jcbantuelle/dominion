@@ -49,6 +49,7 @@ Overlord = class Overlord extends Card {
     player.card = ClassCreator.create(selected_cards[0].name)
     let copy = player.card.to_h()
     copy.misfit = overlord
+    copy.id = overlord.id
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> plays ${CardView.render(overlord)} as ${CardView.render(copy)}`)
 
     GameModel.update(game._id, game)

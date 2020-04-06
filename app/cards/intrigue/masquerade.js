@@ -62,7 +62,9 @@ Masquerade = class Masquerade extends Card {
         }
 
         if (next_player_cards.tokens.estate && other_player_cards.masquerade.name === 'Estate') {
+          let card_id = other_player_cards.masquerade.id
           other_player_cards.masquerade = ClassCreator.create('Inherited Estate').to_h(next_player_cards)
+          other_player_cards.masquerade.id = card_id
         }
         next_player_cards.hand.push(other_player_cards.masquerade)
         game.log.push(`&nbsp;&nbsp;<strong>${other_player_cards.username}</strong> passes a card to ${next_player.username}`)
@@ -101,7 +103,9 @@ Masquerade = class Masquerade extends Card {
     })
     player_cards.masquerade = player_cards.hand.splice(passed_card_index, 1)[0]
     if (player_cards.tokens.estate && player_cards.masquerade.name === 'Estate') {
+      let card_id = player_cards.masquerade.id
       player_cards.masquerade = ClassCreator.create('Estate').to_h()
+      player_cards.masquerade.id = card_id
     }
   }
 

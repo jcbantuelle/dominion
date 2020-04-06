@@ -45,6 +45,7 @@ BandOfMisfits = class BandOfMisfits extends Card {
     player.card = ClassCreator.create(selected_cards[0].name)
     let copy = player.card.to_h()
     copy.misfit = misfit
+    copy.id = misfit.id
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> plays ${CardView.render(misfit)} as ${CardView.render(copy)}`)
 
     GameModel.update(game._id, game)

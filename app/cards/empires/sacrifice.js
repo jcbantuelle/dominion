@@ -34,7 +34,9 @@ Sacrifice = class Sacrifice extends Card {
 
     let trashed_card = selected_cards[0]
     if (player_cards.tokens.estate && trashed_card.name === 'Estate') {
-      trashed_card = ClassCreator.create('Estate').to_h()
+      estate = ClassCreator.create('Estate').to_h()
+      estate.id = trashed_card.id
+      trashed_card = estate
     }
 
     let selected_card_types = _.words(trashed_card.types)

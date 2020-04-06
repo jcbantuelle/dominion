@@ -101,7 +101,9 @@ Ambassador = class Ambassador extends Card {
       let returned_cards = _.pullAt(player_cards.hand, returned_card_indexes)
       if (game.turn.ambassador_selected_card.name === 'Estate' && player_cards.tokens.estate) {
         returned_cards = _.map(returned_cards, function(card) {
-          return ClassCreator.create('Estate').to_h()
+          let estate = ClassCreator.create('Estate').to_h()
+          estate.id = card.id
+          return estate
         })
       }
 
