@@ -777,7 +777,7 @@ GameCreator = class GameCreator {
   }
 
   assign_card_id() {
-    let assigned_card_id = this.card_id
+    let assigned_card_id = _.toString(this.card_id)
     this.card_id += 1
     return assigned_card_id
   }
