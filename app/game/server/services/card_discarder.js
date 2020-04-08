@@ -1,21 +1,22 @@
 CardDiscarder = class CardDiscarder {
 
-  constructor(game, player_cards, source, card_names) {
+  constructor(game, player_cards, source, cards) {
     this.game = game
     this.player_cards = player_cards
     this.source = source
-    if (!card_names) {
-      this.card_names = _.map(player_cards[source], 'name')
-    } else {
-      this.card_names = _.isArray(card_names) ? card_names : [card_names]
+    if (!cards) {
+      cards = player_cards[source]
+    } else if (!_.isArray(cards)) {
+      cards = [cards]
     }
+    this.cards = cards
     this.discard_reaction_cards = ['Tunnel']
   }
 
   discard(announce = true) {
-    if (!_.isEmpty(this.card_names)) {
-      _.each(this.card_names, (card_name) => {
-        this.player_cards.to_discard.push(this.find_card(card_name))
+    if (!_.isEmpty(this.cards)) {
+      _.each(this.cards, (card) => {
+        this.player_cards.to_discard.push(this.find_card(card))
       })
       this.player_cards.to_discard = _.compact(this.player_cards.to_discard)
 
@@ -88,9 +89,9 @@ CardDiscarder = class CardDiscarder {
     return (has_event_cards || multiple_schemes)
   }
 
-  find_card(card_name) {
+  find_card(card_to_discard) {
     let card_index = _.findIndex(this.player_cards[this.source], (card) => {
-      return card.name === card_name
+      return card.id === card_to_discard.id
     })
     if (card_index !== -1) {
       return this.player_cards[this.source].splice(card_index, 1)[0]
@@ -108,11 +109,11 @@ CardDiscarder = class CardDiscarder {
     this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(card)}`)
   }
 
-  static order_cards(game, player_cards, ordered_card_names) {
+  static order_cards(game, player_cards, ordered_cards) {
     let new_discard_order = []
-    _.each(ordered_card_names, function(card_name) {
+    _.each(ordered_cards, function(ordered_card) {
       let discard_card_index = _.findIndex(player_cards.to_discard, function(card) {
-        return card.name === card_name
+        return card.id === ordered_card.id
       })
       new_discard_order.push(player_cards.to_discard.splice(discard_card_index, 1)[0])
     })

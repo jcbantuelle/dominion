@@ -56,7 +56,7 @@ Mercenary = class Mercenary extends Card {
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 
@@ -85,7 +85,7 @@ Mercenary = class Mercenary extends Card {
   static trash_cards(game, player_cards, selected_cards) {
     let trashed_card_count = _.size(selected_cards)
 
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     card_trasher.trash()
 
     if (trashed_card_count === 2) {

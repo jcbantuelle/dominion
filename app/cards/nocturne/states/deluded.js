@@ -6,7 +6,8 @@ Deluded = class Deluded extends State {
     let deluded_index = _.findIndex(player_cards.states, function(state) {
       return state.name === 'Deluded'
     })
-    player_cards.states.splice(deluded_index, 1)
+    deluded = player_cards.states.splice(deluded_index, 1)[0]
+    game.states.push(deluded)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(this)}`)
   }
 

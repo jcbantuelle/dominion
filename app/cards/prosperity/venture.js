@@ -18,7 +18,7 @@ Venture = class Venture extends Card {
 
     if (revealed_treasure) {
       player_cards.hand.push(revealed_treasure)
-      let card_player = new CardPlayer(game, player_cards, revealed_treasure.name, true)
+      let card_player = new CardPlayer(game, player_cards, revealed_treasure.id, true)
       card_player.play()
     } else {
       game.log.push(`&nbsp;&nbsp;but does not have any treasures in their deck`)

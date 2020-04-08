@@ -57,9 +57,9 @@ Knights = class Knights extends Card {
     }
   }
 
-  trash_knight(game, player_cards) {
+  trash_knight(game, player_cards, knight) {
     if (game.turn.trashed_knight) {
-      let card_trasher = new CardTrasher(game, player_cards, 'playing', this.name())
+      let card_trasher = new CardTrasher(game, player_cards, 'playing', knight)
       card_trasher.trash()
     }
     delete game.turn.trashed_knight
@@ -67,7 +67,7 @@ Knights = class Knights extends Card {
 
   static trash_revealed(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
-    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_card)
     card_trasher.trash()
 
     if (selected_card.stack_name === 'Knights') {

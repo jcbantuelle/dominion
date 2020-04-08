@@ -47,20 +47,17 @@ ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
     }
   }
 
-  static event_order(game, player_cards, event_name_order, params) {
-    _.each(event_name_order, function(event_name) {
+  static event_order(game, player_cards, ordered_events, params) {
+    _.each(ordered_events, function(ordered_event) {
       let tavern_index = _.findIndex(player_cards.tavern, function(card) {
-        return card.name === event_name
+        return card.id === ordered_event.id
       })
       if (tavern_index !== -1) {
         let event_index = _.findIndex(params.events, function(event) {
-          return event.name === event_name
+          return event.id === ordered_event.id
         })
-        let event = params.events.splice(event_index, 1)[0]
-        if (event_name === 'Estate' && player_cards.tokens.estate) {
-          event_name = 'InheritedEstate'
-        }
-        let selected_event = ClassCreator.create(event_name)
+        params.events.splice(event_index, 1)[0]
+        let selected_event = ClassCreator.create(ordered_event.name)
         selected_event.action_resolution_event(game, player_cards, params.resolved_action)
         GameModel.update(game._id, game)
         PlayerCardsModel.update(game._id, player_cards)

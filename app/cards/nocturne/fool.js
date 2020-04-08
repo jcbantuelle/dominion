@@ -14,18 +14,25 @@ Fool = class Fool extends Card {
     })
 
     if (lost_in_the_woods_index === -1) {
-      let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
-      ordered_player_cards.shift()
-      _.each(ordered_player_cards, function(other_player_cards) {
-        let other_player_lost_in_the_woods_index = _.findIndex(other_player_cards.states, function(state) {
-          return state.name === 'Lost In The Woods'
-        })
-        if (other_player_lost_in_the_woods_index !== -1) {
-          other_player_cards.states.splice(other_player_lost_in_the_woods_index, 1)
-        }
-        PlayerCardsModel.update(game._id, other_player_cards)
+      let lost_in_the_woods = null
+      let game_lost_in_the_woods_index = _.findIndex(game.states, function(state) {
+        return state.name === 'Lost In The Woods'
       })
-      let lost_in_the_woods = (new LostInTheWoods()).to_h()
+      if (game_lost_in_the_woods_index === -1) {
+        let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
+        ordered_player_cards.shift()
+        _.each(ordered_player_cards, function(other_player_cards) {
+          let other_player_lost_in_the_woods_index = _.findIndex(other_player_cards.states, function(state) {
+            return state.name === 'Lost In The Woods'
+          })
+          if (other_player_lost_in_the_woods_index !== -1) {
+            lost_in_the_woods = other_player_cards.states.splice(other_player_lost_in_the_woods_index, 1)[0]
+          }
+          PlayerCardsModel.update(game._id, other_player_cards)
+        })
+      } else {
+        lost_in_the_woods = game.states.splice(game_lost_in_the_woods_index, 1)[0]
+      }
       player_cards.states.push(lost_in_the_woods)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(lost_in_the_woods)}`)
 

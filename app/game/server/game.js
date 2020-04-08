@@ -23,14 +23,14 @@ Meteor.methods({
       player_connection_message(game_id, Meteor.user().username, 'left')
     }
   },
-  playCard: function(card_name, game_id) {
+  playCard: function(card_id, game_id) {
     Future.task(Meteor.bindEnvironment(function() {
       if (!ActionLock[game_id]) {
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
           ActionLock[game_id] = true
           let current_player_cards = player_cards(current_game)
-          let card_player = new CardPlayer(current_game, current_player_cards, card_name)
+          let card_player = new CardPlayer(current_game, current_player_cards, card_id)
           card_player.play()
           if (turn_over(current_game, current_player_cards)) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)

@@ -27,20 +27,20 @@ HornOfPlenty = class HornOfPlenty extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, player)
       turn_event_processor.process(HornOfPlenty.gain_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
   }
 
-  static gain_card(game, player_cards, selected_cards) {
+  static gain_card(game, player_cards, selected_cards, player) {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
     let gained_card = card_gainer.gain_game_card()
 
     if (gained_card && _.includes(_.words(gained_card.types), 'victory')) {
-      let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Horn Of Plenty')
+      let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
       card_trasher.trash()
     }
   }

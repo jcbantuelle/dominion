@@ -37,7 +37,7 @@ Bandit = class Bandit extends Card {
         return _.includes(_.words(card.types), 'treasure') && card.name !== 'Copper'
       })
       if (_.size(revealed_treasures) === 1) {
-        let card_trasher = new CardTrasher(game, player_cards, 'revealed', revealed_treasures[0].name)
+        let card_trasher = new CardTrasher(game, player_cards, 'revealed', revealed_treasures)
         card_trasher.trash()
       } else if (_.size(revealed_treasures) > 1) {
         let turn_event_id = TurnEventModel.insert({
@@ -60,7 +60,7 @@ Bandit = class Bandit extends Card {
   }
 
   static choose_trashed_treasure(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_cards[0].name)
+    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_cards)
     card_trasher.trash()
   }
 

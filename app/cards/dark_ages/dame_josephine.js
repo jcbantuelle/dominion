@@ -12,11 +12,11 @@ DameJosephine = class DameJosephine extends Knights {
     return 2
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 
-    this.trash_knight(game, player_cards)
+    this.trash_knight(game, player_cards, player.played_card)
   }
 
 }

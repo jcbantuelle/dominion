@@ -39,7 +39,7 @@ Shepherd = class Shepherd extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard any victory cards`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
       let card_drawer = new CardDrawer(game, player_cards)

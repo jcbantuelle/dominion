@@ -34,7 +34,7 @@ KingsCourt = class KingsCourt extends Card {
 
   static play_thrice(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_cards[0].name)
+      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_cards[0].id)
       repeat_card_player.play(3, 'Kings Court')
     } else {
       game.log.push(`&nbsp;&nbsp;but does not play an action`)

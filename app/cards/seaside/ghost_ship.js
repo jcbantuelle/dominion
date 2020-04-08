@@ -51,10 +51,10 @@ GhostShip = class GhostShip extends Card {
     turn_event_processor.process(GhostShip.replace_cards)
   }
 
-  static replace_cards(game, player_cards, ordered_card_names) {
-    _.each(ordered_card_names.reverse(), function(card_name) {
+  static replace_cards(game, player_cards, ordered_cards) {
+    _.each(ordered_cards.reverse(), function(ordered_card) {
       let returned_card_index = _.findIndex(player_cards.hand, function(card) {
-        return card.name === card_name
+        return card.id === ordered_card.id
       })
       let returned_card = player_cards.hand.splice(returned_card_index, 1)[0]
       player_cards.deck.unshift(returned_card)

@@ -78,7 +78,7 @@ ScryingPool = class ScryingPool extends Card {
 
   static discard_card(game, player_cards, response) {
     if (response === 'yes') {
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
     } else {
       let card = player_cards.revealed[0]

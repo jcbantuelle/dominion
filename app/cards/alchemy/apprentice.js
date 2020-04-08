@@ -39,7 +39,7 @@ Apprentice = class Apprentice extends Card {
       coin_cost += 2
     }
 
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card)
     card_trasher.trash()
 
     let card_drawer = new CardDrawer(game, player_cards)

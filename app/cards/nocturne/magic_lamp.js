@@ -8,7 +8,7 @@ MagicLamp = class MagicLamp extends Card {
     return 0
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     CoinGainer.gain(game, player_cards, 1)
 
     let grouped_cards_in_play = _.groupBy(player_cards.playing.concat(player_cards.in_play).concat(player_cards.duration).concat(player_cards.permanent), function(card) {
@@ -22,7 +22,7 @@ MagicLamp = class MagicLamp extends Card {
     }))
 
     if (unique_card_count >= 6) {
-      let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Magic Lamp')
+      let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
       card_trasher.trash()
 
       _.times(3, function() {

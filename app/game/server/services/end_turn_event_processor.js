@@ -55,16 +55,13 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
     }
   }
 
-  static event_order(game, player_cards, event_name_order, events) {
-    _.each(event_name_order, function(event_name) {
+  static event_order(game, player_cards, ordered_events, events) {
+    _.each(ordered_events, function(ordered_event) {
       let event_index = _.findIndex(events, function(event) {
-        return event.name === event_name
+        return event.id === ordered_event.id
       })
       let event = events.splice(event_index, 1)[0]
-      if (event_name === 'Estate' && player_cards.tokens.estate) {
-        event_name = 'InheritedEstate'
-      }
-      let selected_event = ClassCreator.create(event_name)
+      let selected_event = ClassCreator.create(event.name)
       if (event.end_turn_event_type === 'Faithful Hound') {
         delete event.end_turn_event_type
         selected_event.end_turn_event(game, player_cards, player_cards.faithful_hounds.pop())

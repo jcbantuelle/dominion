@@ -1,19 +1,20 @@
 CardTrasher = class CardTrasher {
 
-  constructor(game, player_cards, source, card_names) {
+  constructor(game, player_cards, source, cards) {
     this.game = game
     this.player_cards = player_cards
     this.source = source
-    if (!card_names) {
-      this.card_names = _.map(player_cards[source], 'name')
-    } else {
-      this.card_names = _.isArray(card_names) ? card_names : [card_names]
+    if (!cards) {
+      cards = player_cards[source]
+    } else if (!_.isArray(cards)) {
+      cards = [cards]
     }
+    this.cards = cards
   }
 
   trash() {
-    _.each(this.card_names, (card_name) => {
-      this.player_cards.trash.push(this.find_card(card_name))
+    _.each(this.cards, (card) => {
+      this.player_cards.trash.push(this.find_card(card))
     })
     this.player_cards.trash = _.compact(this.player_cards.trash)
 
@@ -54,8 +55,8 @@ CardTrasher = class CardTrasher {
   }
 
   has_events() {
-    let has_event_cards = _.some(this.card_names, (card_name) => {
-      return _.includes(TrashEventProcessor.event_cards(), card_name)
+    let has_event_cards = _.some(this.cards, (card) => {
+      return _.includes(TrashEventProcessor.event_cards(), card.name)
     })
     let has_reaction_cards = _.some(this.player_cards.hand, (card) => {
       return _.includes(TrashEventProcessor.reaction_cards(), card.name)
@@ -63,9 +64,9 @@ CardTrasher = class CardTrasher {
     return has_event_cards || has_reaction_cards
   }
 
-  find_card(card_name) {
+  find_card(card_to_trash) {
     let card_index = _.findIndex(this.player_cards[this.source], (card) => {
-      return card.name === card_name
+      return card.id === card_to_trash.id
     })
     return card_index === -1 ? undefined : this.player_cards[this.source].splice(card_index, 1)[0]
   }
@@ -102,11 +103,11 @@ CardTrasher = class CardTrasher {
     this.game.log.push(log_message)
   }
 
-  static order_cards(game, player_cards, ordered_card_names) {
+  static order_cards(game, player_cards, ordered_cards) {
     let new_trash_order = []
-    _.each(ordered_card_names, function(card_name) {
+    _.each(ordered_cards, function(ordered_card) {
       let trash_card_index = _.findIndex(player_cards.trash, function(card) {
-        return card.name === card_name
+        return card.id === ordered_card.id
       })
       new_trash_order.push(player_cards.trash.splice(trash_card_index, 1)[0])
     })

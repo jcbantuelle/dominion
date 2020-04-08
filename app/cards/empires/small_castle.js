@@ -56,7 +56,7 @@ SmallCastle = class SmallCastle extends Castles {
     let trashed_card = selected_cards[0]
     let source = trashed_card.source === 'H' ? 'hand' : 'playing'
     let source_size = _.size(player_cards[source])
-    let card_trasher = new CardTrasher(game, player_cards, source, trashed_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, source, trashed_card)
     card_trasher.trash()
     if (source_size > _.size(player_cards[source])) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Castles')

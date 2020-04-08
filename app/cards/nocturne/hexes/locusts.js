@@ -11,7 +11,7 @@ Locusts = class Locusts extends Hex {
       let top_card = player_cards.deck.shift()
       player_cards.revealed.push(top_card)
 
-      let card_trasher = new CardTrasher(game, player_cards, 'revealed', top_card.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'revealed', top_card)
       card_trasher.trash()
 
       if (_.includes(['Copper', 'Estate'], top_card.name)) {

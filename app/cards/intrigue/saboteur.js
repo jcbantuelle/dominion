@@ -17,7 +17,7 @@ Saboteur = class Saboteur extends Card {
     this.reveal(game, player_cards)
 
     if (player_cards.trashed_card) {
-      let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.trashed_card.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.trashed_card)
       card_trasher.trash()
       GameModel.update(game._id, game)
 

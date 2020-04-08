@@ -50,7 +50,7 @@ Raze = class Raze extends Card {
   static trash_card(game, player_cards, selected_cards) {
     let trashed_card = selected_cards[0]
     let source = trashed_card.source === 'H' ? 'hand' : 'playing'
-    let card_trasher = new CardTrasher(game, player_cards, source, trashed_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, source, trashed_card)
     card_trasher.trash()
 
     let coin_cost = CostCalculator.calculate(game, trashed_card)

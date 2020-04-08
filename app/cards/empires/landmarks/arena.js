@@ -24,7 +24,7 @@ Arena = class Arena extends Landmark {
 
   static discard_card(game, player_cards, selected_cards, arena) {
     if (_.size(selected_cards) > 0) {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
       let arena_stack = _.find(game.landmarks, (card) => {

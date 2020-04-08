@@ -32,7 +32,7 @@ Overlord = class Overlord extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, player)
       turn_event_processor.process(Overlord.copy_card)
 
-      let card_player = new CardPlayer(game, player_cards, player.card.name(), true, true)
+      let card_player = new CardPlayer(game, player_cards, player.card_id, true, true)
       card_player.play()
       return card_player.play_response
     } else {

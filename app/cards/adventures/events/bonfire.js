@@ -41,7 +41,7 @@ Bonfire = class Bonfire extends Event {
       game.log.push(`&nbsp;&nbsp;but does not trash anything`)
     } else {
       _.each(selected_cards, function(card) {
-        let card_trasher = new CardTrasher(game, player_cards, _.snakeCase(card.source), card.name)
+        let card_trasher = new CardTrasher(game, player_cards, _.snakeCase(card.source), card)
         card_trasher.trash()
       })
     }

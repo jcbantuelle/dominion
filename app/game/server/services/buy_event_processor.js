@@ -99,7 +99,7 @@ BuyEventProcessor = class BuyEventProcessor {
       return token.effect === 'trashing'
     })
     if (trashing_token && trashing_token.card.name === this.buyer.card.stack_name()) {
-      this.buy_events.push({name: 'Trash Token'})
+      this.buy_events.push({name: 'Trash Token', id: -1})
     }
   }
 
@@ -137,7 +137,8 @@ BuyEventProcessor = class BuyEventProcessor {
 
   static buy_event(game, player_cards, selected_cards, buy_event_processor) {
     if (!_.isEmpty(selected_cards)) {
-      if (selected_cards[0].name === 'Trash Token') {
+      let card = selected_cards[0]
+      if (card.name === 'Trash Token') {
         if (_.size(player_cards.hand) > 1) {
           let turn_event_id = TurnEventModel.insert({
             game_id: game._id,
@@ -158,20 +159,16 @@ BuyEventProcessor = class BuyEventProcessor {
           game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
         }
       } else {
-        let card_name = selected_cards[0].name
-        if (card_name === 'Estate' && player_cards.tokens.estate) {
-          card_name = 'InheritedEstate'
-        }
-        let selected_card = ClassCreator.create(card_name)
-        if (_.includes(BuyEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
-          selected_card.buy_reaction(game, player_cards, buy_event_processor.buyer)
+        let selected_card = ClassCreator.create(card.name)
+        if (_.includes(BuyEventProcessor.reaction_cards(), card.name)) {
+          selected_card.buy_reaction(game, player_cards, buy_event_processor.buyer, card)
         } else {
-          selected_card.buy_event(buy_event_processor.buyer)
+          selected_card.buy_event(buy_event_processor.buyer, card)
         }
       }
 
       let buy_event_index = _.findIndex(buy_event_processor.buy_events, function(event) {
-        return event.name === selected_cards[0].name
+        return event.id === card.id
       })
       buy_event_processor.buy_events.splice(buy_event_index, 1)
 
@@ -182,7 +179,7 @@ BuyEventProcessor = class BuyEventProcessor {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     card_trasher.trash()
   }
 

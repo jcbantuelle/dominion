@@ -17,8 +17,8 @@ MarketSquare = class MarketSquare extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +1 buy`)
   }
 
-  trash_reaction(game, player_cards, trasher, card_name = 'Market Square') {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', card_name)
+  trash_reaction(game, player_cards, trasher, card) {
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', card)
     card_discarder.discard()
 
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')

@@ -1,16 +1,17 @@
 CardPlayer = class CardPlayer {
 
-  constructor(game, player_cards, card_name, free_play = false, misfit = false) {
-    if (card_name === 'Estate' && player_cards.tokens.estate) {
-      card_name = 'InheritedEstate'
-    }
-    this.card = ClassCreator.create(card_name)
+  constructor(game, player_cards, card_id, free_play = false, misfit = false) {
     this.game = game
     this.player_cards = player_cards
     this.free_play = free_play
+    this.card_id = card_id
+
     this.card_index = _.findIndex(this.player_cards.hand, (card) => {
-      return card.name === this.card.name() && (!misfit || card.misfit)
+      return card.id === this.card_id
     })
+    this.played_card = this.player_cards.hand[this.card_index]
+    this.card = ClassCreator.create(played_card.name)
+
     this.resolve = !this.free_play || this.player_cards.hand[this.card_index].prince
   }
 

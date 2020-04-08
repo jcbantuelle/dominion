@@ -94,7 +94,7 @@ Rogue = class Rogue extends Card {
   }
 
   static trash_revealed(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_cards[0].name)
+    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_cards)
     card_trasher.trash()
   }
 

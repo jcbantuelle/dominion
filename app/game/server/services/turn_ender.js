@@ -176,7 +176,7 @@ TurnEnder = class TurnEnder {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to trash anything from ${CardView.render(new Donate())}`)
     } else {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
     }
     player_cards.deck = _.shuffle(player_cards.hand)

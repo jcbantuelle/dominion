@@ -41,7 +41,7 @@ Necromancer = class Necromancer extends Card {
     })
     game.trash[trash_card_index].face_down = true
 
-    let trash_card_player = new TrashCardPlayer(game, player_cards, game.trash[trash_card_index].name)
+    let trash_card_player = new TrashCardPlayer(game, player_cards, game.trash[trash_card_index].id)
     trash_card_player.play()
   }
 

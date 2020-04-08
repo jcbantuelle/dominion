@@ -4,7 +4,7 @@ War = class War extends Hex {
     this.reveal(game, player_cards)
 
     if (player_cards.trashed_card) {
-      let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.trashed_card.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.trashed_card)
       card_trasher.trash()
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> does not have any cards costing $3 or $4 in their deck`)

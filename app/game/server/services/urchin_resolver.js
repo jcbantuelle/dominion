@@ -15,16 +15,16 @@ UrchinResolver = class UrchinResolver {
           minimum: 1,
           maximum: 1
         })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, urchin)
         turn_event_processor.process(UrchinResolver.trash_urchin)
       })
       PlayerCardsModel.update(game._id, player_cards)
     }
   }
 
-  static trash_urchin(game, player_cards, response) {
+  static trash_urchin(game, player_cards, response, urchin) {
     if (response === 'yes') {
-      let card_trasher = new CardTrasher(game, player_cards, 'in_play', 'Urchin')
+      let card_trasher = new CardTrasher(game, player_cards, 'in_play', urchin)
       card_trasher.trash()
 
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Mercenary')

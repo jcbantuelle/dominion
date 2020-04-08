@@ -168,45 +168,21 @@ GainEventProcessor = class GainEventProcessor {
 
   static gain_event(game, player_cards, selected_cards, gain_event_processor) {
     if (!_.isEmpty(selected_cards)) {
-      let card_name = selected_cards[0].name
-      if (card_name === 'Estate' && player_cards.tokens.estate) {
-        card_name = 'InheritedEstate'
-      }
-      let selected_card = ClassCreator.create(card_name)
+      let card = selected_cards[0]
+      let selected_card = ClassCreator.create(card.name)
       if (_.includes(GainEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
-        selected_card.gain_reaction(game, player_cards, gain_event_processor.gainer)
-        if (card_name === 'Fools Gold') {
-          let fools_gold = _.filter(player_cards.hand, function(card) {
-            return card.name === 'Fools Gold'
-          })
-          gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
-            return event.inherited_name !== 'Fools Gold'
-          }).concat(fools_gold)
-        }
+        selected_card.gain_reaction(game, player_cards, gain_event_processor.gainer, card)
       } else {
         selected_card.gain_event(gain_event_processor.gainer)
-        if (card_name === 'Duplicate') {
-          let tavern_duplicates = _.filter(player_cards.tavern, function(card) {
-            return card.name === 'Duplicate'
-          })
-          let gain_event_duplicates = _.filter(gain_event_processor.gain_events, function(event) {
-            return event.inherited_name === 'Duplicate'
-          })
-          if (_.size(tavern_duplicates) < _.size(gain_event_duplicates)) {
-            gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
-              return event.inherited_name !== 'Duplicate'
-            }).concat(tavern_duplicates)
-          }
-        }
-        let gain_event_index = _.findIndex(gain_event_processor.gain_events, function(event) {
-          return event.name === selected_cards[0].name
-        })
-        gain_event_processor.gain_events.splice(gain_event_index, 1)
       }
+      let event_index = _.findIndex(gain_event_processor.gain_events, function(event) {
+        return event.id === card.id
+      })
+      gain_event_processor.gain_events.splice(gain_event_index, 1)
 
-      if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).name !== gain_event_processor.gainer.card_name) {
+      if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).id !== gain_event_processor.gainer.gained_card.id) {
         gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
-          return event.inherited_name !== 'Watchtower' && event.name !== 'Royal Seal'
+          return event.name !== 'Watchtower' && event.name !== 'Royal Seal'
         })
       }
 

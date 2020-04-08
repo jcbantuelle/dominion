@@ -31,7 +31,7 @@ Dismantle = class Dismantle extends Card {
   static trash_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
 
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card)
     card_trasher.trash()
 
     if (CardCostComparer.coin_greater_than(game, selected_card, 0)) {

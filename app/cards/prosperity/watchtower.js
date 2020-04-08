@@ -18,14 +18,8 @@ Watchtower = class Watchtower extends Card {
     card_drawer.draw(cards_to_draw)
   }
 
-  gain_reaction(game, player_cards, gainer, card_name = 'Watchtower') {
-    let revealed_card = this
-    if (card_name === 'Estate') {
-      revealed_card = _.find(player_cards.hand, function(card) {
-        return card.name === 'Estate'
-      })
-    }
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
+  gain_reaction(game, player_cards, gainer, watchtower) {
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(watchtower)}`)
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
@@ -46,7 +40,7 @@ Watchtower = class Watchtower extends Card {
   static process_response(game, player_cards, response, gainer) {
     response = response[0]
     if (response === 'trash') {
-      let card_trasher = new CardTrasher(game, player_cards, gainer.destination, gainer.card_name)
+      let card_trasher = new CardTrasher(game, player_cards, gainer.destination, gainer.gained_card)
       card_trasher.trash()
       gainer.card_name = ''
     } else if (response === 'deck') {

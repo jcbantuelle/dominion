@@ -37,10 +37,10 @@ Giant = class Giant extends Card {
         player_cards.revealed.push(revealed_card)
 
         if (CardCostComparer.coin_between(game, revealed_card, 3, 6)) {
-          let card_trasher = new CardTrasher(game, player_cards, 'revealed', revealed_card.name)
+          let card_trasher = new CardTrasher(game, player_cards, 'revealed', revealed_card)
           card_trasher.trash()
         } else {
-          let card_discarder = new CardDiscarder(game, player_cards, 'revealed', revealed_card.name)
+          let card_discarder = new CardDiscarder(game, player_cards, 'revealed', revealed_card)
           card_discarder.discard()
 
           let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')

@@ -61,7 +61,7 @@ Butcher = class Butcher extends Card {
     if (!_.isEmpty(selected_cards)) {
       let selected_card = selected_cards[0]
 
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card)
       card_trasher.trash()
 
       game.turn.butcher_card = selected_card

@@ -39,16 +39,11 @@ Counterfeit = class Counterfeit extends Card {
     if (!_.isEmpty(selected_cards)) {
       let selected_card = selected_cards[0]
 
-      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.name)
+      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.id)
       repeat_card_player.play(2, 'Counterfeit')
 
-      let played_card_index = _.findIndex(player_cards.playing, function(card) {
-        return card.name == repeat_card_player.card.name()
-      })
-      if (played_card_index !== -1) {
-        let card_trasher = new CardTrasher(game, player_cards, 'playing', repeat_card_player.card.name())
-        card_trasher.trash()
-      }
+      let card_trasher = new CardTrasher(game, player_cards, 'playing', selected_card)
+      card_trasher.trash()
     }
   }
 

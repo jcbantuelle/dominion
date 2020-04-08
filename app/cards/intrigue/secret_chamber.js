@@ -33,7 +33,7 @@ SecretChamber = class SecretChamber extends Card {
     if (discard_count === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
       let gained_coins = CoinGainer.gain(game, player_cards, discard_count)
@@ -41,13 +41,10 @@ SecretChamber = class SecretChamber extends Card {
     }
   }
 
-  attack_event(game, player_cards, card_name = 'Secret Chamber') {
-    let revealed_card = this
-    if (card_name === 'Estate') {
-      revealed_card = _.find(player_cards.hand, function(card) {
-        return card.name === 'Estate'
-      })
-    }
+  attack_event(game, player_cards, card) {
+    revealed_card = _.find(player_cards.hand, function(hand_card) {
+      return hand_card.id === card.id
+    })
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
 
     let card_drawer = new CardDrawer(game, player_cards)
@@ -93,10 +90,10 @@ SecretChamber = class SecretChamber extends Card {
     turn_event_processor.process(SecretChamber.replace_cards)
   }
 
-  static replace_cards(game, player_cards, ordered_card_names) {
-    _.each(ordered_card_names.reverse(), function(card_name) {
+  static replace_cards(game, player_cards, ordered_cards) {
+    _.each(ordered_cards.reverse(), function(ordered_card) {
       let returned_card_index = _.findIndex(player_cards.hand, function(card) {
-        return card.name === card_name
+        return card.id === ordered_card.id
       })
       let returned_card = player_cards.hand.splice(returned_card_index, 1)[0]
       player_cards.deck.unshift(returned_card)

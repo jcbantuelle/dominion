@@ -48,10 +48,10 @@ HauntedWoods = class HauntedWoods extends Card {
     }
   }
 
-  static replace_cards(game, player_cards, ordered_card_names) {
-    _.each(ordered_card_names.reverse(), function(card_name) {
+  static replace_cards(game, player_cards, ordered_cards) {
+    _.each(ordered_cards.reverse(), function(ordered_card) {
       let hand_card_index = _.findIndex(player_cards.hand, function(card) {
-        return card.name === card_name
+        return card.id === ordered_card.id
       })
       let hand_card = player_cards.hand.splice(hand_card_index, 1)[0]
       player_cards.deck.unshift(hand_card)

@@ -45,7 +45,7 @@ Imp = class Imp extends Card {
 
   static play_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let card_player = new CardPlayer(game, player_cards, selected_cards[0].name, true)
+      let card_player = new CardPlayer(game, player_cards, selected_cards[0].id, true)
       card_player.play()
     } else {
       game.log.push(`&nbsp;&nbsp;but does not play an action`)

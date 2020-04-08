@@ -8,11 +8,11 @@ SirMichael = class SirMichael extends Knights {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 
-    this.trash_knight(game, player_cards)
+    this.trash_knight(game, player_cards, player.played_card)
   }
 
   attack(game, player_cards) {
@@ -40,7 +40,7 @@ SirMichael = class SirMichael extends Knights {
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 

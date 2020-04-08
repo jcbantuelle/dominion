@@ -44,7 +44,7 @@ Mint = class Mint extends Card {
     let treasures_to_trash = _.filter(buyer.player_cards.in_play, function(card) {
       return _.includes(_.words(card.types), 'treasure')
     })
-    let card_trasher = new CardTrasher(buyer.game, buyer.player_cards, 'in_play', _.map(treasures_to_trash, 'name'))
+    let card_trasher = new CardTrasher(buyer.game, buyer.player_cards, 'in_play', treasures_to_trash)
     card_trasher.trash()
   }
 

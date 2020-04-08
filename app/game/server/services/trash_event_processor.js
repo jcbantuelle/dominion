@@ -71,18 +71,15 @@ TrashEventProcessor = class TrashEventProcessor {
 
   static trash_event(game, player_cards, selected_cards, trash_event_processor) {
     if (!_.isEmpty(selected_cards)) {
-      let card_name = selected_cards[0].name
-      if (card_name === 'Estate' && player_cards.tokens.estate) {
-        card_name = 'InheritedEstate'
-      }
-      let selected_card = ClassCreator.create(card_name)
+      let card = selected_cards[0]
+      let selected_card = ClassCreator.create(card.name)
       if (_.includes(TrashEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
-        selected_card.trash_reaction(game, player_cards, trash_event_processor.trasher)
+        selected_card.trash_reaction(game, player_cards, trash_event_processor.trasher, card)
       } else {
         selected_card.trash_event(trash_event_processor.trasher)
       }
       let trash_event_index = _.findIndex(trash_event_processor.trash_events, function(event) {
-        return event.name === card_name
+        return event.id === card.id
       })
       trash_event_processor.trash_events.splice(trash_event_index, 1)
 

@@ -3,8 +3,8 @@ CardList = class CardList {
   constructor(exclusions, edition) {
     this.edition = edition
     this.exclusions = exclusions
-    this.cards = CardList.full_list(this.exclusions, this.edition)
-    // this.cards = CardList.test_landmarks().concat(CardList.test_events()).concat(CardList.test())
+    // this.cards = CardList.full_list(this.exclusions, this.edition)
+    this.cards = CardList.test_landmarks().concat(CardList.test_events()).concat(CardList.test())
   }
 
   pull_set() {
@@ -665,26 +665,28 @@ CardList = class CardList {
   // Force specific cards, to test functionality
   static test_landmarks() {
     return [
+      // 'Obelisk'
     ]
   }
 
   static test_events() {
     return [
+      // 'Pilgrimage'
     ]
   }
 
   static test() {
     return [
-      'Messenger',
-      'Cellar',
-      'Remake',
-      'Smithy',
-      'Forge',
+      'Skulk',
+      'Bard',
+      'Castles',
+      'Werewolf',
+      'Fool',
       'Chapel',
-      'Plaza',
+      'Scout',
       'PoorHouse',
       'Ducat',
-      'Village'
+      'HornOfPlenty'
     ]
   }
 }

@@ -36,7 +36,7 @@ Bat = class Bat extends Card {
     let trashed_card_count = _.size(selected_cards)
 
     if (trashed_card_count > 0) {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
 
       let played_bat_index = _.findIndex(player_cards.playing, function(card) {

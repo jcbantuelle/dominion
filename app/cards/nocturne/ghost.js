@@ -15,7 +15,7 @@ Ghost = class Ghost extends Card {
   play(game, player_cards) {
     this.reveal(game, player_cards)
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard()
 
     if (player_cards.revealed_card) {
@@ -52,7 +52,7 @@ Ghost = class Ghost extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> resolves ${CardView.render(duration_card)}`)
     let set_aside_card = player_cards.ghost.pop()
     player_cards.hand.push(set_aside_card)
-    let repeat_card_player = new RepeatCardPlayer(game, player_cards, set_aside_card.name)
+    let repeat_card_player = new RepeatCardPlayer(game, player_cards, set_aside_card.id)
     repeat_card_player.play(2, 'Ghost')
   }
 

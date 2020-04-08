@@ -40,7 +40,7 @@ Disciple = class Disciple extends Traveller {
     if (!_.isEmpty(selected_cards)) {
       let selected_card = selected_cards[0]
 
-      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.name)
+      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.id)
       repeat_card_player.play(2, 'Disciple')
 
       let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)

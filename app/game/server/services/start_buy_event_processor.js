@@ -56,16 +56,13 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     }
   }
 
-  static event_order(game, player_cards, event_name_order, events) {
-    _.each(event_name_order, function(event_name) {
+  static event_order(game, player_cards, ordered_events, events) {
+    _.each(ordered_events, function(ordered_event) {
       let event_index = _.findIndex(events, function(event) {
-        return event.name === event_name
+        return event.id === ordered_event.id
       })
       let event = events.splice(event_index, 1)[0]
-      if (event_name === 'Estate' && player_cards.tokens.estate) {
-        event_name = 'InheritedEstate'
-      }
-      let selected_event = ClassCreator.create(event_name)
+      let selected_event = ClassCreator.create(event.name)
       selected_event.start_buy_event(game, player_cards)
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)

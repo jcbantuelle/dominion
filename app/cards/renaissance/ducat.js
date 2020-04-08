@@ -36,19 +36,19 @@ Ducat = class Ducat extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id, copper)
       turn_event_processor.process(Ducat.trash_copper)
     } else {
       gainer.game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(new Copper())}`)
     }
   }
 
-  static trash_copper(game, player_cards, response) {
+  static trash_copper(game, player_cards, response, copper) {
     if (response === 'yes') {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', 'Copper')
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', copper)
       card_trasher.trash()
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(new Copper())}`)
+      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(copper)}`)
     }
   }
 

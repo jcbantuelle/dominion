@@ -8,7 +8,7 @@ AttackEventProcessor = class AttackEventProcessor {
     let attack_events = []
 
     _.each(player_cards.hand, (card) => {
-      if (_.includes(AttackEventProcessor.attack_reactions(), card.inherited_name)) {
+      if (_.includes(AttackEventProcessor.attack_reactions(), card.name)) {
         if (card.inherited_name === 'Diplomat') {
           if (_.size(player_cards.hand) > 4) {
             attack_events.push(card)
@@ -48,12 +48,9 @@ AttackEventProcessor = class AttackEventProcessor {
 
   static attack_event(game, player_cards, selected_cards, attack_event_processor) {
     if (!_.isEmpty(selected_cards)) {
-      let card_name = selected_cards[0].name
-      if (card_name === 'Estate' && player_cards.tokens.estate) {
-        card_name = 'InheritedEstate'
-      }
-      let selected_card = ClassCreator.create(card_name)
-      selected_card.attack_event(game, player_cards)
+      let card = selected_cards[0]
+      let selected_card = ClassCreator.create(card.name)
+      selected_card.attack_event(game, player_cards, card)
 
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)

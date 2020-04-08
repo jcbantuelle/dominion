@@ -64,11 +64,11 @@ Mandarin = class Mandarin extends Card {
     }
   }
 
-  static replace_cards(game, player_cards, ordered_card_names) {
+  static replace_cards(game, player_cards, ordered_cards) {
     let replaced_cards = []
-    _.each(ordered_card_names.reverse(), function(card_name) {
+    _.each(ordered_cards.reverse(), function(ordered_card) {
       let card_index = _.findIndex(player_cards.in_play, function(card) {
-        return card.name === card_name
+        return card.id === ordered_card.id
       })
       let card = player_cards.in_play.splice(card_index, 1)[0]
       replaced_cards.push(card)

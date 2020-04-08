@@ -28,8 +28,8 @@ InheritedEstate = class InheritedEstate extends Card {
     return ClassCreator.create(player_cards.tokens.estate.name).play(game, player_cards, player)
   }
 
-  attack_event(game, player_cards) {
-    return ClassCreator.create(player_cards.tokens.estate.name).attack_event(game, player_cards, 'Estate')
+  attack_event(game, player_cards, card_id) {
+    return ClassCreator.create(player_cards.tokens.estate.name).attack_event(game, player_cards, card_id)
   }
 
   start_turn_event(game, player_cards, card) {

@@ -40,6 +40,7 @@ GameCreator = class GameCreator {
       landmarks: this.landmarks,
       duchess: this.game_has_card(cards, 'Duchess'),
       prizes: this.prizes(cards),
+      states: this.states(cards),
       trash: []
     }
     if (this.black_market_deck) {
@@ -546,6 +547,30 @@ GameCreator = class GameCreator {
         return prize.to_h()
       }))
     }
+  }
+
+  states(cards) {
+    let state_cards = []
+    if (this.game_has_card(cards, 'Fool')) {
+      state_cards.push(new LostInTheWoods())
+    }
+
+    if (this.hexes_deck) {
+      _.times(_.size(this.players), (count) => {
+        state_cards.push(new Deluded())
+        state_cards.push(new Envious())
+        state_cards.push(new Miserable())
+        state_cards.push(new TwiceMiserable())
+      })
+    }
+
+    state_cards = _.sortBy(state_cards, function(state) {
+      return state.name()
+    })
+
+    return this.set_card_ids_for_collection(_.map(state_cards, function(state) {
+      return state.to_h()
+    }))
   }
 
   boons() {

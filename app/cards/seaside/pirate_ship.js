@@ -97,7 +97,7 @@ PirateShip = class PirateShip extends Card {
 
   static trash_treasure(game, player_cards, trashed_treasure) {
     game.turn.trashed_treasure = trashed_treasure
-    let card_trasher = new CardTrasher(game, player_cards, 'revealed', trashed_treasure.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'revealed', trashed_treasure)
     card_trasher.trash()
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')

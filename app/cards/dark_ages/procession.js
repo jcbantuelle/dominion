@@ -36,16 +36,11 @@ Procession = class Procession extends Card {
     if (!_.isEmpty(selected_cards)) {
       let selected_card = selected_cards[0]
 
-      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.name)
+      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.id)
       repeat_card_player.play(2, 'Procession')
 
-      let played_card_index = _.findIndex(player_cards.playing, function(card) {
-        return card.name == repeat_card_player.card.name()
-      })
-      if (played_card_index !== -1) {
-        let card_trasher = new CardTrasher(game, player_cards, 'playing', repeat_card_player.card.name())
-        card_trasher.trash()
-      }
+      let card_trasher = new CardTrasher(game, player_cards, 'playing', selected_card)
+      card_trasher.trash()
 
       let eligible_cards = _.filter(game.cards, function(card) {
         return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && CardCostComparer.card_equal_to(game, selected_card, card.top_card, 1)

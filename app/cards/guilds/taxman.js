@@ -64,12 +64,15 @@ Taxman = class Taxman extends Card {
 
   attack(game, player_cards) {
     if (game.turn.taxman_trash) {
-      let original_hand_size = _.size(player_cards.hand)
 
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', game.turn.taxman_trash.name)
-      card_discarder.discard()
+      let treasure_to_discard = _.find(player_cards.hand, (card) => {
+        card.name === game.turn.taxman_trash.name
+      })
 
-      if (_.size(player_cards.hand) === original_hand_size) {
+      if (treasure_to_discard) {
+        let card_discarder = new CardDiscarder(game, player_cards, 'hand', treasure_to_discard)
+        card_discarder.discard()
+      } else {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
       }
     }
@@ -79,7 +82,7 @@ Taxman = class Taxman extends Card {
     if (!_.isEmpty(selected_cards)) {
       game.turn.taxman_trash = selected_cards[0]
 
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', game.turn.taxman_trash.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', game.turn.taxman_trash)
       card_trasher.trash()
     }
   }

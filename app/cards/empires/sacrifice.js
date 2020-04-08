@@ -29,7 +29,7 @@ Sacrifice = class Sacrifice extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     card_trasher.trash()
 
     let trashed_card = selected_cards[0]

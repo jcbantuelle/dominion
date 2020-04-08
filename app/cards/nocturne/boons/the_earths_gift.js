@@ -28,7 +28,7 @@ TheEarthsGift = class TheEarthsGift extends Boon {
     if (!_.isEmpty(selected_cards)) {
       discard_treasure = selected_cards[0]
 
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
       let eligible_cards = _.filter(game.cards, function(card) {

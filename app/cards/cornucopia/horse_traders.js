@@ -36,13 +36,13 @@ HorseTraders = class HorseTraders extends Card {
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 
-  attack_event(game, player_cards, card_name = 'Horse Traders') {
-    let horse_traders_index = _.findIndex(player_cards.hand, function(card) {
-      return card.name === card_name
+  attack_event(game, player_cards, card) {
+    let horse_traders_index = _.findIndex(player_cards.hand, function(hand_card) {
+      return hand_card.id === card.id
     })
     let horse_traders = player_cards.hand.splice(horse_traders_index, 1)[0]
     player_cards.horse_traders.push(horse_traders)

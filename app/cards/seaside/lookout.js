@@ -26,7 +26,7 @@ Lookout = class Lookout extends Card {
       }
 
       if (_.size(player_cards.revealed) === 1) {
-        let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.revealed[0].name)
+        let card_trasher = new CardTrasher(game, player_cards, 'revealed')
         card_trasher.trash()
         game.log.push(`&nbsp;&nbsp;but has no cards left to continue`)
       } else {
@@ -49,7 +49,7 @@ Lookout = class Lookout extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
-    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_card)
     card_trasher.trash()
     if (_.size(player_cards.revealed) === 1) {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
@@ -73,7 +73,7 @@ Lookout = class Lookout extends Card {
   }
 
   static discard_card(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', selected_cards)
     card_discarder.discard()
 
     player_cards.deck.unshift(player_cards.revealed[0])

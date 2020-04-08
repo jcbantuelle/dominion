@@ -47,7 +47,7 @@ Advisor = class Advisor extends Card {
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', selected_cards)
     card_discarder.discard()
 
     if (_.size(player_cards.revealed) > 0) {

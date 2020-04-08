@@ -104,7 +104,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> does not trash anything`)
     } else {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
     }
   }

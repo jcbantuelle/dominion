@@ -38,7 +38,7 @@ Rebuild = class Rebuild extends Card {
 
       if (player_cards.revealed_victory_card) {
         player_cards.revealed.push(player_cards.revealed_victory_card)
-        let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.revealed_victory_card.name)
+        let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.revealed_victory_card)
         card_trasher.trash()
 
         let eligible_cards = _.filter(game.cards, function(card) {

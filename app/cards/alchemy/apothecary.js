@@ -67,10 +67,10 @@ Apothecary = class Apothecary extends Card {
     }
   }
 
-  static replace_cards(game, player_cards, ordered_card_names) {
-    _.each(ordered_card_names.reverse(), function(card_name) {
+  static replace_cards(game, player_cards, ordered_cards) {
+    _.each(ordered_cards.reverse(), function(ordered_card) {
       let revealed_card_index = _.findIndex(player_cards.revealed, function(card) {
-        return card.name === card_name
+        return card.id === ordered_card.id
       })
       let revealed_card = player_cards.revealed.splice(revealed_card_index, 1)[0]
       player_cards.deck.unshift(revealed_card)

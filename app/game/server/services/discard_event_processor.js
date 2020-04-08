@@ -111,14 +111,11 @@ DiscardEventProcessor = class DiscardEventProcessor {
   }
 
   static discard_event(game, player_cards, selected_cards, discard_event_processor) {
-    let card_name = selected_cards[0].name
-    if (card_name === 'Estate' && player_cards.tokens.estate) {
-      card_name = 'InheritedEstate'
-    }
-    let selected_card = ClassCreator.create(card_name)
-    selected_card.discard_event(discard_event_processor.discarder)
+    let card = selected_cards[0]
+    let selected_card = ClassCreator.create(card.name)
+    selected_card.discard_event(discard_event_processor.discarder, card)
     let discard_event_index = _.findIndex(discard_event_processor.discard_events, function(event) {
-      return event.name === selected_cards[0].name
+      return event.id === card.id
     })
     discard_event_processor.discard_events.splice(discard_event_index, 1)
 

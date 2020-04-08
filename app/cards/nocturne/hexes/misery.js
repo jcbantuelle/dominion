@@ -5,14 +5,22 @@ Misery = class Misery extends Hex {
       return _.includes(['Miserable', 'Twice Miserable'], state.name)
     })
     if (miserable_index === -1) {
-      let miserable = (new Miserable()).to_h()
+      let miserable_index = _.findIndex(game.states, function(state) {
+        return state.name === 'Miserable'
+      })
+      let miserable = game.states.splice(miserable_index, 1)[0]
       player_cards.states.push(miserable)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(miserable)}`)
     } else if (player_cards.states[miserable_index].name === 'Miserable') {
       let miserable = player_cards.states.splice(miserable_index, 1)[0]
-      let twice_miserable = (new TwiceMiserable()).to_h()
+      game.states.push(miserable)
+
+      let twice_miserable_index = _.findIndex(game.states, function(state) {
+        return state.name === 'Twice Miserable'
+      })
+      let twice_miserable = game.states.splice(twice_miserable_index, 1)[0]
       player_cards.states.push(twice_miserable)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> flips ${CardView.render(miserable)} over to ${CardView.render(twice_miserable)}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(miserable)} and takes ${CardView.render(twice_miserable)}`)
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has ${CardView.render(player_cards.states[miserable_index])}`)
     }

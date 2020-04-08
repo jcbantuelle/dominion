@@ -12,8 +12,8 @@ Hovel = class Hovel extends Card {
     return 1
   }
 
-  buy_reaction(game, player_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', 'Hovel')
+  buy_reaction(game, player_cards, buyer, card) {
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', card)
     card_trasher.trash()
   }
 

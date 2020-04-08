@@ -27,7 +27,7 @@ Herald = class Herald extends Card {
 
       if (_.includes(_.words(top_card.types), 'action')) {
         player_cards.hand.push(player_cards.deck.shift())
-        let card_player = new CardPlayer(game, player_cards, top_card.name, true)
+        let card_player = new CardPlayer(game, player_cards, top_card.id, true)
         card_player.play()
       } else {
         game.log.push(`&nbsp;&nbsp;putting it back on top of their deck`)
@@ -98,10 +98,10 @@ Herald = class Herald extends Card {
     turn_event_processor.process(Herald.replace_cards)
   }
 
-  static replace_cards(game, player_cards, ordered_card_names) {
-    _.each(ordered_card_names.reverse(), function(card_name) {
+  static replace_cards(game, player_cards, ordered_cards) {
+    _.each(ordered_cards.reverse(), function(ordered_card) {
       let revealed_card_index = _.findIndex(player_cards.revealed, function(card) {
-        return card.name === card_name
+        return card.id === ordered_card.id
       })
       let revealed_card = player_cards.revealed.splice(revealed_card_index, 1)[0]
       player_cards.deck.unshift(revealed_card)

@@ -21,8 +21,8 @@ CaravanGuard = class CaravanGuard extends Card {
     return 'duration'
   }
 
-  attack_event(game, player_cards, card_name = 'Caravan Guard') {
-    let card_player = new CardPlayer(game, player_cards, card_name, true)
+  attack_event(game, player_cards, card) {
+    let card_player = new CardPlayer(game, player_cards, card.id, true)
     card_player.play()
   }
 

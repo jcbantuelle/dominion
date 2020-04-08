@@ -40,7 +40,7 @@ Recruiter = class Recruiter extends Card {
     if (trashed_card) {
       let coin_cost = CostCalculator.calculate(game, trashed_card)
 
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card)
       card_trasher.trash()
 
       if (game.turn.player._id === player_cards.player_id) {

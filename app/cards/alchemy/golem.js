@@ -17,7 +17,7 @@ Golem = class Golem extends Card {
 
     if (has_cards) {
 
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
 
       GameModel.update(game._id, game)
@@ -40,7 +40,7 @@ Golem = class Golem extends Card {
         turn_event_processor.process(Golem.choose_first_action)
       } else if (player_cards.first_golem_card) {
         player_cards.hand.push(player_cards.first_golem_card)
-        let card_player = new CardPlayer(game, player_cards, player_cards.first_golem_card.name, true)
+        let card_player = new CardPlayer(game, player_cards, player_cards.first_golem_card.id, true)
         delete player_cards.first_golem_card
         card_player.play()
       } else {
@@ -94,7 +94,7 @@ Golem = class Golem extends Card {
 
     _.each([first_played_card, second_played_card], function(card) {
       player_cards.hand.push(card)
-      let card_player = new CardPlayer(game, player_cards, card.name, true)
+      let card_player = new CardPlayer(game, player_cards, card.id, true)
       card_player.play()
     })
   }

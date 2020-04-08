@@ -9,7 +9,7 @@ Changeling = class Changeling extends Card {
   }
 
   play(game, player_cards, player) {
-    let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Changeling')
+    let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
     card_trasher.trash()
     GameModel.update(game._id, game)
 

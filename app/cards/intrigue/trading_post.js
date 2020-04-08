@@ -33,7 +33,7 @@ TradingPost = class TradingPost extends Card {
     if (trashed_card_count === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in hand to trash`)
     } else {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
     }
 

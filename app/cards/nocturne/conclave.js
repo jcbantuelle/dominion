@@ -38,7 +38,7 @@ Conclave = class Conclave extends Card {
 
   static play_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let card_player = new CardPlayer(game, player_cards, selected_cards[0].name, true)
+      let card_player = new CardPlayer(game, player_cards, selected_cards[0].id, true)
       card_player.play()
 
       game.turn.actions += 1

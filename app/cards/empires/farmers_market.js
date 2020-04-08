@@ -8,7 +8,7 @@ FarmersMarket = class FarmersMarket extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     game.turn.buys += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
 
@@ -27,7 +27,7 @@ FarmersMarket = class FarmersMarket extends Card {
           player_cards.victory_tokens += victory_tokens
           game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
         }
-        let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Farmers Market')
+        let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
         card_trasher.trash()
         game.cards[farmers_market_index].victory_tokens = 0
       } else {

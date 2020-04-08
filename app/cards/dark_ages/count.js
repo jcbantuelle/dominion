@@ -96,7 +96,7 @@ Count = class Count extends Card {
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 
@@ -115,7 +115,7 @@ Count = class Count extends Card {
       let gained_coins = CoinGainer.gain(game, player_cards, 3)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
     } else if (response === 'trash') {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(player_cards.hand, 'name'))
+      let card_trasher = new CardTrasher(game, player_cards, 'hand')
       card_trasher.trash()
     } else if (response === 'duchy') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')

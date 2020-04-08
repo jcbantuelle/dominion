@@ -52,8 +52,8 @@ Hermit = class Hermit extends Card {
     }
   }
 
-  discard_event(discarder, card_name = 'Hermit') {
-    let card_trasher = new CardTrasher(discarder.game, discarder.player_cards, 'discarding', card_name)
+  discard_event(discarder, card) {
+    let card_trasher = new CardTrasher(discarder.game, discarder.player_cards, 'discarding', card)
     card_trasher.trash()
 
     let card_gainer = new CardGainer(discarder.game, discarder.player_cards, 'discard', 'Madman')
@@ -73,7 +73,7 @@ Hermit = class Hermit extends Card {
   static trash_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
       let source = selected_cards[0].source === 'H' ? 'hand' : 'discard'
-      let card_trasher = new CardTrasher(game, player_cards, source, selected_cards[0].name)
+      let card_trasher = new CardTrasher(game, player_cards, source, selected_cards)
       card_trasher.trash()
     }
   }

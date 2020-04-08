@@ -8,11 +8,11 @@ Embargo = class Embargo extends Card {
     return 2
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     let gained_coins = CoinGainer.gain(game, player_cards, 2)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
 
-    let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Embargo')
+    let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
     card_trasher.trash()
 
     let eligible_cards = _.filter(game.cards, function(card) {

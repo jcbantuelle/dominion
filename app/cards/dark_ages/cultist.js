@@ -15,10 +15,10 @@ Cultist = class Cultist extends Card {
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 
-    let cultists = _.some(player_cards.hand, function(card) {
+    let cultist_in_hand = _.find(player_cards.hand, function(card) {
       return card.name === 'Cultist'
     })
-    if (cultists) {
+    if (cultist_in_hand) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -28,7 +28,7 @@ Cultist = class Cultist extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, cultist_in_hand)
       turn_event_processor.process(Cultist.play_cultist)
     }
   }
@@ -38,9 +38,9 @@ Cultist = class Cultist extends Card {
     card_gainer.gain_game_card()
   }
 
-  static play_cultist(game, player_cards, response) {
+  static play_cultist(game, player_cards, response, cultist_in_hand) {
     if (response === 'yes') {
-      let card_player = new CardPlayer(game, player_cards, 'Cultist', true)
+      let card_player = new CardPlayer(game, player_cards, cultist_in_hand.id, true)
       card_player.play()
     }
   }

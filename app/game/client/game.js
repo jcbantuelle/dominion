@@ -24,7 +24,7 @@ function registerStreams() {
 
 function createPopovers() {
   $('body').popover({
-    selector: '.card-container .card, .event-container .card, .hand-card, .prize-card, .native-village-card, .archive-card, .crypt-card, .island-card, .tavern-card, .state-card, .artifact-card, .trash-card, .black-market-card, .choose-card, .landmark-container .card, .boon-container .card, #game-log span.card, #instructions .card, #action-response span.boon, #action-response span.hex',
+    selector: '.card-container .card, .event-container .card, .hand-card, .prize-card, .state-card, .native-village-card, .archive-card, .crypt-card, .island-card, .tavern-card, .state-card, .artifact-card, .trash-card, .black-market-card, .choose-card, .landmark-container .card, .boon-container .card, #game-log span.card, #instructions .card, #action-response span.boon, #action-response span.hex',
     html: true,
     content: function() {
       return $(this).next('.card-tooltip').html()
@@ -63,7 +63,7 @@ function sendMessage(event) {
 }
 
 function playCard(event) {
-  Meteor.call('playCard', $(event.target).attr('data-name'), Router.current().params.id)
+  Meteor.call('playCard', $(event.target).attr('data-id'), Router.current().params.id)
 }
 
 function buyCard(event) {

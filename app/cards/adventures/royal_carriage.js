@@ -49,7 +49,7 @@ RoyalCarriage = class RoyalCarriage extends Card {
       let replayed_action = player_cards.playing.splice(action_index, 1)[0]
       player_cards.hand.push(replayed_action)
 
-      let card_player = new CardPlayer(game, player_cards, replayed_action.name, true)
+      let card_player = new CardPlayer(game, player_cards, replayed_action.id, true)
       let replayed_destination = card_player.play()
 
       let reserve_destination = 'in_play'

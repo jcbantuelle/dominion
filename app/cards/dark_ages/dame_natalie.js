@@ -8,7 +8,7 @@ DameNatalie = class DameNatalie extends Knights {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     let eligible_cards = _.filter(game.cards, function(card) {
       return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 4)
     })
@@ -34,7 +34,7 @@ DameNatalie = class DameNatalie extends Knights {
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 
-    this.trash_knight(game, player_cards)
+    this.trash_knight(game, player_cards, player.played_card)
   }
 
   static gain_card(game, player_cards, selected_cards) {

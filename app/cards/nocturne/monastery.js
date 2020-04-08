@@ -51,7 +51,7 @@ Monastery = class Monastery extends Card {
   static trash_cards(game, player_cards, selected_cards) {
     _.each(selected_cards, function(card) {
       let source = card.source === 'H' ? 'hand' : 'in_play'
-      let card_trasher = new CardTrasher(game, player_cards, source, card.name)
+      let card_trasher = new CardTrasher(game, player_cards, source, card)
       card_trasher.trash()
     })
   }

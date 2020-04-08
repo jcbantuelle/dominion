@@ -15,29 +15,23 @@ WineMerchant = class WineMerchant extends Card {
     this.move_to_tavern(game, player_cards, player.card.name())
   }
 
-  end_buy_event(game, player_cards, card_name = 'Wine Merchant') {
-    let tavern_card = this
-    if (card_name === 'Estate') {
-      tavern_card = _.find(player_cards.tavern, function(card) {
-        return card.name === 'Estate'
-      })
-    }
+  end_buy_event(game, player_cards, card) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Discard ${CardView.render(tavern_card)}?`,
+      instructions: `Discard ${CardView.render(card)}?`,
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_name)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card)
     turn_event_processor.process(WineMerchant.discard_card)
   }
 
-  static discard_card(game, player_cards, response, card_name) {
+  static discard_card(game, player_cards, response, card) {
     if (response === 'yes') {
-      let card_discarder = new CardDiscarder(game, player_cards, 'tavern', card_name)
+      let card_discarder = new CardDiscarder(game, player_cards, 'tavern', card)
       card_discarder.discard()
     }
   }

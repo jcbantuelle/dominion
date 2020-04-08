@@ -31,7 +31,7 @@ Develop = class Develop extends Card {
   static trash_card(game, player_cards, selected_cards) {
     game.turn.develop_card = selected_cards[0]
 
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', game.turn.develop_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', game.turn.develop_card)
     card_trasher.trash()
 
     let turn_event_id = TurnEventModel.insert({

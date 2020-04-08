@@ -61,21 +61,21 @@ Storyteller = class Storyteller extends Card {
     }
   }
 
-  static play_treasures(game, player_cards, ordered_card_names) {
-    _.each(ordered_card_names, function(card_name) {
-      let card_player = new CardPlayer(game, player_cards, card_name, true)
+  static play_treasures(game, player_cards, ordered_cards) {
+    _.each(ordered_cards, function(card) {
+      let card_player = new CardPlayer(game, player_cards, card.id, true)
       card_player.play()
-      Storyteller.push_treasure_into_play(game, player_cards, card_name)
+      Storyteller.push_treasure_into_play(game, player_cards, card)
     })
     GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
   }
 
-  static push_treasure_into_play(game, player_cards, card_name) {
+  static push_treasure_into_play(game, player_cards, treasure) {
     let treasure_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === card_name
+      return card.id === treasure.id
     })
-    let treasure = player_cards.playing.splice(treasure_index, 1)[0]
+    treasure = player_cards.playing.splice(treasure_index, 1)[0]
     let destination = treasure.destination
     delete treasure.processed
     delete treasure.destination

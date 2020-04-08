@@ -22,7 +22,7 @@ RoyalBlacksmith = class RoyalBlacksmith extends Card {
       return card.name === 'Copper'
     })
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(coppers, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', coppers)
     card_discarder.discard()
   }
 

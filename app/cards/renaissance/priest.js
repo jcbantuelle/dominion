@@ -35,7 +35,7 @@ Priest = class Priest extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     let trashed_card = selected_cards[0]
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card)
     card_trasher.trash()
   }
 

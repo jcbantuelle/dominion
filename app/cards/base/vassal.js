@@ -22,7 +22,7 @@ Vassal = class Vassal extends Card {
       let revealed_card = player_cards.deck.shift()
       player_cards.revealed.push(revealed_card)
 
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
 
       if (_.includes(_.words(revealed_card.types), 'action')) {
@@ -48,7 +48,7 @@ Vassal = class Vassal extends Card {
         return card.name === revealed_card.name
       })
       player_cards.hand.push(player_cards.discard.splice(card_index, 1)[0])
-      let card_player = new CardPlayer(game, player_cards, revealed_card.name, true)
+      let card_player = new CardPlayer(game, player_cards, revealed_card.id, true)
       card_player.play()
     } else {
       game.log.push(`&nbsp;&nbsp;but chooses not to play it`)

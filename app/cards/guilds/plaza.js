@@ -42,7 +42,7 @@ Plaza = class Plaza extends Card {
     if (!_.isEmpty(selected_cards)) {
       let selected_card = selected_cards[0]
 
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_card.name)
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_card)
       card_discarder.discard()
 
       if (game.turn.possessed) {

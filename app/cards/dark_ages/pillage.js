@@ -8,8 +8,8 @@ Pillage = class Pillage extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Pillage')
+  play(game, player_cards, player) {
+    let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
     card_trasher.trash()
 
     let player_attacker = new PlayerAttacker(game, this)
@@ -44,7 +44,7 @@ Pillage = class Pillage extends Card {
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 

@@ -56,7 +56,7 @@ Loan = class Loan extends Card {
   static process_response(game, player_cards, response) {
     response = response[0]
     if (response === 'trash') {
-      let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.revealed_treasure.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.revealed_treasure)
       card_trasher.trash()
     }
   }

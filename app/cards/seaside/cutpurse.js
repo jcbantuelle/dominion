@@ -17,12 +17,14 @@ Cutpurse = class Cutpurse extends Card {
   }
 
   attack(game, player_cards) {
-    let original_hand_size = _.size(player_cards.hand)
+    let copper = _.find(player_cards.hand, (card) => {
+      return card.name === 'Copper'
+    })
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', 'Copper')
-    card_discarder.discard()
-
-    if (_.size(player_cards.hand) === original_hand_size) {
+    if (copper) {
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', copper)
+      card_discarder.discard()
+    } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
     }
   }

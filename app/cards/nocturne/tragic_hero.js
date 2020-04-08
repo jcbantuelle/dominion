@@ -8,7 +8,7 @@ TragicHero = class TragicHero extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(3)
 
@@ -16,7 +16,7 @@ TragicHero = class TragicHero extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
 
     if (_.size(player_cards.hand) > 7) {
-      let card_trasher = new CardTrasher(game, player_cards, 'playing', 'Tragic Hero')
+      let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
       card_trasher.trash()
 
       GameModel.update(game._id, game)

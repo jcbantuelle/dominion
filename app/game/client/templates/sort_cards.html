@@ -5,7 +5,7 @@
       {{#each cards}}
         <div class="{{types}} ordered">
           {{name}}
-          <input type="hidden" value="{{name}}" />
+          <input type="hidden" value="{{@index}}" />
         </div>
       {{/each}}
     </div>
