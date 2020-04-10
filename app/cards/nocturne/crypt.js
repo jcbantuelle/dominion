@@ -48,7 +48,7 @@ Crypt = class Crypt extends Card {
     game.turn.crypt_cards = []
     _.each(selected_cards, function(selected_card) {
       let card_index = _.findIndex(player_cards.in_play, (in_play_card) => {
-        return selected_card.name === in_play_card.name
+        return selected_card.id === in_play_card.id
       })
       if (card_index !== -1) {
         game.turn.crypt_cards.push(player_cards.in_play.splice(card_index, 1)[0])
@@ -79,13 +79,13 @@ Crypt = class Crypt extends Card {
   static put_card_in_hand(game, player_cards, selected_card, duration_card) {
     selected_card = selected_card[0]
     let selected_card_index = _.findIndex(player_cards.crypt, function(card) {
-      return selected_card.name === card.name
+      return selected_card.id === card.id
     })
     player_cards.hand.push(player_cards.crypt.splice(selected_card_index, 1)[0])
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts a set aside card in hand from ${CardView.render(new Crypt())}`)
 
     let duration_card_index = _.findIndex(duration_card.set_aside_cards, function(card) {
-      return selected_card.name === card.name
+      return selected_card.id === card.id
     })
     duration_card.set_aside_cards.splice(duration_card_index, 1)
     if (_.size(duration_card.set_aside_cards) > 0) {

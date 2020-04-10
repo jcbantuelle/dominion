@@ -46,7 +46,7 @@ Doctor = class Doctor extends Card {
 
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
     let matches = _.filter(player_cards.revealed, function(card) {
-      return card.name === selected_card.name
+      return card.id === selected_card.id
     })
 
     let card_trasher = new CardTrasher(game, player_cards, 'revealed', matches)

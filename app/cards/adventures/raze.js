@@ -18,10 +18,10 @@ Raze = class Raze extends Card {
       return new_card
     })
     let raze_in_play = _.some(player_cards.playing, function(card) {
-      return card.name === player.card.name()
+      return card.id === player.played_card.id
     })
     if (raze_in_play) {
-      let raze = _.clone(player.card.to_h(player_cards))
+      let raze = _.clone(player.played_card)
       raze.source = 'P'
       trashable_cards.push(raze)
     }
@@ -95,7 +95,7 @@ Raze = class Raze extends Card {
   static put_card_in_hand(game, player_cards, selected_cards) {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts a card in their hand`)
     let selected_card_index = _.findIndex(player_cards.revealed, function(card) {
-      return card.name === selected_cards[0].name
+      return card.id === selected_cards[0].id
     })
     player_cards.hand.push(player_cards.revealed.splice(selected_card_index, 1)[0])
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')

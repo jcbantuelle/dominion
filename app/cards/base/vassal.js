@@ -45,7 +45,7 @@ Vassal = class Vassal extends Card {
   static play_card(game, player_cards, response, revealed_card) {
     if (response === 'yes') {
       let card_index = _.findIndex(player_cards.discard, function(card) {
-        return card.name === revealed_card.name
+        return card.id === revealed_card.id
       })
       player_cards.hand.push(player_cards.discard.splice(card_index, 1)[0])
       let card_player = new CardPlayer(game, player_cards, revealed_card.id, true)

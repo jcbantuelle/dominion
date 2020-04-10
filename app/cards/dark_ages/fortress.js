@@ -16,15 +16,9 @@ Fortress = class Fortress extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
   }
 
-  trash_event(trasher, card_name = 'Fortress') {
-    let trash_card = this
-    if (card_name === 'Estate') {
-      trash_card = _.find(trasher.player_cards.trashing, function(card) {
-        return card.name === 'Estate'
-      })
-    }
+  trash_event(trasher, fortress) {
     let fortress_index = _.findIndex(trasher.player_cards.trashing, function(card) {
-      return card.name === card_name
+      return card.id === fortress.id
     })
     if (trasher.player_cards.trashing[fortress_index].misfit) {
       trasher.player_cards.trashing[fortress_index] = trasher.player_cards.trashing[fortress_index].misfit

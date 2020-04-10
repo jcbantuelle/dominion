@@ -51,7 +51,7 @@ WanderingMinstrel = class WanderingMinstrel extends Card {
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(WanderingMinstrel.replace_cards)
       } else if (_.size(player_cards.minstrel_actions) === 1) {
-        WanderingMinstrel.replace_cards(game, player_cards, [player_cards.minstrel_actions[0].name])
+        WanderingMinstrel.replace_cards(game, player_cards, player_cards.minstrel_actions)
       }
 
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')

@@ -26,7 +26,7 @@ SchemeChooser = class SchemeChooser {
   static mark_for_scheme(game, player_cards, selected_cards) {
     _.each(selected_cards, function(selected_card) {
       let scheme_card_index = _.findIndex(player_cards.in_play, function(card_in_play) {
-        return card_in_play.name === selected_card.name && !card_in_play.scheme
+        return card_in_play.id === selected_card.id && !card_in_play.scheme
       })
       player_cards.in_play[scheme_card_index].scheme = true
     })

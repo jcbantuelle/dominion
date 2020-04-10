@@ -27,7 +27,7 @@ Legionary = class Legionary extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, gold)
       turn_event_processor.process(Legionary.reveal_gold)
     }
 
@@ -37,9 +37,9 @@ Legionary = class Legionary extends Card {
     delete game.turn.legionary_revealed_gold
   }
 
-  static reveal_gold(game, player_cards, response) {
+  static reveal_gold(game, player_cards, response, gold) {
     if (response === 'yes') {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(new Gold())}`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(gold)}`)
       game.turn.legionary_revealed_gold = true
     }
   }

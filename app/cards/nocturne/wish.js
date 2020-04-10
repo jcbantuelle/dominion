@@ -12,12 +12,12 @@ Wish = class Wish extends Card {
     return 0
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
     let wish_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Wish'
+      return card.id === player.played_card.id
     })
 
     if (wish_index !== -1) {

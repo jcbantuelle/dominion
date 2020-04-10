@@ -40,9 +40,9 @@ Card = class Card {
     return this.name()
   }
 
-  move_to_tavern(game, player_cards, name) {
+  move_to_tavern(game, player_cards, reserve_card) {
     let reserve_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === name
+      return card.id === reserve_card.id
     })
     if (reserve_index !== -1) {
       let reserve_card = player_cards.playing.splice(reserve_index, 1)[0]

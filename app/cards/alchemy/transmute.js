@@ -37,10 +37,6 @@ Transmute = class Transmute extends Card {
     card_trasher.trash()
 
     let trashed_card = selected_cards[0]
-    if (player_cards.tokens.estate && trashed_card.name === 'Estate') {
-      trashed_card = ClassCreator.create('Estate').to_h()
-    }
-
     let selected_card_types = _.words(trashed_card.types)
 
     if (_.includes(selected_card_types, 'action')) {

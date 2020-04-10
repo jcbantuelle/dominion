@@ -19,7 +19,7 @@ Sauna = class Sauna extends Card {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
-    let avanto_in_hand = _.some(player_cards.hand, function(card) {
+    let avanto_in_hand = _.find(player_cards.hand, function(card) {
       return card.name === 'Avanto'
     })
     if (avanto_in_hand) {
@@ -30,7 +30,7 @@ Sauna = class Sauna extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Play ${CardView.render(new Avanto())} from hand?`,
+        instructions: `Play ${CardView.render(avanto_in_hand)} from hand?`,
         minimum: 1,
         maximum: 1
       })

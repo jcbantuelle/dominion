@@ -37,7 +37,7 @@ Necromancer = class Necromancer extends Card {
 
   static play_from_trash(game, player_cards, selected_cards) {
     let trash_card_index = _.findIndex(game.trash, function(card) {
-      return card.name === selected_cards[0].name
+      return card.id === selected_cards[0].id
     })
     game.trash[trash_card_index].face_down = true
 

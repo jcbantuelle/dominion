@@ -76,7 +76,7 @@ TrashEventProcessor = class TrashEventProcessor {
       if (_.includes(TrashEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
         selected_card.trash_reaction(game, player_cards, trash_event_processor.trasher, card)
       } else {
-        selected_card.trash_event(trash_event_processor.trasher)
+        selected_card.trash_event(trash_event_processor.trasher, card)
       }
       let trash_event_index = _.findIndex(trash_event_processor.trash_events, function(event) {
         return event.id === card.id

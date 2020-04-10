@@ -46,8 +46,8 @@ Warrior = class Warrior extends Traveller {
     })
   }
 
-  discard_event(discarder, card_name = 'Warrior') {
-    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Hero')
+  discard_event(discarder, warrior) {
+    this.choose_exchange(discarder.game, discarder.player_cards, warrior, 'Hero')
   }
 
 }

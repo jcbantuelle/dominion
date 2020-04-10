@@ -219,7 +219,7 @@ CardPlayer = class CardPlayer {
 
   mark_played_card_as_duration() {
     let duration_card_index = _.findIndex(this.player_cards.playing, (card) => {
-      return card.name === this.card.name() && !card.processed
+      return card.id === this.played_card.id && !card.processed
     })
     if (duration_card_index !== -1) {
       this.player_cards.playing[duration_card_index].destination = 'duration'
@@ -229,7 +229,7 @@ CardPlayer = class CardPlayer {
 
   mark_played_card_as_permanent() {
     let permanent_card_index = _.findIndex(this.player_cards.playing, (card) => {
-      return card.name === this.card.name() && !card.processed
+      return card.id === this.played_card.id && !card.processed
     })
     if (permanent_card_index !== -1) {
       this.player_cards.playing[permanent_card_index].destination = 'permanent'

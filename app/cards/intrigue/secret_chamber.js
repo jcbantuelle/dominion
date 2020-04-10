@@ -70,7 +70,7 @@ SecretChamber = class SecretChamber extends Card {
     } else if (cards_in_hand === 2) {
       SecretChamber.return_to_deck(game, player_cards, player_cards.hand)
     } else if (cards_in_hand === 1) {
-      SecretChamber.replace_cards(game, player_cards, [player_cards.hand[0].name])
+      SecretChamber.replace_cards(game, player_cards, player_cards.hand)
     } else if (cards_in_hand === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }

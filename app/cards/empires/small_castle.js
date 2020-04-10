@@ -22,7 +22,7 @@ SmallCastle = class SmallCastle extends Castles {
       return new_card
     })
     let small_castle_in_play = _.some(player_cards.playing, function(card) {
-      return card.name === player.card.name()
+      return card.id === player.played_card.id
     })
     if (small_castle_in_play) {
       let small_castle = _.clone(player.card.to_h(player_cards))

@@ -49,8 +49,8 @@ Soldier = class Soldier extends Traveller {
     card_discarder.discard()
   }
 
-  discard_event(discarder, card_name = 'Soldier') {
-    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Fugitive')
+  discard_event(discarder, soldier) {
+    this.choose_exchange(discarder.game, discarder.player_cards, soldier, 'Fugitive')
   }
 
 }

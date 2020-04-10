@@ -42,7 +42,7 @@ Overlord = class Overlord extends Card {
 
   static copy_card(game, player_cards, selected_cards, player) {
     let played_overlord_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === player.card.name()
+      return card.id === player.played_card.id
     })
     let overlord = player_cards.playing.splice(played_overlord_index, 1)[0]
 

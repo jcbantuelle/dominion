@@ -42,7 +42,7 @@ Haven = class Haven extends Card {
     let selected_card = selected_cards[0]
 
     let card_index = _.findIndex(player_cards.hand, function(card) {
-      return selected_card.name === card.name
+      return selected_card.id === card.id
     })
     let set_aside_card = player_cards.hand.splice(card_index, 1)[0]
 
@@ -55,7 +55,7 @@ Haven = class Haven extends Card {
 
   duration(game, player_cards, duration_card) {
     let set_aside_card_index = _.findIndex(player_cards.haven, function(card) {
-      return duration_card.haven.name === card.name
+      return duration_card.haven.id === card.id
     })
     let set_aside_card = player_cards.haven.splice(set_aside_card_index, 1)[0]
     player_cards.hand.push(set_aside_card)

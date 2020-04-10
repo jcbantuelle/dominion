@@ -25,7 +25,7 @@ TheMoonsGift = class TheMoonsGift extends Boon {
       game.log.push(`&nbsp;&nbsp;but chooses not to put a card on their deck`)
     } else {
       let discard_card_index = _.findIndex(player_cards.discard, function(card) {
-        return card.name === selected_cards[0].name
+        return card.id === selected_cards[0].id
       })
 
       player_cards.deck.unshift(player_cards.discard.splice(discard_card_index, 1)[0])

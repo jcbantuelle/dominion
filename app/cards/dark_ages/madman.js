@@ -12,12 +12,12 @@ Madman = class Madman extends Card {
     return 0
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     game.turn.actions += 2
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
 
     let madman_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Madman'
+      return card.id === player.played_card.id
     })
     if (madman_index !== -1) {
       let madman_pile = _.find(game.cards, function(card) {

@@ -34,9 +34,9 @@ Jester = class Jester extends Card {
         card_gainer.gain_game_card()
       } else {
         let game_card = _.find(game.cards, function(card) {
-          return card.name === player_cards.revealed_card.name
+          return card.source !== 'not_supply' && card.count > 0 && card.stack[0].name === player_cards.revealed_card.name
         })
-        if (game_card && game_card.source !== 'not_supply') {
+        if (game_card) {
           GameModel.update(game._id, game)
           let turn_event_id = TurnEventModel.insert({
             game_id: game._id,

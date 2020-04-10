@@ -20,12 +20,10 @@ TreasureMap = class TreasureMap extends Card {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', map_in_hand)
       card_trasher.trash()
 
-      if (player.card.name() === 'Treasure Map') {
-        _.times(4, function() {
-          let card_gainer = new CardGainer(game, player_cards, 'deck', 'Gold')
-          card_gainer.gain_game_card()
-        })
-      }
+      _.times(4, function() {
+        let card_gainer = new CardGainer(game, player_cards, 'deck', 'Gold')
+        card_gainer.gain_game_card()
+      })
     }
   }
 

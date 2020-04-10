@@ -45,7 +45,7 @@ Gear = class Gear extends Card {
 
     _.each(selected_cards, function(selected_card) {
       let card_index = _.findIndex(player_cards.hand, function(card) {
-        return selected_card.name === card.name
+        return selected_card.id === card.id
       })
       gear_effect.set_aside_cards.push(player_cards.hand.splice(card_index, 1)[0])
     })
@@ -56,7 +56,7 @@ Gear = class Gear extends Card {
   duration(game, player_cards, duration_card) {
     _.each(duration_card.set_aside_cards, function(set_aside_card) {
       let set_aside_card_index = _.findIndex(player_cards.gear, function(card) {
-        return set_aside_card.name === card.name
+        return set_aside_card.id === card.id
       })
       player_cards.hand.push(player_cards.gear.splice(set_aside_card_index, 1)[0])
     })

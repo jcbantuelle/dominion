@@ -12,11 +12,11 @@ Spoils = class Spoils extends Card {
     return 0
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     CoinGainer.gain(game, player_cards, 3)
 
     let spoils_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Spoils'
+      return card.id === player.played_card.id
     })
 
     if (spoils_index !== -1) {

@@ -38,7 +38,7 @@ MountainVillage = class MountainVillage extends Card {
   static put_in_hand(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
     let card_index = _.findIndex(player_cards.discard, function (card) {
-      return card.name === selected_card.name
+      return card.id === selected_card.id
     })
     player_cards.hand.unshift(player_cards.discard[card_index])
     player_cards.discard.splice(card_index, 1)

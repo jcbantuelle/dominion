@@ -8,9 +8,9 @@ Prince = class Prince extends Card {
     return 8
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     let prince_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Prince'
+      return card.id === player.played_card.id
     })
     if (prince_index !== -1) {
       let turn_event_id = TurnEventModel.insert({
@@ -65,7 +65,7 @@ Prince = class Prince extends Card {
     let action = selected_cards[0]
 
     let card_index = _.findIndex(player_cards.hand, function(card) {
-      return action.name === card.name
+      return action.id === card.id
     })
 
     player_cards.princed.push(player_cards.hand.splice(card_index, 1)[0])

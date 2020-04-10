@@ -81,7 +81,7 @@ Herald = class Herald extends Card {
   static take_discarded_cards(game, player_cards, selected_cards) {
     _.each(selected_cards, function(selected_card) {
       let discard_index = _.findIndex(player_cards.discard, function(discard_card) {
-        return discard_card.name === selected_card.name
+        return discard_card.id === selected_card.id
       })
       player_cards.revealed.push(player_cards.discard.splice(discard_index, 1)[0])
     })

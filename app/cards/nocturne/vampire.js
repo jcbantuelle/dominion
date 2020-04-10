@@ -46,7 +46,7 @@ Vampire = class Vampire extends Card {
     }
 
     let played_vampire_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Vampire'
+      return card.id === player.played_card.id
     })
     if (played_vampire_index !== -1) {
       let played_vampire = player_cards.playing.splice(played_vampire_index, 1)[0]

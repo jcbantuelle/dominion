@@ -70,7 +70,7 @@ GainEventProcessor = class GainEventProcessor {
     _.each(this.player_cards.in_play.concat(this.player_cards.to_discard).concat(this.player_cards.playing), (card) => {
       if (_.includes(GainEventProcessor.in_play_event_cards(), card.inherited_name)) {
         if (_.includes(['Royal Seal', 'Tracker'], card.inherited_name)) {
-          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).name === this.gainer.card_name) {
+          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).id === this.gainer.gained_card.id) {
             this.gain_events.push(card)
           }
         } else {
@@ -173,7 +173,7 @@ GainEventProcessor = class GainEventProcessor {
       if (_.includes(GainEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
         selected_card.gain_reaction(game, player_cards, gain_event_processor.gainer, card)
       } else {
-        selected_card.gain_event(gain_event_processor.gainer)
+        selected_card.gain_event(gain_event_processor.gainer, card)
       }
       let event_index = _.findIndex(gain_event_processor.gain_events, function(event) {
         return event.id === card.id

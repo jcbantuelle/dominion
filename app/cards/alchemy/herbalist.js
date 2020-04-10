@@ -36,7 +36,7 @@ Herbalist = class Herbalist extends Card {
   static put_on_deck(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
       let card_index = _.findIndex(player_cards.to_discard, function(card) {
-        return card.name === selected_cards[0].name
+        return card.id === selected_cards[0].id
       })
 
       let card = player_cards.to_discard.splice(card_index, 1)[0]

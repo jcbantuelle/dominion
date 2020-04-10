@@ -12,7 +12,7 @@ WineMerchant = class WineMerchant extends Card {
     game.turn.buys += 1
     let gained_coins = CoinGainer.gain(game, player_cards, 4)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and +$${gained_coins}`)
-    this.move_to_tavern(game, player_cards, player.card.name())
+    this.move_to_tavern(game, player_cards, player.played_card)
   }
 
   end_buy_event(game, player_cards, card) {

@@ -57,7 +57,7 @@ SecretPassage = class SecretPassage extends Card {
 
   static insert_in_deck(game, player_cards, location, selected_card) {
     let hand_card_index = _.findIndex(player_cards.hand, function(card) {
-      return card.name === selected_card.name
+      return card.id === selected_card.id
     })
     player_cards.hand.splice(hand_card_index, 1)[0]
 

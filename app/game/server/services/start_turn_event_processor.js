@@ -112,7 +112,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         selected_event.duration(game, player_cards, event)
       } else if (event.start_event_type === 'Reserve') {
         delete event.start_event_type
-        selected_event.reserve(game, player_cards)
+        selected_event.reserve(game, player_cards, event)
       } else if (event.start_event_type === 'State') {
         delete event.start_event_type
         selected_event.start_turn_event(game, player_cards)

@@ -62,7 +62,7 @@ BorderGuard = class BorderGuard extends Card {
 
   static put_card_in_hand(game, player_cards, selected_cards, gain_artifact) {
     let selected_card_index = _.findIndex(player_cards.revealed, function(card) {
-      return card.name === selected_cards[0].name
+      return card.id === selected_cards[0].id
     })
 
     player_cards.hand = player_cards.hand.concat(player_cards.revealed.splice(selected_card_index, 1)[0])
@@ -154,29 +154,26 @@ BorderGuard = class BorderGuard extends Card {
     }
   }
 
-  discard_event(discarder, card_name = 'Border Guard') {
-    let discard_card = this
-    if (card_name === 'Estate') {
-      discard_card = _.find(discarder.player_cards.discarding, function(card) {
-        return card.name === 'Estate'
-      })
-    }
+  discard_event(discarder, border_guard) {
     let turn_event_id = TurnEventModel.insert({
       game_id: discarder.game._id,
       player_id: discarder.player_cards.player_id,
       username: discarder.player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Put ${CardView.render(discard_card)} On Top of Deck?`,
+      instructions: `Put ${CardView.render(border_guard)} On Top of Deck?`,
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id, border_guard)
     turn_event_processor.process(BorderGuard.put_on_deck)
   }
 
-  static put_on_deck(game, player_cards, response) {
+  static put_on_deck(game, player_cards, response, border_guard) {
     if (response === 'yes') {
-      let border_guard = player_cards.discarding.pop()
+      let border_guard_index = _.findIndex(player_cards.discarding, (card) => {
+        card.id === border_guard.id
+      })
+      border_guard = player_cards.discarding.splice(border_guard_index, 1)[0]
       game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(border_guard)} on top of their deck`)
       delete border_guard.scheme
       delete border_guard.prince

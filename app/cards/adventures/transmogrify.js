@@ -12,33 +12,27 @@ Transmogrify = class Transmogrify extends Card {
     game.turn.actions += 1
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
-    this.move_to_tavern(game, player_cards, player.card.name())
+    this.move_to_tavern(game, player_cards, player.played_card)
   }
 
-  reserve(game, player_cards, card_name = 'Transmogrify') {
-    let tavern_card = this
-    if (card_name === 'Estate') {
-      tavern_card = _.find(player_cards.tavern, function(card) {
-        return card.name === 'Estate'
-      })
-    }
+  reserve(game, player_cards, transmogrify) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Call ${CardView.render(tavern_card)}?`,
+      instructions: `Call ${CardView.render(transmogrify)}?`,
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_name)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, transmogrify)
     turn_event_processor.process(Transmogrify.call_card)
   }
 
-  static call_card(game, player_cards, response, card_name) {
+  static call_card(game, player_cards, response, transmogrify) {
     if (response === 'yes') {
       let reserve_index = _.findIndex(player_cards.tavern, function(card) {
-        return card.name === card_name
+        return card.id === transmogrify.id
       })
       let reserve = player_cards.tavern.splice(reserve_index, 1)[0]
       game.log.push(`<strong>${player_cards.username}</strong> calls ${CardView.render(reserve)}`)

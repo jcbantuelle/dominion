@@ -30,17 +30,13 @@ Tournament = class Tournament extends Card {
           minimum: 1,
           maximum: 1
         })
-        let turn_event_processor = new TurnEventProcessor(game, other_player_cards, turn_event_id)
+        let turn_event_processor = new TurnEventProcessor(game, other_player_cards, turn_event_id, province)
         turn_event_processor.process(Tournament.reveal_province)
       }
     })
 
     if (game.turn.self_revealed_province) {
-      let province_index = _.findIndex(player_cards.hand, function(card) {
-        return card.name === 'Province'
-      })
-      player_cards.revealed.push(player_cards.hand.splice(province_index, 1)[0])
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', game.turn.self_revealed_province)
       card_discarder.discard()
 
       let duchy = new Duchy()
@@ -72,13 +68,13 @@ Tournament = class Tournament extends Card {
     delete game.turn.opponent_revealed_province
   }
 
-  static reveal_province(game, player_cards, response) {
+  static reveal_province(game, player_cards, response, province) {
     if (response === 'yes') {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(new Province())}`)
       if (game.turn.player._id === player_cards.player_id) {
-        game.turn.self_revealed_province = true
+        game.turn.self_revealed_province = province
       } else {
-        game.turn.opponent_revealed_province = true
+        game.turn.opponent_revealed_province = province
       }
     }
   }

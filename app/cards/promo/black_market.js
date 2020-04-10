@@ -130,7 +130,7 @@ BlackMarket = class BlackMarket extends Card {
     if (!_.isEmpty(selected_cards)) {
       game.black_market_bought_card = selected_cards[0]
       let revealed_index = _.findIndex(game.black_market_revealed, function(card) {
-        return card.name === game.black_market_bought_card.name
+        return card.id === game.black_market_bought_card.id
       })
       game.black_market_revealed.splice(revealed_index, 1)
       let card_buyer = new BlackMarketCardBuyer(game, player_cards)

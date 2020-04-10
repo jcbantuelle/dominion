@@ -8,7 +8,7 @@ Experiment = class Experiment extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, player) {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
@@ -16,7 +16,7 @@ Experiment = class Experiment extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
 
     let experiment_index = _.findIndex(player_cards.playing, function (card) {
-      return card.name === 'Experiment'
+      return card.id === player.played_card.id
     })
     if (experiment_index !== -1) {
       let experiment_pile = _.find(game.cards, function (card) {

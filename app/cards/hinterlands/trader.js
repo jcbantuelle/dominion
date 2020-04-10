@@ -41,14 +41,8 @@ Trader = class Trader extends Card {
     })
   }
 
-  would_gain_reaction(game, player_cards, gainer, card_name = 'Trader') {
-    let reaction_card = this
-    if (card_name === 'Estate') {
-      reaction_card = _.find(player_cards.hand, function(card) {
-        return card.name === 'Estate'
-      })
-    }
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(reaction_card)}`)
+  would_gain_reaction(game, player_cards, gainer, trader) {
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(trader)}`)
     gainer.destination = 'discard'
     gainer.card_name = 'Silver'
     gainer.gain_from_game_cards = true

@@ -47,8 +47,8 @@ Fugitive = class Fugitive extends Traveller {
     card_discarder.discard()
   }
 
-  discard_event(discarder, card_name = 'Fugitive') {
-    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Disciple')
+  discard_event(discarder, fugitive) {
+    this.choose_exchange(discarder.game, discarder.player_cards, fugitive, 'Disciple')
   }
 
 }

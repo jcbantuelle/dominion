@@ -16,7 +16,7 @@ ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
       if (_.includes(ActionResolutionEventProcessor.reserve_events(), card.inherited_name)) {
         if (card.inherited_name === 'Royal Carriage') {
           let still_in_play = _.findIndex(this.player_cards.playing, (playing_card) => {
-            return playing_card.name === this.resolved_action.name
+            return playing_card.id === this.resolved_action.id
           })
           return still_in_play !== -1
         } else {
@@ -56,9 +56,9 @@ ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
         let event_index = _.findIndex(params.events, function(event) {
           return event.id === ordered_event.id
         })
-        params.events.splice(event_index, 1)[0]
+        let event = params.events.splice(event_index, 1)[0]
         let selected_event = ClassCreator.create(ordered_event.name)
-        selected_event.action_resolution_event(game, player_cards, params.resolved_action)
+        selected_event.action_resolution_event(game, player_cards, params.resolved_action, event)
         GameModel.update(game._id, game)
         PlayerCardsModel.update(game._id, player_cards)
       }

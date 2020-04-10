@@ -25,14 +25,14 @@ Bat = class Bat extends Card {
         minimum: 0,
         maximum: 2
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, player)
       turn_event_processor.process(Bat.trash_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }
   }
 
-  static trash_cards(game, player_cards, selected_cards) {
+  static trash_cards(game, player_cards, selected_cards, player) {
     let trashed_card_count = _.size(selected_cards)
 
     if (trashed_card_count > 0) {
@@ -40,7 +40,7 @@ Bat = class Bat extends Card {
       card_trasher.trash()
 
       let played_bat_index = _.findIndex(player_cards.playing, function(card) {
-        return card.name === 'Bat'
+        return card.id === player.played_card.id
       })
       if (played_bat_index !== -1) {
         let played_bat = player_cards.playing.splice(played_bat_index, 1)[0]

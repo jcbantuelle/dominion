@@ -83,7 +83,7 @@ Fool = class Fool extends Card {
     GameModel.update(game._id, game)
 
     let selected_boon_index = _.findIndex(revealed_boons, function(revealed_boon) {
-      return revealed_boon.name === selected_boon.name
+      return revealed_boon.id === selected_boon.id
     })
     revealed_boons.splice(selected_boon_index, 1)
 

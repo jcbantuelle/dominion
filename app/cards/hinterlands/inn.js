@@ -73,7 +73,7 @@ Inn = class Inn extends Card {
       let discard_actions = []
       _.each(selected_cards, function(selected_card) {
         let card_index = _.findIndex(player_cards.discard, function(discard_card) {
-          return discard_card.name === selected_card.name
+          return discard_card.id === selected_card.id
         })
         discard_actions.push(player_cards.discard.splice(card_index, 1)[0])
       })

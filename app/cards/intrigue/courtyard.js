@@ -36,7 +36,7 @@ Courtyard = class Courtyard extends Card {
   static return_card_to_deck(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
     let card_index = _.findIndex(player_cards.hand, function(card) {
-      return card.name === selected_card.name
+      return card.id === selected_card.id
     })
 
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places a card on top of their deck`)

@@ -29,12 +29,9 @@ WouldGainReactionProcessor = class WouldGainReactionProcessor {
 
   static would_gain_reaction(game, player_cards, selected_cards, would_gain_reaction_processor) {
     if (!_.isEmpty(selected_cards)) {
-      let card_name = selected_cards[0].name
-      if (card_name === 'Estate' && player_cards.tokens.estate) {
-        card_name = 'InheritedEstate'
-      }
+      let card = selected_cards[0]
       let selected_card = ClassCreator.create(card_name)
-      selected_card.would_gain_reaction(game, player_cards, would_gain_reaction_processor.gainer)
+      selected_card.would_gain_reaction(game, player_cards, would_gain_reaction_processor.gainer, card)
       GameModel.update(game._id, game)
       would_gain_reaction_processor.process()
     }
