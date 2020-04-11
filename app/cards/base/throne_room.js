@@ -34,10 +34,8 @@ ThroneRoom = class ThroneRoom extends Card {
 
   static play_twice(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let selected_card = selected_cards[0]
-
-      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.id)
-      repeat_card_player.play(2, 'Throne Room')
+      let card_player = new CardPlayer(game, player_cards, selected_cards[0])
+      card_player.play(true, true, 'hand', 2)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not play an action`)
     }
