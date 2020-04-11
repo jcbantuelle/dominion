@@ -52,8 +52,8 @@ Hermit = class Hermit extends Card {
     }
   }
 
-  discard_event(discarder, card) {
-    let card_trasher = new CardTrasher(discarder.game, discarder.player_cards, 'discarding', card)
+  discard_event(discarder, hermit) {
+    let card_trasher = new CardTrasher(discarder.game, discarder.player_cards, 'discarding', hermit)
     card_trasher.trash()
 
     let card_gainer = new CardGainer(discarder.game, discarder.player_cards, 'discard', 'Madman')

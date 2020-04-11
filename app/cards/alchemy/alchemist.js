@@ -20,23 +20,26 @@ Alchemist = class Alchemist extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
   }
 
-  discard_event(discarder) {
+  discard_event(discarder, alchemist) {
     let turn_event_id = TurnEventModel.insert({
       game_id: discarder.game._id,
       player_id: discarder.player_cards.player_id,
       username: discarder.player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Put ${CardView.render(this)} On Top of Deck?`,
+      instructions: `Put ${CardView.render(alchemist)} On Top of Deck?`,
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id, alchemist)
     turn_event_processor.process(Alchemist.put_on_deck)
   }
 
-  static put_on_deck(game, player_cards, response) {
+  static put_on_deck(game, player_cards, response, alchemist) {
     if (response === 'yes') {
-      let alchemist = player_cards.discarding.pop()
+      let alchemist_index = _.findIndex(player_cards.discarding, (card) => {
+        return card.id === alchemist.id
+      })
+      let alchemist = player_cards.discarding.splice(alchemist_index, 1)[0]
       game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(alchemist)} on top of their deck`)
       delete alchemist.scheme
       delete alchemist.prince

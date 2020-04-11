@@ -13,9 +13,9 @@ Capital = class Capital extends Card {
     game.turn.buys += 1
   }
 
-  discard_event(discarder) {
+  discard_event(discarder, capital) {
     discarder.player_cards.debt_tokens += 6
-    discarder.game.log.push(`&nbsp;&nbsp;<strong>${discarder.player_cards.username}</strong> takes 6 debt tokens from ${CardView.render(this)}`)
+    discarder.game.log.push(`&nbsp;&nbsp;<strong>${discarder.player_cards.username}</strong> takes 6 debt tokens from ${CardView.render(capital)}`)
     let max_payable_debt = Math.min(discarder.game.turn.coins, discarder.player_cards.debt_tokens)
     if (max_payable_debt > 0) {
       PlayerCardsModel.update(discarder.game._id, discarder.player_cards)
