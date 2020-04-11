@@ -14,8 +14,8 @@ AllCoinPlayer = class AllCoinPlayer {
     if (_.size(playable_cards) > 0) {
       this.game.log.push(`<strong>${this.player_cards.username}</strong> plays ${CardView.render(playable_cards)}`)
       _.each(playable_cards, (card) => {
-        let card_player = new CardPlayer(this.game, this.player_cards, card.id)
-        card_player.play(false)
+        let card_player = new CardPlayer(this.game, this.player_cards, card)
+        card_player.play_without_announcement()
       })
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, this.player_cards)

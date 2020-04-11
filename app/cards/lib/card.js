@@ -24,16 +24,8 @@ Card = class Card {
     return _.startCase(this.constructor.name)
   }
 
-  inherited_name() {
-    return this.name()
-  }
-
   image() {
     return _.snakeCase(this.constructor.name)
-  }
-
-  type_class(player_cards) {
-    return this.types(player_cards).join(' ')
   }
 
   stack_name() {
@@ -55,12 +47,22 @@ Card = class Card {
     }
   }
 
+  stay_in_play(player_cards, card) {
+    if (card.belongs_to_id) {
+      let belongs_to = _.find(player_cards.in_play, (in_play_card) => {
+        return in_play_card.id === card.belongs_to_id
+      })
+      return ClassCreator.create(belongs_to.name).stay_in_play(player_cards, belongs_to)
+    } else {
+      return false
+    }
+  }
+
   to_h(player_cards) {
     return {
       name: this.name(),
-      inherited_name: this.inherited_name(player_cards),
       image: this.image(),
-      types: this.type_class(player_cards),
+      types: this.types().join(' '),
       coin_cost: this.coin_cost(),
       potion_cost: this.potion_cost(),
       debt_cost: this.debt_cost(),
