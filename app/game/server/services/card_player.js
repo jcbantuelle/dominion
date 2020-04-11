@@ -68,7 +68,7 @@ CardPlayer = class CardPlayer {
   play_card(auto_update = true) {
     this.token_effects()
     if (_.includes(this.card.types(this.player_cards), 'action') && this.game.turn.player._id === this.player_cards.player_id) {
-      this.game.turn.played_actions += 1
+      this.game.turn.played_actions.push(this.played_card)
     }
     let result
     if (!this.game.turn.enchantress_attack && _.includes(this.card.types(this.player_cards), 'action') && _.includes(_.map(this.player_cards.duration_attacks, 'name'), 'Enchantress')) {

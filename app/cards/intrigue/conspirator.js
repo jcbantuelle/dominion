@@ -12,7 +12,7 @@ Conspirator = class Conspirator extends Card {
     let gained_coins = CoinGainer.gain(game, player_cards, 2)
     let log_message = `&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`
 
-    if (game.turn.played_actions > 2) {
+    if (_.size(game.turn.played_actions) > 2) {
       game.turn.actions += 1
       log_message += ' and +1 action'
 

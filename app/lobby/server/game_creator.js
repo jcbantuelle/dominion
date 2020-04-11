@@ -94,7 +94,7 @@ GameCreator = class GameCreator {
       schemes: 0,
       possessions: 0,
       coin_discount: 0,
-      played_actions: 0,
+      played_actions: [],
       coppersmiths: 0,
       river_gifts: [],
       expeditions: 0,
