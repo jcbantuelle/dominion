@@ -32,6 +32,10 @@ Card = class Card {
     return this.name()
   }
 
+  type_class() {
+    return this.types().join(' ')
+  }
+
   move_to_tavern(game, player_cards, reserve_card) {
     let reserve_index = _.findIndex(player_cards.playing, function(card) {
       return card.id === reserve_card.id
