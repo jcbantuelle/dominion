@@ -142,7 +142,7 @@ CardBuyer = class CardBuyer {
   }
 
   is_purchasable() {
-    return this.card.is_purchasable() && (this.card.name() !== 'Grand Market' || this.allow_grand_market())
+    return this.game_card.supply && (this.game_card.top_card.name !== 'Grand Market' || this.allow_grand_market())
   }
 
   allow_grand_market() {
