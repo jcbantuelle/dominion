@@ -30,8 +30,8 @@ Meteor.methods({
         if (allowed_to_play(current_game)) {
           ActionLock[game_id] = true
           let current_player_cards = player_cards(current_game)
-          let card = _.find(current_player_cards, (card) => {
-            card.id === card_id
+          let card = _.find(current_player_cards.hand, (card) => {
+            return card.id === card_id
           })
           let card_player = new CardPlayer(current_game, current_player_cards, card)
           card_player.play()
