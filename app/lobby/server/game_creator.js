@@ -354,10 +354,11 @@ GameCreator = class GameCreator {
 
   game_card(card, source) {
     let card_stack = this.create_card_stack(card)
-    let debt_token = this.game_has_event_or_landmark(this.events, 'Tax') && _.head(card_stack).purchasable ? 1 : 0
-
-    let victory_tokens = this.game_card_victory_tokens(card_stack, source)
     let supply_card = source !== 'not_supply'
+
+    let debt_token = this.game_has_event_or_landmark(this.events, 'Tax') && supply_card ? 1 : 0
+    let victory_tokens = this.game_card_victory_tokens(card_stack, source)
+
     return {
       name: card.name,
       count: _.size(card_stack),
