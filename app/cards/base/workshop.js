@@ -13,7 +13,7 @@ Workshop = class Workshop extends Card {
       return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 5)
     })
 
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -27,6 +27,8 @@ Workshop = class Workshop extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Workshop.gain_card)
+    } else if (_.size(eligible_cards) === 1) {
+      Workshop.gain_card(game, player_cards, eligible_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
