@@ -37,7 +37,8 @@ CardDrawer = class CardDrawer {
   }
 
   update_log() {
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> draws ${this.drawn_card_count()} card(s)`)
+    let card_text = this.drawn_card_count === 1 ? 'card' : 'cards'
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> draws ${this.drawn_card_count()} ${card_text}`)
   }
 
 }
