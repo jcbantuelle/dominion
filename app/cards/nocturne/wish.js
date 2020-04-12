@@ -1,9 +1,5 @@
 Wish = class Wish extends Card {
 
-  is_purchasable() {
-    false
-  }
-
   types() {
     return ['action']
   }

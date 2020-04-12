@@ -1,9 +1,5 @@
 Pasture = class Pasture extends Card {
 
-  is_purchasable() {
-    false
-  }
-
   types() {
     return ['treasure', 'victory', 'heirloom']
   }

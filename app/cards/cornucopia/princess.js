@@ -1,9 +1,5 @@
 Princess = class Princess extends Card {
 
-  is_purchasable() {
-    return false
-  }
-
   types() {
     return ['action', 'prize']
   }

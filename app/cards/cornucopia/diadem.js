@@ -1,9 +1,5 @@
 Diadem = class Diadem extends Card {
 
-  is_purchasable() {
-    return false
-  }
-
   types() {
     return ['treasure', 'prize']
   }

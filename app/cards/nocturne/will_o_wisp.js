@@ -4,10 +4,6 @@ WillOWisp = class WillOWisp extends Card {
     return ['action', 'spirit']
   }
 
-  is_purchasable() {
-    false
-  }
-
   coin_cost() {
     return 0
   }

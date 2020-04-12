@@ -1,9 +1,5 @@
 TreasureHunter = class TreasureHunter extends Traveller {
 
-  is_purchasable() {
-    false
-  }
-
   types() {
     return ['action', 'traveller']
   }

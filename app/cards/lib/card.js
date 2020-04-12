@@ -1,9 +1,5 @@
 Card = class Card {
 
-  is_purchasable() {
-    return true
-  }
-
   potion_cost() {
     return 0
   }
@@ -70,7 +66,6 @@ Card = class Card {
       coin_cost: this.coin_cost(),
       potion_cost: this.potion_cost(),
       debt_cost: this.debt_cost(),
-      purchasable: this.is_purchasable(),
       stack_name: this.stack_name()
     }
   }

@@ -1,9 +1,5 @@
 Bat = class Bat extends Card {
 
-  is_purchasable() {
-    false
-  }
-
   types() {
     return ['night']
   }

@@ -1,9 +1,5 @@
 Soldier = class Soldier extends Traveller {
 
-  is_purchasable() {
-    false
-  }
-
   types() {
      return ['action', 'attack', 'traveller']
   }

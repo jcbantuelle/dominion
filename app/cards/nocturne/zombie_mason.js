@@ -1,9 +1,5 @@
 ZombieMason = class ZombieMason extends Card {
 
-  is_purchasable() {
-    false
-  }
-
   types() {
     return ['action', 'zombie']
   }

@@ -1,9 +1,5 @@
 Hero = class Hero extends Traveller {
 
-  is_purchasable() {
-    false
-  }
-
   types() {
     return ['action', 'traveller']
   }

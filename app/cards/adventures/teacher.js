@@ -1,9 +1,5 @@
 Teacher = class Teacher extends Card {
 
-  is_purchasable() {
-    false
-  }
-
   types() {
     return ['action', 'reserve']
   }

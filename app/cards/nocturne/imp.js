@@ -1,9 +1,5 @@
 Imp = class Imp extends Card {
 
-  is_purchasable() {
-    false
-  }
-
   types() {
     return ['action', 'spirit']
   }
