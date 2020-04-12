@@ -15,7 +15,7 @@ CardPlayer = class CardPlayer {
       if (this.can_play(free_play)) {
         this.update_phase(free_play)
         this.put_card_in_play(source, move_card)
-        this.use_action()
+        this.use_action(free_play)
         if (announce) {
           this.update_log()
           this.update_db()
@@ -115,13 +115,8 @@ CardPlayer = class CardPlayer {
 
   put_card_in_play(source, move_card) {
     if (move_card) {
-      let card_index = _.findIndex(this.player_cards[source], (card) => {
-        return card.id === this.card.id
-      })
-      if (card_index !== -1) {
-        let card_mover = new CardMover(this.game, this.player_cards)
-        card_mover.move(this.player_cards.hand, this.player_cards.in_play, this.card)
-      }
+      let card_mover = new CardMover(this.game, this.player_cards)
+      card_mover.move(this.player_cards[source], this.player_cards.in_play, this.card)
     }
   }
 
