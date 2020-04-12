@@ -34,8 +34,9 @@ Moneylender = class Moneylender extends Card {
     if (response === 'yes') {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', copper)
       card_trasher.trash()
-      let gained_coins = CoinGainer.gain(game, player_cards, 3)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(3)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(copper)}`)
     }
