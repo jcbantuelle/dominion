@@ -9,7 +9,8 @@ Platinum = class Platinum extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 5)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(5, false)
   }
 
 }
