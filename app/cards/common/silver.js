@@ -17,11 +17,11 @@ Silver = class Silver extends Card {
     coin_gainer.gain(gained_coin, false)
 
     if (game.turn.merchants > 0 && !game.turn.played_silver) {
-      game.turn.played_silver = true
       let coin_gainer = new CoinGainer(game, player_cards)
       gained_coin = coin_gainer.gain(game.turn.merchants, false)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coin} from ${CardView.render(new Merchant())}`)
     }
+    game.turn.played_silver = true
 
     // let sauna_count = _.size(_.filter(player_cards.in_play.concat(player_cards.duration).concat(player_cards.permanent), function(card) {
     //   return card.name === 'Sauna'
