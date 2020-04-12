@@ -20,25 +20,16 @@ Bandit = class Bandit extends Card {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
-      player_cards.revealed = _.take(player_cards.deck, 2)
-      player_cards.deck = _.drop(player_cards.deck, 2)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck(2)
 
-      let revealed_card_count = _.size(player_cards.revealed)
-      if (revealed_card_count < 2 && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(game, player_cards)
-        player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 2 - revealed_card_count))
-        player_cards.deck = _.drop(player_cards.deck, 2 - revealed_card_count)
-      }
-
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
       GameModel.update(game._id, game)
 
       let revealed_treasures = _.filter(player_cards.revealed, function(card) {
         return _.includes(_.words(card.types), 'treasure') && card.name !== 'Copper'
       })
       if (_.size(revealed_treasures) === 1) {
-        let card_trasher = new CardTrasher(game, player_cards, 'revealed', revealed_treasures)
-        card_trasher.trash()
+        Bandit.choose_trashed_treasure(game, player_cards, revealed_treasures)
       } else if (_.size(revealed_treasures) > 1) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
