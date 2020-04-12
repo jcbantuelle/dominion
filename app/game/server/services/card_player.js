@@ -118,9 +118,9 @@ CardPlayer = class CardPlayer {
       let card_index = _.findIndex(this.player_cards[source], (card) => {
         return card.id === this.card.id
       })
-      if (card_index) {
-        this.player_cards[source].splice(card_index, 1)
-        this.player_cards.in_play.push(this.card)
+      if (card_index !== -1) {
+        let card_mover = new CardMover(this.game, this.player_cards)
+        card_mover.move(this.player_cards.hand, this.player_cards.in_play, this.card)
       }
     }
   }
@@ -175,13 +175,13 @@ CardPlayer = class CardPlayer {
           let card_drawer = new CardDrawer(this.game, this.player_cards)
           card_drawer.draw(1)
         } else if (token.effect === 'action') {
-          let action_gainer = new ActionGainer.gain(this.game, this.player_cards)
+          let action_gainer = new ActionGainer(this.game, this.player_cards)
           action_gainer.gain(1)
         } else if (token.effect === 'buy') {
-          let buy_gainer = new BuyGainer.gain(this.game, this.player_cards)
+          let buy_gainer = new BuyGainer(this.game, this.player_cards)
           buy_gainer.gain(1)
         } else if (token.effect === 'coin') {
-          let coin_gainer = new CoinGainer.gain(this.game, this.player_cards)
+          let coin_gainer = new CoinGainer(this.game, this.player_cards)
           coin_gainer.gain(1)
         }
       }
@@ -191,7 +191,7 @@ CardPlayer = class CardPlayer {
   action_resolution_events() {
     if (_.includes(_.words(this.card.types), 'action')) {
       if (this.player_cards.champions > 0) {
-        let action_gainer = new ActionGainer.gain(this.game, this.player_cards)
+        let action_gainer = new ActionGainer(this.game, this.player_cards)
         let action_count = action_gainer.gain(this.player_cards.champions, false)
         this.game.log.push(`<strong>${this.player_cards.username}</strong> gets +${action_count} action(s) from ${CardView.render(new Champion())}`)
       }
@@ -201,7 +201,7 @@ CardPlayer = class CardPlayer {
   }
 
   card_object() {
-    ClassCreator.create(this.card.name)
+    return ClassCreator.create(this.card.name)
   }
 
   static action_or_treasure(game, player_cards, response, card_player) {
