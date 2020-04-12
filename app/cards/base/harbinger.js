@@ -12,12 +12,13 @@ Harbinger = class Harbinger extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    let eligible_cards = player_cards.discard
+    if (_.size(player_cards.discard) > 0) {
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
 
-    if (_.size(eligible_cards) > 0) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -25,7 +26,7 @@ Harbinger = class Harbinger extends Card {
         type: 'choose_cards',
         player_cards: true,
         instructions: 'Choose a card to place on top of your deck (Or none to skip):',
-        cards: eligible_cards,
+        cards: player_cards.discard,
         minimum: 0,
         maximum: 1
       })
@@ -40,15 +41,10 @@ Harbinger = class Harbinger extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not place a card on their deck`)
     } else {
-      let selected_card = selected_cards[0]
-      let card_index = _.findIndex(player_cards.discard, function(card) {
-        return card.id === selected_card.id
-      })
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards.discard, player_cards.deck, selected_cards[0])
 
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places ${CardView.render(selected_card)} on top of their deck`)
-
-      player_cards.deck.unshift(player_cards.discard[card_index])
-      player_cards.discard.splice(card_index, 1)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places ${CardView.render(selected_cards[0])} on top of their deck`)
     }
   }
 
