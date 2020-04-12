@@ -21,7 +21,7 @@ Bureaucrat = class Bureaucrat extends Card {
       return _.includes(_.words(card.types), 'victory')
     })
 
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -35,21 +35,21 @@ Bureaucrat = class Bureaucrat extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       return turn_event_processor.process(Bureaucrat.return_card_to_deck)
+    } else if (_.size(eligible_cards) === 1) {
+      Bureaucrat.return_card_to_deck(game, player_cards, eligible_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
     }
   }
 
   static return_card_to_deck(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_index = _.findIndex(player_cards.hand, function(card) {
-      return card.id === selected_card.id
-    })
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(selected_cards)
 
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places ${CardView.render(selected_card)} on top of their deck`)
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move(player_cards.hand, player_cards.deck, selected_cards[0])
 
-    player_cards.deck.unshift(player_cards.hand[card_index])
-    player_cards.hand.splice(card_index, 1)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places ${CardView.render(selected_cards[0])} on top of their deck`)
   }
 
 }
