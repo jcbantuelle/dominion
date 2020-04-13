@@ -39,4 +39,9 @@ Priest = class Priest extends Card {
     card_trasher.trash()
   }
 
+  trash_event(trasher) {
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
+  }
+
 }

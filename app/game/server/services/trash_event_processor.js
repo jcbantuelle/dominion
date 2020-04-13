@@ -20,7 +20,7 @@ TrashEventProcessor = class TrashEventProcessor {
 
   find_trash_events() {
     this.trash_events = []
-    if (_.includes(TrashEventProcessor.event_cards(), this.card.inherited_name)) {
+    if (_.includes(TrashEventProcessor.event_cards(), this.card.name)) {
       this.trash_events.push(this.card)
     }
 
@@ -31,8 +31,16 @@ TrashEventProcessor = class TrashEventProcessor {
     })
 
     _.each(this.trasher.player_cards.hand, (card) => {
-      if (_.includes(TrashEventProcessor.reaction_cards(), card.inherited_name)) {
+      if (_.includes(TrashEventProcessor.reaction_cards(), card.name)) {
         this.trash_events.push(card)
+      }
+    })
+
+    _.times(this.trasher.game.priests, (count) => {
+      if (this.trasher.source === 'hand' && this.trasher.player_cards.player_id === this.trasher.game.turn.player._id) {
+        priest = ClassCreator.create('Priest').to_h()
+        priest.id = 0
+        this.trash_events.push(priest)
       }
     })
   }
@@ -40,7 +48,7 @@ TrashEventProcessor = class TrashEventProcessor {
   process() {
     if (!_.isEmpty(this.trash_events)) {
       let mandatory_trash_events = _.filter(this.trash_events, function(event) {
-        return _.includes(TrashEventProcessor.event_cards().concat(TrashEventProcessor.landmark_cards()), event.inherited_name)
+        return _.includes(TrashEventProcessor.event_cards().concat(TrashEventProcessor.landmark_cards().concat(['Priest'])), event.name)
       })
       if (_.size(this.trash_events) === 1 && !_.isEmpty(mandatory_trash_events)) {
         TrashEventProcessor.trash_event(this.trasher.game, this.trasher.player_cards, this.trash_events, this)
@@ -73,7 +81,7 @@ TrashEventProcessor = class TrashEventProcessor {
     if (!_.isEmpty(selected_cards)) {
       let card = selected_cards[0]
       let selected_card = ClassCreator.create(card.name)
-      if (_.includes(TrashEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
+      if (_.includes(TrashEventProcessor.reaction_cards(), card.name)) {
         selected_card.trash_reaction(game, player_cards, trash_event_processor.trasher, card)
       } else {
         selected_card.trash_event(trash_event_processor.trasher, card)
