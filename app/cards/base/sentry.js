@@ -54,7 +54,8 @@ Sentry = class Sentry extends Card {
         turn_event_processor.process(Sentry.discard_cards)
       }
 
-      Card.place_revealed_cards_on_deck(game, player_cards)
+      let card_returner = new CardReturner(game, player_cards)
+      card_returner.return_to_deck(player_cards.revealed)
     }
   }
 

@@ -52,7 +52,8 @@ Spy = class Spy extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
     } else {
-      Card.place_revealed_cards_on_deck(game, player_cards)
+      let card_returner = new CardReturner(game, player_cards)
+      card_returner.return_to_deck(player_cards.revealed)
     }
   }
 

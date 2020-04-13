@@ -70,30 +70,4 @@ Card = class Card {
     }
   }
 
-  static place_revealed_cards_on_deck(game, player_cards) {
-    if (_.size(player_cards.revealed) === 1) {
-      Card.replace_cards(game, player_cards, player_cards.revealed)
-    } else if (_.size(player_cards.revealed) > 1) {
-      let turn_event_id = TurnEventModel.insert({
-        game_id: game._id,
-        player_id: player_cards.player_id,
-        username: player_cards.username,
-        type: 'sort_cards',
-        instructions: 'Choose order to place cards on deck: (leftmost will be top card)',
-        cards: player_cards.revealed
-      })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(Card.replace_cards)
-    }
-  }
-
-  static replace_cards(game, player_cards, ordered_cards) {
-    _.each(ordered_cards.reverse(), function(ordered_card) {
-      let card_mover = new CardMover(game, player_cards)
-      card_mover.move(player_cards.revealed, player_cards.deck, ordered_card)
-    })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places the remaining cards back on their deck`)
-    delete player_cards.revealed
-  }
-
 }

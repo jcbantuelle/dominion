@@ -45,10 +45,10 @@ Artisan = class Artisan extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(Artisan.return_to_deck)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, player_cards.hand)
+      turn_event_processor.process(CardReturner.return_ordered_cards_to_deck)
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in hand`)
+      game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }
   }
 
@@ -56,13 +56,6 @@ Artisan = class Artisan extends Card {
     let card_gainer = new CardGainer(game, player_cards, 'hand', selected_cards[0].name)
     card_gainer.gain_game_card()
     PlayerCardsModel.update(game._id, player_cards)
-  }
-
-  static return_to_deck(game, player_cards, selected_cards) {
-    let card_mover = new CardMover(game, player_cards)
-    card_mover.move(player_cards.hand, player_cards.deck, selected_cards[0])
-
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places a card on their deck`)
   }
 
 }
