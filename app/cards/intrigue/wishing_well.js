@@ -12,8 +12,8 @@ WishingWell = class WishingWell extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
       PlayerCardsModel.update(game._id, player_cards)
@@ -39,24 +39,19 @@ WishingWell = class WishingWell extends Card {
   }
 
   static name_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> names ${CardView.render(selected_card)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> names ${CardView.render(selected_cards[0])}`)
 
-    if (_.isEmpty(player_cards.deck)) {
-      DeckShuffler.shuffle(game, player_cards)
-    }
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal_from_deck(1)
 
-    let top_card = player_cards.deck[0]
-    let log_message = `&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(top_card)}`
-
-    if (top_card.name === selected_card.name) {
-      player_cards.hand.push(player_cards.deck.shift())
-      log_message += ', putting it in their hand'
+    if (player_cards.revealed[0].name === selected_cards[0].name) {
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards.revealed, player_cards.hand, player_cards.revealed[0])
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(selected_cards[0])} in hand`)
     } else {
-      log_message += ', putting it back on top of their deck'
+      let card_returner = new CardReturner(game, player_cards)
+      card_returner.return_to_deck(player_cards.revealed)
     }
-
-    game.log.push(log_message)
   }
 
 }
