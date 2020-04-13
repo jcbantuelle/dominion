@@ -52,7 +52,11 @@ Card = class Card {
       let belongs_to = _.find(player_cards.in_play, (in_play_card) => {
         return in_play_card.id === card.belongs_to_id
       })
-      return ClassCreator.create(belongs_to.name).stay_in_play(player_cards, belongs_to)
+      if (belongs_to) {
+        return ClassCreator.create(belongs_to.name).stay_in_play(player_cards, belongs_to)
+      } else {
+        return false
+      }
     } else {
       return false
     }
