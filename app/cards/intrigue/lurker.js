@@ -9,8 +9,8 @@ Lurker = class Lurker extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
@@ -30,8 +30,7 @@ Lurker = class Lurker extends Card {
   }
 
   static process_choice(game, player_cards, choice) {
-    choice = choice[0]
-    if (choice === 'gain') {
+    if (choice[0] === 'gain') {
       let eligible_cards = _.filter(game.trash, function(card) {
         return _.includes(_.words(card.types), 'action')
       })
@@ -54,11 +53,11 @@ Lurker = class Lurker extends Card {
       } else {
         game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
       }
-    } else if (choice === 'trash') {
+    } else {
       let eligible_cards = _.filter(game.cards, function(card) {
-        return _.includes(_.words(card.top_card.types), 'action') && card.count > 0 && card.top_card.purchasable
+        return _.includes(_.words(card.top_card.types), 'action') && card.count > 0 && card.supply
       })
-      if (_.size(eligible_cards) > 0) {
+      if (_.size(eligible_cards) > 1) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
@@ -72,6 +71,8 @@ Lurker = class Lurker extends Card {
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Lurker.trash_card)
+      } else if (_.size(eligible_cards) === 1) {
+        Lurker.trash_card(game, player_cards, eligible_cards)
       } else {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to trash an action card, but there are none available`)
       }
