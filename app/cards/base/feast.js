@@ -8,12 +8,12 @@ Feast = class Feast extends Card {
     return 4
   }
 
-  play(game, player_cards, player) {
-    let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
+  play(game, player_cards, card_player) {
+    let card_trasher = new CardTrasher(game, player_cards, 'in_play', card_player.played_card)
     card_trasher.trash()
 
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 6)
+      return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 6)
     })
 
     if (_.size(eligible_cards) > 0) {
@@ -36,8 +36,7 @@ Feast = class Feast extends Card {
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
+    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
     card_gainer.gain_game_card()
   }
 
