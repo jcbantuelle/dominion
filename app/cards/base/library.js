@@ -11,15 +11,19 @@ Library = class Library extends Card {
   play(game, player_cards) {
     if (_.size(player_cards.hand) >= 7) {
       game.log.push(`&nbsp;&nbsp;but ${player_cards.username} already has 7 cards in hand`)
-    } else if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
-      if (player_cards.tokens.minus_card) {
-        this.game.log.push(`&nbsp;&nbsp;${this.player_cards.username} discards their -1 card token`)
-        delete this.player_cards.tokens.minus_card
-      }
-      player_cards.aside = []
-      return Library.draw_cards(game, player_cards)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no cards to draw`)
+      if (player_cards.tokens.minus_card) {
+        game.log.push(`&nbsp;&nbsp;${player_cards.username} discards their -1 card token`)
+        delete player_cards.tokens.minus_card
+      }
+      if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
+        player_cards.aside = []
+        Library.draw_cards(game, player_cards)
+        let card_text = _.size(player_cards.hand) === 1 ? 'card' : 'cards'
+        game.log.push(`&nbsp;&nbsp;${player_cards.username} draws up to ${_.size(player_cards.hand)} ${card_text} in hand`)
+      } else {
+        game.log.push(`&nbsp;&nbsp;but there are no cards to draw`)
+      }
     }
   }
 
@@ -34,37 +38,36 @@ Library = class Library extends Card {
       if (_.size(player_cards.deck) === 0) {
         DeckShuffler.shuffle(game, player_cards)
       }
-      let top_card = player_cards.deck.shift()
-      if (_.includes(_.words(top_card.types), 'action')) {
-        player_cards.pending = top_card
+      let drawn_card = player_cards.deck.shift()
+      if (_.includes(_.words(drawn_card.types), 'action')) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
           username: player_cards.username,
           type: 'choose_yes_no',
-          instructions: `Put ${CardView.render(player_cards.pending)} in Hand?`,
+          instructions: `Put ${CardView.render(drawn_card)} in hand?`,
           minimum: 1,
           maximum: 1
         })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, drawn_card)
         turn_event_processor.process(Library.card_choice)
       } else {
-        player_cards.hand.push(top_card)
+        player_cards.hand.push(drawn_card)
         PlayerCardsModel.update(game._id, player_cards)
         Library.draw_cards(game, player_cards)
       }
     }
   }
 
-  static card_choice(game, player_cards, response) {
+  static card_choice(game, player_cards, response, drawn_card) {
     if (response === 'yes') {
-      player_cards.hand.push(player_cards.pending)
+      player_cards.hand.push(drawn_card)
       PlayerCardsModel.update(game._id, player_cards)
     } else {
-      player_cards.aside.push(player_cards.pending)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(player_cards.pending)}`)
+      player_cards.aside.push(drawn_card)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(drawn_card)}`)
+      GameModel.update(game._id, game)
     }
-    delete player_cards.pending
     Library.draw_cards(game, player_cards)
   }
 
