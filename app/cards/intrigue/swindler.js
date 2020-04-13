@@ -9,8 +9,8 @@ Swindler = class Swindler extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
@@ -23,17 +23,14 @@ Swindler = class Swindler extends Card {
       if (_.size(player_cards.deck) === 0) {
         DeckShuffler.shuffle(game, player_cards)
       }
-
-      let top_card = player_cards.deck.shift()
-      player_cards.revealed.push(top_card)
-
-      let card_trasher = new CardTrasher(game, player_cards, 'revealed', top_card)
+      let trashed_card = player_cards.deck[0]
+      let card_trasher = new CardTrasher(game, player_cards, 'deck', player_cards.deck[0])
       card_trasher.trash()
 
       GameModel.update(game._id, game)
 
       let eligible_cards = _.filter(game.cards, function(card) {
-        return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_equal_to(game, top_card, card.top_card)
+        return card.count > 0 && card.supply && CardCostComparer.card_equal_to(game, trashed_card, card.top_card)
       })
 
       if (_.size(eligible_cards) > 0) {
