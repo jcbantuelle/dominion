@@ -9,32 +9,26 @@ Adventurer = class Adventurer extends Card {
   }
 
   play(game, player_cards) {
-    player_cards.revealed_treasures = []
-    this.reveal(game, player_cards)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal_from_deck_until((revealed_cards) => {
+      let treasures = _.filter(revealed_cards, (card) => {
+        return _.includes(_.words(card.types), 'treasure')
+      })
+      return _.size(treasures) === 2
+    })
+
+    let treasures = _.filter(player_cards.revealed, (card) => {
+      return _.includes(_.words(card.types), 'treasure')
+    })
+    _.each(treasures, (treasure) => {
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards.revealed, player_cards.hand, treasure)
+    })
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard(false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed_treasures)} in hand and discards the rest`)
 
-    delete player_cards.revealed_treasures
-  }
-
-  reveal(game, player_cards) {
-    let revealed_cards = []
-    while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && _.size(player_cards.revealed_treasures) < 2) {
-      if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
-      }
-      let card = player_cards.deck.shift()
-      revealed_cards.push(card)
-      if (_.includes(_.words(card.types), 'treasure')) {
-        player_cards.hand.push(card)
-        player_cards.revealed_treasures.push(card)
-      } else {
-        player_cards.revealed.push(card)
-      }
-    }
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_cards)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(treasures)} in hand and discards the rest`)
   }
 
 }
