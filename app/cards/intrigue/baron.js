@@ -9,8 +9,8 @@ Baron = class Baron extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
 
     let estate = _.find(player_cards.hand, function(card) {
       return card.name === 'Estate'
@@ -38,8 +38,8 @@ Baron = class Baron extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', estate)
       card_discarder.discard()
 
-      let gained_coins = CoinGainer.gain(game, player_cards, 4)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(4)
     } else {
       Baron.gain_estate(game, player_cards)
     }
