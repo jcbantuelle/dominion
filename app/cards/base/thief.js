@@ -22,7 +22,7 @@ Thief = class Thief extends Card {
 
       GameModel.update(game._id, game)
 
-      let revealed_treasures = _.filter(player_cards.revealed, function(card) {
+      let revealed_treasures = _.filter(player_cards.revealed, (card) => {
         return _.includes(_.words(card.types), 'treasure')
       })
       if (_.size(revealed_treasures) === 1) {

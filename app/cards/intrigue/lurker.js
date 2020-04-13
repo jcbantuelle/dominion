@@ -31,7 +31,7 @@ Lurker = class Lurker extends Card {
 
   static process_choice(game, player_cards, choice) {
     if (choice[0] === 'gain') {
-      let eligible_cards = _.filter(game.trash, function(card) {
+      let eligible_cards = _.filter(game.trash, (card) => {
         return _.includes(_.words(card.types), 'action')
       })
 

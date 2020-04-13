@@ -12,7 +12,7 @@ Feast = class Feast extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'in_play', card_player.card)
     card_trasher.trash()
 
-    let eligible_cards = _.filter(game.cards, function(card) {
+    let eligible_cards = _.filter(game.cards, (card) => {
       return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 6)
     })
 

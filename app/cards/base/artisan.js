@@ -9,7 +9,7 @@ Artisan = class Artisan extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(game.cards, function(card) {
+    let eligible_cards = _.filter(game.cards, (card) => {
       return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 6)
     })
 

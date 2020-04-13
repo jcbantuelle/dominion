@@ -17,10 +17,10 @@ CouncilRoom = class CouncilRoom extends Card {
 
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
     ordered_player_cards.shift()
-    _.each(ordered_player_cards, function(other_player_cards) {
-      let other_player_card_drawer = new CardDrawer(game, other_player_cards)
-      other_player_card_drawer.draw(1)
-      PlayerCardsModel.update(game._id, other_player_cards)
+    _.each(ordered_player_cards, (next_player_cards) => {
+      let next_player_card_drawer = new CardDrawer(game, next_player_cards)
+      next_player_card_drawer.draw(1)
+      PlayerCardsModel.update(game._id, next_player_cards)
     })
   }
 

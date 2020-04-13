@@ -17,7 +17,7 @@ Bureaucrat = class Bureaucrat extends Card {
   }
 
   attack(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.hand, function(card) {
+    let eligible_cards = _.filter(player_cards.hand, (card) => {
       return _.includes(_.words(card.types), 'victory')
     })
 

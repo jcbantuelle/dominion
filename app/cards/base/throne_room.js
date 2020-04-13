@@ -9,7 +9,7 @@ ThroneRoom = class ThroneRoom extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.hand, function(card) {
+    let eligible_cards = _.filter(player_cards.hand, (card) => {
       return _.includes(_.words(card.types), 'action')
     })
 

@@ -29,7 +29,7 @@ Pawn = class Pawn extends Card {
   }
 
   static process_choices(game, player_cards, choices) {
-    _.each(choices, function(choice) {
+    _.each(choices, (choice) => {
       if (choice === 'card') {
         let card_drawer = new CardDrawer(game, player_cards)
         card_drawer.draw(1)

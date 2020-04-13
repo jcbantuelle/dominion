@@ -18,7 +18,7 @@ Poacher = class Poacher extends Card {
     let coin_gainer = new CoinGainer(game, player_cards)
     coin_gainer.gain(1)
 
-    let number_to_discard = _.size(_.filter(game.cards, function(game_card) {
+    let number_to_discard = _.size(_.filter(game.cards, (game_card) => {
       return game_card.count === 0 && game_card.supply
     }))
 

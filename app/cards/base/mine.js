@@ -9,7 +9,7 @@ Mine = class Mine extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.hand, function(card) {
+    let eligible_cards = _.filter(player_cards.hand, (card) => {
       return _.includes(_.words(card.types), 'treasure')
     })
 
@@ -37,7 +37,7 @@ Mine = class Mine extends Card {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0])
       card_trasher.trash()
 
-      let eligible_cards = _.filter(game.cards, function(card) {
+      let eligible_cards = _.filter(game.cards, (card) => {
         return card.count > 0 && card.supply && _.includes(_.words(card.top_card.types), 'treasure') && CardCostComparer.card_less_than(game, selected_cards[0], card.top_card, 4)
       })
 

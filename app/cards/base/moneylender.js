@@ -9,7 +9,7 @@ Moneylender = class Moneylender extends Card {
   }
 
   play(game, player_cards) {
-    let copper = _.find(player_cards.hand, function(card) {
+    let copper = _.find(player_cards.hand, (card) => {
       return card.name === 'Copper'
     })
 
