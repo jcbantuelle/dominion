@@ -25,7 +25,7 @@ Harbinger = class Harbinger extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a card to place on top of your deck (Or none to skip):',
+        instructions: 'Choose a card to place on top of your deck (or none to skip):',
         cards: player_cards.discard,
         minimum: 0,
         maximum: 1

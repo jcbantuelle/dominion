@@ -36,7 +36,7 @@ AttackEventProcessor = class AttackEventProcessor {
         username: this.player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose Attack Event To Resolve (Or none to skip):',
+        instructions: 'Choose Attack Event To Resolve (or none to skip):',
         cards: attack_events,
         minimum: 0,
         maximum: 1

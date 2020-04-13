@@ -20,7 +20,7 @@ ThroneRoom = class ThroneRoom extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a card to play twice (Or none to skip):',
+        instructions: 'Choose a card to play twice (or none to skip):',
         cards: eligible_cards,
         minimum: 0,
         maximum: 1
