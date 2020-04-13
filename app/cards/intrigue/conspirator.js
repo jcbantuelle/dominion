@@ -9,17 +9,16 @@ Conspirator = class Conspirator extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    let log_message = `&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
     if (_.size(game.turn.played_actions) > 2) {
-      game.turn.actions += 1
-      log_message += ' and +1 action'
-
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(1)
+
+      let action_gainer = new ActionGainer(game, player_cards)
+      action_gainer.gain(1)
     }
-    game.log.push(log_message)
   }
 
 }
