@@ -13,7 +13,16 @@ CardRevealer = class CardRevealer {
     }
   }
 
-  reveal_from_deck(number_to_reveal) {
+  look(cards) {
+    if (_.size(cards) === 0) {
+      this.game.log.push(`&nbsp;&nbsp;but <strong>${this.player_cards.username}</strong> has no cards to look at`)
+    } else {
+      let card_text = _.size(cards) === 1 ? 'card' : 'cards'
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> looks at ${_.size(cards)} ${card_text}`)
+    }
+  }
+
+  reveal_from_deck(number_to_reveal, show_others = true) {
     let revealed_cards = []
     if (_.size(this.player_cards.deck) !== 0 || _.size(this.player_cards.discard) !== 0) {
       _.times(number_to_reveal, (count) => {
@@ -27,7 +36,13 @@ CardRevealer = class CardRevealer {
         }
       })
     }
-    this.reveal(revealed_cards)
+    if (show_others) {
+      this.reveal(revealed_cards)
+    } else {
+      this.look(revealed_cards)
+    }
+    this.player_cards.revealed = revealed_cards
+  }
     this.player_cards.revealed = revealed_cards
   }
 
