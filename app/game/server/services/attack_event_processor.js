@@ -9,7 +9,7 @@ AttackEventProcessor = class AttackEventProcessor {
 
     _.each(player_cards.hand, (card) => {
       if (_.includes(AttackEventProcessor.attack_reactions(), card.name)) {
-        if (card.inherited_name === 'Diplomat') {
+        if (card.name === 'Diplomat') {
           if (_.size(player_cards.hand) > 4) {
             attack_events.push(card)
           }
