@@ -10,7 +10,7 @@ Adventurer = class Adventurer extends Card {
 
   play(game, player_cards) {
     let card_revealer = new CardRevealer(game, player_cards)
-    card_revealer.reveal_from_deck_until((revealed_cards) => {
+    card_revealer.reveal_from_deck_until((game, revealed_cards) => {
       let treasures = _.filter(revealed_cards, (card) => {
         return _.includes(_.words(card.types), 'treasure')
       })

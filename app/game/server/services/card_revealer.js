@@ -46,7 +46,7 @@ CardRevealer = class CardRevealer {
 
   reveal_from_deck_until(termination_condition, show_others = true) {
     let revealed_cards = []
-    while((_.size(this.player_cards.deck) > 0 || _.size(this.player_cards.discard) > 0) && !termination_condition(revealed_cards)) {
+    while((_.size(this.player_cards.deck) > 0 || _.size(this.player_cards.discard) > 0) && !termination_condition(this.game, revealed_cards)) {
       if (_.size(this.player_cards.deck) === 0) {
         DeckShuffler.shuffle(this.game, this.player_cards)
       }
