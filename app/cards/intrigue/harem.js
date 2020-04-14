@@ -14,7 +14,7 @@ Harem = class Harem extends Card {
 
   play(game, player_cards) {
     let coin_gainer = new CoinGainer(game, player_cards)
-    coin_gainer.gain(2)
+    coin_gainer.gain(2, false)
   }
 
 }
