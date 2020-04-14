@@ -8,40 +8,47 @@ Embargo = class Embargo extends Card {
     return 2
   }
 
-  play(game, player_cards, player) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
-    let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
-    card_trasher.trash()
+    let card_trasher = new CardTrasher(game, player_cards, 'in_play', card_player.card)
+    let trashed_cards = card_trasher.trash()
 
-    let eligible_cards = _.filter(game.cards, function(card) {
-      return card.top_card.purchasable
+    let trashed = _.find(trashed_cards, (card) => {
+      return card.id === card_player.card.id
     })
 
-    let turn_event_id = TurnEventModel.insert({
-      game_id: game._id,
-      player_id: player_cards.player_id,
-      username: player_cards.username,
-      type: 'choose_cards',
-      game_cards: true,
-      instructions: 'Choose a card to Embargo:',
-      cards: eligible_cards,
-      minimum: 1,
-      maximum: 1
-    })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-    turn_event_processor.process(Embargo.place_token)
+    if (trashed) {
+      GameModel.update(game._id, game)
+
+      let eligible_cards = _.filter(game.cards, function(card) {
+        return card.supply
+      })
+
+      let turn_event_id = TurnEventModel.insert({
+        game_id: game._id,
+        player_id: player_cards.player_id,
+        username: player_cards.username,
+        type: 'choose_cards',
+        game_cards: true,
+        instructions: 'Choose a card to Embargo:',
+        cards: eligible_cards,
+        minimum: 1,
+        maximum: 1
+      })
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      turn_event_processor.process(Embargo.place_token)
+    }
   }
 
   static place_token(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
     let embargo_card = _.find(game.cards, function(card) {
-      return card.name === selected_card.name
+      return card.name === selected_cards[0].name
     })
 
     embargo_card.embargos += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts an embargo token on ${CardView.render(selected_card)}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts an embargo token on ${CardView.render(selected_cards[0])}`)
   }
 
 }
