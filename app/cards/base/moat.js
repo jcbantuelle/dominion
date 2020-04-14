@@ -14,7 +14,8 @@ Moat = class Moat extends Card {
   }
 
   attack_event(game, player_cards, card) {
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(card)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal([card])
     player_cards.moat = true
   }
 
