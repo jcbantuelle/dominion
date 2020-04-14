@@ -16,8 +16,8 @@ Mill = class Mill extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     if (_.size(player_cards.hand) > 0) {
       GameModel.update(game._id, game)
@@ -34,7 +34,7 @@ Mill = class Mill extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Mill.choose_discard)
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in hand`)
+      game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }
   }
 
@@ -58,7 +58,7 @@ Mill = class Mill extends Card {
         Mill.discard_cards(game, player_cards, player_cards.hand)
       }
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to discard`)
+      game.log.push(`&nbsp;&nbsp;but chooses not to discard`)
     }
   }
 
@@ -69,8 +69,8 @@ Mill = class Mill extends Card {
     card_discarder.discard()
 
     if (discarded_card_count === 2) {
-      let gained_coins = CoinGainer.gain(game, player_cards, 2)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(2)
     }
   }
 
