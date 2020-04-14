@@ -13,36 +13,38 @@ Diplomat = class Diplomat extends Card {
     card_drawer.draw(2)
 
     if (_.size(player_cards.hand) < 6) {
-      game.turn.actions += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+      let action_gainer = new ActionGainer(game, player_cards)
+      action_gainer.gain(2)
     }
   }
 
   attack_event(game, player_cards, card) {
-    revealed_card = _.find(player_cards.hand, function(hand_card) {
-      return hand_card.id === card.id
-    })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(card)
 
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
-    GameModel.update(game._id, game)
-    PlayerCardsModel.update(game._id, player_cards)
+    if (_.size(player_cards.hand) > 3) {
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
 
-    let turn_event_id = TurnEventModel.insert({
-      game_id: game._id,
-      player_id: player_cards.player_id,
-      username: player_cards.username,
-      type: 'choose_cards',
-      player_cards: true,
-      instructions: `Choose 3 cards to discard from hand:`,
-      cards: player_cards.hand,
-      minimum: 3,
-      maximum: 3
-    })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-    turn_event_processor.process(Diplomat.discard_from_hand)
+      let turn_event_id = TurnEventModel.insert({
+        game_id: game._id,
+        player_id: player_cards.player_id,
+        username: player_cards.username,
+        type: 'choose_cards',
+        player_cards: true,
+        instructions: `Choose 3 cards to discard from hand:`,
+        cards: player_cards.hand,
+        minimum: 3,
+        maximum: 3
+      })
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      turn_event_processor.process(Diplomat.discard_from_hand)
+    } else {
+      Diplomat.discard_from_hand(game, player_cards, player_cards.hand)
+    }
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
