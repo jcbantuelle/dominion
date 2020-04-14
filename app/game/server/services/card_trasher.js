@@ -10,6 +10,7 @@ CardTrasher = class CardTrasher {
       cards = [cards]
     }
     this.cards = _.clone(cards)
+    this.trashed_cards = []
   }
 
   trash() {
@@ -28,10 +29,6 @@ CardTrasher = class CardTrasher {
         turn_event_processor.process(CardTrasher.order_cards)
       }
 
-      if (!events) {
-        this.update_log(this.cards)
-      }
-
       _.each(this.cards, (trashed_card) => {
         if (events) {
           this.update_log(trashed_card)
@@ -40,7 +37,12 @@ CardTrasher = class CardTrasher {
         trash_event_processor.process()
         this.put_card_in_trash(trashed_card)
       })
+
+      if (!events && !_.isEmpty(this.trashed_cards)) {
+        this.update_log(this.trashed_cards)
+      }
     }
+    return this.trashed_cards
   }
 
   has_events() {
@@ -62,7 +64,9 @@ CardTrasher = class CardTrasher {
     }
 
     let card_mover = new CardMover(this.game, this.player_cards)
-    card_mover.move(this.player_cards[this.source], destination, trashed_card)
+    if (card_mover.move(this.player_cards[this.source], destination, trashed_card)) {
+      this.trashed_cards.push(trashed_card)
+    }
   }
 
   update_log(cards) {
