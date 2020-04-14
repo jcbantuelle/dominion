@@ -31,13 +31,12 @@ Nobles = class Nobles extends Card {
   }
 
   static process_response(game, player_cards, response) {
-    response = response[0]
-    if (response === 'cards') {
+    if (response[0] === 'cards') {
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(3)
-    } else if (response === 'actions') {
-      game.turn.actions += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+    } else if (response[0] === 'actions') {
+      let action_gainer = new ActionGainer(game, player_cards)
+      action_gainer.gain(2)
     }
   }
 
