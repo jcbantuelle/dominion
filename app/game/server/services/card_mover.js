@@ -12,6 +12,9 @@ CardMover = class CardMover {
     if (card_index !== -1) {
       source.splice(card_index, 1)
       destination.splice(destination_index, 0, card)
+      return true
+    } else {
+      return false
     }
   }
 
