@@ -9,8 +9,8 @@ Minion = class Minion extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
@@ -37,8 +37,8 @@ Minion = class Minion extends Card {
   static process_response(game, player_cards, response) {
     response = response[0]
     if (response === 'coins') {
-      let gained_coins = CoinGainer.gain(game, player_cards, 2)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(2)
     } else if (response === 'discard') {
       game.turn.minion_attack = true
       Minion.redraw_hand(game, player_cards)
