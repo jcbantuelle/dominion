@@ -12,8 +12,8 @@ SecretPassage = class SecretPassage extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
@@ -35,35 +35,29 @@ SecretPassage = class SecretPassage extends Card {
     } else if (_.size(player_cards.hand) === 1) {
       SecretPassage.choose_card_to_place_in_deck(game, player_cards, player_cards.hand)
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in hand`)
+      game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }
   }
 
   static choose_card_to_place_in_deck(game, player_cards, selected_cards) {
-    card_to_place_in_deck = selected_cards[0]
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'overpay',
       player_cards: true,
-      instructions: `Choose where in your deck to put ${CardView.render(card_to_place_in_deck)} (1 is top of deck):`,
+      instructions: `Choose where in your deck to put ${CardView.render(selected_cards[0])} (1 is top of deck):`,
       minimum: 1,
       maximum: _.size(player_cards.deck) + 1
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_to_place_in_deck)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, selected_cards[0])
     turn_event_processor.process(SecretPassage.insert_in_deck)
   }
 
   static insert_in_deck(game, player_cards, location, selected_card) {
-    let hand_card_index = _.findIndex(player_cards.hand, function(card) {
-      return card.id === selected_card.id
-    })
-    player_cards.hand.splice(hand_card_index, 1)[0]
-
-    location = Number(location)
-    player_cards.deck.splice(location - 1, 0, selected_card)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> inserts ${CardView.render(selected_card)} as card #${location}`)
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move(player_cards.hand, player_cards.deck, selected_card, Number(location) - 1)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(selected_card)} in their deck as card #${location}`)
   }
 
 }
