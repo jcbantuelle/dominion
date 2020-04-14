@@ -29,29 +29,25 @@ SecretChamber = class SecretChamber extends Card {
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let discard_count = _.size(selected_cards)
-    if (discard_count === 0) {
+    if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
-      let gained_coins = CoinGainer.gain(game, player_cards, discard_count)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(_.size(selected_cards))
     }
   }
 
   attack_event(game, player_cards, card) {
-    revealed_card = _.find(player_cards.hand, function(hand_card) {
-      return hand_card.id === card.id
-    })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(card)
 
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
-    let cards_in_hand = _.size(player_cards.hand)
-    if (cards_in_hand > 2) {
+    if (_.size(player_cards.hand) > 2) {
       PlayerCardsModel.update(game._id, player_cards)
 
       let turn_event_id = TurnEventModel.insert({
@@ -67,38 +63,17 @@ SecretChamber = class SecretChamber extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(SecretChamber.return_to_deck)
-    } else if (cards_in_hand === 2) {
+    } else if (_.size(player_cards.hand) > 0) {
       SecretChamber.return_to_deck(game, player_cards, player_cards.hand)
-    } else if (cards_in_hand === 1) {
-      SecretChamber.replace_cards(game, player_cards, player_cards.hand)
-    } else if (cards_in_hand === 0) {
+    } else {
       game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }
 
   }
 
   static return_to_deck(game, player_cards, selected_cards) {
-    let turn_event_id = TurnEventModel.insert({
-      game_id: game._id,
-      player_id: player_cards.player_id,
-      username: player_cards.username,
-      type: 'sort_cards',
-      instructions: 'Choose order to place cards on deck: (leftmost will be top card)',
-      cards: selected_cards
-    })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-    turn_event_processor.process(SecretChamber.replace_cards)
-  }
-
-  static replace_cards(game, player_cards, ordered_cards) {
-    _.each(ordered_cards.reverse(), function(ordered_card) {
-      let returned_card_index = _.findIndex(player_cards.hand, function(card) {
-        return card.id === ordered_card.id
-      })
-      let returned_card = player_cards.hand.splice(returned_card_index, 1)[0]
-      player_cards.deck.unshift(returned_card)
-    })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places ${_.size(ordered_card_names)} cards back on their deck`)
+    let card_returner = new CardReturner(game, player_cards)
+    card_returner.return_to_deck(player_cards.hand, selected_cards)
   }
 
 }
