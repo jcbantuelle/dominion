@@ -32,7 +32,7 @@ Courtier = class Courtier extends Card {
 
   static reveal_card(game, player_cards, selected_cards) {
     let card_revealer = new CardRevealer(game, player_cards)
-    card_revealer.reveal(selected_cards[0])
+    card_revealer.reveal('hand', selected_cards)
 
     GameModel.update(game._id, game)
 
