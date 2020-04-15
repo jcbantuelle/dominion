@@ -18,9 +18,9 @@ Diplomat = class Diplomat extends Card {
     }
   }
 
-  attack_event(game, player_cards, card) {
+  attack_event(game, player_cards, diplomat) {
     let card_revealer = new CardRevealer(game, player_cards)
-    card_revealer.reveal(card)
+    card_revealer.reveal('hand', diplomat)
 
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
