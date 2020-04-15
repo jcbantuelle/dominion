@@ -12,7 +12,7 @@ CardPlayer = class CardPlayer {
   }
 
   play(free_play = false, move_card = true, source = 'hand', number_of_times = 1, announce = true) {
-    let duration_count = 0
+    let duration = false
     _.times(number_of_times, (play_count) => {
       if (this.can_play(free_play)) {
         this.update_phase(free_play)
@@ -24,7 +24,7 @@ CardPlayer = class CardPlayer {
         }
         let play_result = this.play_card(announce)
         if (play_result === 'duration') {
-          duration_count += 1
+          duration = true
         }
         this.action_resolution_events()
         if (announce) {
@@ -32,7 +32,7 @@ CardPlayer = class CardPlayer {
         }
       }
     })
-    if (duration_count > 1 && this.originating_card) {
+    if (duration && this.originating_card) {
       this.originating_card.belongs_to_id = this.card.id
     }
   }
