@@ -12,9 +12,11 @@ Treasury = class Treasury extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$${gained_coins}`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
+
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
   }
 
   discard_event(discarder, treasury) {
@@ -33,17 +35,10 @@ Treasury = class Treasury extends Card {
 
   static put_on_deck(game, player_cards, response, treasury) {
     if (response === 'yes') {
-      let treasury_index = _.findIndex(player_cards.discarding, (card) => {
-        card.id === treasury.id
-      })
-      let treasury = player_cards.discarding.splice(treasury_index, 1)[0]
-      game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(treasury)} on top of their deck`)
-      delete treasury.scheme
-      delete treasury.prince
-      if (treasury.misfit) {
-        treasury = treasury.misfit
+      let card_mover = new CardMover(game, player_cards)
+      if (card_mover.move(player_cards.in_play, player_cards.deck, treasury)) {
+        game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(treasury)} on top of their deck`)
       }
-      player_cards.deck.unshift(treasury)
     }
   }
 
