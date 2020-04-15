@@ -1,4 +1,4 @@
-Lighthouse = class Lighthouse extends Card {
+Lighthouse = class Lighthouse extends Duration {
 
   types() {
     return ['action', 'duration']
@@ -8,18 +8,20 @@ Lighthouse = class Lighthouse extends Card {
     return 2
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
+  play(game, player_cards, card_player) {
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    game.turn.actions += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
+
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} from ${CardView.render(duration_card)}`)
+  duration(game, player_cards, lighthouse) {
+    let coin_gainer = new CoinGainer(game, player_cards, lighthouse)
+    coin_gainer.gain(1)
   }
 
 }
