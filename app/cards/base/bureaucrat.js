@@ -38,13 +38,14 @@ Bureaucrat = class Bureaucrat extends Card {
     } else if (_.size(eligible_cards) === 1) {
       Bureaucrat.return_card_to_deck(game, player_cards, eligible_cards)
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal('hand')
     }
   }
 
   static return_card_to_deck(game, player_cards, selected_cards) {
     let card_revealer = new CardRevealer(game, player_cards)
-    card_revealer.reveal(selected_cards)
+    card_revealer.reveal('hand', selected_cards)
 
     let card_mover = new CardMover(game, player_cards)
     card_mover.move(player_cards.hand, player_cards.deck, selected_cards[0])
