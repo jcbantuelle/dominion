@@ -166,6 +166,7 @@ GameCreator = class GameCreator {
       username: player.username,
       deck: deck,
       hand: hand,
+      haven: [],
       coin_tokens: coin_tokens,
       villagers: 0,
       debt_tokens: 0,

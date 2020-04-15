@@ -60,6 +60,17 @@
     <br />
     <br />
   {{/if}}
+  {{#if player_cards.haven}}
+    Haven:
+    {{#each player_cards.haven}}
+      <span class="{{types}} haven-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="220" height="341" />
+      </div>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
   {{#if player_cards.archive}}
     Archive:
     {{#each player_cards.archive}}
