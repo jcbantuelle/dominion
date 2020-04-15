@@ -13,7 +13,7 @@ Transmute = class Transmute extends Card {
   }
 
   play(game, player_cards) {
-    if (_.size(player_cards.hand) > 0) {
+    if (_.size(player_cards.hand) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -27,6 +27,8 @@ Transmute = class Transmute extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Transmute.trash_card)
+    } else if (_.size(player_cards.hand) === 1) {
+      Transmute.trash_card(game, player_cards, player_cards.hand)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
