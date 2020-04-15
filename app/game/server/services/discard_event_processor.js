@@ -37,14 +37,14 @@ DiscardEventProcessor = class DiscardEventProcessor {
             this.discard_events.push(this.card)
           }
         } else if (this.card.name === 'Herbalist') {
-          let has_treasures = _.some(this.discarder.player_cards.to_discard, function(card) {
+          let has_treasures = _.some(this.discarder.player_cards.in_play, function(card) {
             return _.includes(_.words(card.types), 'treasure')
           })
           if (has_treasures) {
             this.discard_events.push(this.card)
           }
         } else if (this.card.name === 'Alchemist') {
-          let has_potions = _.some(this.discarder.player_cards.to_discard, function(card) {
+          let has_potions = _.some(this.discarder.player_cards.in_play, function(card) {
             return card.name === 'Potion'
           })
           if (has_potions) {
@@ -79,7 +79,7 @@ DiscardEventProcessor = class DiscardEventProcessor {
           let upgrade_stack = _.find(this.discarder.game.cards, function(stack) {
             return stack.name === traveller.upgrade
           })
-          let discarding_upgrades = _.some(this.discarder.player_cards.to_discard, function(card) {
+          let discarding_upgrades = _.some(this.discarder.player_cards.in_play, function(card) {
             return card.name === traveller.upgrade
           })
           if (upgrade_stack.count > 0 || discarding_upgrades) {

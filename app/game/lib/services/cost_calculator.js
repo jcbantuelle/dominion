@@ -16,9 +16,8 @@ CostCalculator = class CostCalculator {
     if (!current_player_cards) {
       return 0
     }
-    let current_player_in_play_cards = current_player_cards.in_play.concat(current_player_cards.duration).concat(current_player_cards.permanent).concat(current_player_cards.to_discard)
 
-    let in_play_cards = _.flatten(_.map(player_cards, 'in_play').concat(_.map(player_cards, 'duration')).concat(_.map(player_cards, 'permanent')).concat(_.map(player_cards, 'to_discard')))
+    let in_play_cards = _.flatten(_.map(player_cards, 'in_play'))
 
     let discount_token = _.find(current_player_cards.tokens.pile, function(token) {
       return token.effect === 'discount'
@@ -29,12 +28,12 @@ CostCalculator = class CostCalculator {
     }
 
     let highways = _.size(_.filter(in_play_cards, function(player_card) {
-      return player_card.inherited_name === 'Highway'
+      return player_card.name === 'Highway'
     }))
     cost -= highways
 
-    let bridge_trolls = _.size(_.filter(current_player_in_play_cards, function(player_card) {
-      return player_card.inherited_name === 'Bridge Troll'
+    let bridge_trolls = _.size(_.filter(current_player_cards.in_play, function(player_card) {
+      return player_card.name === 'Bridge Troll'
     }))
     cost -= bridge_trolls
 

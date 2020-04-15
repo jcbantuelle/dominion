@@ -67,7 +67,7 @@ GainEventProcessor = class GainEventProcessor {
       }
     })
 
-    _.each(this.player_cards.in_play.concat(this.player_cards.to_discard).concat(this.player_cards.playing), (card) => {
+    _.each(this.player_cards.in_play, (card) => {
       if (_.includes(GainEventProcessor.in_play_event_cards(), card.inherited_name)) {
         if (_.includes(['Royal Seal', 'Tracker'], card.inherited_name)) {
           if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).id === this.gainer.gained_card.id) {
