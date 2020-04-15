@@ -1,4 +1,4 @@
-Caravan = class Caravan extends Card {
+Caravan = class Caravan extends Duration {
 
   types() {
     return ['action', 'duration']

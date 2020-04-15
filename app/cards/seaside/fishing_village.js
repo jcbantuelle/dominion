@@ -1,4 +1,4 @@
-FishingVillage = class FishingVillage extends Card {
+FishingVillage = class FishingVillage extends Duration {
 
   types() {
     return ['action', 'duration']

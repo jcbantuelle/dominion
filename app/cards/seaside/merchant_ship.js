@@ -1,4 +1,4 @@
-MerchantShip = class MerchantShip extends Card {
+MerchantShip = class MerchantShip extends Duration {
 
   types() {
     return ['action', 'duration']
