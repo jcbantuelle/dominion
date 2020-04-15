@@ -40,9 +40,9 @@ SecretChamber = class SecretChamber extends Card {
     }
   }
 
-  attack_event(game, player_cards, card) {
+  attack_event(game, player_cards, secret_chamber) {
     let card_revealer = new CardRevealer(game, player_cards)
-    card_revealer.reveal(card)
+    card_revealer.reveal('hand', secret_chamber)
 
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
