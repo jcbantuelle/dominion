@@ -30,7 +30,7 @@ CardDiscarder = class CardDiscarder {
       }
 
       if (!events && announce) {
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(this.cards)}`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(this.cards)}${this.source_text()}`)
       }
 
       _.each(this.cards, (card_to_discard) => {
@@ -66,7 +66,11 @@ CardDiscarder = class CardDiscarder {
   }
 
   update_log(card) {
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(card)}`)
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(card)}${this.source_text()}`)
+  }
+
+  source_text() {
+    return this.source === 'deck' ? ' from the top of their deck' : ''
   }
 
   static order_cards(game, player_cards, ordered_cards, card_discarder) {
