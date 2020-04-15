@@ -254,7 +254,7 @@ TurnEnder = class TurnEnder {
     let queued_turns = []
     if (this.game.turn.previous_player && this.game.turn.previous_player._id !== this.game.turn.player._id) {
       if (this.game.turn.outpost) {
-        queued_turns.push(ClassCreator.create('Outpost').to_h())
+        queued_turns.push(this.game.turn.outpost)
       }
       if (this.game.turn.mission) {
         queued_turns.push(ClassCreator.create('Mission').to_h())
@@ -301,14 +301,14 @@ TurnEnder = class TurnEnder {
   static process_extra_player_turns_order(game, player_cards, ordered_extra_turns) {
     ordered_extra_turns = ordered_extra_turns.reverse()
     let possession_index = _.findIndex(ordered_extra_turns, function(turn) {
-      return turn === 'Possession'
+      return turn.name === 'Possession'
     })
     _.each(ordered_extra_turns, function(turn, turn_index) {
-      if (turn !== 'Possession') {
-        let next_extra_turn = {type: turn, player: game.turn.player}
+      if (turn.name !== 'Possession') {
+        let next_extra_turn = {type: turn.name, player: game.turn.player}
         if (turn_index < possession_index) {
           let possession_turn_index = _.findIndex(game.extra_turns, function(extra_turn) {
-            return extra_turn.type === 'Possession'
+            return extra_turn.type.name === 'Possession'
           })
           game.extra_turns.splice(possession_turn_index + 1, 0, next_extra_turn)
         } else {
