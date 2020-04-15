@@ -8,6 +8,8 @@ CardReturner = class CardReturner {
   return_to_deck(source, cards) {
     if (!cards) {
       cards = source
+    } else if (!_.isArray(cards)) {
+      cards = [cards]
     }
     if (_.size(cards) === 1) {
       CardReturner.return_ordered_cards_to_deck(this.game, this.player_cards, cards, source)
