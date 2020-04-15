@@ -8,17 +8,17 @@ MerchantShip = class MerchantShip extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} from ${CardView.render(duration_card)}`)
+  duration(game, player_cards, merchant_ship) {
+    let coin_gainer = new CoinGainer(game, player_cards, merchant_ship)
+    coin_gainer.gain(2)
   }
 
 }
