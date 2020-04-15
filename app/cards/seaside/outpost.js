@@ -1,4 +1,4 @@
-Outpost = class Outpost extends Card {
+Outpost = class Outpost extends Duration {
 
   types() {
     return ['action', 'duration']
