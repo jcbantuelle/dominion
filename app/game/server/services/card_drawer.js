@@ -1,9 +1,10 @@
 CardDrawer = class CardDrawer {
 
-  constructor(game, player_cards) {
+  constructor(game, player_cards, source) {
     this.game = game
     this.player_cards = player_cards
     this.original_hand_count = _.size(this.player_cards.hand)
+    this.source = source
   }
 
   draw(to_draw_count, announce = true) {
@@ -38,7 +39,8 @@ CardDrawer = class CardDrawer {
 
   update_log() {
     let card_text = this.drawn_card_count === 1 ? 'card' : 'cards'
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> draws ${this.drawn_card_count()} ${card_text}`)
+    let source_text = this.source ? ` from ${CardView.render(this.source)}` : ''
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> draws ${this.drawn_card_count()} ${card_text}${source_text}`)
   }
 
 }
