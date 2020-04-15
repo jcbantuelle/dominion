@@ -47,14 +47,14 @@ Card = class Card {
     }
   }
 
-  stay_in_play(player_cards, card) {
+  stay_in_play(game, player_cards, card) {
     let stay_in_play = false
     if (card.belongs_to_id) {
       let belongs_to = _.find(player_cards.in_play, (in_play_card) => {
         return in_play_card.id === card.belongs_to_id
       })
       if (belongs_to) {
-        stay_in_play = ClassCreator.create(belongs_to.name).stay_in_play(player_cards, belongs_to)
+        stay_in_play = ClassCreator.create(belongs_to.name).stay_in_play(game, player_cards, belongs_to)
       }
     }
     if (!stay_in_play) {

@@ -98,7 +98,7 @@ TurnEnder = class TurnEnder {
       SchemeChooser.choose(this.game, this.player_cards)
     }
     let cards_to_discard = _.filter(this.player_cards.in_play, (card) => {
-      return !ClassCreator.create(card.name).stay_in_play(this.player_cards, card)
+      return !ClassCreator.create(card.name).stay_in_play(this.game, this.player_cards, card)
     })
     let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play', cards_to_discard)
     card_discarder.discard(false)
