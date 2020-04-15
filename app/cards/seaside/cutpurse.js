@@ -9,8 +9,8 @@ Cutpurse = class Cutpurse extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
@@ -25,7 +25,8 @@ Cutpurse = class Cutpurse extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', copper)
       card_discarder.discard()
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal('hand')
     }
   }
 
