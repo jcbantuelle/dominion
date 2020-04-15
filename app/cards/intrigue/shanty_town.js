@@ -13,7 +13,7 @@ ShantyTown = class ShantyTown extends Card {
     action_gainer.gain(2)
 
     let card_revealer = new CardRevealer(game, player_cards)
-    card_revealer.reveal(player_cards.hand)
+    card_revealer.reveal('hand')
 
     let has_actions = _.some(player_cards.hand, function(card) {
       return _.includes(_.words(card.types), 'action')
