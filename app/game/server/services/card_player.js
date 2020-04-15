@@ -1,9 +1,10 @@
 CardPlayer = class CardPlayer {
 
-  constructor(game, player_cards, card) {
+  constructor(game, player_cards, card, originating_card) {
     this.game = game
     this.player_cards = player_cards
     this.card = card
+    this.originating_card = originating_card
   }
 
   play_without_announcement() {
@@ -11,6 +12,7 @@ CardPlayer = class CardPlayer {
   }
 
   play(free_play = false, move_card = true, source = 'hand', number_of_times = 1, announce = true) {
+    let duration_count = 0
     _.times(number_of_times, (play_count) => {
       if (this.can_play(free_play)) {
         this.update_phase(free_play)
@@ -20,13 +22,19 @@ CardPlayer = class CardPlayer {
           this.update_log()
           this.update_db()
         }
-        this.play_card(announce)
+        let play_result = this.play_card(announce)
+        if (play_result === 'duration') {
+          duration_count += 1
+        }
         this.action_resolution_events()
         if (announce) {
           this.update_db()
         }
       }
     })
+    if (duration_count > 1 && this.originating_card) {
+      this.originating_card.belongs_to_id = this.card.id
+    }
   }
 
   can_play(free_play) {
@@ -136,6 +144,7 @@ CardPlayer = class CardPlayer {
   }
 
   play_card(announce) {
+    let play_result
     this.token_effects()
     if (_.includes(this.card.types, 'action') && this.game.turn.player._id === this.player_cards.player_id) {
       this.game.turn.played_actions.push(this.card)
@@ -143,11 +152,12 @@ CardPlayer = class CardPlayer {
     if (this.enchantress_attack()) {
       this.replace_with_enchantress()
     } else {
-      this.card_object().play(this.game, this.player_cards, this)
+      play_result = this.card_object().play(this.game, this.player_cards, this)
     }
     if (announce) {
       this.update_db()
     }
+    return play_result
   }
 
   enchantress_attack() {

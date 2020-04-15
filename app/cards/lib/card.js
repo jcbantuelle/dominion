@@ -48,18 +48,19 @@ Card = class Card {
   }
 
   stay_in_play(player_cards, card) {
+    let stay_in_play = false
     if (card.belongs_to_id) {
       let belongs_to = _.find(player_cards.in_play, (in_play_card) => {
         return in_play_card.id === card.belongs_to_id
       })
       if (belongs_to) {
-        return ClassCreator.create(belongs_to.name).stay_in_play(player_cards, belongs_to)
-      } else {
-        return false
+        stay_in_play = ClassCreator.create(belongs_to.name).stay_in_play(player_cards, belongs_to)
       }
-    } else {
-      return false
     }
+    if (!stay_in_play) {
+      delete card.belongs_to_id
+    }
+    return stay_in_play
   }
 
   to_h(player_cards) {

@@ -33,7 +33,6 @@ TurnEnder = class TurnEnder {
       this.clear_duration_attacks()
       GameModel.update(this.game._id, this.game)
       this.start_turn_events()
-      this.move_duration_cards()
       this.update_db(false)
     }
   }
@@ -98,7 +97,10 @@ TurnEnder = class TurnEnder {
     if (this.game.turn.schemes > 0) {
       SchemeChooser.choose(this.game, this.player_cards)
     }
-    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play')
+    let cards_to_discard = _.filter(this.player_cards.in_play, (card) => {
+      return !ClassCreator.create(card.name).stay_in_play(this.player_cards, card)
+    })
+    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play', cards_to_discard)
     card_discarder.discard(false)
 
     if (this.game.turn.possessed && !_.isEmpty(this.player_cards.possession_trash)) {
@@ -387,33 +389,6 @@ TurnEnder = class TurnEnder {
   start_turn_events() {
     let start_turn_event_processor = new StartTurnEventProcessor(this.game, this.next_player_cards)
     start_turn_event_processor.process()
-  }
-
-  move_duration_cards() {
-    if (!_.isEmpty(this.next_player_cards.duration)) {
-      let archive_effect_count = _.size(_.filter(this.next_player_cards.duration_effects, function(effect) {
-        return effect.name === 'Archive'
-      }))
-      let crypt_effect_count = _.size(_.filter(this.next_player_cards.duration_effects, function(effect) {
-        return effect.name === 'Crypt'
-      }))
-      let duration_cards_to_move = []
-      let duration_cards_remaining = []
-      _.each(this.next_player_cards.duration, function(card) {
-        delete card.prince
-        if (card.name === 'Archive' && archive_effect_count > 0) {
-          duration_cards_remaining.push(card)
-          archive_effect_count -= 1
-        } else if (card.name === 'Crypt' && crypt_effect_count > 0) {
-          duration_cards_remaining.push(card)
-          crypt_effect_count -= 1
-        } else {
-          duration_cards_to_move.push(card)
-        }
-      })
-      this.next_player_cards.in_play = this.next_player_cards.in_play.concat(duration_cards_to_move)
-      this.next_player_cards.duration = duration_cards_remaining
-    }
   }
 
   player_turn_number() {
