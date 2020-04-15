@@ -19,20 +19,21 @@ Explorer = class Explorer extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: 'Reveal Province?',
+        instructions: `Reveal ${CardView.render(province)}?`,
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, province)
       turn_event_processor.process(Explorer.reveal_province)
     } else {
       Explorer.gain_card(game, player_cards, 'Silver')
     }
   }
 
-  static reveal_province(game, player_cards, response) {
+  static reveal_province(game, player_cards, response, province) {
     if (response === 'yes') {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(new Province())}`)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal('hand', province)
       Explorer.gain_card(game, player_cards, 'Gold')
     } else {
       Explorer.gain_card(game, player_cards, 'Silver')
@@ -40,6 +41,9 @@ Explorer = class Explorer extends Card {
   }
 
   static gain_card(game, player_cards, card_name) {
+    if (card_name === 'Silver') {
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> does not reveal a ${CardView.render(new Province())}`)
+    }
     let card_gainer = new CardGainer(game, player_cards, 'hand', card_name)
     card_gainer.gain_game_card()
   }
