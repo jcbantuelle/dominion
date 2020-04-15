@@ -5,7 +5,12 @@ CardRevealer = class CardRevealer {
     this.player_cards = player_cards
   }
 
-  reveal(cards) {
+  reveal(source, cards) {
+    if (!cards) {
+      cards = this.player_cards[source]
+    } else if (!_.isArray(cards)) {
+      cards = [cards]
+    }
     if (_.size(cards) === 0) {
       this.game.log.push(`&nbsp;&nbsp;but <strong>${this.player_cards.username}</strong> has nothing to reveal`)
     } else {
@@ -36,12 +41,12 @@ CardRevealer = class CardRevealer {
         }
       })
     }
+    this.player_cards.revealed = revealed_cards
     if (show_others) {
-      this.reveal(revealed_cards)
+      this.reveal('revealed')
     } else {
       this.look(revealed_cards)
     }
-    this.player_cards.revealed = revealed_cards
   }
 
   reveal_from_deck_until(termination_condition, show_others = true) {
@@ -52,12 +57,12 @@ CardRevealer = class CardRevealer {
       }
       revealed_cards.push(this.player_cards.deck.shift())
     }
+    this.player_cards.revealed = revealed_cards
     if (show_others) {
-      this.reveal(revealed_cards)
+      this.reveal('revealed')
     } else {
       this.look(revealed_cards)
     }
-    this.player_cards.revealed = revealed_cards
   }
 
 }
