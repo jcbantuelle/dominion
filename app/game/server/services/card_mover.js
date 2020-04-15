@@ -18,4 +18,11 @@ CardMover = class CardMover {
     }
   }
 
+  move_all(source, destination) {
+    _.times(_.size(source), (count) => {
+      let card = source.splice(0, 1)
+      destination.splice(0, 0, card[0])
+    })
+  }
+
 }
