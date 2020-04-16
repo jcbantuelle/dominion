@@ -28,6 +28,13 @@ CardDrawer = class CardDrawer {
     return this.drawn_card_count()
   }
 
+  draw_until(draw_target) {
+    while (_.size(this.player_cards.hand) < draw_target && (_.size(this.player_cards.deck) > 0 || _.size(this.player_cards.discard) > 0)) {
+      this.draw(1, false)
+    }
+    this.update_log()
+  }
+
   draw_cards(count) {
     this.player_cards.hand = this.player_cards.hand.concat(_.take(this.player_cards.deck, count))
     this.player_cards.deck = _.drop(this.player_cards.deck, count)
