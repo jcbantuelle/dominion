@@ -51,7 +51,7 @@ GainEventProcessor = class GainEventProcessor {
             this.gain_events.push(card)
           }
         } else if (card.name === 'Watchtower') {
-          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).name === this.gainer.card_name) {
+          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).id === this.gainer.gained_card.id) {
             this.gain_events.push(card)
           }
         }
@@ -134,7 +134,7 @@ GainEventProcessor = class GainEventProcessor {
       }
     })
 
-    if (_.includes(_.words(this.gainer.gained_card.types), 'victory') && this.gainer.game_card.has_trade_route_token) {
+    if (_.includes(_.words(this.gainer.gained_card.types), 'victory') && this.gainer.supply_pile && this.gainer.supply_pile.has_trade_route_token) {
       let trade_route = ClassCreator.create('Trade Route').to_h()
       trade_route.id = this.generate_event_id()
       this.gain_events.push(trade_route)
@@ -143,7 +143,7 @@ GainEventProcessor = class GainEventProcessor {
 
   process() {
     if (!_.isEmpty(this.gain_events)) {
-      let mandatory_gain_events = _.filter(this.gain_events, function(event) {
+      let mandatory_gain_events = _.filter(this.gain_events, (event) => {
         return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route']), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
@@ -188,13 +188,13 @@ GainEventProcessor = class GainEventProcessor {
       } else {
         card_object.gain_event(gain_event_processor.gainer, card)
       }
-      let event_index = _.findIndex(gain_event_processor.gain_events, function(event) {
+      let event_index = _.findIndex(gain_event_processor.gain_events, (event) => {
         return event.id === card.id
       })
       gain_event_processor.gain_events.splice(event_index, 1)
 
       if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).id !== gain_event_processor.gainer.gained_card.id) {
-        gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
+        gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, (event) => {
           return event.name !== 'Watchtower' && event.name !== 'Royal Seal'
         })
       }
