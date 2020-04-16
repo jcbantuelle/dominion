@@ -74,12 +74,12 @@ BuyEventProcessor = class BuyEventProcessor {
     })
 
     _.each(this.buyer.player_cards.in_play, (card) => {
-      if (_.includes(BuyEventProcessor.in_play_event_cards(), card.inherited_name)) {
-        if (card.inherited_name === 'Talisman') {
+      if (_.includes(BuyEventProcessor.in_play_event_cards(), card.name)) {
+        if (card.name === 'Talisman') {
           if (!_.includes(this.buyer.card.types(this.buyer.player_cards), 'victory') && CardCostComparer.coin_less_than(this.buyer.game, this.buyer.card.to_h(), 5)) {
             this.buy_events.push(card)
           }
-        } else if (card.inherited_name === 'Hoard') {
+        } else if (card.name === 'Hoard') {
           if (_.includes(this.buyer.card.types(this.buyer.player_cards), 'victory')) {
             this.buy_events.push(card)
           }
@@ -106,7 +106,7 @@ BuyEventProcessor = class BuyEventProcessor {
   process() {
     if (!_.isEmpty(this.buy_events)) {
       let mandatory_buy_events = _.filter(this.buy_events, function(event) {
-        return _.includes(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()).concat(BuyEventProcessor.landmark_cards()), event.inherited_name)
+        return _.includes(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()).concat(BuyEventProcessor.landmark_cards()), event.name)
       })
       if (_.size(this.buy_events) === 1 && !_.isEmpty(mandatory_buy_events)) {
         BuyEventProcessor.buy_event(this.buyer.game, this.buyer.player_cards, this.buy_events, this)

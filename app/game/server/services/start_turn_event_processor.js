@@ -42,7 +42,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
 
     let reserve_events = _.filter(this.player_cards.tavern, function(card) {
       card.start_event_type = 'Reserve'
-      return _.includes(StartTurnEventProcessor.reserve_events(), card.inherited_name)
+      return _.includes(StartTurnEventProcessor.reserve_events(), card.name)
     })
 
     let state_events = _.filter(this.player_cards.states, function(card) {

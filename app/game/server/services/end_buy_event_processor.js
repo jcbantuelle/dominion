@@ -12,8 +12,8 @@ EndBuyEventProcessor = class EndBuyEventProcessor {
 
   find_end_buy_events() {
     let reserve_events = _.filter(this.player_cards.tavern, (card) => {
-      if (_.includes(EndBuyEventProcessor.reserve_events(), card.inherited_name)) {
-        if (card.inherited_name === 'Wine Merchant') {
+      if (_.includes(EndBuyEventProcessor.reserve_events(), card.name)) {
+        if (card.name === 'Wine Merchant') {
           return this.game.turn.coins >= 2
         } else {
           return true

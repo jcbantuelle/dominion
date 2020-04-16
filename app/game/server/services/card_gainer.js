@@ -22,7 +22,6 @@ CardGainer = class CardGainer {
         this.travelling_fair(this.gained_card)
       }
       this.possessed()
-      this.convert_estate()
       this.player_cards[this.destination].unshift(this.gained_card)
       this.game.trash.splice(card_index, 1)
       this.groundskeepers()
@@ -117,13 +116,6 @@ CardGainer = class CardGainer {
     }
   }
 
-  convert_estate() {
-    if (this.gained_card.name === 'Estate' && this.player_cards.tokens.estate) {
-      let estate = ClassCreator.create('Inherited Estate').to_h(this.player_cards)
-      estate.id = this.gained_card.id
-      this.gained_card = estate
-    }
-  }
 
   find_card(source) {
     return _.find(source, (card) => {

@@ -13,8 +13,8 @@ ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
 
   find_action_resolution_events() {
     let reserve_events = _.filter(this.player_cards.tavern, (card) => {
-      if (_.includes(ActionResolutionEventProcessor.reserve_events(), card.inherited_name)) {
-        if (card.inherited_name === 'Royal Carriage') {
+      if (_.includes(ActionResolutionEventProcessor.reserve_events(), card.name)) {
+        if (card.name === 'Royal Carriage') {
           let still_in_play = _.findIndex(this.player_cards.playing, (playing_card) => {
             return playing_card.id === this.resolved_action.id
           })
