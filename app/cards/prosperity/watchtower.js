@@ -9,13 +9,8 @@ Watchtower = class Watchtower extends Card {
   }
 
   play(game, player_cards) {
-    let cards_to_draw = 6 - _.size(player_cards.hand)
-    if (cards_to_draw > 0 && player_cards.tokens.minus_card) {
-      this.game.log.push(`&nbsp;&nbsp;${this.player_cards.username} discards their -1 card token`)
-      delete this.player_cards.tokens.minus_card
-    }
     let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(cards_to_draw)
+    card_drawer.draw_until(6)
   }
 
   gain_reaction(game, player_cards, gainer, watchtower) {
