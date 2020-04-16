@@ -58,7 +58,7 @@ GainEventProcessor = class GainEventProcessor {
     })
 
     _.each(this.gainer.game.cards, (card) => {
-      if (card.source !== 'not_supply' && card.count > 0 && _.includes(GainEventProcessor.supply_cards(), card.name)) {
+      if (card.supply && card.count > 0 && _.includes(GainEventProcessor.supply_cards(), card.name)) {
         if (card.name === 'Changeling' && this.player_cards._id === this.gainer.player_cards._id) {
           if (this.gainer.gained_card.stack_name && CardCostComparer.coin_greater_than(this.gainer.game, this.gainer.gained_card, 2)) {
             this.gain_events.push(card.top_card)
