@@ -70,7 +70,7 @@ Thief = class Thief extends Card {
   static gain_trashed_treasure(game, player_cards, response, trashed_treasure) {
     if (response === 'yes') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', trashed_treasure.name)
-      card_gainer.gain_trash_card()
+      card_gainer.gain(game.trash)
     }
   }
 
