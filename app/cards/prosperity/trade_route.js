@@ -37,7 +37,7 @@ TradeRoute = class TradeRoute extends Card {
   }
 
   gain_event(gainer, trade_route) {
-    gainer.game_card.has_trade_route_token = false
+    gainer.supply_pile.has_trade_route_token = false
     gainer.game.trade_route_tokens += 1
     gainer.game.log.push(`&nbsp;&nbsp;The ${CardView.render(gainer.gained_card)} Coin token is moved to the ${CardView.render(trade_route)} mat`)
   }
