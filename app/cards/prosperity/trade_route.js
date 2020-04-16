@@ -9,7 +9,10 @@ TradeRoute = class TradeRoute extends Card {
   }
 
   play(game, player_cards) {
-    if (_.size(player_cards.hand) > 0) {
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
+
+    if (_.size(player_cards.hand) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -23,13 +26,14 @@ TradeRoute = class TradeRoute extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(TradeRoute.trash_card)
+    } else if (_.size(player_cards.hand) === 1) {
+      TradeRoute.trash_card(game, player_cards, player_cards.hand)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
 
-    game.turn.buys += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, game.trade_route_tokens)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(game.trade_route_tokens)
   }
 
   static trash_card(game, player_cards, selected_cards) {
