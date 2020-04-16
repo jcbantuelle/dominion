@@ -69,7 +69,7 @@ Replace = class Replace extends Card {
     let selected_card_types = _.words(selected_card.top_card.types)
     let destination = _.includes(selected_card_types, 'action') || _.includes(selected_card_types, 'treasure') ? 'deck' : 'discard'
     let card_gainer = new CardGainer(game, player_cards, destination, selected_card.name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
 
     if (_.includes(selected_card_types, 'victory')) {
       game.turn.replace_attack = true
@@ -79,7 +79,7 @@ Replace = class Replace extends Card {
   attack(game, player_cards) {
     if (game.turn.replace_attack) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

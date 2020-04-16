@@ -22,7 +22,7 @@ MarketSquare = class MarketSquare extends Card {
     card_discarder.discard()
 
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

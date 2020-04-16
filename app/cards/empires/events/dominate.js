@@ -7,7 +7,7 @@ Dominate = class Dominate extends Event {
   buy(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Province')
 
-    if (card_gainer.gain_game_card()) {
+    if (card_gainer.gain()) {
       if (game.turn.possessed) {
         possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
         possessing_player_cards.victory_tokens += 9

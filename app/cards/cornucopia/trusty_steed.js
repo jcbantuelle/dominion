@@ -43,7 +43,7 @@ TrustySteed = class TrustySteed extends Card {
       } else if (choice === 'silver') {
         _.times(4, function() {
           let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-          card_gainer.gain_game_card()
+          card_gainer.gain()
         })
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts their deck into their discard pile`)
         player_cards.discard = player_cards.discard.concat(player_cards.deck)

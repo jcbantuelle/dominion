@@ -10,7 +10,7 @@ JackOfAllTrades = class JackOfAllTrades extends Card {
 
   play(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
 
     GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)

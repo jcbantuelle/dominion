@@ -38,7 +38,7 @@ TradingPost = class TradingPost extends Card {
 
     if (_.size(selected_cards) === 2) {
       let card_gainer = new CardGainer(game, player_cards, 'hand', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

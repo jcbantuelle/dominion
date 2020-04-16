@@ -40,7 +40,7 @@ Squire = class Squire extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 buys`)
     } else if (choice === 'silver') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 
@@ -70,7 +70,7 @@ Squire = class Squire extends Card {
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

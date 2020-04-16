@@ -37,7 +37,7 @@ Duplicate = class Duplicate extends Card {
       player_cards.in_play.push(reserve)
 
       let card_gainer = new CardGainer(game, player_cards, 'discard', params.gainer.card_name)
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

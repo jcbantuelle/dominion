@@ -90,7 +90,7 @@ Quest = class Quest extends Event {
 
     if ((selection === 'attack' && discard_count > 0) || (selection === 'curses' && discard_count === 2) || (selection === 'cards' && discard_count === 6)) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 }

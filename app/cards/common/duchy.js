@@ -29,7 +29,7 @@ Duchy = class Duchy extends Card {
   // static gain_duchess(game, player_cards, response) {
   //   if (response === 'yes') {
   //     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchess')
-  //     card_gainer.gain_game_card()
+  //     card_gainer.gain()
   //   }
   // }
 

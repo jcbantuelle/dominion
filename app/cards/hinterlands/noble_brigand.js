@@ -65,7 +65,7 @@ NobleBrigand = class NobleBrigand extends Card {
         card_discarder.discard()
         if (!any_treasures) {
           let card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
-          card_gainer.gain_game_card()
+          card_gainer.gain()
         }
       } else if (_.size(revealed_treasures) === 1) {
         return NobleBrigand.trash_treasure(game, player_cards, revealed_treasures[0])

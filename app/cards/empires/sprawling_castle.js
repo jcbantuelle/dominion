@@ -30,11 +30,11 @@ SprawlingCastle = class SprawlingCastle extends Castles {
     response = response[0]
     if (response === 'duchy') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     } else if (response === 'estate') {
       _.times(3, function() {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Estate')
-        card_gainer.gain_game_card()
+        card_gainer.gain()
       })
     }
   }

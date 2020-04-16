@@ -37,7 +37,7 @@ Trader = class Trader extends Card {
 
     _.times(coin_cost, function() {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 

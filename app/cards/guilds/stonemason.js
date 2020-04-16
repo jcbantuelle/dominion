@@ -64,7 +64,7 @@ Stonemason = class Stonemason extends Card {
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
   buy_event(buyer) {

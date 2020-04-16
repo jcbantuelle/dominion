@@ -43,7 +43,7 @@ WildHunt = class WildHunt extends Card {
       }
     } else if (response === 'estate') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Estate')
-      let gained = card_gainer.gain_game_card()
+      let gained = card_gainer.gain()
       if (gained) {
         if (wild_hunt_index != -1) {
           let victory_tokens = game.cards[wild_hunt_index].victory_tokens

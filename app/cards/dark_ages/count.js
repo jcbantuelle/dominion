@@ -91,7 +91,7 @@ Count = class Count extends Card {
       }
     } else if (response === 'copper') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 
@@ -119,7 +119,7 @@ Count = class Count extends Card {
       card_trasher.trash()
     } else if (response === 'duchy') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

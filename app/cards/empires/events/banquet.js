@@ -7,7 +7,7 @@ Banquet = class Banquet extends Event {
   buy(game, player_cards) {
     _.times(2, function() {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
 
     let eligible_cards = _.filter(game.cards, function(card) {
@@ -36,7 +36,7 @@ Banquet = class Banquet extends Event {
   static gain_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

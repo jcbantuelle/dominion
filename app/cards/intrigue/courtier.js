@@ -71,7 +71,7 @@ Courtier = class Courtier extends Card {
         buy_gainer.gain(1)
       } else if (choice === 'gold') {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-        card_gainer.gain_game_card()
+        card_gainer.gain()
       } else if (choice === 'coin') {
         let coin_gainer = new CoinGainer(game, player_cards)
         coin_gainer.gain(3)

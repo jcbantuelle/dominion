@@ -60,7 +60,7 @@ TheEarthsGift = class TheEarthsGift extends Boon {
   static gain_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

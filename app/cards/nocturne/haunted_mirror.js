@@ -40,7 +40,7 @@ HauntedMirror = class HauntedMirror extends Card {
       card_discarder.discard()
 
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Ghost')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

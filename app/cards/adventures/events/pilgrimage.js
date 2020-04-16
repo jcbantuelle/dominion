@@ -36,7 +36,7 @@ Pilgrimage = class Pilgrimage extends Event {
   static gain_cards(game, player_cards, selected_cards) {
     _.each(selected_cards, function(selected_card) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 }

@@ -89,7 +89,7 @@ Taxman = class Taxman extends Card {
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'deck', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

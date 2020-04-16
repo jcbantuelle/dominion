@@ -83,7 +83,7 @@ Tournament = class Tournament extends Card {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards, 'deck', selected_card.name)
     if (selected_card.name === 'Duchy') {
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     } else {
       card_gainer.gain_prize_card()
     }

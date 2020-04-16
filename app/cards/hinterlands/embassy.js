@@ -46,7 +46,7 @@ Embassy = class Embassy extends Card {
     ordered_player_cards.shift()
     _.each(ordered_player_cards, function(other_player_cards) {
       let card_gainer = new CardGainer(gainer.game, other_player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 

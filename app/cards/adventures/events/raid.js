@@ -10,7 +10,7 @@ Raid = class Raid extends Event {
     })
     _.times(_.size(silvers), function() {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
 
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)

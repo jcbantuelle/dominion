@@ -79,7 +79,7 @@ YoungWitch = class YoungWitch extends Card {
 
   static gain_curse(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

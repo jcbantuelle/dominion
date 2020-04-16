@@ -40,7 +40,7 @@ Disciple = class Disciple extends Traveller {
       card_player.play(true, true, 'hand', 2)
 
       let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

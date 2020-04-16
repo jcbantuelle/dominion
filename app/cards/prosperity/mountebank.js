@@ -49,10 +49,10 @@ Mountebank = class Mountebank extends Card {
 
   static gain_cards(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
 
     card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

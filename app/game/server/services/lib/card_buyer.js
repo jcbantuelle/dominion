@@ -85,13 +85,13 @@ CardBuyer = class CardBuyer {
   }
 
   gain_card() {
-    this.card_gainer.gain_game_card()
+    this.card_gainer.gain()
   }
 
   embargo() {
     _.times(this.game_card.embargos, () => {
       let card_gainer = new CardGainer(this.game, this.player_cards, 'discard', 'Curse')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 

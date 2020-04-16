@@ -45,7 +45,7 @@ Explorer = class Explorer extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> does not reveal a ${CardView.render(new Province())}`)
     }
     let card_gainer = new CardGainer(game, player_cards, 'hand', card_name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

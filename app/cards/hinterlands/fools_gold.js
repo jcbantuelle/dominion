@@ -37,7 +37,7 @@ FoolsGold = class FoolsGold extends Card {
       card_trasher.trash()
 
       let card_gainer = new CardGainer(game, player_cards, 'deck', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

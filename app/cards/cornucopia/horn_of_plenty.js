@@ -37,7 +37,7 @@ HornOfPlenty = class HornOfPlenty extends Card {
   static gain_card(game, player_cards, selected_cards, player) {
     let selected_card = selected_cards[0]
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
-    let gained_card = card_gainer.gain_game_card()
+    let gained_card = card_gainer.gain()
 
     if (gained_card && _.includes(_.words(gained_card.types), 'victory')) {
       let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)

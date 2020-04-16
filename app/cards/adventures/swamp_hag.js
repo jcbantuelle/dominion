@@ -30,7 +30,7 @@ SwampHag = class SwampHag extends Card {
 
   buy_event(buyer) {
     let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', 'Curse')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

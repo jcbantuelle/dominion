@@ -28,7 +28,7 @@ Rocks = class Rocks extends Card {
   gain_silver(event_handler) {
     let destination = event_handler.game.turn.phase === 'buy' ? 'deck' : 'hand'
     let card_gainer = new CardGainer(event_handler.game, event_handler.player_cards, destination, 'Silver')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

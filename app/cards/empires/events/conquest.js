@@ -7,7 +7,7 @@ Conquest = class Conquest extends Event {
   buy(game, player_cards) {
     _.times(2, function() {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
 
     let gained_silvers = _.filter(game.turn.gained_cards, function(card) {

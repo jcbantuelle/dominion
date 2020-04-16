@@ -49,7 +49,7 @@ DeathCart = class DeathCart extends Card {
   gain_event(gainer) {
     _.times(2, function() {
       let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'discard', 'Ruins')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 

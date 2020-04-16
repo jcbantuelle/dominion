@@ -11,7 +11,7 @@ HauntedCastle = class HauntedCastle extends Castles {
   gain_event(gainer) {
     if (gainer.game.turn.player._id === gainer.player_cards.player_id) {
       let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'discard', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
 
       let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(gainer.game, gainer.player_cards)
       ordered_player_cards.shift()

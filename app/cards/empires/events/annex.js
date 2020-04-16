@@ -28,7 +28,7 @@ Annex = class Annex extends Event {
     }
 
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
   static shuffle_discard(game, player_cards, selected_cards) {

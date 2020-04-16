@@ -35,7 +35,7 @@ Cultist = class Cultist extends Card {
 
   attack(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Ruins')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
   static play_cultist(game, player_cards, response, cultist_in_hand) {

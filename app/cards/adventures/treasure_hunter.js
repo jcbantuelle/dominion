@@ -18,7 +18,7 @@ TreasureHunter = class TreasureHunter extends Traveller {
 
     _.times(_.size(previous_player_cards.last_turn_gained_cards), function() {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 

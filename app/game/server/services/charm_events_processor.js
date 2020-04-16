@@ -41,7 +41,7 @@ CharmEventsProcessor = class CharmEventsProcessor {
   static gain_card(game, player_cards, selected_cards) {
     if (_.size(selected_cards) > 0) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to gain a card from ${CardView.render(new Charm())}`)
     }

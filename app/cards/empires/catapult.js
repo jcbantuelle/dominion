@@ -53,7 +53,7 @@ Catapult = class Catapult extends Card {
 
       if (CardCostComparer.coin_greater_than(game, game.turn.catapult_trash, 2)) {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-        card_gainer.gain_game_card()
+        card_gainer.gain()
       }
 
       if (_.includes(_.words(game.turn.catapult_trash.types), 'treasure')) {

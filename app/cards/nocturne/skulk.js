@@ -29,7 +29,7 @@ Skulk = class Skulk extends Card {
 
   gain_event(gainer) {
     let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'discard', 'Gold')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
   attack(game, player_cards) {

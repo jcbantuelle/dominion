@@ -60,7 +60,7 @@ SmallCastle = class SmallCastle extends Castles {
     card_trasher.trash()
     if (source_size > _.size(player_cards[source])) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Castles')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

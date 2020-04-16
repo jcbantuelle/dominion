@@ -18,7 +18,7 @@ Port = class Port extends Card {
 
   buy_event(buyer) {
     let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', 'Port')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

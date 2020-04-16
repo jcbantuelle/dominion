@@ -45,7 +45,7 @@ Governor = class Governor extends Card {
         let treasure = is_active_player ? 'Gold' : 'Silver'
 
         let card_gainer = new CardGainer(game, current_player_cards, 'discard', treasure)
-        card_gainer.gain_game_card()
+        card_gainer.gain()
       } else if (response === 'trash') {
         if (_.size(current_player_cards.hand) > 0) {
           let turn_event_id = TurnEventModel.insert({
@@ -108,7 +108,7 @@ Governor = class Governor extends Card {
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

@@ -31,7 +31,7 @@ Jester = class Jester extends Card {
 
       if (_.includes(_.words(player_cards.revealed_card.types), 'victory')) {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-        card_gainer.gain_game_card()
+        card_gainer.gain()
       } else {
         let game_card = _.find(game.cards, function(card) {
           return card.source !== 'not_supply' && card.count > 0 && card.stack[0].name === player_cards.revealed_card.name
@@ -75,7 +75,7 @@ Jester = class Jester extends Card {
     }
 
     let card_gainer = new CardGainer(game, gainer_cards, 'discard', player_cards.revealed_card.name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
 
     PlayerCardsModel.update(game._id, gainer_cards)
   }

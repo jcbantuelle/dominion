@@ -43,17 +43,17 @@ Transmute = class Transmute extends Card {
 
     if (_.includes(selected_card_types, 'action')) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
 
     if (_.includes(selected_card_types, 'treasure')) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Transmute')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
 
     if (_.includes(selected_card_types, 'victory')) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

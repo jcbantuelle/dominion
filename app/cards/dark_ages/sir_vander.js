@@ -17,7 +17,7 @@ SirVander = class SirVander extends Knights {
 
   trash_event(trasher) {
     let card_gainer = new CardGainer(trasher.game, trasher.player_cards, 'discard', 'Gold')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

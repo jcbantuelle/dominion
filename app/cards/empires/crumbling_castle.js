@@ -27,7 +27,7 @@ CrumblingCastle = class CrumblingCastle extends Castles {
       event_handler.game.log.push(`&nbsp;&nbsp;<strong>${event_handler.player_cards.username}</strong> gets +1 &nabla;`)
     }
     let card_gainer = new CardGainer(event_handler.game, event_handler.player_cards, 'discard', 'Silver')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

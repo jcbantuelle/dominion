@@ -29,7 +29,7 @@ IllGottenGains = class IllGottenGains extends Card {
   static gain_copper(game, player_cards, response) {
     if (response === 'yes') {
       let card_gainer = new CardGainer(game, player_cards, 'hand', 'Copper')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 
@@ -38,7 +38,7 @@ IllGottenGains = class IllGottenGains extends Card {
     ordered_player_cards.shift()
     _.each(ordered_player_cards, function(other_player_cards) {
       let card_gainer = new CardGainer(gainer.game, other_player_cards, 'discard', 'Curse')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
       PlayerCardsModel.update(gainer.game._id, other_player_cards)
     })
   }

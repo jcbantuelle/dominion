@@ -10,7 +10,7 @@ Marauder = class Marauder extends Card {
 
   play(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Spoils')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
@@ -18,7 +18,7 @@ Marauder = class Marauder extends Card {
 
   attack(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Ruins')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

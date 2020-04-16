@@ -55,7 +55,7 @@ Torturer = class Torturer extends Card {
       }
     } else if (response[0] === 'curse') {
       let card_gainer = new CardGainer(game, player_cards, 'hand', 'Curse')
-      if (!card_gainer.gain_game_card()) {
+      if (!card_gainer.gain()) {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to gain ${CardView.render(new Curse())} but there are none left`)
       }
     }

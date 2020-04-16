@@ -12,10 +12,10 @@ TreasureTrove = class TreasureTrove extends Card {
     CoinGainer.gain(game, player_cards, 2)
 
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
 
     card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

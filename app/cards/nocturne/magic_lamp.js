@@ -27,7 +27,7 @@ MagicLamp = class MagicLamp extends Card {
 
       _.times(3, function() {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Wish')
-        card_gainer.gain_game_card()
+        card_gainer.gain()
       })
     }
   }

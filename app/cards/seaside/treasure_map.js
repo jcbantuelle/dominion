@@ -30,7 +30,7 @@ TreasureMap = class TreasureMap extends Card {
       if (first_trashed && second_trashed) {
         _.times(4, function() {
           let card_gainer = new CardGainer(game, player_cards, 'deck', 'Gold')
-          card_gainer.gain_game_card()
+          card_gainer.gain()
         })
       }
     }

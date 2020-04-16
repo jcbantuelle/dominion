@@ -10,7 +10,7 @@ Bandit = class Bandit extends Card {
 
   play(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)

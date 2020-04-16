@@ -6,7 +6,7 @@ Ritual = class Ritual extends Event {
 
   buy(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-    let gained = card_gainer.gain_game_card()
+    let gained = card_gainer.gain()
 
     let eligible_cards = _.filter(game.cards, function(card) {
       return !_.includes(_.words(card.top_card.types), 'victory') && card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 6)

@@ -35,7 +35,7 @@ Magpie = class Magpie extends Card {
 
       if (_.includes(card_types, 'action') || _.includes(card_types, 'victory')) {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Magpie')
-        card_gainer.gain_game_card()
+        card_gainer.gain()
       }
 
     }

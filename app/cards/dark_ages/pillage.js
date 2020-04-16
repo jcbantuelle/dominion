@@ -17,7 +17,7 @@ Pillage = class Pillage extends Card {
 
     _.times(2, function() {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Spoils')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 

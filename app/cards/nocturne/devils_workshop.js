@@ -12,7 +12,7 @@ DevilsWorkshop = class DevilsWorkshop extends Card {
     let gained_card_count = _.size(game.turn.gained_cards)
     if (gained_card_count > 1) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Imp')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     } else if (gained_card_count == 1) {
       let eligible_cards = _.filter(game.cards, function(card) {
         return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 5)
@@ -37,13 +37,13 @@ DevilsWorkshop = class DevilsWorkshop extends Card {
       }
     } else {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

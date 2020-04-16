@@ -16,7 +16,7 @@ Locusts = class Locusts extends Hex {
 
       if (_.includes(['Copper', 'Estate'], top_card.name)) {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-        card_gainer.gain_game_card()
+        card_gainer.gain()
       } else {
         GameModel.update(game._id, game)
         let eligible_cards = _.filter(game.cards, function(card) {
@@ -47,7 +47,7 @@ Locusts = class Locusts extends Hex {
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 

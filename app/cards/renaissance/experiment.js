@@ -39,7 +39,7 @@ Experiment = class Experiment extends Card {
     } else {
       gainer.game.turn.experiment_gained = true
       let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'discard', 'Experiment')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

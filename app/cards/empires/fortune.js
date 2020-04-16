@@ -33,7 +33,7 @@ Fortune = class Fortune extends Card {
     })
     _.times(_.size(gladiators), function() {
       let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'discard', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 

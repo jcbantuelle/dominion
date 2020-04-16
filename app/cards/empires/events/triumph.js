@@ -10,7 +10,7 @@ Triumph = class Triumph extends Event {
 
   buy(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Estate')
-    let gained = card_gainer.gain_game_card()
+    let gained = card_gainer.gain()
 
     if (gained) {
       let victory_tokens = _.size(game.turn.gained_cards)

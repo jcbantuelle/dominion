@@ -15,7 +15,7 @@ Tormentor = class Tormentor extends Card {
     let in_play_card_count = _.size(player_cards.in_play.concat(player_cards.playing).concat(player_cards.duration).concat(player_cards.permanent))
     if (in_play_card_count === 1 && !_.isEmpty(player_cards.playing) && player_cards.playing[0].name === 'Tormentor') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Imp')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     } else {
       if (_.size(game.hexes_deck) === 0) {
         game.hexes_deck = _.shuffle(game.hexes_discard)
