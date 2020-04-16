@@ -76,25 +76,25 @@ CardGainer = class CardGainer {
     if (!this.gain_from_game_cards) {
       this.would_gain_reactions()
     }
-    let game_card = this.find_card(this.game.cards)
-    if (game_card && game_card.count > 0) {
-      game_card.stack.shift()
+    this.game_card = _.find(this.game.cards, (card) => {
+      return card.name === this.card_name
+    })
+    if (this.game_card && this.game_card.count > 0) {
+      this.game_card.stack.shift()
       if (this.game.turn.travelling_fair) {
-        this.travelling_fair(game_card)
+        this.travelling_fair(this.game_card)
       }
       this.possessed()
-      this.gained_card = _.clone(game_card.top_card)
-      this.convert_estate()
+      this.gained_card = _.clone(this.game_card.top_card)
       this.player_cards[this.destination].unshift(this.gained_card)
       this.update_log()
       this.track_gained_card()
-      game_card.count -= 1
-      if (game_card.count > 0) {
-        game_card.top_card = _.head(game_card.stack)
+      this.game_card.count -= 1
+      if (this.game_card.count > 0) {
+        this.game_card.top_card = _.head(this.game_card.stack)
       }
       this.gain_events()
       this.groundskeepers()
-      this.trade_route_token(game_card)
       this.update_cards()
       return this.gained_card
     } else {
@@ -114,13 +114,6 @@ CardGainer = class CardGainer {
       this.player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
       this.destination = 'discard'
     }
-  }
-
-
-  find_card(source) {
-    return _.find(source, (card) => {
-      return card.name === this.card_name
-    })
   }
 
   find_card_index(source) {
@@ -171,13 +164,6 @@ CardGainer = class CardGainer {
   would_gain_reactions() {
     let would_gain_reaction_processor = new WouldGainReactionProcessor(this)
     would_gain_reaction_processor.process()
-  }
-
-  trade_route_token(game_card) {
-    if (game_card.has_trade_route_token) {
-      game_card.has_trade_route_token = false
-      this.game.trade_route_tokens += 1
-    }
   }
 
   travelling_fair(gained_card) {

@@ -36,6 +36,12 @@ TradeRoute = class TradeRoute extends Card {
     coin_gainer.gain(game.trade_route_tokens)
   }
 
+  gain_event(gainer, trade_route) {
+    gainer.game_card.has_trade_route_token = false
+    gainer.game.trade_route_tokens += 1
+    gainer.game.log.push(`&nbsp;&nbsp;The ${CardView.render(gainer.gained_card)} Coin token is moved to the ${CardView.render(trade_route)} mat`)
+  }
+
   static trash_card(game, player_cards, selected_cards) {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     card_trasher.trash()

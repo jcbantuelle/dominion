@@ -27,6 +27,7 @@ GainEventProcessor = class GainEventProcessor {
   constructor(gainer, player_cards) {
     this.gainer = gainer
     this.player_cards = player_cards
+    this.event_id = 9999
     this.find_gain_events()
   }
 
@@ -132,6 +133,12 @@ GainEventProcessor = class GainEventProcessor {
         }
       }
     })
+
+    if (_.includes(_.words(this.gainer.gained_card.types), 'victory') && this.gainer.game_card.has_trade_route_token) {
+      let trade_route = ClassCreator.create('Trade Route').to_h()
+      trade_route.id = this.generate_event_id()
+      this.gain_events.push(trade_route)
+    }
   }
 
   process() {
@@ -166,19 +173,25 @@ GainEventProcessor = class GainEventProcessor {
     }
   }
 
+  generate_event_id() {
+    let event_id = _.toString(this.event_id)
+    this.event_id += 1
+    return event_id
+  }
+
   static gain_event(game, player_cards, selected_cards, gain_event_processor) {
     if (!_.isEmpty(selected_cards)) {
       let card = selected_cards[0]
-      let selected_card = ClassCreator.create(card.name)
-      if (_.includes(GainEventProcessor.reaction_cards(), selected_card.inherited_name(player_cards))) {
-        selected_card.gain_reaction(game, player_cards, gain_event_processor.gainer, card)
+      let card_object = ClassCreator.create(card.name)
+      if (_.includes(GainEventProcessor.reaction_cards(), card.name)) {
+        card_object.gain_reaction(game, player_cards, gain_event_processor.gainer, card)
       } else {
-        selected_card.gain_event(gain_event_processor.gainer, card)
+        card_object.gain_event(gain_event_processor.gainer, card)
       }
       let event_index = _.findIndex(gain_event_processor.gain_events, function(event) {
         return event.id === card.id
       })
-      gain_event_processor.gain_events.splice(gain_event_index, 1)
+      gain_event_processor.gain_events.splice(event_index, 1)
 
       if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).id !== gain_event_processor.gainer.gained_card.id) {
         gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, function(event) {
