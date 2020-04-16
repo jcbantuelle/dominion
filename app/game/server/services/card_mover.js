@@ -40,7 +40,7 @@ CardMover = class CardMover {
       return pile.name === supply_name
     })
     if (supply_pile && supply_pile.count > 0) {
-      let card = supply_pile.stack.splice(0, 1)
+      let card = supply_pile.stack.splice(0, 1)[0]
       destination.splice(0, 0, card)
       supply_pile.count -= 1
 
