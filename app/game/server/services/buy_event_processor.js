@@ -13,7 +13,7 @@ BuyEventProcessor = class BuyEventProcessor {
   }
 
   static in_play_event_cards() {
-    return ['Haggler', 'Talisman', 'Hoard']
+    return ['Haggler', 'Talisman', 'Hoard', 'Goons']
   }
 
   static overpay_cards() {
