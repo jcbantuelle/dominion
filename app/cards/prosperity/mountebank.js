@@ -9,8 +9,8 @@ Mountebank = class Mountebank extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
@@ -27,7 +27,7 @@ Mountebank = class Mountebank extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Discard a ${CardView.render(curse)}?`,
+        instructions: `Discard ${CardView.render(curse)}?`,
         minimum: 1,
         maximum: 1
       })
