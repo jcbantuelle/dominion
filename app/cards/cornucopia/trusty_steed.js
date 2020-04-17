@@ -29,28 +29,26 @@ TrustySteed = class TrustySteed extends Card {
   }
 
   static process_choices(game, player_cards, choices) {
-    let gained = []
-    _.each(choices, function(choice) {
+    _.each(choices, (choice) => {
       if (choice === 'card') {
         let card_drawer = new CardDrawer(game, player_cards)
         card_drawer.draw(2)
       } else if (choice === 'action') {
-        game.turn.actions += 2
-        gained.push('+2 actions')
+        let action_gainer = new ActionGainer(game, player_cards)
+        action_gainer.gain(2)
       } else if (choice === 'coin') {
-        let gained_coins = CoinGainer.gain(game, player_cards, 2)
-        gained.push(`+$${gained_coins}`)
+        let coin_gainer = new CoinGainer(game, player_cards)
+        coin_gainer.gain(2)
       } else if (choice === 'silver') {
         _.times(4, function() {
           let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
           card_gainer.gain()
         })
+        let card_mover = new CardMover(game, player_cards)
+        card_mover.move_all(player_cards.deck, player_cards.discard)
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts their deck into their discard pile`)
-        player_cards.discard = player_cards.discard.concat(player_cards.deck)
-        player_cards.deck = []
       }
     })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets ${gained.join(' and ')}`)
   }
 
 }
