@@ -10,7 +10,6 @@ CardDiscarder = class CardDiscarder {
       cards = [cards]
     }
     this.cards = _.clone(cards)
-    this.discard_reaction_cards = ['Tunnel']
   }
 
   discard(announce = true) {

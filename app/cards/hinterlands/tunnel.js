@@ -22,13 +22,15 @@ Tunnel = class Tunnel extends Card {
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id, tunnel)
+    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id, {discarder: discarder, tunnel: tunnel})
     turn_event_processor.process(Tunnel.gain_gold)
   }
 
-  static gain_gold(game, player_cards, response, tunnel) {
+  static gain_gold(game, player_cards, response, params) {
     if (response === 'yes') {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(tunnel)}`)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal(params.discarder.source, params.tunnel)
+
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
       card_gainer.gain()
     }
