@@ -20,7 +20,7 @@ Watchtower = class Watchtower extends Card {
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_options',
-      instructions: `Trash ${CardView.render(_.head(player_cards[gainer.destination]))} or put it on top of your deck?`,
+      instructions: `Trash ${CardView.render(gainer.gained_card)} or put it on top of your deck?`,
       minimum: 1,
       maximum: 1,
       options: [
@@ -33,15 +33,15 @@ Watchtower = class Watchtower extends Card {
   }
 
   static process_response(game, player_cards, response, gainer) {
-    response = response[0]
-    if (response === 'trash') {
+    if (response[0] === 'trash') {
       let card_trasher = new CardTrasher(game, player_cards, gainer.destination, gainer.gained_card)
       card_trasher.trash()
-      gainer.card_name = ''
-    } else if (response === 'deck') {
-      player_cards.deck.unshift(player_cards[gainer.destination].shift())
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(_.head(player_cards.deck))} on top of their deck`)
-      gainer.destination = 'deck'
+    } else if (response[0] === 'deck') {
+      let card_mover = new CardMover(game, player_cards)
+      if (card_mover.move(player_cards[gainer.destination], player_cards.deck, gainer.gained_card)) {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(gainer.gained_card)} on top of their deck`)
+        gainer.destination = 'deck'
+      }
     }
   }
 
