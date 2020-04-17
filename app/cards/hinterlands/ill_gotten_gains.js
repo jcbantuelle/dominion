@@ -9,7 +9,8 @@ IllGottenGains = class IllGottenGains extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 1)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1, false)
 
     GameModel.update(game._id, game)
 
@@ -18,7 +19,7 @@ IllGottenGains = class IllGottenGains extends Card {
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Gain a ${CardView.render(new Copper())}?`,
+      instructions: `Gain a ${CardView.render(new Copper())} to your hand?`,
       minimum: 1,
       maximum: 1
     })
