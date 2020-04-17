@@ -21,7 +21,8 @@ Patrician = class Patrician extends Card {
 
     if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
       if (_.isEmpty(player_cards.deck)) {
-        DeckShuffler.shuffle(game, player_cards)
+        let deck_shuffler = new DeckShuffler(game, player_cards)
+        deck_shuffler.shuffle()
       }
 
       let top_card = player_cards.deck[0]

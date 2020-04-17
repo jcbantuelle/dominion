@@ -26,7 +26,8 @@ Seer = class Seer extends Card {
 
       let revealed_card_count = _.size(revealed_cards)
       if (revealed_card_count < 3 && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(game, player_cards)
+        let deck_shuffler = new DeckShuffler(game, player_cards)
+        deck_shuffler.shuffle()
         revealed_cards = revealed_cards.concat(_.take(player_cards.deck, 3 - revealed_card_count))
         player_cards.deck = _.drop(player_cards.deck, 3 - revealed_card_count)
       }

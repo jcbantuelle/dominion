@@ -31,7 +31,8 @@ Giant = class Giant extends Card {
     if (game.turn.token_orientation === 'up') {
       if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
         if (_.size(player_cards.deck) === 0) {
-          DeckShuffler.shuffle(game, player_cards)
+          let deck_shuffler = new DeckShuffler(game, player_cards)
+          deck_shuffler.shuffle()
         }
         let revealed_card = player_cards.deck.shift()
         player_cards.revealed.push(revealed_card)

@@ -43,7 +43,8 @@ NativeVillage = class NativeVillage extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to set aside the top card of their deck, but has no cards`)
     } else {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
+        let deck_shuffler = new DeckShuffler(game, player_cards)
+        deck_shuffler.shuffle()
       }
       let card_mover = new CardMover(game, player_cards)
       card_mover.move(player_cards.deck, player_cards.native_village, player_cards.deck[0])

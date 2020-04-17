@@ -26,7 +26,8 @@ BorderGuard = class BorderGuard extends Card {
 
       let revealed_card_count = _.size(player_cards.revealed)
       if (revealed_card_count < card_count_to_reveal && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(game, player_cards)
+        let deck_shuffler = new DeckShuffler(game, player_cards)
+        deck_shuffler.shuffle()
         player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, card_count_to_reveal - revealed_card_count))
         player_cards.deck = _.drop(player_cards.deck, card_count_to_reveal - revealed_card_count)
       }

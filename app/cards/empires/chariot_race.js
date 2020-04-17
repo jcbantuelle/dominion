@@ -15,7 +15,8 @@ ChariotRace = class ChariotRace extends Card {
     let top_card, next_player_top_card
     if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
       if (_.isEmpty(player_cards.deck)) {
-        DeckShuffler.shuffle(game, player_cards)
+        let deck_shuffler = new DeckShuffler(game, player_cards)
+        deck_shuffler.shuffle()
       }
 
       top_card = player_cards.deck.shift()
@@ -29,7 +30,8 @@ ChariotRace = class ChariotRace extends Card {
     let next_player_cards = PlayerCardsModel.findOne(game._id, next_player_query.next_player()._id)
     if (_.size(next_player_cards.deck) > 0 || _.size(next_player_cards.discard) > 0) {
       if (_.isEmpty(next_player_cards.deck)) {
-        DeckShuffler.shuffle(game, next_player_cards)
+        let deck_shuffler = new DeckShuffler(game, next_player_cards)
+        deck_shuffler.shuffle()
         PlayerCardsModel.update(game._id, next_player_cards)
       }
 

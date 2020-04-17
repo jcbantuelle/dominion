@@ -47,7 +47,8 @@ Ironmonger = class Ironmonger extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
+        let deck_shuffler = new DeckShuffler(game, player_cards)
+        deck_shuffler.shuffle()
       }
 
       player_cards.revealed_card = player_cards.deck.shift()

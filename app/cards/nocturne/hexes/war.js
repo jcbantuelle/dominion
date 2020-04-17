@@ -18,7 +18,8 @@ War = class War extends Hex {
   reveal(game, player_cards) {
     while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.trashed_card) {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
+        let deck_shuffler = new DeckShuffler(game, player_cards)
+        deck_shuffler.shuffle()
       }
       let card = player_cards.deck.shift()
       player_cards.revealed.push(card)

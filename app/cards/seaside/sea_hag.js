@@ -18,7 +18,8 @@ SeaHag = class SeaHag extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
+        let deck_shuffler = new DeckShuffler(game, player_cards)
+        deck_shuffler.shuffle()
       }
       let card_discarder = new CardDiscarder(game, player_cards, 'deck', player_cards.deck[0])
       card_discarder.discard()
