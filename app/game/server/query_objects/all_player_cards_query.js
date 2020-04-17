@@ -1,7 +1,7 @@
 AllPlayerCardsQuery = class AllPlayerCardsQuery {
 
   static card_sources() {
-    return ['hand', 'discard', 'deck', 'in_play', 'revealed', 'haven', 'native_village', 'island', 'horse_traders', 'faithful_hounds', 'prince', 'princed', 'tavern', 'gear', 'save', 'estate', 'encampments', 'archive', 'ghost', 'crypt']
+    return ['hand', 'discard', 'deck', 'in_play', 'revealed', 'haven', 'native_village', 'island', 'aside', 'tavern']
   }
 
   static find(player_cards, include_source = false) {
