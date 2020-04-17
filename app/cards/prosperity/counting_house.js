@@ -33,6 +33,9 @@ CountingHouse = class CountingHouse extends Card {
   }
 
   static add_coppers(game, player_cards, selected_cards) {
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(player_cards.discard, selected_cards)
+
     let copper_count = 0
     _.each(selected_cards, (selected_card) => {
       let card_mover = new CardMover(game, player_cards)
