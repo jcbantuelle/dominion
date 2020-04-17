@@ -49,8 +49,7 @@ AttackEventProcessor = class AttackEventProcessor {
   static attack_event(game, player_cards, selected_cards, attack_event_processor) {
     if (!_.isEmpty(selected_cards)) {
       let card = selected_cards[0]
-      let selected_card = ClassCreator.create(card.name)
-      selected_card.attack_event(game, player_cards, card)
+      ClassCreator.create(card.name).attack_event(game, player_cards, card)
 
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
