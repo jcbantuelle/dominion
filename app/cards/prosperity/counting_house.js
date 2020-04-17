@@ -33,12 +33,12 @@ CountingHouse = class CountingHouse extends Card {
   }
 
   static add_coppers(game, player_cards, selected_cards) {
-    let copper_count = _.size(selected_cards)
+    let copper_count = 0
     _.each(selected_cards, (selected_card) => {
-      let card_index = _.findIndex(player_cards.discard, function(card) {
-        return card.id === selected_card.id
-      })
-      player_cards.hand.push(player_cards.discard.splice(card_index, 1)[0])
+      let card_mover = new CardMover(game, player_cards)
+      if (card_mover.move(player_cards.discard, player_cards.hand, selected_card)) {
+        copper_count += 1
+      }
     })
 
     if (copper_count === 0) {
