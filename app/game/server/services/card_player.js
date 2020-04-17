@@ -46,11 +46,11 @@ CardPlayer = class CardPlayer {
   }
 
   is_valid_play() {
-    if (_.includes(this.card.types, 'night')) {
+    if (_.includes(_.words(this.card.types), 'night')) {
       return true
-    } else if (_.includes(this.card.types, 'treasure')) {
+    } else if (_.includes(_.words(this.card.types), 'treasure')) {
       return this.is_valid_treasure()
-    } else if (_.includes(this.card.types, 'action')) {
+    } else if (_.includes(_.words(this.card.types), 'action')) {
       return this.is_valid_action()
     }
   }
@@ -65,8 +65,8 @@ CardPlayer = class CardPlayer {
 
   update_phase(free_play) {
     if (!free_play) {
-      if (this.game.turn.phase === 'action' && _.includes(this.card.types, 'treasure')) {
-        if (_.includes(this.card.types, 'action') && this.game.turn.actions > 0) {
+      if (this.game.turn.phase === 'action' && _.includes(_.words(this.card.types), 'treasure')) {
+        if (_.includes(_.words(this.card.types), 'action') && this.game.turn.actions > 0) {
           let turn_event_id = TurnEventModel.insert({
             game_id: this.game._id,
             player_id: this.player_cards.player_id,
@@ -88,8 +88,8 @@ CardPlayer = class CardPlayer {
           start_buy_event_processor.process()
           this.game.turn.phase = 'treasure'
         }
-      } else if (this.game.turn.phase === 'action' && _.includes(this.card.types, 'night')) {
-        if (_.includes(this.card.types, 'action') && this.game.turn.actions > 0) {
+      } else if (this.game.turn.phase === 'action' && _.includes(_.words(this.card.types), 'night')) {
+        if (_.includes(_.words(this.card.types), 'action') && this.game.turn.actions > 0) {
           let turn_event_id = TurnEventModel.insert({
             game_id: this.game._id,
             player_id: this.player_cards.player_id,
@@ -111,7 +111,7 @@ CardPlayer = class CardPlayer {
           start_buy_event_processor.process()
           this.game.turn.phase = 'night'
         }
-      } else if (this.game.turn.phase !== 'night' && _.includes(this.card.types, 'night')) {
+      } else if (this.game.turn.phase !== 'night' && _.includes(_.words(this.card.types), 'night')) {
         if (this.game.turn.phase === 'action') {
           let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
           start_buy_event_processor.process()
@@ -129,7 +129,7 @@ CardPlayer = class CardPlayer {
   }
 
   use_action(free_play) {
-    if (!free_play && this.game.turn.phase === 'action' && _.includes(this.card.types, 'action')) {
+    if (!free_play && this.game.turn.phase === 'action' && _.includes(_.words(this.card.types), 'action')) {
       this.game.turn.actions -= 1
     }
   }
@@ -146,7 +146,7 @@ CardPlayer = class CardPlayer {
   play_card(announce) {
     let play_result
     this.token_effects()
-    if (_.includes(this.card.types, 'action') && this.game.turn.player._id === this.player_cards.player_id) {
+    if (_.includes(_.words(this.card.types), 'action') && this.game.turn.player._id === this.player_cards.player_id) {
       this.game.turn.played_actions.push(this.card)
     }
     if (this.enchantress_attack()) {
@@ -161,7 +161,7 @@ CardPlayer = class CardPlayer {
   }
 
   enchantress_attack() {
-    return !this.game.turn.enchantress_attack && _.includes(this.card.types, 'action') && _.includes(_.map(this.player_cards.duration_attacks, 'name'), 'Enchantress')
+    return !this.game.turn.enchantress_attack && _.includes(_.words(this.card.types), 'action') && _.includes(_.map(this.player_cards.duration_attacks, 'name'), 'Enchantress')
   }
 
   replace_with_enchantress() {
