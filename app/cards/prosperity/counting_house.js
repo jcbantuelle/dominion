@@ -9,7 +9,7 @@ CountingHouse = class CountingHouse extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.discard, function(card) {
+    let eligible_cards = _.filter(player_cards.discard, (card) => {
       return card.name === 'Copper'
     })
 
