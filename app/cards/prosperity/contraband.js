@@ -9,9 +9,11 @@ Contraband = class Contraband extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 3)
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(3, false)
+
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
 
     let eligible_cards = _.reduce(game.cards, function(cards, card) {
       return cards.concat(_.uniqBy(card.stack, 'name'))
