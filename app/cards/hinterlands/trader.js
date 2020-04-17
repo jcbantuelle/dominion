@@ -29,10 +29,9 @@ Trader = class Trader extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let coin_cost = CostCalculator.calculate(game, selected_card)
+    let coin_cost = CostCalculator.calculate(game, selected_cards[0])
 
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     card_trasher.trash()
 
     _.times(coin_cost, function() {
@@ -42,10 +41,11 @@ Trader = class Trader extends Card {
   }
 
   would_gain_reaction(game, player_cards, gainer, trader) {
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(trader)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal('hand', trader)
+
     gainer.destination = 'discard'
     gainer.card_name = 'Silver'
-    gainer.gain_from_game_cards = true
   }
 
 }
