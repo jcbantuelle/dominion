@@ -8,8 +8,8 @@ KingsCourt = class KingsCourt extends Card {
     return 7
   }
 
-  play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.hand, function(card) {
+  play(game, player_cards, card_player) {
+    let eligible_cards = _.filter(player_cards.hand, (card) => {
       return _.includes(_.words(card.types), 'action')
     })
 
@@ -20,22 +20,22 @@ KingsCourt = class KingsCourt extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a card to play three times: (Or none to skip)',
+        instructions: 'Choose a card to play three times: (or none to skip)',
         cards: eligible_cards,
         minimum: 0,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(KingsCourt.play_thrice)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not play an action`)
     }
   }
 
-  static play_thrice(game, player_cards, selected_cards) {
+  static play_thrice(game, player_cards, selected_cards, kings_court) {
     if (!_.isEmpty(selected_cards)) {
-      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_cards[0].id)
-      repeat_card_player.play(3, 'Kings Court')
+      let card_player = new CardPlayer(game, player_cards, selected_cards[0], kings_court)
+      card_player.play(true, true, 'hand', 3)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not play an action`)
     }
