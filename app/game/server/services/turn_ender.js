@@ -81,7 +81,6 @@ TurnEnder = class TurnEnder {
           return card.stack_name === stack_name
         })
         if (encampment_stack) {
-          delete encampment.scheme
           delete encampment.prince
           if (encampment.misfit) {
             encampment = encampment.misfit
@@ -93,9 +92,6 @@ TurnEnder = class TurnEnder {
         }
       })
       this.player_cards.encampments = []
-    }
-    if (this.game.turn.schemes > 0) {
-      SchemeChooser.choose(this.game, this.player_cards)
     }
     let cards_to_discard = _.filter(this.player_cards.in_play, (card) => {
       return !ClassCreator.create(card.name).stay_in_play(this.game, this.player_cards, card)
