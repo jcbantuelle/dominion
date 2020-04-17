@@ -12,6 +12,7 @@ Embassy = class Embassy extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(5)
 
+    GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
 
     if (_.size(player_cards.hand) > 3) {
