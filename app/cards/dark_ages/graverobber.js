@@ -116,7 +116,7 @@ Graverobber = class Graverobber extends Card {
 
   static gain_from_trash(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'deck', selected_cards[0].name)
-    card_gainer.gain_trash_card()
+    card_gainer.gain(game.trash)
   }
 
 }

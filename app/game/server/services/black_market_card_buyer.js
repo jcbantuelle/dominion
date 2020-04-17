@@ -26,7 +26,7 @@ BlackMarketCardBuyer = class BlackMarketCardBuyer extends CardBuyer{
   }
 
   gain_card() {
-    this.card_gainer.gain_black_market_card()
+    this.card_gainer.gain(this.game.black_market)
   }
 
 }

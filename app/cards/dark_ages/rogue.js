@@ -43,7 +43,7 @@ Rogue = class Rogue extends Card {
   static gain_from_trash(game, player_cards, selected_cards) {
     game.turn.rogue_gained = true
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_trash_card()
+    card_gainer.gain(game.trash)
   }
 
   attack(game, player_cards) {
