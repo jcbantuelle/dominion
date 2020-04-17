@@ -17,7 +17,7 @@ Golem = class Golem extends Card {
       game.log.push(`&nbsp;&nbsp;but there are no cards in their deck`)
     } else {
       let card_revealer = new CardRevealer(game, player_cards)
-      card_revealer.reveal_from_deck_until((game, revealed_cards) => {
+      card_revealer.reveal_from_deck_until((game, player_cards, revealed_cards) => {
         let actions = _.filter(revealed_cards, (card) => {
           return _.includes(_.words(card.types), 'action') && card.name !== 'Golem'
         })

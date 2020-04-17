@@ -13,7 +13,7 @@ Venture = class Venture extends Card {
     coin_gainer.gain(1, false)
 
     let card_revealer = new CardRevealer(game, player_cards)
-    card_revealer.reveal_from_deck_until((game, revealed_cards) => {
+    card_revealer.reveal_from_deck_until((game, player_cards, revealed_cards) => {
       if (!_.isEmpty(revealed_cards)) {
         return _.includes(_.words(_.last(revealed_cards).types), 'treasure')
       } else {

@@ -13,7 +13,7 @@ FarmingVillage = class FarmingVillage extends Card {
     action_gainer.gain(2)
 
     let card_revealer = new CardRevealer(game, player_cards)
-    card_revealer.reveal_from_deck_until((game, revealed_cards) => {
+    card_revealer.reveal_from_deck_until((game, player_cards, revealed_cards) => {
       if (!_.isEmpty(revealed_cards)) {
         return _.includes(_.words(_.last(revealed_cards).types), 'action') || _.includes(_.words(_.last(revealed_cards).types), 'treasure')
       } else {
