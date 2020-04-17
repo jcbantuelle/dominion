@@ -48,22 +48,20 @@ Tournament = class Tournament extends Card {
       if (duchies.count > 0) {
         eligible_cards.push(duchies.top_card)
       }
-      if (_.size(eligible_cards) > 1) {
+      if (_.size(eligible_cards) > 0) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
           username: player_cards.username,
           type: 'choose_cards',
           player_cards: true,
-          instructions: `Choose a prize to gain:`,
+          instructions: `Choose a prize to gain: (or none to skip)`,
           cards: eligible_cards,
-          minimum: 1,
+          minimum: 0,
           maximum: 1
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Tournament.gain_prize)
-      } else if (_.size(eligible_cards) === 1) {
-        Tournament.gain_prize(game, player_cards, eligible_cards)
       } else {
         game.log.push(`&nbsp;&nbsp;but there are no Prizes left to gain`)
       }
@@ -96,11 +94,15 @@ Tournament = class Tournament extends Card {
   }
 
   static gain_prize(game, player_cards, selected_cards) {
-    let card_gainer = new CardGainer(game, player_cards, 'deck', selected_cards[0].name)
-    if (selected_cards[0].name === 'Duchy') {
-      card_gainer.gain()
+    if (!_.isEmpty(selected_cards)) {
+      let card_gainer = new CardGainer(game, player_cards, 'deck', selected_cards[0].name)
+      if (selected_cards[0].name === 'Duchy') {
+        card_gainer.gain()
+      } else {
+        card_gainer.gain(game.prizes)
+      }
     } else {
-      card_gainer.gain(game.prizes)
+      game.log.push(`&nbsp;&nbsp;but chooses not to gain a Prize`)
     }
   }
 
