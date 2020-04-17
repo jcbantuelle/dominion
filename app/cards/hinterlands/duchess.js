@@ -9,12 +9,14 @@ Duchess = class Duchess extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
     _.each(ordered_player_cards, function(cards) {
       Duchess.reveal_card(game, cards)
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
     })
   }
 
@@ -26,17 +28,15 @@ Duchess = class Duchess extends Card {
         DeckShuffler.shuffle(game, player_cards)
       }
 
-      let revealed_card = player_cards.deck.shift()
-      player_cards.revealed.push(revealed_card)
-
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> looks at the top card of their deck`)
+      GameModel.update(game._id, game)
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Discard ${CardView.render(revealed_card)}?`,
+        instructions: `Discard ${CardView.render(player_cards.deck[0])}?`,
         minimum: 1,
         maximum: 1
       })
@@ -47,15 +47,11 @@ Duchess = class Duchess extends Card {
 
   static discard_card(game, player_cards, response) {
     if (response === 'yes') {
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
+      let card_discarder = new CardDiscarder(game, player_cards, 'deck', player_cards.deck[0])
       card_discarder.discard()
     } else {
-      let card = player_cards.revealed[0]
-      player_cards.deck.unshift(card)
-      player_cards.revealed = []
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places the card on top of their deck`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to discard`)
     }
-    PlayerCardsModel.update(game._id, player_cards)
   }
 
 }
