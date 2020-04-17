@@ -26,24 +26,19 @@ BuyEventProcessor = class BuyEventProcessor {
 
   constructor(buyer) {
     this.buyer = buyer
-    this.bought_card_name = this.buyer.card.name()
-    this.bought_card = this.buyer.card.to_h()
-    if (this.bought_card_name === 'Estate' && this.buyer.player_cards.tokens.estate) {
-      this.bought_card_name = this.buyer.player_cards.tokens.estate.name
-      this.bought_card = ClassCreator.create('Inherited Estate').to_h(this.buyer.player_cards)
-    }
+    this.event_id = 9999
     this.find_buy_events()
   }
 
   find_buy_events() {
     this.buy_events = []
-    if (_.includes(BuyEventProcessor.event_cards(), this.bought_card_name)) {
-      if (this.bought_card_name === 'Messenger') {
+    if (_.includes(BuyEventProcessor.event_cards(), this.buyer.card.name)) {
+      if (this.buyer.card.name === 'Messenger') {
         if (_.size(this.buyer.game.turn.bought_cards) === 1) {
-          this.buy_events.push(this.bought_card)
+          this.buy_events.push(this.buyer.card)
         }
       } else {
-        this.buy_events.push(this.bought_card)
+        this.buy_events.push(this.buyer.card)
       }
     }
 
@@ -51,7 +46,7 @@ BuyEventProcessor = class BuyEventProcessor {
       if (_.includes(BuyEventProcessor.landmark_cards(), card.name)) {
         if (card.name === 'Basilica' && card.victory_tokens > 0 && this.buyer.game.turn.coins >= 2) {
             this.buy_events.push(card)
-        } else if (card.name === 'Colonnade' && card.victory_tokens > 0 && _.includes(this.buyer.card.types(), 'action') && _.some(this.buyer.player_cards.in_play.concat(this.buyer.player_cards.duration).concat(this.buyer.player_cards.permanent), (card) => {return card.name === this.bought_card_name})) {
+        } else if (card.name === 'Colonnade' && card.victory_tokens > 0 && _.includes(_.words(this.buyer.card.types), 'action') && _.some(this.buyer.player_cards.in_play, (card) => { return card.name === this.buyer.card.name})) {
             this.buy_events.push(card)
         } else if (card.name === 'Defiled Shrine' && card.victory_tokens > 0 && this.buyer.card.name() === 'Curse') {
             this.buy_events.push(card)
@@ -59,14 +54,14 @@ BuyEventProcessor = class BuyEventProcessor {
       }
     })
 
-    if (_.includes(BuyEventProcessor.overpay_cards(), this.buyer.card.name()) && this.buyer.game.turn.coins > 0) {
-      this.buy_events.push(this.buyer.card.to_h())
+    if (_.includes(BuyEventProcessor.overpay_cards(), this.buyer.card.name) && this.buyer.game.turn.coins > 0) {
+      this.buy_events.push(this.buyer.card)
     }
 
     _.each(this.buyer.player_cards.hand, (card) => {
       if (_.includes(BuyEventProcessor.reaction_cards(), card.name)) {
         if (card.name === 'Hovel') {
-          if (_.includes(this.buyer.card.types(this.buyer.player_cards), 'victory')) {
+          if (_.includes(_.words(this.buyer.card.types), 'victory')) {
             this.buy_events.push(card)
           }
         }
@@ -76,11 +71,11 @@ BuyEventProcessor = class BuyEventProcessor {
     _.each(this.buyer.player_cards.in_play, (card) => {
       if (_.includes(BuyEventProcessor.in_play_event_cards(), card.name)) {
         if (card.name === 'Talisman') {
-          if (!_.includes(this.buyer.card.types(this.buyer.player_cards), 'victory') && CardCostComparer.coin_less_than(this.buyer.game, this.buyer.card.to_h(), 5)) {
+          if (!_.includes(_.words(this.buyer.card.types), 'victory') && CardCostComparer.coin_less_than(this.buyer.game, this.buyer.card, 5)) {
             this.buy_events.push(card)
           }
         } else if (card.name === 'Hoard') {
-          if (_.includes(this.buyer.card.types(this.buyer.player_cards), 'victory')) {
+          if (_.includes(_.words(this.buyer.card.types), 'victory')) {
             this.buy_events.push(card)
           }
         } else {
@@ -95,18 +90,24 @@ BuyEventProcessor = class BuyEventProcessor {
       }
     })
 
+    if (this.buyer.game_card.embargos > 0) {
+      let embargo = ClassCreator.create('Embargo').to_h()
+      embargo.id = this.generate_event_id()
+      this.buy_events.push(embargo)
+    }
+
     let trashing_token = _.find(this.buyer.player_cards.tokens.pile, (token) => {
       return token.effect === 'trashing'
     })
-    if (trashing_token && trashing_token.card.name === this.buyer.card.stack_name()) {
-      this.buy_events.push({name: 'Trash Token', id: -1})
+    if (trashing_token && trashing_token.card.name === this.buyer.card.stack_name) {
+      this.buy_events.push({name: 'Trash Token', id: this.generate_event_id()})
     }
   }
 
   process() {
     if (!_.isEmpty(this.buy_events)) {
-      let mandatory_buy_events = _.filter(this.buy_events, function(event) {
-        return _.includes(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()).concat(BuyEventProcessor.landmark_cards()), event.name)
+      let mandatory_buy_events = _.filter(this.buy_events, (event) => {
+        return _.includes(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()).concat(BuyEventProcessor.landmark_cards()).concat(['Embargo']), event.name)
       })
       if (_.size(this.buy_events) === 1 && !_.isEmpty(mandatory_buy_events)) {
         BuyEventProcessor.buy_event(this.buyer.game, this.buyer.player_cards, this.buy_events, this)
@@ -115,7 +116,7 @@ BuyEventProcessor = class BuyEventProcessor {
         let instructions = `Choose Buy Event To Resolve for ${CardView.render(this.buyer.card)}`
         let minimum = 1
         if (_.isEmpty(mandatory_buy_events)) {
-          instructions += ' (Or none to skip)'
+          instructions += ' (or none to skip)'
           minimum = 0
         }
         let turn_event_id = TurnEventModel.insert({
@@ -159,15 +160,15 @@ BuyEventProcessor = class BuyEventProcessor {
           game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
         }
       } else {
-        let selected_card = ClassCreator.create(card.name)
+        let card_object = ClassCreator.create(card.name)
         if (_.includes(BuyEventProcessor.reaction_cards(), card.name)) {
-          selected_card.buy_reaction(game, player_cards, buy_event_processor.buyer, card)
+          card_object.buy_reaction(game, player_cards, buy_event_processor.buyer, card)
         } else {
-          selected_card.buy_event(buy_event_processor.buyer, card)
+          card_object.buy_event(buy_event_processor.buyer, card)
         }
       }
 
-      let buy_event_index = _.findIndex(buy_event_processor.buy_events, function(event) {
+      let buy_event_index = _.findIndex(buy_event_processor.buy_events, (event) => {
         return event.id === card.id
       })
       buy_event_processor.buy_events.splice(buy_event_index, 1)
@@ -176,6 +177,12 @@ BuyEventProcessor = class BuyEventProcessor {
       PlayerCardsModel.update(game._id, player_cards)
       buy_event_processor.process()
     }
+  }
+
+  generate_event_id() {
+    let event_id = _.toString(this.event_id)
+    this.event_id += 1
+    return event_id
   }
 
   static trash_card(game, player_cards, selected_cards) {

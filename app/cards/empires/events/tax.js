@@ -24,6 +24,14 @@ Tax = class Tax extends Event {
     turn_event_processor.process(Tax.add_debt)
   }
 
+  buy_event(buyer) {
+    if (this.game_card.debt_tokens > 0) {
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${this.game_card.debt_tokens} debt token(s)`)
+      this.player_cards.debt_tokens += this.game_card.debt_tokens
+      this.game_card.debt_tokens = 0
+    }
+  }
+
   static add_debt(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
     let supply_index = _.findIndex(game.cards, (card) => {

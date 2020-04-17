@@ -22,7 +22,7 @@ Embargo = class Embargo extends Card {
     if (trashed) {
       GameModel.update(game._id, game)
 
-      let eligible_cards = _.filter(game.cards, function(card) {
+      let eligible_cards = _.filter(game.cards, (card) => {
         return card.supply
       })
 
@@ -42,8 +42,15 @@ Embargo = class Embargo extends Card {
     }
   }
 
+  buy_event(buyer) {
+    _.times(buyer.game_card.embargos, () => {
+      let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', 'Curse')
+      card_gainer.gain()
+    })
+  }
+
   static place_token(game, player_cards, selected_cards) {
-    let embargo_card = _.find(game.cards, function(card) {
+    let embargo_card = _.find(game.cards, (card) => {
       return card.name === selected_cards[0].name
     })
 

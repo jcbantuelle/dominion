@@ -39,6 +39,23 @@ Goons = class Goons extends Card {
     }
   }
 
+  buy_event(buyer) {
+    let goon_count = _.size(_.filter(this.player_cards.in_play, function(card) {
+      return card.name === 'Goons'
+    }))
+    if (goon_count > 0) {
+      if (this.game.turn.possessed) {
+        possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
+        possessing_player_cards.victory_tokens += goon_count
+        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.render(new Goons())}`)
+        PlayerCardsModel.update(this.game._id, possessing_player_cards)
+      } else {
+        this.player_cards.victory_tokens += goon_count
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.render(new Goons())}`)
+      }
+    }
+  }
+
   static discard_from_hand(game, player_cards, selected_cards) {
     let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
