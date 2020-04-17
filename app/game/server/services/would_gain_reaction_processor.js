@@ -17,7 +17,7 @@ WouldGainReactionProcessor = class WouldGainReactionProcessor {
         username: this.gainer.player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: `Choose Reaction To Gaining ${CardView.render(gained_card)} (Or none to skip):`,
+        instructions: `Choose Reaction To Gaining ${CardView.render(gained_card)} (or none to skip):`,
         cards: reaction_cards,
         minimum: 0,
         maximum: 1
@@ -30,8 +30,8 @@ WouldGainReactionProcessor = class WouldGainReactionProcessor {
   static would_gain_reaction(game, player_cards, selected_cards, would_gain_reaction_processor) {
     if (!_.isEmpty(selected_cards)) {
       let card = selected_cards[0]
-      let selected_card = ClassCreator.create(card_name)
-      selected_card.would_gain_reaction(game, player_cards, would_gain_reaction_processor.gainer, card)
+      let card_object = ClassCreator.create(card.name)
+      card_object.would_gain_reaction(game, player_cards, would_gain_reaction_processor.gainer, card)
       GameModel.update(game._id, game)
       would_gain_reaction_processor.process()
     }
