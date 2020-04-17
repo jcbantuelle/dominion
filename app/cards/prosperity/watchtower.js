@@ -14,7 +14,9 @@ Watchtower = class Watchtower extends Card {
   }
 
   gain_reaction(game, player_cards, gainer, watchtower) {
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(watchtower)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(player_cards.hand, watchtower)
+
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
