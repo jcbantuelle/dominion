@@ -19,7 +19,7 @@ SpiceMerchant = class SpiceMerchant extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a treasure to trash (Or none to skip):',
+        instructions: 'Choose a treasure to trash (or none to skip):',
         cards: eligible_cards,
         minimum: 0,
         maximum: 1
@@ -33,9 +33,7 @@ SpiceMerchant = class SpiceMerchant extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let selected_card = selected_cards[0]
-
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card)
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
 
       let turn_event_id = TurnEventModel.insert({
@@ -48,7 +46,7 @@ SpiceMerchant = class SpiceMerchant extends Card {
         maximum: 1,
         options: [
           {text: '+2 cards and +1 action', value: 'cards'},
-          {text: '+$2 and +1 buy', value: 'coins'}
+          {text: '+1 buy and +$2', value: 'coins'}
         ]
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
@@ -59,17 +57,18 @@ SpiceMerchant = class SpiceMerchant extends Card {
   }
 
   static process_response(game, player_cards, response) {
-    response = response[0]
-    if (response === 'cards') {
+    if (response[0] === 'cards') {
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(2)
 
-      game.turn.actions += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
-    } else if (response === 'coins') {
-      game.turn.buys += 1
-      let gained_coins = CoinGainer.gain(game, player_cards, 2)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and +$${gained_coins}`)
+      let action_gainer = new ActionGainer(game, player_cards)
+      action_gainer.gain(1)
+    } else if (response[0] === 'coins') {
+      let buy_gainer = new BuyGainer(game, player_cards)
+      buy_gainer.gain(1)
+
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(2)
     }
   }
 
