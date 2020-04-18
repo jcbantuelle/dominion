@@ -8,8 +8,8 @@ Hovel = class Hovel extends Card {
     return 1
   }
 
-  buy_reaction(game, player_cards, buyer, card) {
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', card)
+  buy_reaction(game, player_cards, buyer, hovel) {
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', hovel)
     card_trasher.trash()
   }
 
