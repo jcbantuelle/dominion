@@ -57,7 +57,7 @@ TrashEventProcessor = class TrashEventProcessor {
         let instructions = `Choose Trash Event To Resolve for ${CardView.render(this.card)}`
         let minimum = 1
         if (_.isEmpty(mandatory_trash_events)) {
-          instructions += ' (Or none to skip)'
+          instructions += ' (or none to skip)'
           minimum = 0
         }
         let turn_event_id = TurnEventModel.insert({
@@ -80,11 +80,11 @@ TrashEventProcessor = class TrashEventProcessor {
   static trash_event(game, player_cards, selected_cards, trash_event_processor) {
     if (!_.isEmpty(selected_cards)) {
       let card = selected_cards[0]
-      let selected_card = ClassCreator.create(card.name)
+      let card_object = ClassCreator.create(card.name)
       if (_.includes(TrashEventProcessor.reaction_cards(), card.name)) {
-        selected_card.trash_reaction(game, player_cards, trash_event_processor.trasher, card)
+        card_object.trash_reaction(game, player_cards, trash_event_processor.trasher, card)
       } else {
-        selected_card.trash_event(trash_event_processor.trasher, card)
+        card_object.trash_event(trash_event_processor.trasher, card)
       }
       let trash_event_index = _.findIndex(trash_event_processor.trash_events, function(event) {
         return event.id === card.id
