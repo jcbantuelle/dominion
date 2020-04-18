@@ -3,8 +3,8 @@ CardList = class CardList {
   constructor(exclusions, edition) {
     this.edition = edition
     this.exclusions = exclusions
-    // this.cards = CardList.full_list(this.exclusions, this.edition)
-    this.cards = CardList.test_landmarks().concat(CardList.test_events()).concat(CardList.test())
+    this.cards = CardList.full_list(this.exclusions, this.edition)
+    // this.cards = CardList.test_landmarks().concat(CardList.test_events()).concat(CardList.test())
   }
 
   pull_set() {
