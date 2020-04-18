@@ -30,8 +30,6 @@ Taxman = class Taxman extends Card {
       game.log.push(`&nbsp;&nbsp;but does not trash anything`)
     }
 
-    GameModel.update(game._id, game)
-
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 
