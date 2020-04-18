@@ -46,7 +46,7 @@ CardDrawer = class CardDrawer {
   }
 
   update_log() {
-    let card_text = this.drawn_card_count === 1 ? 'card' : 'cards'
+    let card_text = this.drawn_card_count() === 1 ? 'card' : 'cards'
     let source_text = this.source ? ` from ${CardView.render(this.source)}` : ''
     this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> draws ${this.drawn_card_count()} ${card_text}${source_text}`)
   }
