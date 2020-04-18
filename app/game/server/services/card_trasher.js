@@ -33,9 +33,9 @@ CardTrasher = class CardTrasher {
         if (events) {
           this.update_log(trashed_card)
         }
+        this.put_card_in_trash(trashed_card)
         let trash_event_processor = new TrashEventProcessor(this, trashed_card)
         trash_event_processor.process()
-        this.put_card_in_trash(trashed_card)
       })
 
       if (!events && !_.isEmpty(this.trashed_cards)) {
