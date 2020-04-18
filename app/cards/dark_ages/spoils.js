@@ -8,26 +8,15 @@ Spoils = class Spoils extends Card {
     return 0
   }
 
-  play(game, player_cards, player) {
-    CoinGainer.gain(game, player_cards, 3)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(3, false)
 
-    let spoils_index = _.findIndex(player_cards.playing, function(card) {
-      return card.id === player.played_card.id
-    })
+    let card_mover = new CardMover(game, player_cards)
+    let return_count = card_mover.return_to_supply(player_cards.in_play, 'Spoils', [card_player.card])
 
-    if (spoils_index !== -1) {
-
-      let spoils_pile = _.find(game.cards, function(card) {
-        return card.name === 'Spoils'
-      })
-
-      let spoils_card = player_cards.playing.splice(spoils_index, 1)[0]
-
-      spoils_pile.count += 1
-      spoils_pile.stack.unshift(spoils_card)
-      spoils_pile.top_card = _.head(spoils_pile.stack)
-
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(this)} to the Spoils pile`)
+    if (return_count === 1) {
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(card_player.card)} to the ${CardView.render(card_player.card)} pile`)
     }
 
   }
