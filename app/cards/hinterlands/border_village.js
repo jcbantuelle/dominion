@@ -12,20 +12,15 @@ BorderVillage = class BorderVillage extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
   }
 
-  gain_event(gainer, card_name = 'Border Village') {
-    let gained_card = this
-    if (card_name === 'Estate') {
-      gained_card = ClassCreator.create('Estate')
-    }
-
+  gain_event(gainer, border_village) {
     let eligible_cards = _.filter(gainer.game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(gainer.game, gained_card.to_h(), card.top_card)
+      return card.count > 0 && card.supply && CardCostComparer.card_less_than(gainer.game, border_village, card.top_card)
     })
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: gainer.game._id,
         player_id: gainer.player_cards.player_id,
@@ -39,14 +34,15 @@ BorderVillage = class BorderVillage extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id)
       turn_event_processor.process(BorderVillage.gain_card)
+    } else if (_.size(eligible_cards) === 1) {
+      BorderVillage.gain_card(gainer.game, gainer.player_cards, eligible_cards)
     } else {
       gainer.game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
+    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
     card_gainer.gain()
   }
 
