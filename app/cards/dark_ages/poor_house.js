@@ -9,7 +9,8 @@ PoorHouse = class PoorHouse extends Card {
   }
 
   play(game, player_cards) {
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal('hand')
 
     let treasures = _.filter(player_cards.hand, function(card) {
       return _.includes(_.words(card.types), 'treasure')
@@ -18,8 +19,8 @@ PoorHouse = class PoorHouse extends Card {
     let coins = 4 - _.size(treasures)
     coins = coins < 0 ? 0 : coins
 
-    let gained_coins = CoinGainer.gain(game, player_cards, coins)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(coins)
   }
 
 }
