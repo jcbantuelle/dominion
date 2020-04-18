@@ -9,8 +9,8 @@ Necropolis = class Necropolis extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
   }
 
 }
