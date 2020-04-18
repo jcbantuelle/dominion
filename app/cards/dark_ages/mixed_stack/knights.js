@@ -1,7 +1,7 @@
 Knights = class Knights extends Card {
 
   types() {
-    return ['action']
+    return ['action', 'attack', 'knight']
   }
 
   coin_cost() {
