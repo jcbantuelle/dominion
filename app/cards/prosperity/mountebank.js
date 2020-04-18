@@ -18,7 +18,7 @@ Mountebank = class Mountebank extends Card {
 
   attack(game, player_cards) {
     let curse = _.find(player_cards.hand, function(card) {
-      return card.name === 'Curse'
+      return _.includes(_.words(card.types), 'curse')
     })
 
     if (curse) {

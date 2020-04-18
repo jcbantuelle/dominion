@@ -19,7 +19,7 @@ Patrol = class Patrol extends Card {
       card_revealer.reveal_from_deck(4)
 
       let victory_and_curse_cards = _.filter(player_cards.revealed, (card) => {
-        return _.includes(_.words(card.types), 'victory') || card.name === 'Curse'
+        return _.includes(_.words(card.types), 'victory') || _.includes(_.words(card.types), 'curse')
       })
       if (!_.isEmpty(victory_and_curse_cards)) {
         _.each(victory_and_curse_cards, function(card) {
