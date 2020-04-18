@@ -12,19 +12,15 @@ Fortress = class Fortress extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
   }
 
   trash_event(trasher, fortress) {
-    let fortress_index = _.findIndex(trasher.player_cards.trashing, function(card) {
-      return card.id === fortress.id
-    })
-    if (trasher.player_cards.trashing[fortress_index].misfit) {
-      trasher.player_cards.trashing[fortress_index] = trasher.player_cards.trashing[fortress_index].misfit
+    let card_mover = new CardMover(trasher.game, trasher.player_cards)
+    if (card_mover.move(trasher.game.trash, trasher.player_cards.hand, fortress)) {
+      trasher.game.log.push(`&nbsp;&nbsp;<strong>${trasher.player_cards.username}</strong> puts ${CardView.render(fortress)} in their hand`)
     }
-    trasher.player_cards.hand.push(trasher.player_cards.trashing.splice(fortress_index, 1)[0])
-    trasher.game.log.push(`&nbsp;&nbsp;<strong>${trasher.player_cards.username}</strong> puts ${CardView.render(trash_card)} in their hand`)
   }
 
 }
