@@ -56,7 +56,7 @@ CardGainer = class CardGainer {
   move_card() {
     let card_mover = new CardMover(this.game, this.player_cards)
     if (this.source === 'supply') {
-      this.moved_card = card_mover.take_from_supply(this.player_cards[this.destination], this.gained_card.name)
+      this.moved_card = card_mover.take_from_supply(this.player_cards[this.destination], this.gained_card.stack_name)
     } else {
       this.moved_card = card_mover.move(this.source, this.player_cards[this.destination], this.gained_card)
     }
