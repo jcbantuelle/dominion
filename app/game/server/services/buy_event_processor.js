@@ -26,7 +26,7 @@ BuyEventProcessor = class BuyEventProcessor {
 
   constructor(buyer) {
     this.buyer = buyer
-    this.event_id = 9999
+    this.event_id = 2000
     this.find_buy_events()
   }
 

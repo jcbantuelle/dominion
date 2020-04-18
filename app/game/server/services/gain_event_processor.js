@@ -27,7 +27,7 @@ GainEventProcessor = class GainEventProcessor {
   constructor(gainer, player_cards) {
     this.gainer = gainer
     this.player_cards = player_cards
-    this.event_id = 9999
+    this.event_id = 1000
     this.find_gain_events()
   }
 
