@@ -15,8 +15,8 @@ Beggar = class Beggar extends Card {
     })
   }
 
-  attack_event(game, player_cards, card) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', card)
+  attack_event(game, player_cards, beggar) {
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', beggar)
     card_discarder.discard()
 
     let card_gainer = new CardGainer(game, player_cards, 'deck', 'Silver')
