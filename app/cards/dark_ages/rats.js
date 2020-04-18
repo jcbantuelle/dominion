@@ -12,12 +12,13 @@ Rats = class Rats extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Rats')
     card_gainer.gain()
 
+    GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
 
     let eligible_cards = _.filter(player_cards.hand, function(card) {
@@ -41,7 +42,8 @@ Rats = class Rats extends Card {
     } else if (_.size(eligible_cards) === 1) {
       Rats.trash_card(game, player_cards, eligible_cards)
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal('hand')
     }
   }
 
