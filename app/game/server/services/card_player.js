@@ -22,6 +22,7 @@ CardPlayer = class CardPlayer {
           this.update_log()
           this.update_db()
         }
+        this.play_card_events()
         let play_result = this.play_card(announce)
         if (play_result === 'duration') {
           duration = true
@@ -141,6 +142,11 @@ CardPlayer = class CardPlayer {
   update_db() {
     GameModel.update(this.game._id, this.game)
     PlayerCardsModel.update(this.game._id, this.player_cards)
+  }
+
+  play_card_events() {
+    let play_card_event_processor = new PlayCardEventProcessor(this)
+    play_card_event_processor.process()
   }
 
   play_card(announce) {
