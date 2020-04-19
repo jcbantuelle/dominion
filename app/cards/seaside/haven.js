@@ -15,6 +15,7 @@ Haven = class Haven extends Duration {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
+    GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
 
     if (_.size(player_cards.hand) > 0) {
