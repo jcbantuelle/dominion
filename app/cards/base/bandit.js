@@ -24,6 +24,7 @@ Bandit = class Bandit extends Card {
       card_revealer.reveal_from_deck(2)
 
       GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
 
       let revealed_treasures = _.filter(player_cards.revealed, (card) => {
         return _.includes(_.words(card.types), 'treasure') && card.name !== 'Copper'
