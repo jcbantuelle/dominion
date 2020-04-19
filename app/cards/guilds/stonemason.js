@@ -69,21 +69,23 @@ Stonemason = class Stonemason extends Card {
   }
 
   buy_event(buyer) {
-    if (buyer.game.turn.coins === 0) {
-      Stonemason.coin_overpay(buyer.game, buyer.player_cards, '0')
-    } else {
-      let turn_event_id = TurnEventModel.insert({
-        game_id: buyer.game._id,
-        player_id: buyer.player_cards.player_id,
-        username: buyer.player_cards.username,
-        type: 'overpay',
-        player_cards: true,
-        instructions: 'Choose an amount of coin to overpay by:',
-        minimum: 0,
-        maximum: buyer.game.turn.coins
-      })
-      let turn_event_processor = new TurnEventProcessor(buyer.game, buyer.player_cards, turn_event_id)
-      turn_event_processor.process(Stonemason.coin_overpay)
+    if (buyer.game.turn.coins !== 0 || buyer.game.turn.potions !== 0) {
+      if (buyer.game.turn.coins === 0) {
+        Stonemason.coin_overpay(buyer.game, buyer.player_cards, '0')
+      } else {
+        let turn_event_id = TurnEventModel.insert({
+          game_id: buyer.game._id,
+          player_id: buyer.player_cards.player_id,
+          username: buyer.player_cards.username,
+          type: 'overpay',
+          player_cards: true,
+          instructions: 'Choose an amount of coin to overpay by:',
+          minimum: 0,
+          maximum: buyer.game.turn.coins
+        })
+        let turn_event_processor = new TurnEventProcessor(buyer.game, buyer.player_cards, turn_event_id)
+        turn_event_processor.process(Stonemason.coin_overpay)
+      }
     }
   }
 

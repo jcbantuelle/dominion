@@ -51,53 +51,59 @@ Doctor = class Doctor extends Card {
   }
 
   buy_event(buyer) {
-    let turn_event_id = TurnEventModel.insert({
-      game_id: buyer.game._id,
-      player_id: buyer.player_cards.player_id,
-      username: buyer.player_cards.username,
-      type: 'overpay',
-      player_cards: true,
-      instructions: 'Choose an amount to overpay by:',
-      minimum: 0,
-      maximum: buyer.game.turn.coins
-    })
-    let turn_event_processor = new TurnEventProcessor(buyer.game, buyer.player_cards, turn_event_id)
-    turn_event_processor.process(Doctor.overpay)
+    if (buyer.game.turn.coins > 0) {
+      let turn_event_id = TurnEventModel.insert({
+        game_id: buyer.game._id,
+        player_id: buyer.player_cards.player_id,
+        username: buyer.player_cards.username,
+        type: 'overpay',
+        player_cards: true,
+        instructions: 'Choose an amount to overpay by:',
+        minimum: 0,
+        maximum: buyer.game.turn.coins
+      })
+      let turn_event_processor = new TurnEventProcessor(buyer.game, buyer.player_cards, turn_event_id)
+      turn_event_processor.process(Doctor.overpay)
+    }
   }
 
   static overpay(game, player_cards, amount) {
     amount = Number(amount)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> overpays by $${amount}`)
-    game.turn.coins -= amount
+    if (amount > 0) {
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> overpays by $${amount}`)
+      game.turn.coins -= amount
 
-    _.times(amount, () => {
-      if (_.isEmpty(player_cards.deck) && _.isEmpty(player_cards.discard)) {
-        game.log.push(`&nbsp;&nbsp;but there are no cards left in their deck`)
-        return false
-      } else {
-        let card_revealer = new CardRevealer(game, player_cards)
-        card_revealer.reveal_from_deck(1, false)
+      _.times(amount, () => {
+        if (_.isEmpty(player_cards.deck) && _.isEmpty(player_cards.discard)) {
+          game.log.push(`&nbsp;&nbsp;but there are no cards left in their deck`)
+          return false
+        } else {
+          let card_revealer = new CardRevealer(game, player_cards)
+          card_revealer.reveal_from_deck(1, false)
 
-        let turn_event_id = TurnEventModel.insert({
-          game_id: game._id,
-          player_id: player_cards.player_id,
-          username: player_cards.username,
-          type: 'choose_options',
-          instructions: `Choose what to do with ${CardView.render(player_cards.revealed)}:`,
-          minimum: 1,
-          maximum: 1,
-          options: [
-            {text: 'Trash it', value: 'trash'},
-            {text: 'Discard it', value: 'discard'},
-            {text: 'Put it back', value: 'return'}
-          ]
-        })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        turn_event_processor.process(Doctor.process_response)
-      }
-      GameModel.update(game._id, game)
-      PlayerCardsModel.update(game._id, player_cards)
-    })
+          let turn_event_id = TurnEventModel.insert({
+            game_id: game._id,
+            player_id: player_cards.player_id,
+            username: player_cards.username,
+            type: 'choose_options',
+            instructions: `Choose what to do with ${CardView.render(player_cards.revealed)}:`,
+            minimum: 1,
+            maximum: 1,
+            options: [
+              {text: 'Trash it', value: 'trash'},
+              {text: 'Discard it', value: 'discard'},
+              {text: 'Put it back', value: 'return'}
+            ]
+          })
+          let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+          turn_event_processor.process(Doctor.process_response)
+        }
+        GameModel.update(game._id, game)
+        PlayerCardsModel.update(game._id, player_cards)
+      })
+    } else {
+      game.log.push(`&nbsp;&nbsp;but does not overpay`)
+    }
   }
 
   static process_response(game, player_cards, response) {
