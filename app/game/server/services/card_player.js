@@ -33,8 +33,18 @@ CardPlayer = class CardPlayer {
         }
       }
     })
-    if (duration && this.originating_card) {
-      this.originating_card.belongs_to_id = this.card.id
+    if (this.originating_card) {
+      console.log(this.card)
+      console.log(this.originating_card)
+      if (duration) {
+        this.originating_card.belongs_to = _.clone(this.card)
+        this.originating_card.belongs_to.expect_in_play = move_card
+      }
+      console.log(this.originating_card)
+      if (_.includes(_.words(this.originating_card.types), 'command') && this.card.belongs_to) {
+        this.originating_card.belongs_to = this.card.belongs_to
+      }
+      console.log(this.originating_card)
     }
   }
 
