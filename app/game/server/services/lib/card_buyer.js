@@ -26,7 +26,7 @@ CardBuyer = class CardBuyer {
   }
 
   update_phase() {
-    if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
+    if (!this.black_market && _.includes(['action', 'treasure'], this.game.turn.phase)) {
       if (this.game.turn.phase === 'action') {
         this.game.turn.phase = 'treasure'
         let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
@@ -45,7 +45,9 @@ CardBuyer = class CardBuyer {
   }
 
   update_turn() {
-    this.game.turn.buys -= 1
+    if (!this.black_market) {
+      this.game.turn.buys -= 1
+    }
     this.game.turn.coins -= CostCalculator.calculate(this.game, this.card, true)
     this.game.turn.potions -= this.card.potion_cost
 
@@ -66,7 +68,8 @@ CardBuyer = class CardBuyer {
   }
 
   gain_card() {
-    let gained_card = this.card_gainer.gain()
+    let gain_source = this.black_market ? this.game.revealed_black_market : 'supply'
+    let gained_card = this.card_gainer.gain(gain_source)
     if (gained_card && gained_card.id !== this.card.id && gained_card.name !== this.card.name) {
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.card_gainer.player_cards.username}</strong> gains ${CardView.render(gained_card)} instead`)
     }
@@ -77,7 +80,7 @@ CardBuyer = class CardBuyer {
   }
 
   is_purchasable() {
-    return this.game_card.supply && (this.card.name !== 'Grand Market' || this.allow_grand_market())
+    return (this.black_market || this.game_card.supply) && (this.card.name !== 'Grand Market' || this.allow_grand_market())
   }
 
   allow_grand_market() {
@@ -96,11 +99,11 @@ CardBuyer = class CardBuyer {
   }
 
   has_remaining_stock() {
-    return this.game_card.count > 0
+    return this.black_market || this.game_card.count > 0
   }
 
   has_enough_buys() {
-    return this.game.turn.buys > 0
+    return this.black_market || this.game.turn.buys > 0
   }
 
   has_enough_money() {
