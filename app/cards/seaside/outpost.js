@@ -15,7 +15,7 @@ Outpost = class Outpost extends Duration {
     }
   }
 
-  stay_in_play(game, player_cards, card) {
-    return game.turn.outpost && game.turn.outpost.id === card.id
+  stay_in_play(game, player_cards, outpost) {
+    return game.turn.outpost && game.turn.outpost.id === outpost.id
   }
 }
