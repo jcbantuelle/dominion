@@ -67,7 +67,7 @@ CardBuyer = class CardBuyer {
 
   gain_card() {
     let gained_card = this.card_gainer.gain()
-    if (gained_card && gained_card.id !== this.card.id) {
+    if (gained_card && gained_card.id !== this.card.id && gained_card.name !== this.card.name) {
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.card_gainer.player_cards.username}</strong> gains ${CardView.render(gained_card)} instead`)
     }
   }
