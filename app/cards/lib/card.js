@@ -52,22 +52,24 @@ Card = class Card {
   }
 
   stay_in_play(game, player_cards, card) {
-    let stay_in_play = false
-    if (card.belongs_to) {
-      if (card.belongs_to.expect_in_play) {
+    _.each(card.belongs_to, (belongs_to, i) => {
+      if (belongs_to.expect_in_play) {
         let still_in_play = _.find(player_cards.in_play, (in_play_card) => {
-          return in_play_card.id === card.belongs_to.id
+          return in_play_card.id === belongs_to.id
         })
         if (!still_in_play) {
+          delete card.belongs_to[i]
           return false
         }
       }
-      stay_in_play = ClassCreator.create(card.belongs_to.name).stay_in_play(game, player_cards, card.belongs_to)
-    }
-    if (!stay_in_play) {
-      delete card.belongs_to
-    }
-    return stay_in_play
+      let stay_in_play = ClassCreator.create(belongs_to.name).stay_in_play(game, player_cards, belongs_to)
+      if (!stay_in_play) {
+        delete card.belongs_to[i]
+      }
+    })
+    card.belongs_to = _.compact(card.belongs_to)
+
+    return !_.isEmpty(card.belongs_to)
   }
 
   to_h(player_cards) {

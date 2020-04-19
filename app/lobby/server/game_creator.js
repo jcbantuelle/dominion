@@ -809,6 +809,7 @@ GameCreator = class GameCreator {
   set_card_ids_for_collection(cards) {
     return _.map(cards, (card) => {
       card.id = this.assign_card_id()
+      card.belongs_to = []
       return card
     })
   }

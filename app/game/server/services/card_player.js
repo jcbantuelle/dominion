@@ -34,17 +34,14 @@ CardPlayer = class CardPlayer {
       }
     })
     if (this.originating_card) {
-      console.log(this.card)
-      console.log(this.originating_card)
       if (duration) {
-        this.originating_card.belongs_to = _.clone(this.card)
-        this.originating_card.belongs_to.expect_in_play = move_card
+        let belongs_to = _.clone(this.card)
+        belongs_to.expect_in_play = move_card
+        this.originating_card.belongs_to.push(belongs_to)
       }
-      console.log(this.originating_card)
-      if (_.includes(_.words(this.originating_card.types), 'command') && this.card.belongs_to) {
-        this.originating_card.belongs_to = this.card.belongs_to
+      if (_.includes(_.words(this.originating_card.types), 'command')) {
+        this.originating_card.belongs_to = this.originating_card.belongs_to.concat(this.card.belongs_to)
       }
-      console.log(this.originating_card)
     }
   }
 
