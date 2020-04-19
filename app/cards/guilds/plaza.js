@@ -12,8 +12,8 @@ Plaza = class Plaza extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
 
     let eligible_cards = _.filter(player_cards.hand, function(card) {
       return _.includes(_.words(card.types), 'treasure')
@@ -40,20 +40,11 @@ Plaza = class Plaza extends Card {
 
   static discard_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let selected_card = selected_cards[0]
-
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_card)
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
-      if (game.turn.possessed) {
-        possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-        possessing_player_cards.coin_tokens += 1
-        game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes a coin token`)
-        PlayerCardsModel.update(game._id, possessing_player_cards)
-      } else {
-        player_cards.coin_tokens += 1
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes a coin token`)
-      }
+      let coffer_gainer = new CofferGainer(game, player_cards)
+      coffer_gainer.gain(1)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     }
