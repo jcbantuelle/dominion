@@ -7,16 +7,17 @@ VillagerPlayer = class VillagerPlayer {
 
   play() {
     if (this.can_play()) {
-      this.game.log.push(`<strong>${this.player_cards.username}</strong> uses a villager for +1 action`)
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> plays a Villager`)
       this.player_cards.villagers -= 1
-      this.game.turn.actions += 1
+      let action_gainer = new ActionGainer(game, player_cards)
+      action_gainer.gain(1)
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, this.player_cards)
     }
   }
 
   can_play() {
-    return _.includes(['action'], this.game.turn.phase) && this.player_cards.villagers > 0
+    return this.game.turn.phase === 'action' && this.player_cards.villagers > 0
   }
 
 }
