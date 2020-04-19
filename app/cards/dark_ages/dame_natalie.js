@@ -8,9 +8,9 @@ DameNatalie = class DameNatalie extends Knights {
     return 5
   }
 
-  play(game, player_cards, player) {
+  play(game, player_cards, card_player) {
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 4)
+      return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 4)
     })
 
     if (_.size(eligible_cards) > 0) {
@@ -20,7 +20,7 @@ DameNatalie = class DameNatalie extends Knights {
         username: player_cards.username,
         type: 'choose_cards',
         game_cards: true,
-        instructions: 'Choose a card to gain:',
+        instructions: 'Choose a card to gain: (or none to skip)',
         cards: eligible_cards,
         minimum: 1,
         maximum: 1
@@ -31,10 +31,8 @@ DameNatalie = class DameNatalie extends Knights {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
 
-    let player_attacker = new PlayerAttacker(game, this)
+    let player_attacker = new PlayerAttacker(game, this, card_player)
     player_attacker.attack(player_cards)
-
-    this.trash_knight(game, player_cards, player.played_card)
   }
 
   static gain_card(game, player_cards, selected_cards) {
