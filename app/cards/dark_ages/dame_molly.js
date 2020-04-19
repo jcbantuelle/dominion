@@ -8,14 +8,12 @@ DameMolly = class DameMolly extends Knights {
     return 5
   }
 
-  play(game, player_cards, player) {
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+  play(game, player_cards, card_player) {
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
 
-    let player_attacker = new PlayerAttacker(game, this)
+    let player_attacker = new PlayerAttacker(game, this, card_player)
     player_attacker.attack(player_cards)
-
-    this.trash_knight(game, player_cards, player.played_card)
   }
 
 }
