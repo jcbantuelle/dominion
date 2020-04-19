@@ -171,6 +171,7 @@ GameCreator = class GameCreator {
       tavern: [],
       revealed: [],
       haven: [],
+      church: [],
       native_village: [],
       island: [],
       coffers: coffers,
