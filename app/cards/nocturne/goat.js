@@ -9,7 +9,8 @@ Goat = class Goat extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 1)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1, false)
 
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({
@@ -18,7 +19,7 @@ Goat = class Goat extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a card to trash (Or none to skip):',
+        instructions: 'Choose a card to trash (or none to skip):',
         cards: player_cards.hand,
         minimum: 0,
         maximum: 1
