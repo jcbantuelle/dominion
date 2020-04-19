@@ -96,6 +96,8 @@ Mercenary = class Mercenary extends Card {
       coin_gainer.gain(2)
 
       game.turn.mercenary_attack = true
+    } else {
+      game.log.push(`&nbsp;&nbsp;but did not trash enough to continue`)
     }
   }
 
