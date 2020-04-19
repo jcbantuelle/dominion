@@ -1,56 +1,44 @@
 BandOfMisfits = class BandOfMisfits extends Card {
 
   types() {
-    return ['action']
+    return ['action', 'command']
   }
 
   coin_cost() {
     return 5
   }
 
-  play(game, player_cards, player) {
-    let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && CardCostComparer.card_less_than(game, player.card.to_h(player_cards), card.top_card)
+  play(game, player_cards, card_player) {
+    let eligible_cards = _.filter(game.cards, (card) => {
+      return card.count > 0 && card.supply && _.includes(_.words(card.top_card.types), 'action') && !_.includes(_.words(card.top_card.types), 'command') && CardCostComparer.card_less_than(game, card_player.card, card.top_card)
+    })
+    eligible_cards = _.map(eligible_cards, (card) => {
+      return _.clone(card.top_card)
     })
 
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_cards',
-        game_cards: true,
-        instructions: `Choose a card to play ${CardView.render(player.card.to_h(player_cards))} as:`,
+        instructions: `Choose a card to play:`,
         cards: eligible_cards,
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, player)
-      turn_event_processor.process(BandOfMisfits.copy_card)
-
-      let card_player = new CardPlayer(game, player_cards, player.card_id, true, true)
-      card_player.play()
-      return card_player.play_response
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player.card)
+      turn_event_processor.process(BandOfMisfits.play_card)
+    } else if (_.size(eligible_cards) === 1) {
+      BandOfMisfits.play_card(game, player_cards, eligible_cards, card_player.card)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to copy`)
     }
   }
 
-  static copy_card(game, player_cards, selected_cards, player) {
-    let played_misfit_index = _.findIndex(player_cards.playing, function(card) {
-      return card.id === player.played_card.id
-    })
-    let misfit = player_cards.playing.splice(played_misfit_index, 1)[0]
-
-    player.card = ClassCreator.create(selected_cards[0].name)
-    let copy = player.card.to_h()
-    copy.misfit = misfit
-    copy.id = misfit.id
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> plays ${CardView.render(misfit)} as ${CardView.render(copy)}`)
-
-    GameModel.update(game._id, game)
-
-    player_cards.hand.push(copy)
+  static play_card(game, player_cards, selected_cards, band_of_misfits) {
+    let card_player = new CardPlayer(game, player_cards, selected_cards[0], band_of_misfits)
+    card_player.play(true, false)
   }
 
 }
