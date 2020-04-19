@@ -18,51 +18,50 @@ Journeyman = class Journeyman extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Name a card:',
+        instructions: 'Name a card: (or none to avoid skipping cards)',
         cards: unique_cards,
-        minimum: 1,
+        minimum: 0,
         maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(Journeyman.name_card)
-
-      this.reveal(game, player_cards)
-
-      player_cards.hand = player_cards.hand.concat(player_cards.revealed_hand_cards)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed_hand_cards)} in their hand`)
-
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-      card_discarder.discard()
-
-      delete game.turn.journeyman_named_card
-      delete player_cards.revealed_hand_cards
+      turn_event_processor.process(Journeyman.reveal_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in deck to reveal`)
     }
   }
 
-  reveal(game, player_cards) {
-    let revealed_cards = []
-    player_cards.revealed_hand_cards = []
-    while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && _.size(player_cards.revealed_hand_cards) < 3) {
-      if (_.size(player_cards.deck) === 0) {
-        let deck_shuffler = new DeckShuffler(game, player_cards)
-        deck_shuffler.shuffle()
-      }
-      let card = player_cards.deck.shift()
-      revealed_cards.push(card)
-      if (card.name !== game.turn.journeyman_named_card.name) {
-        player_cards.revealed_hand_cards.push(card)
-      } else {
-        player_cards.revealed.push(card)
-      }
+  static reveal_cards(game, player_cards, selected_cards) {
+    let revealed_card_name
+    if (!_.isEmpty(selected_cards)) {
+      named_card = selected_cards[0].name
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> names ${CardView.render(selected_cards)}`)
+    } else {
+      named_card = ''
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> does not name a card`)
     }
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_cards)}`)
-  }
 
-  static name_card(game, player_cards, selected_cards) {
-    game.turn.journeyman_named_card = selected_cards[0]
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> names ${CardView.render(game.turn.journeyman_named_card)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal_from_deck_until((game, player_cards, revealed_cards, named_card) => {
+      let unnamed_cards = _.filter(revealed_cards, (card) => {
+        return card.name !== named_card
+      })
+      return _.size(unnamed_cards) === 3
+    }, true, named_card)
+
+    let unnamed_cards = []
+    _.each(_.clone(player_cards.revealed), (card) => {
+      if (card.name !== named_card) {
+        let card_mover = new CardMover(game, player_cards)
+        card_mover.move(player_cards.revealed, player_cards.hand, card)
+        unnamed_cards.push(card)
+      }
+    })
+    if (!_.isEmpty(unnamed_cards)) {
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(unnamed_cards)} in hand`)
+    }
+
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
+    card_discarder.discard()
   }
 
 }
