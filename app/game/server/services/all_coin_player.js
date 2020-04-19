@@ -1,7 +1,7 @@
 AllCoinPlayer = class AllCoinPlayer {
 
   static bulk_playable_treasures() {
-    return ['Copper', 'Silver', 'Gold', 'Platinum', 'Fools Gold', 'Cache', 'Potion', 'Philosophers Stone', 'Harem', 'Diadem', 'Masterpiece', 'Stash', 'Plunder', 'Humble Castle', 'Goat', 'Pouch', 'Haunted Mirror', 'Pasture', 'Royal Seal']
+    return ['Copper', 'Silver', 'Gold', 'Platinum', 'Fools Gold', 'Cache', 'Potion', 'Philosophers Stone', 'Harem', 'Diadem', 'Masterpiece', 'Stash', 'Plunder', 'Humble Castle', 'Pouch', 'Haunted Mirror', 'Pasture', 'Royal Seal']
   }
 
   constructor(game, player_cards) {
