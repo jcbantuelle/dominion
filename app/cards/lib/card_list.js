@@ -65,7 +65,7 @@ CardList = class CardList {
   }
 
   static sets(edition = '') {
-    return ['base'+edition, 'intrigue'+edition, 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'promo', 'adventures', 'empires', 'nocturne', 'renaissance']
+    return ['base'+edition, 'intrigue'+edition, 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'adventures', 'empires', 'nocturne', 'renaissance', 'promo']
   }
 
   static event_sets(edition = '') {
@@ -643,16 +643,16 @@ CardList = class CardList {
 
   static promo() {
     return [
-      'Envoy',
       'BlackMarket',
-      'Stash',
+      'Church',
+      'Dismantle',
+      'Envoy',
+      'Sauna',
       'WalledVillage',
       'Governor',
-      'Prince',
-      'Sauna',
-      'Dismantle'
-      // Church
-      // Captain
+      'Stash',
+      'Captain',
+      'Prince'
     ]
   }
 
