@@ -50,9 +50,9 @@ CardRevealer = class CardRevealer {
     }
   }
 
-  reveal_from_deck_until(termination_condition, show_others = true) {
+  reveal_from_deck_until(termination_condition, show_others = true, termination_params) {
     let revealed_cards = []
-    while((_.size(this.player_cards.deck) > 0 || _.size(this.player_cards.discard) > 0) && !termination_condition(this.game, this.player_cards, revealed_cards)) {
+    while((_.size(this.player_cards.deck) > 0 || _.size(this.player_cards.discard) > 0) && !termination_condition(this.game, this.player_cards, revealed_cards, termination_params)) {
       if (_.size(this.player_cards.deck) === 0) {
         let deck_shuffler = new DeckShuffler(this.game, this.player_cards)
         deck_shuffler.shuffle()
