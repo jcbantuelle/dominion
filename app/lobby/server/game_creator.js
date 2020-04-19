@@ -157,7 +157,7 @@ GameCreator = class GameCreator {
     hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
-    let coin_tokens = this.game_has_card(this.selected_kingdom_cards, 'Baker') ? 1 : 0
+    let coffers = this.game_has_card(this.selected_kingdom_cards, 'Baker') ? 1 : 0
 
     let player_card_data = {
       player_id: player._id,
@@ -173,7 +173,7 @@ GameCreator = class GameCreator {
       haven: [],
       native_village: [],
       island: [],
-      coin_tokens: coin_tokens,
+      coffers: coffers,
       villagers: 0,
       debt_tokens: 0,
       tokens: {pile: []},

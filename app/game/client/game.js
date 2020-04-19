@@ -11,7 +11,7 @@ Template.game.events({
   "click .event-container .card": buyEvent,
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
-  "click #play-coin-token": playCoinToken,
+  "click #play-coffer": playCoinToken,
   "click #play-villager": playVillager,
   "click #play-debt-token": playDebtToken,
   "submit #turn-event": turnEvent,

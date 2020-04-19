@@ -112,8 +112,8 @@ Meteor.methods({
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
           ActionLock[game_id] = true
-          let coin_token_player = new CoinTokenPlayer(current_game, player_cards(current_game))
-          coin_token_player.play()
+          let coffer_player = new CofferPlayer(current_game, player_cards(current_game))
+          coffer_player.play()
           ActionLock[game_id] = false
         }
       }
