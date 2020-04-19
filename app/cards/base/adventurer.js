@@ -24,11 +24,10 @@ Adventurer = class Adventurer extends Card {
       let card_mover = new CardMover(game, player_cards)
       card_mover.move(player_cards.revealed, player_cards.hand, treasure)
     })
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(treasures)} in hand`)
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
-    card_discarder.discard(false)
-
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(treasures)} in hand and discards the rest`)
+    card_discarder.discard()
   }
 
 }
