@@ -8,11 +8,9 @@ SirVander = class SirVander extends Knights {
     return 5
   }
 
-  play(game, player_cards, player) {
-    let player_attacker = new PlayerAttacker(game, this)
+  play(game, player_cards, card_player) {
+    let player_attacker = new PlayerAttacker(game, this, card_player)
     player_attacker.attack(player_cards)
-
-    this.trash_knight(game, player_cards, player.played_card)
   }
 
   trash_event(trasher) {
