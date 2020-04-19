@@ -8,7 +8,7 @@ DameAnna = class DameAnna extends Knights {
     return 5
   }
 
-  play(game, player_cards, player) {
+  play(game, player_cards, card_player) {
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -16,7 +16,7 @@ DameAnna = class DameAnna extends Knights {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose up to 2 cards to trash:',
+        instructions: 'Choose up to 2 cards to trash: (or none to skip)',
         cards: player_cards.hand,
         minimum: 0,
         maximum: 2
@@ -27,10 +27,8 @@ DameAnna = class DameAnna extends Knights {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
 
-    let player_attacker = new PlayerAttacker(game, this)
+    let player_attacker = new PlayerAttacker(game, this, card_player)
     player_attacker.attack(player_cards)
-
-    this.trash_knight(game, player_cards, player.played_card)
   }
 
   static trash_cards(game, player_cards, selected_cards) {
@@ -40,7 +38,6 @@ DameAnna = class DameAnna extends Knights {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
 
-      GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
     }
   }
