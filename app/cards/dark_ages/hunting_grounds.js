@@ -33,11 +33,10 @@ HuntingGrounds = class HuntingGrounds extends Card {
   }
 
   static process_response(game, player_cards, response) {
-    response = response[0]
-    if (response === 'duchy') {
+    if (response[0] === 'duchy') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
       card_gainer.gain()
-    } else if (response === 'estate') {
+    } else if (response[0] === 'estate') {
       _.times(3, function() {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Estate')
         card_gainer.gain()
