@@ -411,7 +411,7 @@ TurnEnder = class TurnEnder {
 
   empty_stacks() {
     return _.filter(this.game.cards, function(game_card) {
-      return game_card.count === 0 && game_card.top_card.purchasable
+      return game_card.count === 0 && game_card.supply
     })
   }
 
