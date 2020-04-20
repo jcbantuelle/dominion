@@ -36,19 +36,19 @@ Card = class Card {
     return false
   }
 
-  move_to_tavern(game, player_cards, reserve_card) {
-    let reserve_index = _.findIndex(player_cards.playing, function(card) {
-      return card.id === reserve_card.id
-    })
-    if (reserve_index !== -1) {
-      let reserve_card = player_cards.playing.splice(reserve_index, 1)[0]
-      delete reserve_card.prince
-      if (reserve_card.misfit) {
-        reserve_card = reserve_card.misfit
-      }
-      player_cards.tavern.push(reserve_card)
+  static move_to_tavern(game, player_cards, reserve_card) {
+    let card_mover = new CardMover(game, player_cards)
+    if (card_mover.move(player_cards.in_play, player_cards.tavern, reserve_card)) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(reserve_card)} on their Tavern`)
+    } else {
+      game.log.push(`&nbsp;&nbsp;<strong>but ${CardView.render(reserve_card)} is not in play`)
     }
+  }
+
+  static call_from_tavern(game, player_cards, reserve_card) {
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move(player_cards.tavern, player_cards.in_play, reserve_card)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> calls ${CardView.render(reserve_card)} from their Tavern`)
   }
 
   stay_in_play(game, player_cards, card) {
