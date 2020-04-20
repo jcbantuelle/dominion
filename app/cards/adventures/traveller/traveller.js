@@ -21,21 +21,9 @@ Traveller = class Traveller extends Card {
 
   static exchange_card(game, player_cards, response, exchange) {
     if (response === 'yes') {
-      let old_card_index = _.findIndex(player_cards.discarding, function(card) {
-        return card.id === exchange.old_card.id
-      })
-
-      if (old_card_index !== -1) {
-        let old_card_pile = _.find(game.cards, function(card) {
-          return card.name === exchange.old_card
-        })
-        let old_card = player_cards.discarding.splice(old_card_index, 1)[0]
-        old_card_pile.count += 1
-        old_card_pile.stack.unshift(old_card)
-        old_card_pile.top_card = _.head(old_card_pile.stack)
-
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(old_card)}`)
-
+      let card_mover = new CardMover(game, player_cards)
+      if (card_mover.return_to_supply(player_cards.in_play, exchange.old_card.name, [exchange.old_card])) {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(exchange.old_card)}`)
         let card_gainer = new CardGainer(game, player_cards, 'discard', exchange.new_card_name)
         card_gainer.gain()
       }
