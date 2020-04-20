@@ -43,7 +43,7 @@ CardMover = class CardMover {
 
   take_from_supply(destination, supply_name) {
     let supply_pile = _.find(this.game.cards, (pile) => {
-      return pile.name === supply_name
+      return pile.stack_name === supply_name
     })
     if (supply_pile && supply_pile.count > 0) {
       let card = supply_pile.stack.splice(0, 1)[0]
