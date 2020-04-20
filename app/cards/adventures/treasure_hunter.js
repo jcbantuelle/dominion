@@ -9,9 +9,11 @@ TreasureHunter = class TreasureHunter extends Traveller {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$${gained_coins}`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
+
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
 
     let previous_player_query = new PreviousPlayerQuery(game, player_cards.player_id)
     let previous_player_cards = PlayerCardsModel.findOne(game._id, previous_player_query.previous_player()._id)
