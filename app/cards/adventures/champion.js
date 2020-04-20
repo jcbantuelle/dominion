@@ -1,4 +1,4 @@
-Champion = class Champion extends Card {
+Champion = class Champion extends Duration {
 
   types() {
     return ['action', 'duration']
