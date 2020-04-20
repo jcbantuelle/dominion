@@ -1,4 +1,4 @@
-Transmogrify = class Transmogrify extends Card {
+Transmogrify = class Transmogrify extends Reserve {
 
   types() {
     return ['action', 'reserve']
@@ -8,11 +8,11 @@ Transmogrify = class Transmogrify extends Card {
     return 4
   }
 
-  play(game, player_cards, player) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+  play(game, player_cards, card_player) {
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    this.move_to_tavern(game, player_cards, player.played_card)
+    Reserve.move_to_tavern(game, player_cards, card_player.card)
   }
 
   reserve(game, player_cards, transmogrify) {
@@ -31,12 +31,7 @@ Transmogrify = class Transmogrify extends Card {
 
   static call_card(game, player_cards, response, transmogrify) {
     if (response === 'yes') {
-      let reserve_index = _.findIndex(player_cards.tavern, function(card) {
-        return card.id === transmogrify.id
-      })
-      let reserve = player_cards.tavern.splice(reserve_index, 1)[0]
-      game.log.push(`<strong>${player_cards.username}</strong> calls ${CardView.render(reserve)}`)
-      player_cards.in_play.push(reserve)
+      Reserve.call_from_tavern(game, player_cards, transmogrify)
 
       if (_.size(player_cards.hand) > 1) {
         let turn_event_id = TurnEventModel.insert({
@@ -62,7 +57,7 @@ Transmogrify = class Transmogrify extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(game, selected_cards[0], card.top_card, 2)
+      return card.count > 0 && card.supply && CardCostComparer.card_less_than(game, selected_cards[0], card.top_card, 2)
     })
 
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
