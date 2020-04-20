@@ -1,4 +1,4 @@
-Ratcatcher = class Ratcatcher extends Card {
+Ratcatcher = class Ratcatcher extends Reserve {
 
   types() {
     return ['action', 'reserve']
@@ -8,14 +8,14 @@ Ratcatcher = class Ratcatcher extends Card {
     return 2
   }
 
-  play(game, player_cards, player) {
+  play(game, player_cards, card_player) {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    this.move_to_tavern(game, player_cards, player.played_card)
+    Reserve.move_to_tavern(game, player_cards, card_player.card)
   }
 
   reserve(game, player_cards, ratcatcher) {
@@ -34,12 +34,7 @@ Ratcatcher = class Ratcatcher extends Card {
 
   static call_card(game, player_cards, response, ratcatcher) {
     if (response === 'yes') {
-      let reserve_index = _.findIndex(player_cards.tavern, function(card) {
-        return card.id === ratcatcher.id
-      })
-      let reserve = player_cards.tavern.splice(reserve_index, 1)[0]
-      game.log.push(`<strong>${player_cards.username}</strong> calls ${CardView.render(reserve)}`)
-      player_cards.in_play.push(reserve)
+      Reserve.call_from_tavern(game, player_cards, ratcatcher)
 
       if (_.size(player_cards.hand) > 1) {
         let turn_event_id = TurnEventModel.insert({
