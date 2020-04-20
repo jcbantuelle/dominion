@@ -13,7 +13,7 @@ DeckShuffler = class DeckShuffler {
     this.put_cards_in_deck(source, cards)
     this.shuffle_deck()
     if (!_.isEmpty(this.stashes)) {
-      this.insert_stashes()
+      this.insert_stashes(source)
     }
   }
 
@@ -27,7 +27,7 @@ DeckShuffler = class DeckShuffler {
   }
 
   put_cards_in_deck(source, cards) {
-    _.each(cards, (card) => {
+    _.each(_.clone(cards), (card) => {
       let card_mover = new CardMover(this.game, this.player_cards)
       card_mover.move(this.player_cards[source], this.player_cards.deck, card)
     })
@@ -37,11 +37,11 @@ DeckShuffler = class DeckShuffler {
     this.player_cards.deck = _.shuffle(this.player_cards.deck)
   }
 
-  insert_stashes() {
+  insert_stashes(source) {
     this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> shuffles their deck`)
     GameModel.update(this.game._id, this.game)
     PlayerCardsModel.update(this.game._id, this.player_cards)
-    _.each(this.stashes, function(stash) {
+    _.each(this.stashes, (stash) => {
       let turn_event_id = TurnEventModel.insert({
         game_id: this.game._id,
         player_id: this.player_cards.player_id,
@@ -52,15 +52,16 @@ DeckShuffler = class DeckShuffler {
         minimum: 1,
         maximum: _.size(this.player_cards.deck) + 1
       })
-      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, stash)
+      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, {source: source, stash: stash})
       turn_event_processor.process(DeckShuffler.insert_stash)
     })
   }
 
-  static insert_stash(game, player_cards, location, stash) {
+  static insert_stash(game, player_cards, location, params) {
     location = Number(location)
-    player_cards.deck.splice(location-1, 0, stash)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> inserts ${CardView.render(stash)} as card #${location}`)
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move(player_cards[params.source], player_cards.deck, params.stash, location-1)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> inserts ${CardView.render(params.stash)} as card #${location}`)
     GameModel.update(game._id, game)
   }
 
