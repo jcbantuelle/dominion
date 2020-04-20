@@ -1,4 +1,4 @@
-Guide = class Guide extends Card {
+Guide = class Guide extends Reserve {
 
   types() {
     return ['action', 'reserve']
@@ -8,14 +8,14 @@ Guide = class Guide extends Card {
     return 3
   }
 
-  play(game, player_cards, player) {
+  play(game, player_cards, card_player) {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    this.move_to_tavern(game, player_cards, player.played_card)
+    Reserve.move_to_tavern(game, player_cards, card_player.card)
   }
 
   reserve(game, player_cards, guide) {
@@ -34,18 +34,13 @@ Guide = class Guide extends Card {
 
   static call_card(game, player_cards, response, guide) {
     if (response === 'yes') {
-      let reserve_index = _.findIndex(player_cards.tavern, function(card) {
-        return card.id === guide.id
-      })
-      let reserve = player_cards.tavern.splice(reserve_index, 1)[0]
-      game.log.push(`<strong>${player_cards.username}</strong> calls ${CardView.render(reserve)}`)
-      player_cards.in_play.push(reserve)
+      Reserve.call_from_tavern(game, player_cards, guide)
 
       let card_discarder = new CardDiscarder(game, player_cards, 'hand')
       card_discarder.discard()
 
       let card_drawer = new CardDrawer(game, player_cards)
-      card_drawer.draw(5, false)
+      card_drawer.draw(5)
     }
   }
 
