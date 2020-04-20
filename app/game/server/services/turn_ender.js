@@ -69,12 +69,6 @@ TurnEnder = class TurnEnder {
   }
 
   clean_up_cards_in_play() {
-    let walled_villages = _.filter(this.player_cards.in_play, function(card) {
-      return card.name === 'Walled Village'
-    })
-    if (!_.isEmpty(walled_villages)) {
-      WalledVillageResolver.resolve(this.game, this.player_cards, walled_villages)
-    }
     if (!_.isEmpty(this.player_cards.encampments)) {
       _.each(this.player_cards.encampments, (encampment) => {
         let stack_name = encampment.misfit ? encampment.misfit.stack_name : encampment.stack_name
