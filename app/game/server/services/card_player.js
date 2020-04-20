@@ -190,7 +190,7 @@ CardPlayer = class CardPlayer {
 
   token_effects() {
     _.each(this.player_cards.tokens.pile, (token) => {
-      if (this.card.name === token.card.name) {
+      if (this.card.stack_name === token.card.stack_name) {
         if (token.effect === 'card') {
           let card_drawer = new CardDrawer(this.game, this.player_cards)
           card_drawer.draw(1)
