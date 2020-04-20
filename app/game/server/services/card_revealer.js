@@ -35,7 +35,7 @@ CardRevealer = class CardRevealer {
           return false
         } else {
           if (_.size(this.player_cards.deck) === 0) {
-            let deck_shuffler = new DeckShuffler(this.game, this.player_cards)
+            let deck_shuffler = new DeckShuffler(this.game, this.player_cards, revealed_cards)
             deck_shuffler.shuffle()
           }
           revealed_cards.push(this.player_cards.deck.splice(0, 1)[0])
@@ -54,7 +54,7 @@ CardRevealer = class CardRevealer {
     let revealed_cards = []
     while((_.size(this.player_cards.deck) > 0 || _.size(this.player_cards.discard) > 0) && !termination_condition(this.game, this.player_cards, revealed_cards, termination_params)) {
       if (_.size(this.player_cards.deck) === 0) {
-        let deck_shuffler = new DeckShuffler(this.game, this.player_cards)
+        let deck_shuffler = new DeckShuffler(this.game, this.player_cards, revealed_cards)
         deck_shuffler.shuffle()
       }
       revealed_cards.push(this.player_cards.deck.shift())

@@ -1,8 +1,9 @@
 DeckShuffler = class DeckShuffler {
 
-  constructor(game, player_cards) {
+  constructor(game, player_cards, cards_so_far) {
     this.game = game
     this.player_cards = player_cards
+    this.cards_so_far = cards_so_far
   }
 
   shuffle(source = 'discard', cards) {
@@ -41,6 +42,10 @@ DeckShuffler = class DeckShuffler {
     this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> shuffles their deck`)
     GameModel.update(this.game._id, this.game)
     PlayerCardsModel.update(this.game._id, this.player_cards)
+    let instructions = `Choose where in your deck to put ${CardView.render(new Stash())} (1 is top of deck):`
+    if (this.cards_so_far) {
+      instructions += `<br>Cards Revealed So Far: ${CardView.render(this.cards_so_far)}<br>`
+    }
     _.each(this.stashes, (stash) => {
       let turn_event_id = TurnEventModel.insert({
         game_id: this.game._id,
@@ -48,7 +53,7 @@ DeckShuffler = class DeckShuffler {
         username: this.player_cards.username,
         type: 'overpay',
         player_cards: true,
-        instructions: `Choose where in your deck to put ${CardView.render(stash)} (1 is top of deck):`,
+        instructions: instructions,
         minimum: 1,
         maximum: _.size(this.player_cards.deck) + 1
       })
