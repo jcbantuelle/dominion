@@ -1,4 +1,4 @@
-Amulet = class Amulet extends Card {
+Amulet = class Amulet extends Duration {
 
   types() {
     return ['action', 'duration']
@@ -8,14 +8,15 @@ Amulet = class Amulet extends Card {
     return 3
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
+  play(game, player_cards, card_player) {
     this.choose_one(game, player_cards)
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> resolves ${CardView.render(duration_card)}`)
+  duration(game, player_cards, amulet) {
+    game.log.push(`<strong>${player_cards.username}</strong> resolves ${CardView.render(amulet)}`)
+    GameModel.update(game._id, game)
     this.choose_one(game, player_cards)
   }
 
@@ -41,8 +42,8 @@ Amulet = class Amulet extends Card {
   static process_choice(game, player_cards, choice) {
     choice = choice[0]
     if (choice === 'coin') {
-      let gained_coins = CoinGainer.gain(game, player_cards, 1)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(1)
     } else if (choice === 'trash') {
       if (_.size(player_cards.hand) > 1) {
         let turn_event_id = TurnEventModel.insert({
@@ -58,8 +59,10 @@ Amulet = class Amulet extends Card {
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Amulet.trash_card)
-      } else {
+      } else if (_.size() === 1) {
         Amulet.trash_card(game, player_cards, player_cards.hand)
+      } else {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to trash but has no cards in hand`)
       }
     } else if (choice === 'silver') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
@@ -68,12 +71,8 @@ Amulet = class Amulet extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    if (_.size(selected_cards) === 0) {
-      game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
-    } else {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
-      card_trasher.trash()
-    }
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
+    card_trasher.trash()
   }
 
 }
