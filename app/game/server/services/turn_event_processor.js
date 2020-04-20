@@ -13,12 +13,18 @@ TurnEventProcessor = class TurnEventProcessor {
       return TurnEventFutures[turn_event_id]
     })
     Future.wait(...turn_events)
+    let result = []
     _.each(this.turn_event_ids, (turn_event_id) => {
       let response = TurnEventFutures[turn_event_id].get()
       TurnEventModel.remove(this.game._id, turn_event_id)
       delete TurnEventFutures[turn_event_id]
-      event_action(this.game, this.player_cards, response, this.source)
+      result.push(event_action(this.game, this.player_cards, response, this.source))
     })
+    if (_.size(result) === 1) {
+      return result[0]
+    } else {
+      return result
+    }
   }
 
 }
