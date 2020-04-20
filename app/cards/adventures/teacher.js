@@ -1,4 +1,4 @@
-Teacher = class Teacher extends Card {
+Teacher = class Teacher extends Reserve {
 
   types() {
     return ['action', 'reserve']
@@ -8,8 +8,8 @@ Teacher = class Teacher extends Card {
     return 6
   }
 
-  play(game, player_cards, player) {
-    this.move_to_tavern(game, player_cards, player.played_card)
+  play(game, player_cards, card_player) {
+    Reserve.move_to_tavern(game, player_cards, card_player.card)
   }
 
   reserve(game, player_cards, teacher) {
@@ -28,12 +28,7 @@ Teacher = class Teacher extends Card {
 
   static choose_token(game, player_cards, response, teacher) {
     if (response === 'yes') {
-      let teacher_index = _.findIndex(player_cards.tavern, function(card) {
-        return card.id === teacher.id
-      })
-      teacher = player_cards.tavern.splice(teacher_index, 1)[0]
-      game.log.push(`<strong>${player_cards.username}</strong> calls ${CardView.render(teacher)}`)
-      player_cards.in_play.push(teacher)
+      Reserve.call_from_tavern(game, player_cards, teacher)
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -62,7 +57,7 @@ Teacher = class Teacher extends Card {
       let has_player_token = _.some(card.tokens, function(pile_token) {
         return pile_token.username === player_cards.username
       })
-      return !has_player_token && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action')
+      return !has_player_token && card.supply && _.includes(_.words(card.top_card.types), 'action')
     })
 
     let turn_event_id = TurnEventModel.insert({
