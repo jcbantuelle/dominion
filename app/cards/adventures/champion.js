@@ -10,11 +10,15 @@ Champion = class Champion extends Card {
 
   play(game, player_cards) {
     player_cards.champions += 1
-    player_cards.champion = true
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
-    return 'permanent'
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
+
+    return 'duration'
+  }
+
+  stay_in_play(game, player_cards, champion) {
+    return true
   }
 
 }
