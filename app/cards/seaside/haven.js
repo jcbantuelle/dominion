@@ -15,23 +15,26 @@ Haven = class Haven extends Duration {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
-    GameModel.update(game._id, game)
-    PlayerCardsModel.update(game._id, player_cards)
-
     if (_.size(player_cards.hand) > 0) {
-      let turn_event_id = TurnEventModel.insert({
-        game_id: game._id,
-        player_id: player_cards.player_id,
-        username: player_cards.username,
-        type: 'choose_cards',
-        player_cards: true,
-        instructions: 'Choose a card to set aside:',
-        cards: player_cards.hand,
-        minimum: 1,
-        maximum: 1
-      })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
-      turn_event_processor.process(Haven.set_aside_card)
+      if (_.size(player_cards.hand) > 1) {
+        GameModel.update(game._id, game)
+        PlayerCardsModel.update(game._id, player_cards)
+        let turn_event_id = TurnEventModel.insert({
+          game_id: game._id,
+          player_id: player_cards.player_id,
+          username: player_cards.username,
+          type: 'choose_cards',
+          player_cards: true,
+          instructions: 'Choose a card to set aside:',
+          cards: player_cards.hand,
+          minimum: 1,
+          maximum: 1
+        })
+        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
+        turn_event_processor.process(Haven.set_aside_card)
+      } else {
+        Haven.set_aside_card(game, player_cards, player_cards.hand)
+      }
       return 'duration'
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
