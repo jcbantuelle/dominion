@@ -7,7 +7,7 @@ CoinGainer = class CoinGainer {
   }
 
   gain(amount, announce = true) {
-    if (this.player_cards.tokens.minus_coin) {
+    if (this.player_cards.tokens.minus_coin && amount > 0) {
       amount -= 1
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards their -$1 coin token`)
       delete this.player_cards.tokens.minus_coin
