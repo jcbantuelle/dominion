@@ -105,7 +105,7 @@ CardGainer = class CardGainer {
         log_message += ', placing it in hand'
       } else if (this.destination === 'deck') {
         log_message += ', placing it on top of their deck'
-      } else if (this.destination === 'summon') {
+      } else if (this.destination === 'aside') {
         log_message += ', setting it aside'
       }
       this.game.log.push(log_message)
