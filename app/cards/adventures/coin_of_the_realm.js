@@ -1,4 +1,4 @@
-CoinOfTheRealm = class CoinOfTheRealm extends Card {
+CoinOfTheRealm = class CoinOfTheRealm extends Reserve {
 
   types() {
     return ['treasure', 'reserve']
@@ -11,7 +11,7 @@ CoinOfTheRealm = class CoinOfTheRealm extends Card {
   play(game, player_cards, card_player) {
     let coin_gainer = new CoinGainer(game, player_cards)
     coin_gainer.gain(1, false)
-    Card.move_to_tavern(game, player_cards, card_player.card)
+    Reserve.move_to_tavern(game, player_cards, card_player.card)
   }
 
   action_resolution_event(game, player_cards, coin_of_the_realm) {
@@ -30,7 +30,7 @@ CoinOfTheRealm = class CoinOfTheRealm extends Card {
 
   static call_coin(game, player_cards, response, coin_of_the_realm) {
     if (response === 'yes') {
-      Card.call_from_tavern(game, player_cards, coin_of_the_realm)
+      Reserve.call_from_tavern(game, player_cards, coin_of_the_realm)
       let action_gainer = new ActionGainer(game, player_cards)
       action_gainer.gain(2)
     }
