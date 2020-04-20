@@ -89,6 +89,13 @@ DiscardEventProcessor = class DiscardEventProcessor {
           }
         }
       }
+
+      let prince = _.find(this.discarder.player_cards.aside, (card) => {
+        return card.name === 'Prince' && card.target && card.target.id === this.card.id
+      })
+      if (prince) {
+        this.discard_events.push(prince)
+      }
     }
   }
 

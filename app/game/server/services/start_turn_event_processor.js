@@ -9,7 +9,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
   }
 
   static aside_events() {
-    return ['Horse Traders']
+    return ['Horse Traders', 'Prince']
   }
 
   constructor(game, player_cards) {
@@ -23,7 +23,13 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
 
     _.each(this.player_cards.aside, (card) => {
       if (_.includes(StartTurnEventProcessor.aside_events(), card.name)) {
-        this.start_turn_events.push(card)
+        if (card.name === 'Prince') {
+          if (card.target) {
+            this.start_turn_events.push(card)
+          }
+        } else {
+          this.start_turn_events.push(card)
+        }
       }
     })
 

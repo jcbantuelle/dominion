@@ -93,6 +93,7 @@ TurnEnder = class TurnEnder {
     })
     let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play', cards_to_discard)
     card_discarder.discard(false)
+    Prince.unset_prince_tracking(this.game, this.player_cards)
 
     if (this.game.turn.possessed && !_.isEmpty(this.player_cards.possession_trash)) {
       this.player_cards.discard = this.player_cards.discard.concat(this.player_cards.possession_trash)
