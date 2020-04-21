@@ -1,4 +1,4 @@
-RoyalCarriage = class RoyalCarriage extends Card {
+RoyalCarriage = class RoyalCarriage extends Reserve {
 
   types() {
     return ['action', 'reserve']
@@ -8,14 +8,14 @@ RoyalCarriage = class RoyalCarriage extends Card {
     return 5
   }
 
-  play(game, player_cards, player) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+  play(game, player_cards, card_player) {
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    this.move_to_tavern(game, player_cards, player.played_card)
+    Reserve.move_to_tavern(game, player_cards, card_player.card)
   }
 
-  action_resolution_event(game, player_cards, resolved_action, royal_carriage) {
+  action_resolution_event(game, player_cards, royal_carriage, resolved_action) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
@@ -31,26 +31,10 @@ RoyalCarriage = class RoyalCarriage extends Card {
 
   static repeat_action(game, player_cards, response, params) {
     if (response === 'yes') {
-      let reserve_index = _.findIndex(player_cards.tavern, function(card) {
-        return card.id === params.royal_carriage.id
-      })
-      let reserve = player_cards.tavern.splice(reserve_index, 1)[0]
-      game.log.push(`<strong>${player_cards.username}</strong> calls ${CardView.render(reserve)}`)
+      Reserve.call_from_tavern(game, player_cards, params.royal_carriage)
 
-      let action_index = _.findIndex(player_cards.playing, function(card) {
-        return card.name === params.resolved_action.name
-      })
-      let replayed_action = player_cards.playing.splice(action_index, 1)[0]
-      player_cards.hand.push(replayed_action)
-
-      let card_player = new CardPlayer(game, player_cards, replayed_action.id, true)
-      let replayed_destination = card_player.play()
-
-      let reserve_destination = 'in_play'
-      if (_.includes(['duration', 'permanent'], replayed_destination)) {
-        reserve_destination = replayed_destination
-      }
-      player_cards[reserve_destination].push(reserve)
+      let card_player = new CardPlayer(game, player_cards, params.resolved_action, params.royal_carriage)
+      card_player.play(true)
     }
   }
 
