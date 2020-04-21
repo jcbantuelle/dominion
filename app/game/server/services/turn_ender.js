@@ -17,6 +17,9 @@ TurnEnder = class TurnEnder {
     this.end_turn_events()
     this.track_gained_cards()
     this.game.log.push(`<strong>${this.game.turn.player.username}</strong> ends their turn`)
+    if (!_.isEmpty(this.player_cards.inheritance)) {
+      Inheritance.convert_estates(this.game, this.player_cards, false)
+    }
     if (this.game_over()) {
       this.end_game()
     } else {
@@ -32,6 +35,9 @@ TurnEnder = class TurnEnder {
       this.set_next_turn()
       this.clear_duration_attacks()
       GameModel.update(this.game._id, this.game)
+      if (!_.isEmpty(this.next_player_cards.inheritance)) {
+        Inheritance.convert_estates(this.game, this.next_player_cards, true)
+      }
       this.start_turn_events()
       this.update_db(false)
     }

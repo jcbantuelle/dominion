@@ -69,7 +69,7 @@ EventBuyer = class EventBuyer {
   }
 
   not_forbidden() {
-    return !_.includes(this.game.turn.forbidden_events, this.event.name()) && !(this.event.name() === 'Inheritance' && this.player_cards.tokens.estate)
+    return !_.includes(this.game.turn.forbidden_events, this.event.name()) && !(this.event.name() === 'Inheritance' && !_.isEmpty(this.player_cards.inheritance))
   }
 
   update_log() {
