@@ -235,13 +235,11 @@ TurnEnder = class TurnEnder {
 
   set_up_extra_player_turns() {
     let queued_turns = []
-    if (this.game.turn.previous_player && this.game.turn.previous_player._id !== this.game.turn.player._id) {
-      if (this.game.turn.outpost) {
-        queued_turns.push(this.game.turn.outpost)
-      }
-      if (this.game.turn.mission) {
-        queued_turns.push(ClassCreator.create('Mission').to_h())
-      }
+    if (this.game.turn.outpost) {
+      queued_turns.push(this.game.turn.outpost)
+    }
+    if (this.game.turn.mission) {
+      queued_turns.push(this.game.turn.mission)
     }
     if (!_.isEmpty(queued_turns)) {
       if (this.is_possessed_next_turn()) {
@@ -310,20 +308,12 @@ TurnEnder = class TurnEnder {
 
   process_extra_turns() {
     let extra_turn = this.game.extra_turns.shift()
-    if (extra_turn.type === 'Mission' && this.game.turn.previous_player._id === this.game.turn.player._id) {
-      if (!_.isEmpty(this.game.extra_turns)) {
-        this.process_extra_turns()
-      } else {
-        this.next_player_turn()
-      }
-    } else {
-      if (extra_turn.type === 'Outpost') {
-        this.outpost_turn(extra_turn.player)
-      } else if (extra_turn.type === 'Mission') {
-        this.mission_turn(extra_turn.player)
-      } else if (extra_turn.type === 'Possession') {
-        this.possession_turn(extra_turn.player)
-      }
+    if (extra_turn.type === 'Outpost') {
+      this.outpost_turn(extra_turn.player)
+    } else if (extra_turn.type === 'Mission') {
+      this.mission_turn(extra_turn.player)
+    } else if (extra_turn.type === 'Possession') {
+      this.possession_turn(extra_turn.player)
     }
   }
 
