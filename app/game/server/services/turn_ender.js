@@ -119,11 +119,6 @@ TurnEnder = class TurnEnder {
     cards_to_draw += (this.game.turn.expeditions * 2)
     let card_drawer = new CardDrawer(this.game, this.player_cards)
     card_drawer.draw(cards_to_draw, false)
-    if (!_.isEmpty(this.player_cards.save)) {
-      this.player_cards.hand = this.player_cards.hand.concat(this.player_cards.save)
-      this.player_cards.save = []
-      this.game.log.push(`<strong>${this.player_cards.username}</strong> puts thier set aside card in hand from ${CardView.render(new Save())}`)
-    }
   }
 
   track_gained_cards() {
@@ -198,7 +193,6 @@ TurnEnder = class TurnEnder {
       played_actions: [],
       coppersmiths: 0,
       merchants: 0,
-      river_gifts: [],
       expeditions: 0,
       charms: 0,
       priests: 0,
