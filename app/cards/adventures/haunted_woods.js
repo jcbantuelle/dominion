@@ -1,4 +1,4 @@
-HauntedWoods = class HauntedWoods extends Card {
+HauntedWoods = class HauntedWoods extends Duration {
 
   types() {
     return ['action', 'duration', 'attack']
@@ -8,55 +8,32 @@ HauntedWoods = class HauntedWoods extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
-
-    let player_attacker = new PlayerAttacker(game, this)
+  play(game, player_cards, card_player) {
+    let player_attacker = new PlayerAttacker(game, this, card_player)
     player_attacker.attack(player_cards)
 
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  attack(game, player_cards) {
-    let attack_card = this.to_h()
+  attack(game, player_cards, attacker_player_cards, card_player) {
+    let attack_card = _.clone(card_player.card)
     attack_card.player_source = game.turn.player
     player_cards.duration_attacks.push(attack_card)
   }
 
-  duration(game, player_cards, duration_card) {
-    let card_drawer = new CardDrawer(game, player_cards)
-    let drawn_count = card_drawer.draw(3, false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${drawn_count} cards from ${CardView.render(duration_card)}`)
+  duration(game, player_cards, haunted_woods) {
+    let card_drawer = new CardDrawer(game, player_cards, haunted_woods)
+    let drawn_count = card_drawer.draw(3)
   }
 
   buy_event(buyer) {
     if (_.size(buyer.player_cards.hand) === 0) {
       buyer.game.log.push(`&nbsp;&nbsp;<strong>${buyer.player_cards.username}</strong> has no cards in hand for ${CardView.render(this)}`)
-    } else if (_.size(buyer.player_cards.hand) === 1) {
-      HauntedWoods.replace_cards(buyer.game, buyer.player_cards, _.map(buyer.player_cards.hand, 'name'))
     } else {
-      let turn_event_id = TurnEventModel.insert({
-        game_id: buyer.game._id,
-        player_id: buyer.player_cards.player_id,
-        username: buyer.player_cards.username,
-        type: 'sort_cards',
-        instructions: 'Choose order to place hand on deck: (leftmost will be top card)',
-        cards: buyer.player_cards.hand
-      })
-      let turn_event_processor = new TurnEventProcessor(buyer.game, buyer.player_cards, turn_event_id)
-      turn_event_processor.process(HauntedWoods.replace_cards)
+      let card_returner = new CardReturner(buyer.game, buyer.player_cards)
+      card_returner.return_to_deck(buyer.player_cards.hand)
     }
-  }
-
-  static replace_cards(game, player_cards, ordered_cards) {
-    _.each(ordered_cards.reverse(), function(ordered_card) {
-      let hand_card_index = _.findIndex(player_cards.hand, function(card) {
-        return card.id === ordered_card.id
-      })
-      let hand_card = player_cards.hand.splice(hand_card_index, 1)[0]
-      player_cards.deck.unshift(hand_card)
-    })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places their hand on top of their deck from ${CardView.render(new HauntedWoods())}`)
   }
 
 }
