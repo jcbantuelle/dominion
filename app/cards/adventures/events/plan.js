@@ -9,7 +9,7 @@ Plan = class Plan extends Event {
       let has_player_token = _.some(card.tokens, function(token) {
         return token.name === 'trashing' && token.username === player_cards.username
       })
-      return !has_player_token && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action')
+      return !has_player_token && card.supply && _.includes(_.words(card.top_card.types), 'action')
     })
 
     let turn_event_id = TurnEventModel.insert({
