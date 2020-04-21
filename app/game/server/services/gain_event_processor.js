@@ -134,7 +134,7 @@ GainEventProcessor = class GainEventProcessor {
       }
     })
 
-    if (_.includes(_.words(this.gainer.gained_card.types), 'victory') && this.gainer.supply_pile && this.gainer.supply_pile.has_trade_route_token) {
+    if (this.gainer.player_cards._id === this.player_cards._id && _.includes(_.words(this.gainer.gained_card.types), 'victory') && this.gainer.supply_pile && this.gainer.supply_pile.has_trade_route_token) {
       let trade_route = ClassCreator.create('Trade Route').to_h()
       trade_route.id = this.generate_event_id()
       this.gain_events.push(trade_route)
