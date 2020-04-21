@@ -9,7 +9,8 @@ Relic = class Relic extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 2)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2, false)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
