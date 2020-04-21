@@ -99,8 +99,14 @@ BuyEventProcessor = class BuyEventProcessor {
     let trashing_token = _.find(this.buyer.player_cards.tokens.pile, (token) => {
       return token.effect === 'trashing'
     })
-    if (trashing_token && trashing_token.card.name === this.buyer.card.stack_name) {
-      this.buy_events.push({name: 'Trash Token', id: this.generate_event_id()})
+    if (trashing_token && trashing_token.card.stack_name === this.buyer.card.stack_name) {
+      this.buy_events.push({
+        name: 'Trash Token',
+        id: this.generate_event_id(),
+        trashing_token: true,
+        types: 'trashing_token',
+        image: 'trashing_token'
+      })
     }
   }
 
@@ -140,24 +146,22 @@ BuyEventProcessor = class BuyEventProcessor {
     if (!_.isEmpty(selected_cards)) {
       let card = selected_cards[0]
       if (card.name === 'Trash Token') {
-        if (_.size(player_cards.hand) > 1) {
+        if (_.size(player_cards.hand) > 0) {
           let turn_event_id = TurnEventModel.insert({
             game_id: game._id,
             player_id: player_cards.player_id,
             username: player_cards.username,
             type: 'choose_cards',
             player_cards: true,
-            instructions: 'Choose a card to trash:',
+            instructions: 'Choose a card to trash: (or none to skip)',
             cards: player_cards.hand,
-            minimum: 1,
+            minimum: 0,
             maximum: 1
           })
           let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
           turn_event_processor.process(BuyEventProcessor.trash_card)
-        } else if (_.size(player_cards.hand) === 1) {
-          BuyEventProcessor.trash_card(game, player_cards, player_cards.hand)
         } else {
-          game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
+          game.log.push(`&nbsp;&nbsp;but there are no cards in hand for the Trash Token`)
         }
       } else {
         let card_object = ClassCreator.create(card.name)

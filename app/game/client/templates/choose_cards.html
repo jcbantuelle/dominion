@@ -16,7 +16,11 @@
               {{#if wide}}
                 <img src="{{static_image image}}" width="341" height="220" />
               {{else}}
-                <img src="{{static_image image}}" width="220" height="341" />
+                {{#if trashing_token}}
+                  <img src="{{static_image image}}" width="117" height="116" />
+                {{else}}
+                  <img src="{{static_image image}}" width="220" height="341" />
+                {{/if}}
               {{/if}}
             </div>
           {{/if}}
