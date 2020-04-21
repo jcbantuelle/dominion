@@ -1,4 +1,4 @@
-DistantLands = class DistantLands extends Card {
+DistantLands = class DistantLands extends Reserve {
 
   types() {
     return ['action', 'reserve', 'victory']
@@ -8,8 +8,8 @@ DistantLands = class DistantLands extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    this.move_to_tavern(game, player_cards, 'Distant Lands')
+  play(game, player_cards, card_player) {
+    Reserve.move_to_tavern(game, player_cards, card_player.card)
   }
 
   victory_points(player_cards, source) {
