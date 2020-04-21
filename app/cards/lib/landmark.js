@@ -29,7 +29,7 @@ Landmark = class Landmark {
       name: this.name(),
       inherited_name: this.inherited_name(),
       image: this.image(),
-      wide: true
+      wide: true,
       types: 'landmark',
       victory_tokens: 0
     }
