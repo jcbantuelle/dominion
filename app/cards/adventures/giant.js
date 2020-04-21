@@ -13,40 +13,37 @@ Giant = class Giant extends Card {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> turns their Journey Token face ${player_cards.tokens.journey}`)
 
     if (player_cards.tokens.journey === 'up') {
-      let gained_coins = CoinGainer.gain(game, player_cards, 5)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(5)
     } else if (player_cards.tokens.journey === 'down') {
-      let gained_coins = CoinGainer.gain(game, player_cards, 1)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(1)
     }
 
-    game.turn.token_orientation = player_cards.tokens.journey
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack(player_cards)
-
-    delete game.turn.token_orientation
+    player_attacker.attack(player_cards, player_cards.tokens.journey)
   }
 
-  attack(game, player_cards) {
-    if (game.turn.token_orientation === 'up') {
+  attack(game, player_cards, attacker_player_cards, card_player, attacker_journey_token) {
+    if (attacker_journey_token === 'up') {
       if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
-        if (_.size(player_cards.deck) === 0) {
-          let deck_shuffler = new DeckShuffler(game, player_cards)
-          deck_shuffler.shuffle()
-        }
-        let revealed_card = player_cards.deck.shift()
-        player_cards.revealed.push(revealed_card)
+        let card_revealer = new CardRevealer(game, player_cards)
+        card_revealer.reveal_from_deck(1)
 
-        if (CardCostComparer.coin_between(game, revealed_card, 3, 6)) {
-          let card_trasher = new CardTrasher(game, player_cards, 'revealed', revealed_card)
+        if (CardCostComparer.coin_between(game, player_cards.revealed[0], 3, 6)) {
+          let card_trasher = new CardTrasher(game, player_cards, 'revealed')
           card_trasher.trash()
         } else {
-          let card_discarder = new CardDiscarder(game, player_cards, 'revealed', revealed_card)
+          let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
           card_discarder.discard()
 
           let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
           card_gainer.gain()
         }
+      } else {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in their deck or discard`)
+        let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
+        card_gainer.gain()
       }
     }
   }
