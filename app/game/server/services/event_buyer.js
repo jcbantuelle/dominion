@@ -9,6 +9,7 @@ EventBuyer = class EventBuyer {
   buy() {
     if (this.is_valid_buy()) {
       this.update_phase()
+      this.track_bought_card()
       this.buy_event()
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, this.player_cards)
@@ -22,6 +23,11 @@ EventBuyer = class EventBuyer {
       start_buy_event_processor.process()
       this.game.turn.phase = 'buy'
     }
+  }
+
+  track_bought_card(card) {
+    let bought_card = _.clone(this.event.to_h())
+    this.game.turn.bought_cards.push(bought_card)
   }
 
   buy_event() {
