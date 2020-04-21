@@ -49,12 +49,9 @@ Quest = class Quest extends Event {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to discard an attack, but has none in hand`)
       }
     } else if (response === 'curses') {
-      let curses = _.filter(player_cards.hand, function(card) {
+      let curses = _.take(_.filter(player_cards.hand, function(card) {
         return card.name === 'Curse'
-      })
-      if (_.size(curses) > 1) {
-        curses = _.take(curses, 2)
-      }
+      }), 2)
       if (_.size(curses) > 0) {
         Quest.discard_cards(game, player_cards, curses, response)
       } else {
