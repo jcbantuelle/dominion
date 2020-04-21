@@ -65,7 +65,7 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
         })
         player_cards.event_effects.splice(event_effect_index, 1)
       }
-      event_object.end_turn_event(game, player_cards)
+      event_object.end_turn_event(game, player_cards, event)
 
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
