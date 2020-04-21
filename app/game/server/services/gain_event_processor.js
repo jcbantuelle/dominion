@@ -139,6 +139,12 @@ GainEventProcessor = class GainEventProcessor {
       trade_route.id = this.generate_event_id()
       this.gain_events.push(trade_route)
     }
+
+    if (this.gainer.player_cards._id === this.player_cards._id && this.gainer.game.turn.travelling_fair && this.gainer.destination !== 'deck') {
+      let travelling_fair = ClassCreator.create('Travelling Fair').to_h()
+      travelling_fair.id = this.generate_event_id()
+      this.gain_events.push(travelling_fair)
+    }
   }
 
   process() {
@@ -153,7 +159,7 @@ GainEventProcessor = class GainEventProcessor {
         let instructions = `Choose Gain Event To Resolve for ${CardView.render(this.gainer.gained_card)}`
         let minimum = 1
         if (_.isEmpty(mandatory_gain_events)) {
-          instructions += ' (Or none to skip)'
+          instructions += ' (or none to skip)'
           minimum = 0
         }
         let turn_event_id = TurnEventModel.insert({

@@ -5,29 +5,18 @@ TravellingFair = class TravellingFair extends Event {
   }
 
   buy(game, player_cards) {
-    game.turn.buys += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 buys`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(2)
 
     game.turn.travelling_fair = true
   }
 
-  gain_event(gainer, travelling_fair) {
-    let turn_event_id = TurnEventModel.insert({
-      game_id: this.game._id,
-      player_id: this.player_cards.player_id,
-      username: this.player_cards.username,
-      type: 'choose_yes_no',
-      instructions: `Put ${CardView.render(gained_card)} on top of your deck?`,
-      minimum: 1,
-      maximum: 1
-    })
-    let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this)
-    turn_event_processor.process(CardGainer.put_card_on_deck)
-  }
-
-  static put_card_on_deck(game, player_cards, response, gainer) {
-    if (response === 'yes') {
+  gain_event(gainer) {
+    let card_mover = new CardMover(gainer.game, gainer.player_cards)
+    if (card_mover.move(gainer.player_cards[gainer.destination], gainer.player_cards.deck, gainer.gained_card)) {
+      gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> puts ${CardView.render(gainer.gained_card)} on top of their deck`)
       gainer.destination = 'deck'
     }
   }
+
 }
