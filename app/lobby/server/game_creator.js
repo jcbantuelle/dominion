@@ -161,23 +161,19 @@ GameCreator = class GameCreator {
       player_id: player._id,
       game_id: this.game._id,
       username: player.username,
-      deck: deck,
-      hand: hand,
-      discard: [],
-      in_play: [],
-      aside: [],
-      tavern: [],
-      revealed: [],
-      haven: [],
-      church: [],
-      native_village: [],
-      island: [],
       coffers: coffers,
       villagers: 0,
       debt_tokens: 0,
       tokens: {pile: []},
       turns: (this.game.turn.player._id === player._id) ? 1 : 0
     }
+
+    _.each(AllPlayerCardsQuery.card_sources(), (source) => {
+      player_card_data[source] = []
+    })
+
+    player_card_data.deck = deck
+    player_card_data.hand = hand
 
     if (this.assign_colors) {
       player_card_data.color = this.colors[index]
