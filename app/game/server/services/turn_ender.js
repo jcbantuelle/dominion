@@ -69,25 +69,6 @@ TurnEnder = class TurnEnder {
   }
 
   clean_up_cards_in_play() {
-    if (!_.isEmpty(this.player_cards.encampments)) {
-      _.each(this.player_cards.encampments, (encampment) => {
-        let stack_name = encampment.misfit ? encampment.misfit.stack_name : encampment.stack_name
-        let encampment_stack = _.find(this.game.cards, function(card) {
-          return card.stack_name === stack_name
-        })
-        if (encampment_stack) {
-          delete encampment.prince
-          if (encampment.misfit) {
-            encampment = encampment.misfit
-          }
-          encampment_stack.count += 1
-          encampment_stack.stack.unshift(encampment)
-          encampment_stack.top_card = _.head(encampment_stack.stack)
-          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> returns ${CardView.render(encampment)} to the supply`)
-        }
-      })
-      this.player_cards.encampments = []
-    }
     let cards_to_discard = _.filter(this.player_cards.in_play, (card) => {
       return !ClassCreator.create(card.name).stay_in_play(this.game, this.player_cards, card)
     })
