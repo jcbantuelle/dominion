@@ -5,6 +5,11 @@ Expedition = class Expedition extends Event {
   }
 
   buy(game, player_cards) {
-    game.turn.expeditions += 1
+    player_cards.event_effects.push(this.to_h())
+  }
+
+  end_turn_event(game, player_cards, expedition) {
+    let card_drawer = new CardDrawer(game, player_cards, expedition)
+    card_drawer.draw(2)
   }
 }
