@@ -48,6 +48,7 @@ Messenger = class Messenger extends Card {
     })
 
     if (_.size(eligible_cards) > 1) {
+      GameModel.update(buyer.game._id, buyer.game)
       let turn_event_id = TurnEventModel.insert({
         game_id: buyer.game._id,
         player_id: buyer.player_cards.player_id,
