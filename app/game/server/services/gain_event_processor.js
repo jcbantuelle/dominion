@@ -140,7 +140,7 @@ GainEventProcessor = class GainEventProcessor {
       this.gain_events.push(trade_route)
     }
 
-    if (this.gainer.player_cards._id === this.player_cards._id && this.gainer.game.turn.travelling_fair && this.gainer.destination !== 'deck') {
+    if (this.gainer.player_cards._id === this.player_cards._id && this.gainer.game.turn.player._id === this.player_cards.player_id && this.gainer.game.turn.travelling_fair && this.gainer.destination !== 'deck') {
       let travelling_fair = ClassCreator.create('Travelling Fair').to_h()
       travelling_fair.id = this.generate_event_id()
       this.gain_events.push(travelling_fair)
