@@ -24,6 +24,7 @@ Artifact = class Artifact {
     return {
       name: this.name(),
       image: this.image(),
+      wide: true,
       types: 'artifact'
     }
   }

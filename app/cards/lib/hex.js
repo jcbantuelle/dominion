@@ -17,6 +17,7 @@ Hex = class Hex {
       name: this.name(),
       image: this.image(),
       types: 'hex'
+      wide: true
     }
   }
 }

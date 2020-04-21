@@ -90,7 +90,6 @@ BorderGuard = class BorderGuard extends Card {
           username: player_cards.username,
           type: 'choose_cards',
           player_cards: true,
-          boon: true,
           instructions: 'Choose which Artifact to take:',
           cards: artifacts,
           minimum: 1,

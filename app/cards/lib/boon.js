@@ -16,6 +16,7 @@ Boon = class Boon {
     return {
       name: this.name(),
       image: this.image(),
+      wide: true,
       types: 'boon'
     }
   }
