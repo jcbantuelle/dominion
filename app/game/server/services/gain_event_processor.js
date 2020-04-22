@@ -39,6 +39,13 @@ GainEventProcessor = class GainEventProcessor {
         if (this.gainer.game.duchess) {
           this.gain_events.push(this.gainer.gained_card)
         }
+      } else if (this.gainer.gained_card.name === 'Emporium') {
+        let action_count = _.size(_.filter(this.gainer.player_cards.in_play, function(card) {
+          return _.includes(_.words(card.types), 'action')
+        }))
+        if (action_count >= 5) {
+          this.gain_events.push(this.gainer.gained_card)
+        }
       } else {
         this.gain_events.push(this.gainer.gained_card)
       }
