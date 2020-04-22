@@ -12,13 +12,14 @@ Encampment = class Encampment extends Card {
     return 'Encampment/Plunder'
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
 
+    GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
 
     let gold_and_plunder = _.filter(player_cards.hand, function(card) {
@@ -37,29 +38,32 @@ Encampment = class Encampment extends Card {
         minimum: 0,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player.card)
       turn_event_processor.process(Encampment.reveal)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not reveal a Gold or Plunder`)
-      Encampment.set_aside(game, player_cards)
+      Encampment.set_aside(game, player_cards, card_player.card)
     }
   }
 
-  static reveal(game, player_cards, selected_cards) {
+  start_cleanup_event(game, player_cards, encampment) {
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.return_to_supply(player_cards.aside, encampment.stack_name, [encampment])
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(encampment)} to the Supply`)
+  }
+
+  static reveal(game, player_cards, selected_cards, encampment) {
     if (_.size(selected_cards) > 0) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(selected_cards)}`)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal('hand', selected_cards)
     } else {
-      Encampment.set_aside(game, player_cards)
+      Encampment.set_aside(game, player_cards, encampment)
     }
   }
 
-  static set_aside(game, player_cards) {
-    let encampment_index = _.findIndex(player_cards.playing, function(card) {
-      return card.inherited_name === 'Encampment'
-    })
-    if (encampment_index !== -1) {
-      let encampment = player_cards.playing.splice(encampment_index, 1)[0]
-      player_cards.encampments.push(encampment)
+  static set_aside(game, player_cards, encampment) {
+    game.log.push(`&nbsp;&nbsp;but does not reveal a Gold or Plunder`)
+    let card_mover = new CardMover(game, player_cards)
+    if (card_mover.move(player_cards.in_play, player_cards.aside, encampment)) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(encampment)}`)
     }
   }
