@@ -46,6 +46,10 @@ GainEventProcessor = class GainEventProcessor {
         if (action_count >= 5) {
           this.gain_events.push(this.gainer.gained_card)
         }
+      } else if (this.gainer.gained_card.name === 'Haunted Castle') {
+        if (this.gainer.game.turn.player._id === this.gainer.player_cards.player_id) {
+          this.gain_events.push(this.gainer.gained_card)
+        }
       } else {
         this.gain_events.push(this.gainer.gained_card)
       }
