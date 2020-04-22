@@ -1,4 +1,4 @@
-Enchantress = class Enchantress extends Card {
+Enchantress = class Enchantress extends Duration {
 
   types() {
     return ['action', 'duration', 'attack']
