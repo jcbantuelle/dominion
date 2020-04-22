@@ -112,16 +112,11 @@ CardBuyer = class CardBuyer {
   }
 
   update_log() {
-    let log_message = `<strong>${this.player_cards.username}</strong> buys ${CardView.render(this.card)}`
-    if (this.game.turn.possessed) {
-      log_message += ` but <strong>${this.game.turn.possessed.username}</strong> gains it`
+    let player_username = this.player_cards.username
+    if (this.possessed_player_cards) {
+      player_username = this.possessed_player_cards.username
     }
-    if (this.card_gainer.destination === 'hand') {
-      log_message += ', placing it in hand'
-    } else if (this.card_gainer.destination === 'deck') {
-      log_message += ', placing it on top of their deck'
-    }
-    this.game.log.push(log_message)
+    this.game.log.push(`<strong>${player_username}</strong> buys ${CardView.render(this.card)}`)
   }
 
 }

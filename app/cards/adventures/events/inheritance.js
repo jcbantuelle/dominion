@@ -32,7 +32,7 @@ Inheritance = class Inheritance extends Event {
 
   static set_aside(game, player_cards, selected_cards) {
     let card_mover = new CardMover(game, player_cards)
-    card_mover.take_from_supply(player_cards.inheritance, selected_cards[0].stack_name)
+    card_mover.take_from_supply(player_cards.inheritance, selected_cards[0].top_card)
 
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(player_cards.inheritance)} and sets their estate token on it`)
     Inheritance.convert_estates(game, player_cards, true)

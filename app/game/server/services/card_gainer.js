@@ -4,8 +4,7 @@ CardGainer = class CardGainer {
     this.game = game
     this.player_cards = player_cards
     this.card_name = card_name
-    let card_destination = ClassCreator.create(card_name).destination()
-    this.destination = card_destination ? card_destination : destination
+    this.destination = destination
     this.buy = buy
   }
 
@@ -14,6 +13,7 @@ CardGainer = class CardGainer {
     this.would_gain_reactions()
     this.find_card_to_gain()
     if (this.gained_card) {
+      this.set_destination()
       if (this.game.turn.possessed) {
         this.set_possession_gain()
       }
@@ -35,7 +35,7 @@ CardGainer = class CardGainer {
   find_card_to_gain() {
     if (this.source === 'supply') {
       this.supply_pile = _.find(this.game.cards, (card) => {
-        return card.name === this.card_name
+        return card.name === this.card_name || card.top_card.name === this.card_name
       })
       if (this.supply_pile && this.supply_pile.count > 0) {
         this.gained_card = this.supply_pile.top_card
@@ -44,6 +44,13 @@ CardGainer = class CardGainer {
       this.gained_card = _.find(this.source, (card) => {
         return card.name === this.card_name
       })
+    }
+  }
+
+  set_destination() {
+    let card_destination = ClassCreator.create(this.gained_card.name).destination()
+    if (card_destination) {
+      this.destination = card_destination
     }
   }
 
@@ -56,7 +63,7 @@ CardGainer = class CardGainer {
   move_card() {
     let card_mover = new CardMover(this.game, this.player_cards)
     if (this.source === 'supply') {
-      this.moved_card = card_mover.take_from_supply(this.player_cards[this.destination], this.gained_card.stack_name)
+      this.moved_card = card_mover.take_from_supply(this.player_cards[this.destination], this.gained_card)
     } else {
       this.moved_card = card_mover.move(this.source, this.player_cards[this.destination], this.gained_card)
     }
@@ -97,18 +104,22 @@ CardGainer = class CardGainer {
 
   update_log() {
     if (!this.buy) {
-      let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(this.gained_card)}`
-      if (this.game.turn.possessed && this.possessed_player_cards.username !== this.player_cards.username) {
-        log_message += ` instead of ${this.possessed_player_cards.username}`
+      let player_username = this.player_cards.username
+      if (this.possessed_player_cards) {
+        player_username = this.possessed_player_cards.username
       }
+      this.game.log.push(`&nbsp;&nbsp;<strong>${player_username}</strong> gains ${CardView.render(this.gained_card)}`)
+    }
+    if (this.game.turn.possessed) {
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(this.gained_card)} instead`)
+    } else {
       if (this.destination === 'hand') {
-        log_message += ', placing it in hand'
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places ${CardView.render(this.gained_card)} in thier hand`)
       } else if (this.destination === 'deck') {
-        log_message += ', placing it on top of their deck'
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places ${CardView.render(this.gained_card)} on thier deck`)
       } else if (this.destination === 'aside') {
-        log_message += ', setting it aside'
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> sets aside ${CardView.render(this.gained_card)}`)
       }
-      this.game.log.push(log_message)
     }
   }
 

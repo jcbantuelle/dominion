@@ -44,7 +44,6 @@ Trader = class Trader extends Card {
     let card_revealer = new CardRevealer(game, player_cards)
     card_revealer.reveal('hand', trader)
 
-    gainer.destination = 'discard'
     gainer.card_name = 'Silver'
   }
 
