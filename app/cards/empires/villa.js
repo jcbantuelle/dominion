@@ -9,10 +9,14 @@ Villa = class Villa extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 2
-    game.turn.buys += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions, +1 buy, and +$${gained_coins}`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
+
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
+
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
   }
 
   destination() {
@@ -20,9 +24,10 @@ Villa = class Villa extends Card {
   }
 
   gain_event(gainer) {
-    gainer.game.turn.actions += 1
-    gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> gets +1 action`)
-    if (gainer.game.turn.phase === 'buy') {
+    let action_gainer = new ActionGainer(gainer.game, gainer.player_cards)
+    action_gainer.gain(1)
+
+    if (_.includes(['treasure', 'buy'], gainer.game.turn.phase)) {
       gainer.game.turn.phase = 'action'
       gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> returns to their action phase`)
     }
