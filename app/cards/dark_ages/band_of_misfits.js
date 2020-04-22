@@ -32,7 +32,7 @@ BandOfMisfits = class BandOfMisfits extends Card {
     } else if (_.size(eligible_cards) === 1) {
       BandOfMisfits.play_card(game, player_cards, eligible_cards, card_player.card)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no available cards to copy`)
+      game.log.push(`&nbsp;&nbsp;but there are no available cards to play`)
     }
   }
 
