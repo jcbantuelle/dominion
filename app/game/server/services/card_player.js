@@ -211,10 +211,9 @@ CardPlayer = class CardPlayer {
   action_resolution_events() {
     if (_.includes(_.words(this.card.types), 'action')) {
       if (this.player_cards.champions > 0) {
-        let action_gainer = new ActionGainer(this.game, this.player_cards)
-        let action_count = action_gainer.gain(this.player_cards.champions, false)
-        let action_text = action_count === 1 ? 'action' : 'actions'
-        this.game.log.push(`<strong>${this.player_cards.username}</strong> gets +${action_count} ${action_text} from ${CardView.render(new Champion())}`)
+        let champion = new Champion()
+        let action_gainer = new ActionGainer(this.game, this.player_cards, champion.to_h())
+        action_gainer.gain(this.player_cards.champions)
       }
       let action_resolution_event_processor = new ActionResolutionEventProcessor(this.game, this.player_cards, this.card)
       action_resolution_event_processor.process()
