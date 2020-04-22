@@ -42,8 +42,8 @@ OpulentCastle = class OpulentCastle extends Castles {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
-      let gained_coins = CoinGainer.gain(game, player_cards, _.size(selected_cards)*2)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(_.size(selected_cards)*2)
     }
   }
 
