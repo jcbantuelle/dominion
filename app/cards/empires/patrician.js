@@ -16,26 +16,22 @@ Patrician = class Patrician extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
-      if (_.isEmpty(player_cards.deck)) {
-        let deck_shuffler = new DeckShuffler(game, player_cards)
-        deck_shuffler.shuffle()
-      }
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck(1)
 
-      let top_card = player_cards.deck[0]
-      let log_message = `&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(top_card)}`
-
-      if (CardCostComparer.coin_greater_than(game, top_card, 4)) {
-        player_cards.hand.push(player_cards.deck.shift())
-        log_message += ', putting it in their hand'
+      if (CardCostComparer.coin_greater_than(game, player_cards.revealed[0], 4)) {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} in hand`)
+        let card_mover = new CardMover(game, player_cards)
+        card_mover.move_all(player_cards.revealed, player_cards.hand)
       } else {
-        log_message += ', putting it back on top of their deck'
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} back on deck`)
+        let card_mover = new CardMover(game, player_cards)
+        card_mover.move_all(player_cards.revealed, player_cards.deck)
       }
-
-      game.log.push(log_message)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in deck to reveal`)
     }
