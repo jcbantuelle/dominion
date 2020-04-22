@@ -10,11 +10,6 @@ CardDiscarder = class CardDiscarder {
       cards = [cards]
     }
     this.cards = _.clone(cards)
-    if (game.turn.phase === 'cleanup') {
-      this.actions_in_play = _.filter(player_cards.in_play, (card) => {
-        return _.includes(_.words(card.types), 'action')
-      })
-    }
   }
 
   discard(announce = true) {

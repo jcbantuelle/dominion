@@ -16,17 +16,17 @@ WalledVillage = class WalledVillage extends Card {
     action_gainer.gain(2)
   }
 
-  discard_event(discarder, walled_village) {
+  start_cleanup_event(game, player_cards, walled_village) {
     let turn_event_id = TurnEventModel.insert({
-      game_id: discarder.game._id,
-      player_id: discarder.player_cards.player_id,
-      username: discarder.player_cards.username,
+      game_id: game._id,
+      player_id: player_cards.player_id,
+      username: player_cards.username,
       type: 'choose_yes_no',
       instructions: `Put ${CardView.render(walled_village)} On Top of Deck?`,
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id, walled_village)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, walled_village)
     turn_event_processor.process(WalledVillage.put_on_deck)
   }
 

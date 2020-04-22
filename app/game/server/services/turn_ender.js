@@ -11,6 +11,7 @@ TurnEnder = class TurnEnder {
     }
     this.end_buy_events()
     this.game.turn.phase = 'cleanup'
+    this.start_cleanup_events()
     this.discard_hand()
     this.clean_up_cards_in_play()
     this.draw_new_hand()
@@ -61,6 +62,11 @@ TurnEnder = class TurnEnder {
   end_buy_events() {
     let end_buy_event_processor = new EndBuyEventProcessor(this.game, this.player_cards)
     end_buy_event_processor.process()
+  }
+
+  start_cleanup_events() {
+    let start_cleanup_event_processor = new StartCleanupEventProcessor(this.game, this.player_cards)
+    start_cleanup_event_processor.process()
   }
 
   end_turn_events() {

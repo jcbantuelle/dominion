@@ -1,7 +1,7 @@
 DiscardEventProcessor = class DiscardEventProcessor {
 
   static event_cards() {
-    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital', 'Faithful Hound', 'Border Guard', 'Walled Village']
+    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital', 'Faithful Hound', 'Border Guard']
   }
 
   static traveller_cards() {
@@ -63,8 +63,6 @@ DiscardEventProcessor = class DiscardEventProcessor {
           if (has_horn) {
             this.discard_events.push(this.card)
           }
-        } else if (this.card.name === 'Walled Village' && this.discarder.game.turn.phase === 'cleanup' && _.size(this.discarder.actions_in_play) < 3) {
-          this.discard_events.push(this.card)
         }
       }
     }
