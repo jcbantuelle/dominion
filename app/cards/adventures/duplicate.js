@@ -13,6 +13,7 @@ Duplicate = class Duplicate extends Reserve {
   }
 
   gain_event(gainer, duplicate) {
+    GameModel.update(gainer.game._id, gainer.game)
     let turn_event_id = TurnEventModel.insert({
       game_id: gainer.game._id,
       player_id: gainer.player_cards.player_id,
@@ -29,7 +30,6 @@ Duplicate = class Duplicate extends Reserve {
   static gain_copy(game, player_cards, response, params) {
     if (response === 'yes') {
       Reserve.call_from_tavern(game, player_cards, params.duplicate)
-
       let card_gainer = new CardGainer(game, player_cards, 'discard', params.gainer.gained_card.name)
       card_gainer.gain()
     }
