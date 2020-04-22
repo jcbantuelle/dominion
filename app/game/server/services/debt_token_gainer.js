@@ -1,8 +1,9 @@
 DebtTokenGainer = class DebtTokenGainer {
 
-  constructor(game, player_cards) {
+  constructor(game, player_cards, source) {
     this.game = game
     this.player_cards = player_cards
+    this.source = source
   }
 
   gain(amount) {
@@ -12,7 +13,8 @@ DebtTokenGainer = class DebtTokenGainer {
 
     this.player_cards.debt_tokens += amount
     let token_text = amount === 1 ? 'token' : 'tokens'
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${amount} debt ${token_text}`)
+    let source_text = this.source ? ` from ${CardView.render(this.source)}` : ''
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${amount} debt ${token_text}${source_text}`)
 
     PlayerCardsModel.update(this.game._id, this.player_cards)
   }
