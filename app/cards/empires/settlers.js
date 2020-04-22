@@ -16,37 +16,40 @@ Settlers = class Settlers extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    let copper_index = _.findIndex(player_cards.discard, function(card) {
-      return card.inherited_name === 'Copper'
+    let copper = _.find(player_cards.discard, function(card) {
+      return card.name === 'Copper'
     })
-    if (copper_index != -1) {
+    if (copper) {
       PlayerCardsModel.update(game._id, player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Reveal ${CardView.render(player_cards.discard[copper_index])}?`,
+        instructions: `Reveal ${CardView.render(copper)}?`,
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, copper_index)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, copper)
       turn_event_processor.process(Settlers.reveal_copper)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not reveal a ${CardView.render(new Copper())}`)
     }
   }
 
-  static reveal_copper(game, player_cards, response, copper_index) {
+  static reveal_copper(game, player_cards, response, copper) {
     if (response === 'yes') {
-      copper = player_cards.discard.splice(copper_index, 1)[0]
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(copper)}`)
-      player_cards.hand.push(copper)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal(copper)
+
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards.discard, player_cards.hand, copper)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(copper)} in hand`)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not reveal a ${CardView.render(player_cards.discard[copper_index])}`)
+      game.log.push(`&nbsp;&nbsp;but does not reveal a ${CardView.render(copper)}`)
     }
   }
 
