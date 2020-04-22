@@ -25,7 +25,7 @@ CardMover = class CardMover {
 
   return_to_supply(source, supply_name, cards) {
     let supply_pile = _.find(this.game.cards, (pile) => {
-      return pile.name === supply_name
+      return pile.stack_name === supply_name
     })
     let return_count = 0
     _.each(cards, (card) => {
