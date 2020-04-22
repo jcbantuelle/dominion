@@ -79,27 +79,8 @@ GameCreator = class GameCreator {
   }
 
   create_turn() {
-    this.game.turn = {
-      player: _.head(this.game.players),
-      actions: 1,
-      buys: 1,
-      coins: 0,
-      potions: 0,
-      phase: 'action',
-      bought_cards: [],
-      gained_cards: [],
-      gain_event_stack: [],
-      contraband: [],
-      forbidden_events: [],
-      schemes: 0,
-      possessions: 0,
-      coin_discount: 0,
-      played_actions: [],
-      coppersmiths: 0,
-      merchants: 0,
-      charms: 0,
-      priests: 0
-    }
+    this.game.turn = GameCreator.new_turn()
+    this.game.turn.player = _.head(this.game.players)
   }
 
   set_up_players() {
@@ -812,6 +793,29 @@ GameCreator = class GameCreator {
     let assigned_card_id = _.toString(this.card_id)
     this.card_id += 1
     return assigned_card_id
+  }
+
+  static new_turn() {
+    return {
+      actions: 1,
+      buys: 1,
+      coins: 0,
+      potions: 0,
+      phase: 'action',
+      contraband: [],
+      bought_cards: [],
+      gained_cards: [],
+      played_actions: [],
+      gain_event_stack: [],
+      forbidden_events: [],
+      charms: 0,
+      priests: 0,
+      schemes: 0,
+      merchants: 0,
+      possessions: 0,
+      coppersmiths: 0,
+      coin_discount: 0
+    }
   }
 
 }

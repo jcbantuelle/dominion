@@ -168,27 +168,8 @@ TurnEnder = class TurnEnder {
   }
 
   set_next_turn() {
-    this.new_turn = {
-      actions: 1,
-      buys: 1,
-      coins: 0,
-      potions: 0,
-      phase: 'action',
-      gained_cards: [],
-      bought_cards: [],
-      gain_event_stack: [],
-      contraband: [],
-      forbidden_events: [],
-      schemes: 0,
-      possessions: 0,
-      coin_discount: 0,
-      played_actions: [],
-      coppersmiths: 0,
-      merchants: 0,
-      charms: 0,
-      priests: 0,
-      previous_player: this.game.turn.player
-    }
+    this.new_turn = GameCreator.new_turn()
+    this.new_turn.previous_player = this.game.turn.player
 
     this.set_up_extra_turns()
 
