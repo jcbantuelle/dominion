@@ -13,8 +13,8 @@ Rocks = class Rocks extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1, false)
   }
 
   gain_event(gainer) {
@@ -26,7 +26,7 @@ Rocks = class Rocks extends Card {
   }
 
   gain_silver(event_handler) {
-    let destination = event_handler.game.turn.phase === 'buy' ? 'deck' : 'hand'
+    let destination = _.includes(['treasure', 'buy'], event_handler.game.turn.phase) ? 'deck' : 'hand'
     let card_gainer = new CardGainer(event_handler.game, event_handler.player_cards, destination, 'Silver')
     card_gainer.gain()
   }
