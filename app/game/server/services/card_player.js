@@ -184,7 +184,7 @@ CardPlayer = class CardPlayer {
     this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> does not follow the card instructions due to ${CardView.render(new Enchantress())}`)
     let card_drawer = new CardDrawer(this.game, this.player_cards)
     card_drawer.draw(1)
-    let action_gainer = new ActionGainer.gain(this.game, this.player_cards)
+    let action_gainer = new ActionGainer(this.game, this.player_cards)
     action_gainer.gain(1)
   }
 
