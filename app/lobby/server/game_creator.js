@@ -363,7 +363,7 @@ GameCreator = class GameCreator {
     let victory_tokens = this.game_card_victory_tokens(card_stack, source)
 
     return {
-      name: card.name,
+      name: (this.is_split_stack(card.stack_name) ? card.stack_name : card.name),
       count: _.size(card_stack),
       embargos: 0,
       top_card: _.head(card_stack),
@@ -397,7 +397,7 @@ GameCreator = class GameCreator {
       stack = this.knights_stack(card)
     } else if (card.name === 'Castles') {
       stack = this.castles_stack(card)
-    } else if (_.includes(['Encampment', 'Patrician', 'Settlers', 'Catapult', 'Gladiator', 'Sauna'], card.name)) {
+    } else if (this.is_split_stack(card.stack_name)) {
       stack = this.split_stack(card)
     } else {
       stack = _.times(this.stack_size(card), function(counter) {
@@ -505,26 +505,9 @@ GameCreator = class GameCreator {
   }
 
   split_stack(card) {
-    let top_card, bottom_card
-    if (card.name === 'Encampment') {
-      top_card = 'Encampment'
-      bottom_card = 'Plunder'
-    } else if (card.name === 'Patrician') {
-      top_card = 'Patrician'
-      bottom_card = 'Emporium'
-    } else if (card.name === 'Settlers') {
-      top_card = 'Settlers'
-      bottom_card = 'Bustling Village'
-    } else if (card.name === 'Catapult') {
-      top_card = 'Catapult'
-      bottom_card = 'Rocks'
-    } else if (card.name === 'Gladiator') {
-      top_card = 'Gladiator'
-      bottom_card = 'Fortune'
-    } else if (card.name === 'Sauna') {
-      top_card = 'Sauna'
-      bottom_card = 'Avanto'
-    }
+    stack_names = _.split(card.stack_name, '/')
+    let top_card = stack_names[0]
+    let bottom_card = stack_names[1]
 
     top_card = ClassCreator.create(top_card).to_h()
     top_card.bane = card.bane
@@ -799,6 +782,10 @@ GameCreator = class GameCreator {
 
   random_number(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+
+  is_split_stack(stack_name) {
+    return _.includes(stack_name, '/')
   }
 
   set_card_ids_for_collection(cards) {
