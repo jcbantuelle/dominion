@@ -17,18 +17,18 @@ Fortune = class Fortune extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
 
     if (!game.turn.fortune) {
       game.turn.fortune = true
-      let gained_coins = CoinGainer.gain(game, player_cards, game.turn.coins)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(game.turn.coins)
     }
   }
 
   gain_event(gainer) {
-    let gladiators = _.filter(gainer.player_cards.playing.concat(gainer.player_cards.in_play).concat(gainer.player_cards.duration).concat(gainer.player_cards.permanent), function(card) {
+    let gladiators = _.filter(gainer.player_cards.in_play, function(card) {
       return card.name === 'Gladiator'
     })
     _.times(_.size(gladiators), function() {
