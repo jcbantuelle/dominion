@@ -156,6 +156,15 @@ CardPlayer = class CardPlayer {
   play_card_events() {
     let play_card_event_processor = new PlayCardEventProcessor(this)
     play_card_event_processor.process()
+
+    if (_.includes(_.words(this.card.types), 'attack')) {
+      let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
+      ordered_player_cards.shift()
+      _.each(ordered_player_cards, (attacked_player_cards) => {
+        let attack_event_processor = new AttackEventProcessor(this.game, attacked_player_cards)
+        attack_event_processor.process()
+      })
+    }
   }
 
   play_card(announce) {
