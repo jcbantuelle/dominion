@@ -1,5 +1,9 @@
 Card = class Card {
 
+  constructor(game) {
+    this.game = game
+  }
+
   potion_cost() {
     return 0
   }

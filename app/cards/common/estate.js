@@ -1,7 +1,14 @@
 Estate = class Estate extends Card {
 
   types() {
-    return ['victory']
+    let card_types = ['victory']
+    if (this.game) {
+      let player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.player._id)
+      if (!_.isEmpty(player_cards.inheritance)) {
+        card_types.push('action')
+      }
+    }
+    return card_types
   }
 
   coin_cost() {

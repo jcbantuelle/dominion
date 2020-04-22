@@ -25,7 +25,7 @@ HuntingGrounds = class HuntingGrounds extends Card {
       maximum: 1,
       options: [
         {text: `Gain a ${CardView.render(new Duchy())}`, value: 'duchy'},
-        {text: `Gain 3 ${CardView.render(new Estate())}`, value: 'estate'}
+        {text: `Gain 3 ${CardView.render(new Estate(trasher.game))}`, value: 'estate'}
       ]
     })
     let turn_event_processor = new TurnEventProcessor(trasher.game, trasher.player_cards, turn_event_id)
