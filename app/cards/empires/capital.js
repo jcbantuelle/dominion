@@ -9,15 +9,20 @@ Capital = class Capital extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 6)
-    game.turn.buys += 1
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(6)
+
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
   }
 
   discard_event(discarder, capital) {
-    discarder.player_cards.debt_tokens += 6
-    discarder.game.log.push(`&nbsp;&nbsp;<strong>${discarder.player_cards.username}</strong> takes 6 debt tokens from ${CardView.render(capital)}`)
+    let debt_token_gainer = new DebtTokenGainer(discarder.game, discarder.player_cards, capital)
+    debt_token_gainer.gain(6)
+
     let max_payable_debt = Math.min(discarder.game.turn.coins, discarder.player_cards.debt_tokens)
     if (max_payable_debt > 0) {
+      GameModel.update(discarder.game._id, discarder.game)
       PlayerCardsModel.update(discarder.game._id, discarder.player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: discarder.game._id,
