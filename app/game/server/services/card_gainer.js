@@ -114,9 +114,9 @@ CardGainer = class CardGainer {
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gains ${CardView.render(this.gained_card)} instead`)
     } else {
       if (this.destination === 'hand') {
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places ${CardView.render(this.gained_card)} in thier hand`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places ${CardView.render(this.gained_card)} in their hand`)
       } else if (this.destination === 'deck') {
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places ${CardView.render(this.gained_card)} on thier deck`)
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places ${CardView.render(this.gained_card)} on their deck`)
       } else if (this.destination === 'aside') {
         this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> sets aside ${CardView.render(this.gained_card)}`)
       }

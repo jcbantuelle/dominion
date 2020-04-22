@@ -43,7 +43,7 @@ Annex = class Annex extends Event {
     player_cards.discard = new_discard
     let discard_size = _.size(player_cards.discard)
     let shuffle_text = discard_size > 0 ? `all but ${discard_size} cards` : 'their discard'
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> shuffles ${shuffle_text} into thier deck`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> shuffles ${shuffle_text} into their deck`)
   }
 }
 

@@ -73,7 +73,7 @@ Inn = class Inn extends Card {
     if (_.size(selected_cards) > 0) {
       let deck_shuffler = new DeckShuffler(game, player_cards)
       deck_shuffler.shuffle('discard', selected_cards)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> shuffles ${CardView.render(selected_cards)} into thier deck`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> shuffles ${CardView.render(selected_cards)} into their deck`)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not shuffle any actions into their deck`)
     }
