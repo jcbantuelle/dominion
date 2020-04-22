@@ -96,6 +96,12 @@ BuyEventProcessor = class BuyEventProcessor {
       this.buy_events.push(embargo)
     }
 
+    _.times(this.buyer.game.turn.charms, () => {
+      let charm = ClassCreator.create('Charm').to_h()
+      charm.id = this.generate_event_id()
+      this.buy_events.push(charm)
+    })
+
     let trashing_token = _.find(this.buyer.player_cards.tokens.pile, (token) => {
       return token.effect === 'trashing'
     })
@@ -113,7 +119,7 @@ BuyEventProcessor = class BuyEventProcessor {
   process() {
     if (!_.isEmpty(this.buy_events)) {
       let mandatory_buy_events = _.filter(this.buy_events, (event) => {
-        return _.includes(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()).concat(BuyEventProcessor.landmark_cards()).concat(['Embargo']), event.name)
+        return _.includes(BuyEventProcessor.event_cards().concat(BuyEventProcessor.in_play_event_cards()).concat(BuyEventProcessor.overpay_cards()).concat(BuyEventProcessor.duration_attack_cards()).concat(BuyEventProcessor.landmark_cards()).concat(['Embargo', 'Charm']), event.name)
       })
       if (_.size(this.buy_events) === 1 && !_.isEmpty(mandatory_buy_events)) {
         BuyEventProcessor.buy_event(this.buyer.game, this.buyer.player_cards, this.buy_events, this)
