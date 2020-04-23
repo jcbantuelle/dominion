@@ -1,4 +1,4 @@
-Guardian = class Guardian extends Card {
+Guardian = class Guardian extends Duration {
 
   types() {
     return ['night', 'duration']
@@ -8,14 +8,14 @@ Guardian = class Guardian extends Card {
     return 2
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
+  play(game, player_cards, card_player) {
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} from ${CardView.render(duration_card)}`)
+  duration(game, player_cards, guardian) {
+    let coin_gainer = new CoinGainer(game, player_cards, guardian)
+    coin_gainer.gain(1)
   }
 
   destination() {
