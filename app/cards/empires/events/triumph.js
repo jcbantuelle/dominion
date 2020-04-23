@@ -10,19 +10,10 @@ Triumph = class Triumph extends Event {
 
   buy(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Estate')
-    let gained = card_gainer.gain()
-
-    if (gained) {
+    if (card_gainer.gain()) {
       let victory_tokens = _.size(game.turn.gained_cards)
-      if (game.turn.possessed) {
-        possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-        possessing_player_cards.victory_tokens += victory_tokens
-        game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
-        PlayerCardsModel.update(game._id, possessing_player_cards)
-      } else {
-        player_cards.victory_tokens += victory_tokens
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
-      }
+      let victory_token_gainer = new VictoryTokenGainer(game, player_cards)
+      victory_token_gainer.gain(victory_tokens)
     } else {
       game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(new Estate(game))} to gain`)
     }
