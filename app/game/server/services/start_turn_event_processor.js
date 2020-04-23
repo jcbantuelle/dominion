@@ -40,7 +40,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
       this.start_turn_events.push(effect)
     })
 
-    _.each(this.player_cards.event_effects, (event_effect) => {
+    _.each(this.player_cards.start_turn_event_effects, (event_effect) => {
       event_effect.event_type = 'Event'
       event_effect.id = this.generate_event_id()
       this.start_turn_events.push(event_effect)
@@ -96,10 +96,10 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
         player_cards.duration_effects.splice(duration_effect_index, 1)
         event_object.duration(game, player_cards, event)
       } else if (event.event_type === 'Event') {
-        let event_effect_index = _.findIndex(player_cards.event_effects, function(event_effect) {
+        let event_effect_index = _.findIndex(player_cards.start_turn_event_effects, function(event_effect) {
           return event_effect.id === event.id
         })
-        player_cards.event_effects.splice(event_effect_index, 1)
+        player_cards.start_turn_event_effects.splice(event_effect_index, 1)
         event_object.start_turn_event(game, player_cards, event)
       } else if (event.event_type === 'Reserve') {
         event_object.reserve(game, player_cards, event)

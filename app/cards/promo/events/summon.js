@@ -43,6 +43,6 @@ Summon = class Summon extends Event {
   static gain_card(game, player_cards, selected_cards, summon) {
     let card_gainer = new CardGainer(game, player_cards, 'aside', selected_cards[0].name)
     summon.target = card_gainer.gain()
-    player_cards.event_effects.push(summon)
+    player_cards.start_turn_event_effects.push(summon)
   }
 }

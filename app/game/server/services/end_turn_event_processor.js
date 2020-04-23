@@ -24,7 +24,7 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
       }
     })
 
-    _.each(this.player_cards.event_effects, (event_effect) => {
+    _.each(this.player_cards.end_turn_event_effects, (event_effect) => {
       event_effect.event_type = 'Event'
       event_effect.id = this.generate_event_id()
       this.end_turn_events.push(event_effect)
@@ -60,10 +60,10 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
     _.each(ordered_events, function(event) {
       let event_object = ClassCreator.create(event.name)
       if (event.event_type === 'Event') {
-        let event_effect_index = _.findIndex(player_cards.event_effects, function(event_effect) {
+        let event_effect_index = _.findIndex(player_cards.end_turn_event_effects, function(event_effect) {
           return event_effect.id === event.id
         })
-        player_cards.event_effects.splice(event_effect_index, 1)
+        player_cards.end_turn_event_effects.splice(event_effect_index, 1)
       }
       event_object.end_turn_event(game, player_cards, event)
 

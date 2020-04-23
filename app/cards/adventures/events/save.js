@@ -42,6 +42,6 @@ Save = class Save extends Event {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside a card`)
 
     save.target = selected_cards[0]
-    player_cards.event_effects.push(save)
+    player_cards.end_turn_event_effects.push(save)
   }
 }

@@ -5,7 +5,7 @@ Expedition = class Expedition extends Event {
   }
 
   buy(game, player_cards) {
-    player_cards.event_effects.push(this.to_h())
+    player_cards.end_turn_event_effects.push(this.to_h())
   }
 
   end_turn_event(game, player_cards, expedition) {
