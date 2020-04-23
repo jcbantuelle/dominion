@@ -32,7 +32,6 @@ TurnEnder = class TurnEnder {
       }
       this.flip_trash_cards_face_up()
       this.between_turn_events()
-      this.mountain_pass()
       this.set_next_turn()
       this.clear_duration_attacks()
       GameModel.update(this.game._id, this.game)
@@ -120,15 +119,6 @@ TurnEnder = class TurnEnder {
 
   track_gained_cards() {
     this.player_cards.last_turn_gained_cards = this.game.turn.gained_cards
-  }
-
-  mountain_pass() {
-    if (this.game.mountain_pass) {
-      PlayerCardsModel.update(this.game._id, this.player_cards)
-      let mountain_pass = new MountainPass()
-      mountain_pass.start_bid(this.game)
-      this.player_cards = PlayerCardsModel.findOne(this.game._id, this.player_cards.player_id)
-    }
   }
 
   set_next_turn() {

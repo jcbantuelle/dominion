@@ -15,6 +15,13 @@ BetweenTurnEventProcessor = class BetweenTurnEventProcessor {
       donate.id = this.generate_event_id()
       this.between_turn_events.push(donate)
     }
+
+    if (this.game.mountain_pass) {
+      let mountain_pass = ClassCreator.create('Mountain Pass').to_h()
+      mountain_pass.id = this.generate_event_id()
+      mountain_pass.purchasing_player = this.game.mountain_pass
+      this.between_turn_events.push(mountain_pass)
+    }
   }
 
   process() {
