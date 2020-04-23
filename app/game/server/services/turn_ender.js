@@ -31,7 +31,7 @@ TurnEnder = class TurnEnder {
         GameModel.update(this.game._id, this.game)
       }
       this.flip_trash_cards_face_up()
-      this.donate()
+      this.between_turn_events()
       this.mountain_pass()
       this.set_next_turn()
       this.clear_duration_attacks()
@@ -72,6 +72,11 @@ TurnEnder = class TurnEnder {
   end_turn_events() {
     let end_turn_event_processor = new EndTurnEventProcessor(this.game, this.player_cards)
     end_turn_event_processor.process()
+  }
+
+  between_turn_events() {
+    let between_turn_event_processor = new BetweenTurnEventProcessor(this.game, this.player_cards)
+    between_turn_event_processor.process()
   }
 
   flip_trash_cards_face_up() {
@@ -117,33 +122,6 @@ TurnEnder = class TurnEnder {
     this.player_cards.last_turn_gained_cards = this.game.turn.gained_cards
   }
 
-  donate() {
-    if (this.game.turn.donate) {
-      this.player_cards.hand = this.player_cards.hand.concat(this.player_cards.discard).concat(this.player_cards.deck)
-      this.player_cards.discard = []
-      this.player_cards.deck = []
-      if (_.size(this.player_cards.hand) > 0) {
-        let turn_event_id = TurnEventModel.insert({
-          game_id: this.game._id,
-          player_id: this.player_cards.player_id,
-          username: this.player_cards.username,
-          type: 'choose_cards',
-          player_cards: true,
-          instructions: 'Choose any number of cards to trash:',
-          cards: this.player_cards.hand,
-          minimum: 0,
-          maximum: 0
-        })
-        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
-        turn_event_processor.process(TurnEnder.trash_cards)
-      } else {
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> has no cards to trash from ${CardView.render(new Donate())}`)
-      }
-      GameModel.update(this.game._id, this.game)
-      PlayerCardsModel.update(this.game._id, this.player_cards)
-    }
-  }
-
   mountain_pass() {
     if (this.game.mountain_pass) {
       PlayerCardsModel.update(this.game._id, this.player_cards)
@@ -151,20 +129,6 @@ TurnEnder = class TurnEnder {
       mountain_pass.start_bid(this.game)
       this.player_cards = PlayerCardsModel.findOne(this.game._id, this.player_cards.player_id)
     }
-  }
-
-  static trash_cards(game, player_cards, selected_cards) {
-    if (_.size(selected_cards) === 0) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to trash anything from ${CardView.render(new Donate())}`)
-    } else {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
-      card_trasher.trash()
-    }
-    player_cards.deck = _.shuffle(player_cards.hand)
-    player_cards.hand = []
-    let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(5, false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> shuffles their hand into their deck and draws a new hand`)
   }
 
   set_next_turn() {
