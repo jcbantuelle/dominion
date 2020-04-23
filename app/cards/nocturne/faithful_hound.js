@@ -23,28 +23,22 @@ FaithfulHound = class FaithfulHound extends Card {
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id, faithful_hound)
+    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id, {source: discarder.source, faithful_hound: _.clone(faithful_hound)})
     turn_event_processor.process(FaithfulHound.set_aside)
   }
 
-  static set_aside(game, player_cards, response, faithful_hound) {
+  static set_aside(game, player_cards, response, params) {
     if (response === 'yes') {
-      let faithful_hound_index = _.findIndex(player_cards.discarding, (card) => {
-        card.id == faithful_hound.id
-      })
-      faithful_hound = player_cards.discarding.splice(faithful_hound_index, 1)[0]
-      game.log.push(`<strong>${player_cards.username}</strong> sets aside ${CardView.render(faithful_hound)}`)
-      delete faithful_hound.scheme
-      delete faithful_hound.prince
-      if (faithful_hound.misfit) {
-        faithful_hound = faithful_hound.misfit
-      }
-      player_cards.faithful_hounds.push(faithful_hound)
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards[params.source], player_cards.aside, params.faithful_hound)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(params.faithful_hound)}`)
+      player_cards.end_turn_event_effects.push(params.faithful_hound)
     }
   }
 
   end_turn_event(game, player_cards, faithful_hound) {
-    player_cards.hand.push(faithful_hound)
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move(player_cards.aside, player_cards.hand, faithful_hound)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(faithful_hound)} in hand`)
   }
 
