@@ -18,10 +18,10 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     let landmark_events = _.filter(this.game.landmarks, (card) => {
       if (_.includes(StartBuyEventProcessor.landmark_events(), card.name)) {
         if (card.name === 'Arena') {
-          let eligible_cards = _.filter(this.player_cards.hand, function(card) {
+          let has_actions = _.some(this.player_cards.hand, function(card) {
             return _.includes(_.words(card.types), 'action')
           })
-          return _.size(eligible_cards) > 0
+          return has_actions
         } else {
           return false
         }
@@ -63,7 +63,7 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
       })
       let event = events.splice(event_index, 1)[0]
       let selected_event = ClassCreator.create(event.name)
-      selected_event.start_buy_event(game, player_cards)
+      selected_event.start_buy_event(game, player_cards, event)
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
     })
