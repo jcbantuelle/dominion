@@ -11,10 +11,12 @@ Banquet = class Banquet extends Event {
     })
 
     let eligible_cards = _.filter(game.cards, function(card) {
-      return !_.includes(_.words(card.top_card.types), 'victory') && card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 6)
+      return !_.includes(_.words(card.top_card.types), 'victory') && card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 6)
     })
 
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -28,14 +30,15 @@ Banquet = class Banquet extends Event {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Banquet.gain_card)
+    } else if (_.size(eligible_cards) === 1) {
+      Banquet.gain_card(game, player_cards, eligible_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
+    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
     card_gainer.gain()
   }
 
