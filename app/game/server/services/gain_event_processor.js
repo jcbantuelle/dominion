@@ -9,7 +9,7 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static in_play_event_cards() {
-    return ['Royal Seal', 'Tracker']
+    return ['Royal Seal', 'Tracker', 'Groundskeeper']
   }
 
   static reserve_cards() {
@@ -83,6 +83,10 @@ GainEventProcessor = class GainEventProcessor {
       if (_.includes(GainEventProcessor.in_play_event_cards(), card.name)) {
         if (_.includes(['Royal Seal', 'Tracker'], card.name)) {
           if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).id === this.gainer.gained_card.id) {
+            this.gain_events.push(card)
+          }
+        } else if (card.name === 'Groundskeeper') {
+          if (this.gainer.player_cards._id === this.player_cards._id && _.includes(_.words(this.gainer.gained_card.types), 'victory')) {
             this.gain_events.push(card)
           }
         } else {
