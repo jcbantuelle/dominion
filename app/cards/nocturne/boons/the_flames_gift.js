@@ -8,7 +8,7 @@ TheFlamesGift = class TheFlamesGift extends Boon {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a card to trash (Or none to skip):',
+        instructions: 'Choose a card to trash (or none to skip):',
         cards: player_cards.hand,
         minimum: 0,
         maximum: 1
