@@ -101,12 +101,8 @@ TurnEnder = class TurnEnder {
       this.player_cards.possession_trash = []
     }
 
-    if (!_.isEmpty(this.player_cards.boons)) {
-      _.each(this.player_cards.boons, (boon) => {
-        this.game.boons_discard.unshift(boon)
-      })
-      this.player_cards.boons = []
-    }
+    let card_mover = new CardMover(this.game, this.player_cards)
+    card_mover.move_all(this.player_cards.boons, this.game.boons_discard)
   }
 
   discard_hand() {
