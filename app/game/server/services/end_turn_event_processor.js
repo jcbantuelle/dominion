@@ -14,15 +14,17 @@ EndTurnEventProcessor = class EndTurnEventProcessor {
   find_end_turn_events() {
     this.end_turn_events = []
 
-    _.each(this.game.landmarks, (card) => {
-      if (_.includes(EndTurnEventProcessor.landmark_events(), card.name)) {
-        if (card.name === 'Baths') {
-          if (card.victory_tokens > 0 && _.size(this.game.turn.gained_cards) == 0) {
-            this.end_turn_events.push(card)
+    if (this.game.turn.player._id === this.player_cards.player_id) {
+      _.each(this.game.landmarks, (card) => {
+        if (_.includes(EndTurnEventProcessor.landmark_events(), card.name)) {
+          if (card.name === 'Baths') {
+            if (card.victory_tokens > 0 && _.size(this.game.turn.gained_cards) == 0) {
+              this.end_turn_events.push(card)
+            }
           }
         }
-      }
-    })
+      })
+    }
 
     _.each(this.player_cards.end_turn_event_effects, (event_effect) => {
       event_effect.event_type = 'Event'

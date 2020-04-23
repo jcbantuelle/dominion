@@ -69,8 +69,11 @@ TurnEnder = class TurnEnder {
   }
 
   end_turn_events() {
-    let end_turn_event_processor = new EndTurnEventProcessor(this.game, this.player_cards)
-    end_turn_event_processor.process()
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
+    _.each(ordered_player_cards, (player_cards) => {
+      let end_turn_event_processor = new EndTurnEventProcessor(this.game, player_cards)
+      end_turn_event_processor.process()
+    })
   }
 
   between_turn_events() {
