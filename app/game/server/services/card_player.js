@@ -73,7 +73,9 @@ CardPlayer = class CardPlayer {
 
   update_phase(free_play) {
     if (!free_play) {
+      let phase
       if (this.game.turn.phase === 'action' && _.includes(_.words(this.card.types), 'treasure')) {
+        phase = 'treasure'
         if (_.includes(_.words(this.card.types), 'action') && this.game.turn.actions > 0) {
           let turn_event_id = TurnEventModel.insert({
             game_id: this.game._id,
@@ -88,15 +90,16 @@ CardPlayer = class CardPlayer {
               {text: 'Treasure', value: 'treasure'}
             ]
           })
-          let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this)
-          turn_event_processor.process(CardPlayer.action_or_treasure)
+          let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+          phase = turn_event_processor.process(CardPlayer.choose_phase)
         }
-        if (!this.play_as_action) {
+        if (phase === 'treasure') {
           this.game.turn.phase = 'treasure'
           let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
           start_buy_event_processor.process()
         }
       } else if (this.game.turn.phase === 'action' && _.includes(_.words(this.card.types), 'night')) {
+        phase = 'night'
         if (_.includes(_.words(this.card.types), 'action') && this.game.turn.actions > 0) {
           let turn_event_id = TurnEventModel.insert({
             game_id: this.game._id,
@@ -112,12 +115,15 @@ CardPlayer = class CardPlayer {
             ]
           })
           let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
-          turn_event_processor.process(CardPlayer.action_or_night)
+          phase = turn_event_processor.process(CardPlayer.choose_phase)
         }
-        if (!this.play_as_action) {
+        if (phase === 'night') {
           this.game.turn.phase = 'treasure'
           let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
           start_buy_event_processor.process()
+          this.game.turn.phase = 'buy'
+          let end_buy_event_processor = new EndBuyEventProcessor(this.game, this.player_cards)
+          end_buy_event_processor.process()
           this.game.turn.phase = 'night'
         }
       } else if (this.game.turn.phase !== 'night' && _.includes(_.words(this.card.types), 'night')) {
@@ -125,6 +131,11 @@ CardPlayer = class CardPlayer {
           this.game.turn.phase = 'treasure'
           let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
           start_buy_event_processor.process()
+        }
+        if (_.includes(['treasure', 'buy'], this.game.turn.phase)) {
+          this.game.turn.phase = 'buy'
+          let end_buy_event_processor = new EndBuyEventProcessor(this.game, this.player_cards)
+          end_buy_event_processor.process()
         }
         this.game.turn.phase = 'night'
       }
@@ -233,16 +244,8 @@ CardPlayer = class CardPlayer {
     return ClassCreator.create(this.card.name)
   }
 
-  static action_or_treasure(game, player_cards, response, card_player) {
-    if (response[0] === 'action') {
-      card_player.play_as_action == true
-    }
-  }
-
-  static action_or_night(game, player_cards, response, card_player) {
-    if (response[0] === 'action') {
-      card_player.play_as_action = true
-    }
+  static choose_phase(game, player_cards, response, card_player) {
+    return response[0]
   }
 
 }
