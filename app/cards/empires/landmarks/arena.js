@@ -32,7 +32,7 @@ Arena = class Arena extends Landmark {
       })
       if (arena_stack.victory_tokens > 0) {
         let victory_tokens = Math.min(2, arena_stack.victory_tokens)
-        arena_stack.victory_tokens = arena_stack.victory_tokens - victory_tokens
+        arena_stack.victory_tokens -= victory_tokens
 
         let victory_token_gainer = new VictoryTokenGainer(game, player_cards, arena)
         victory_token_gainer.gain(victory_tokens)
