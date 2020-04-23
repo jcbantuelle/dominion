@@ -6,7 +6,7 @@ Tax = class Tax extends Event {
 
   buy(game, player_cards) {
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.top_card.purchasable
+      return card.supply
     })
 
     let turn_event_id = TurnEventModel.insert({
@@ -15,7 +15,7 @@ Tax = class Tax extends Event {
       username: player_cards.username,
       type: 'choose_cards',
       game_cards: true,
-      instructions: 'Choose a card to gain (Or none to skip):',
+      instructions: 'Choose a card to tax:',
       cards: eligible_cards,
       minimum: 0,
       maximum: 1
@@ -24,21 +24,18 @@ Tax = class Tax extends Event {
     turn_event_processor.process(Tax.add_debt)
   }
 
-  buy_event(buyer) {
-    if (this.game_card.debt_tokens > 0) {
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${this.game_card.debt_tokens} debt token(s)`)
-      this.player_cards.debt_tokens += this.game_card.debt_tokens
-      this.game_card.debt_tokens = 0
-    }
+  buy_event(buyer, tax) {
+    let debt_token_gainer = new DebtTokenGainer(buyer.game, buyer.player_cards, tax)
+    debt_token_gainer.gain(buyer.game_card.debt_tokens)
+    buyer.game_card.debt_tokens = 0
   }
 
   static add_debt(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let supply_index = _.findIndex(game.cards, (card) => {
-      return card.name === selected_card.name
+    let taxed_pile = _.find(game.cards, (card) => {
+      return card.name === selected_cards[0].name
     })
-    game.cards[supply_index].debt_tokens += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> adds two debt tokens to ${CardView.render(selected_card)}`)
+    taxed_pile.debt_tokens += 2
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> adds two debt tokens to ${CardView.render(selected_cards)}`)
   }
 
 }
