@@ -4,6 +4,7 @@ TheWindsGift = class TheWindsGift extends Boon {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
+    GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
 
     if (_.size(player_cards.hand) > 2) {
