@@ -129,10 +129,8 @@ GainEventProcessor = class GainEventProcessor {
             this.gain_events.push(card)
           }
         } else if (card.name === 'Labyrinth') {
-          if (_.size(this.gainer.game.turn.gained_cards) === 2) {
-            if (card.victory_tokens > 0) {
-              this.gain_events.push(card)
-            }
+          if (_.size(this.gainer.game.turn.gained_cards) === 2 && card.victory_tokens > 0) {
+            this.gain_events.push(card)
           }
         } else if (card.name === 'Defiled Shrine') {
           if (_.includes(_.words(this.gainer.gained_card.types), 'action')) {
