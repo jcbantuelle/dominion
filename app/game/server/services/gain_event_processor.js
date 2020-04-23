@@ -125,10 +125,8 @@ GainEventProcessor = class GainEventProcessor {
             }
           }
         } else if (card.name === 'Battlefield') {
-          if (_.includes(_.words(this.gainer.gained_card.types), 'victory')) {
-            if (card.victory_tokens > 0) {
-              this.gain_events.push(card)
-            }
+          if (_.includes(_.words(this.gainer.gained_card.types), 'victory') && card.victory_tokens > 0) {
+            this.gain_events.push(card)
           }
         } else if (card.name === 'Labyrinth') {
           if (_.size(this.gainer.game.turn.gained_cards) === 2) {
