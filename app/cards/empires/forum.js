@@ -12,12 +12,12 @@ Forum = class Forum extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(3)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
-
-    PlayerCardsModel.update(game._id, player_cards)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     if (_.size(player_cards.hand) > 2) {
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -31,11 +31,10 @@ Forum = class Forum extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Forum.discard_cards)
-    } else if (_.size(player_cards.hand) === 0) {
-      game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
+    } else if (_.size(player_cards.hand) === 1) {
+      Forum.discard_cards(game, player_cards, player_cards.hand)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand')
-      card_discarder.discard()
+      game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
   }
 
@@ -45,8 +44,8 @@ Forum = class Forum extends Card {
   }
 
   buy_event(buyer) {
-    buyer.game.turn.buys += 1
-    buyer.game.log.push(`&nbsp;&nbsp;<strong>${buyer.player_cards.username}</strong> gets +1 buy`)
+    let buy_gainer = new BuyGainer(buyer.game, buyer.player_cards)
+    buy_gainer.gain(1)
   }
 
 }
