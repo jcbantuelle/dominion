@@ -10,6 +10,8 @@ Windfall = class Windfall extends Event {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
         card_gainer.gain()
       })
+    } else {
+      game.log.push(`&nbsp;&nbsp;but there are cards in the deck or discard`)
     }
   }
 
