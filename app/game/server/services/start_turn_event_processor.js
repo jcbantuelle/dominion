@@ -42,7 +42,9 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
 
     _.each(this.player_cards.start_turn_event_effects, (event_effect) => {
       event_effect.event_type = 'Event'
-      event_effect.id = this.generate_event_id()
+      if (!event_effect.id) {
+        event_effect.id = this.generate_event_id()
+      }
       this.start_turn_events.push(event_effect)
     })
 
