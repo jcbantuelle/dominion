@@ -48,7 +48,7 @@ BuyEventProcessor = class BuyEventProcessor {
             this.buy_events.push(card)
         } else if (card.name === 'Colonnade' && card.victory_tokens > 0 && _.includes(_.words(this.buyer.card.types), 'action') && _.some(this.buyer.player_cards.in_play, (card) => { return card.name === this.buyer.card.name})) {
             this.buy_events.push(card)
-        } else if (card.name === 'Defiled Shrine' && card.victory_tokens > 0 && this.buyer.card.name() === 'Curse') {
+        } else if (card.name === 'Defiled Shrine' && card.victory_tokens > 0 && this.buyer.card.name === 'Curse') {
             this.buy_events.push(card)
         }
       }
