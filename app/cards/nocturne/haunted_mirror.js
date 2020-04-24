@@ -33,7 +33,7 @@ HauntedMirror = class HauntedMirror extends Card {
       let turn_event_processor = new TurnEventProcessor(trasher.game, trasher.player_cards, turn_event_id)
       turn_event_processor.process(HauntedMirror.gain_card)
     } else {
-      game.log.push(`&nbsp;&nbsp;but chooses not to discard an action`)
+      trasher.game.log.push(`&nbsp;&nbsp;but chooses not to discard an action`)
     }
   }
 
