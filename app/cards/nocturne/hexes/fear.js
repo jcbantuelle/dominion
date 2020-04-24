@@ -23,7 +23,8 @@ Fear = class Fear extends Hex {
       } else if (_.size(eligible_cards) === 1) {
         Fear.discard_card(game, player_cards, eligible_cards)
       } else {
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
+        let card_revealer = new CardRevealer(game, player_cards)
+        card_revealer.reveal('hand')
       }
     } else {
       game.log.push(`&nbsp;&nbsp;but only has ${_.size(player_cards.hand)} cards in hand`)
