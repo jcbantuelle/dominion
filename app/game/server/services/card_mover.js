@@ -9,6 +9,7 @@ CardMover = class CardMover {
     let card_index = this.card_index(source, card)
     if (card_index !== -1) {
       source.splice(card_index, 1)
+      delete card.face_down
       destination.splice(destination_index, 0, card)
       return true
     } else {
