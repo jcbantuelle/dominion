@@ -9,22 +9,21 @@ Skulk = class Skulk extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
 
     if (_.size(game.hexes_deck) === 0) {
       game.hexes_deck = _.shuffle(game.hexes_discard)
       game.hexes_discard = []
     }
 
-    game.turn.skulk_hex = game.hexes_deck.shift()
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${CardView.render(game.turn.skulk_hex)} from the Hex Deck`)
+    hex = game.hexes_deck.shift()
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${CardView.render(hex)} from the Hex Deck`)
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack(player_cards)
+    player_attacker.attack(player_cards, hex)
 
-    game.hexes_discard.push(game.turn.skulk_hex)
-    delete game.turn.skulk_hex
+    game.hexes_discard.push(hex)
   }
 
   gain_event(gainer) {
@@ -32,11 +31,11 @@ Skulk = class Skulk extends Card {
     card_gainer.gain()
   }
 
-  attack(game, player_cards) {
-    let hex = ClassCreator.create(game.turn.skulk_hex.name)
+  attack(game, player_cards, attacker_player_cards, card_player, hex) {
+    let hex_object = ClassCreator.create(hex.name)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(hex)}`)
     GameModel.update(game._id, game)
-    hex.receive(game, player_cards)
+    hex_object.receive(game, player_cards)
   }
 
 }
