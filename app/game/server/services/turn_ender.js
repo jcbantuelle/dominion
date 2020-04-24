@@ -70,6 +70,8 @@ TurnEnder = class TurnEnder {
 
   end_turn_events() {
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
+    ordered_player_cards.shift()
+    ordered_player_cards.unshift(this.player_cards)
     _.each(ordered_player_cards, (player_cards) => {
       let end_turn_event_processor = new EndTurnEventProcessor(this.game, player_cards)
       end_turn_event_processor.process()
