@@ -7,11 +7,11 @@ Delusion = class Delusion extends Hex {
     if (existing_state) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has ${CardView.render(existing_state)}`)
     } else {
-      let deluded_index = _.findIndex(game.states, function(state) {
+      let deluded = _.find(game.states, function(state) {
         return state.name === 'Deluded'
       })
-      let deluded = game.states.splice(deluded_index, 1)[0]
-      player_cards.states.push(deluded)
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(game.states, player_cards.states, deluded)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(deluded)}`)
     }
   }
