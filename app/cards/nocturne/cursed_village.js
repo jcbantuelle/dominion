@@ -9,33 +9,11 @@ CursedVillage = class CursedVillage extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
 
-    if (_.size(player_cards.hand) >= 6) {
-      game.log.push(`&nbsp;&nbsp;but ${player_cards.username} already has 6 cards in hand`)
-    } else if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
-      if (player_cards.tokens.minus_card) {
-        this.game.log.push(`&nbsp;&nbsp;${this.player_cards.username} discards their -1 card token`)
-        delete this.player_cards.tokens.minus_card
-      }
-      CursedVillage.draw_cards(game, player_cards)
-    } else {
-      game.log.push(`&nbsp;&nbsp;but there are no cards to draw`)
-    }
-  }
-
-  static draw_cards(game, player_cards) {
-    if (_.size(player_cards.hand) >= 6 || (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0)) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws up to ${_.size(player_cards.hand)} cards`)
-    } else {
-      if (_.size(player_cards.deck) === 0) {
-        let deck_shuffler = new DeckShuffler(game, player_cards)
-        deck_shuffler.shuffle()
-      }
-      player_cards.hand.push(player_cards.deck.shift())
-      CursedVillage.draw_cards(game, player_cards)
-    }
+    let card_drawer = new CardDrawer(game, player_cards)
+    card_drawer.draw_until(6)
   }
 
   gain_event(gainer) {
