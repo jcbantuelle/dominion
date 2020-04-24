@@ -1,4 +1,4 @@
-DenOfSin = class DenOfSin extends Card {
+DenOfSin = class DenOfSin extends Duration {
 
   types() {
     return ['night', 'duration']
@@ -8,15 +8,14 @@ DenOfSin = class DenOfSin extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
+  play(game, player_cards, card_player) {
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    let card_drawer = new CardDrawer(game, player_cards)
-    let drawn_count = card_drawer.draw(2, false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${drawn_count} card(s) from ${CardView.render(this)}`)
+  duration(game, player_cards, den_of_sin) {
+    let card_drawer = new CardDrawer(game, player_cards, den_of_sin)
+    let drawn_count = card_drawer.draw(2)
   }
 
   destination() {
