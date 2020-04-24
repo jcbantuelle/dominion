@@ -12,7 +12,7 @@ Leprechaun = class Leprechaun extends Card {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
     card_gainer.gain()
 
-    if (_.size(player_cards.playing.concat(player_cards.in_play).concat(player_cards.duration).concat(player_cards.permanent)) === 7) {
+    if (_.size(player_cards.in_play) === 7) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Wish')
       card_gainer.gain()
     } else {
