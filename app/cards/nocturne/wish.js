@@ -8,30 +8,18 @@ Wish = class Wish extends Card {
     return 0
   }
 
-  play(game, player_cards, player) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+  play(game, player_cards, card_player) {
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    let wish_index = _.findIndex(player_cards.playing, function(card) {
-      return card.id === player.played_card.id
-    })
+    let card_mover = new CardMover(game, player_cards)
+    let return_count = card_mover.return_to_supply(player_cards.in_play, 'Wish', [card_player.card])
 
-    if (wish_index !== -1) {
-
-      let wish_pile = _.find(game.cards, function(card) {
-        return card.name === 'Wish'
-      })
-
-      let wish_card = player_cards.playing.splice(wish_index, 1)[0]
-
-      wish_pile.count += 1
-      wish_pile.stack.unshift(wish_card)
-      wish_pile.top_card = _.head(wish_pile.stack)
-
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(this)} to the Wish pile`)
+    if (return_count === 1) {
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(card_player.card)} to the ${CardView.render(card_player.card)} pile`)
 
       let eligible_cards = _.filter(game.cards, function(card) {
-        return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 7)
+        return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 7)
       })
 
       if (_.size(eligible_cards) > 0) {
@@ -48,15 +36,18 @@ Wish = class Wish extends Card {
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Wish.gain_card)
+      } else if (_.size(eligible_cards) === 1) {
+        Wish.gain_card(game, player_cards, eligible_cards)
       } else {
         game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
       }
+    } else {
+      game.log.push(`&nbsp;&nbsp;but is unable to return it to its pile`)
     }
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'hand', selected_card.name)
+    let card_gainer = new CardGainer(game, player_cards, 'hand', selected_cards[0].name)
     card_gainer.gain()
   }
 
