@@ -8,10 +8,9 @@ Necromancer = class Necromancer extends Card {
     return 4
   }
 
-  play(game, player_cards) {
-    let eligible_cards = _.filter(game.trash, function(card) {
-      let card_types = _.words(card.types)
-      return !card.face_down && _.includes(card_types, 'action') && !_.includes(card_types, 'duration')
+  play(game, player_cards, card_player) {
+    let eligible_cards = _.filter(game.trash, (card) => {
+      return !card.face_down && _.includes(_.words(card.types), 'action') && !_.includes(_.words(card.types), 'duration')
     })
 
     if (_.size(eligible_cards) > 1) {
@@ -26,7 +25,7 @@ Necromancer = class Necromancer extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player.card)
       turn_event_processor.process(Necromancer.play_from_trash)
     } else if (_.size(eligible_cards) === 1) {
       Necromancer.play_from_trash(game, player_cards, eligible_cards)
@@ -35,13 +34,13 @@ Necromancer = class Necromancer extends Card {
     }
   }
 
-  static play_from_trash(game, player_cards, selected_cards) {
-    let trash_card_index = _.findIndex(game.trash, function(card) {
+  static play_from_trash(game, player_cards, selected_cards, necromancer) {
+    let trash_card = _.find(game.trash, function(card) {
       return card.id === selected_cards[0].id
     })
-    game.trash[trash_card_index].face_down = true
+    trash_card.face_down = true
 
-    let card_player = new CardPlayer(game, player_cards, selected_cards[0])
+    let card_player = new CardPlayer(game, player_cards, selected_cards[0], necromancer)
     card_player.play(true, false)
   }
 
