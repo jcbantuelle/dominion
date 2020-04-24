@@ -31,14 +31,12 @@ Exorcist = class Exorcist extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card)
-    card_trasher.trash()
-
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && _.includes(_.words(card.top_card.types), 'spirit') && CardCostComparer.card_less_than(game, selected_card, card.top_card)
+      return card.count > 0 && _.includes(_.words(card.top_card.types), 'spirit') && CardCostComparer.card_less_than(game, selected_cards[0], card.top_card)
     })
+
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
+    card_trasher.trash()
 
     if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
@@ -62,8 +60,7 @@ Exorcist = class Exorcist extends Card {
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
+    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
     card_gainer.gain()
   }
 
