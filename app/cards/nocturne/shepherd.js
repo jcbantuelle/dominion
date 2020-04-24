@@ -9,14 +9,14 @@ Shepherd = class Shepherd extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
-    GameModel.update(game._id, game)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     let victory_cards = _.filter(player_cards.hand, function(card) {
       return _.includes(_.words(card.types), 'victory')
     })
     if (_.size(victory_cards) > 0) {
+      GameModel.update(game._id, game)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
