@@ -1,4 +1,4 @@
-SecretCave = class SecretCave extends Card {
+SecretCave = class SecretCave extends Duration {
 
   types() {
     return ['action', 'duration']
@@ -8,13 +8,14 @@ SecretCave = class SecretCave extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
+    let discarded_card_count = 0
     if (_.size(player_cards.hand) > 0) {
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
@@ -28,13 +29,13 @@ SecretCave = class SecretCave extends Card {
         maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(SecretCave.choose_discard)
+      discarded_card_count = turn_event_processor.process(SecretCave.choose_discard)
     } else {
       game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }
 
-    if (game.turn.secret_cave_discard) {
-      player_cards.duration_effects.push(this.to_h())
+    if (discarded_card_count === 3) {
+      player_cards.duration_effects.push(_.clone(card_player.card))
       return 'duration'
     }
   }
@@ -54,24 +55,24 @@ SecretCave = class SecretCave extends Card {
           maximum: 3
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        turn_event_processor.process(SecretCave.discard_cards)
+        return turn_event_processor.process(SecretCave.discard_cards)
       } else {
-        SecretCave.discard_cards(game, player_cards, player_cards.hand)
+        return SecretCave.discard_cards(game, player_cards, player_cards.hand)
       }
     } else {
-      game.turn.secret_cave_discard = false
+      return 0
     }
   }
 
   static discard_cards(game, player_cards, selected_cards) {
     let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
-    game.turn.secret_cave_discard = _.size(selected_cards) === 3
+    return _.size(selected_cards)
   }
 
-  duration(game, player_cards, duration_card) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 3)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} from ${CardView.render(duration_card)}`)
+  duration(game, player_cards, secret_cave) {
+    let coin_gainer = new CoinGainer(game, player_cards, secret_cave)
+    coin_gainer.gain(3)
   }
 
 }
