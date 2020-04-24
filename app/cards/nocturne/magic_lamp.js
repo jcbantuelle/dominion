@@ -8,21 +8,14 @@ MagicLamp = class MagicLamp extends Card {
     return 0
   }
 
-  play(game, player_cards, player) {
-    CoinGainer.gain(game, player_cards, 1)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1, false)
 
-    let grouped_cards_in_play = _.groupBy(player_cards.playing.concat(player_cards.in_play).concat(player_cards.duration).concat(player_cards.permanent), function(card) {
-      return card.name
-    })
-    let card_counts = _.map(grouped_cards_in_play, function(cards, card_name) {
-      return _.size(cards)
-    })
-    let unique_card_count = _.size(_.filter(card_counts, function(count) {
-      return count === 1
-    }))
+    let unique_cards_in_play = _.uniqBy(player_cards.in_play, 'name')
 
-    if (unique_card_count >= 6) {
-      let card_trasher = new CardTrasher(game, player_cards, 'playing', player.played_card)
+    if (_.size(unique_cards_in_play) >= 6) {
+      let card_trasher = new CardTrasher(game, player_cards, 'in_play', card_player.card)
       card_trasher.trash()
 
       _.times(3, function() {
