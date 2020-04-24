@@ -5,6 +5,7 @@ AllPlayerCardsQuery = class AllPlayerCardsQuery {
       'archive',
       'aside',
       'church',
+      'crypt',
       'deck',
       'discard',
       'gear',
