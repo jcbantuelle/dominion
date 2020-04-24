@@ -21,6 +21,9 @@ ZombieSpy = class ZombieSpy extends Card {
       let card_revealer = new CardRevealer(game, player_cards)
       card_revealer.reveal_from_deck(1, false)
 
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
+
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
