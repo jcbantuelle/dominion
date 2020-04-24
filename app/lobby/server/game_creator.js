@@ -145,7 +145,6 @@ GameCreator = class GameCreator {
       boons: [],
       states: [],
       artifacts: [],
-      saved_boons: [],
       start_turn_event_effects: [],
       end_turn_event_effects: [],
       possession_trash: [],
