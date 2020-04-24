@@ -9,10 +9,11 @@ HauntedMirror = class HauntedMirror extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 1)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1, false)
   }
 
-  trash_event(trasher) {
+  trash_event(trasher, haunted_mirror) {
     let eligible_cards = _.filter(trasher.player_cards.hand, function(card) {
       return _.includes(_.words(card.types), 'action')
     })
@@ -24,13 +25,15 @@ HauntedMirror = class HauntedMirror extends Card {
         username: trasher.player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: `Choose an action to discard for ${CardView.render(this)} (Or none to skip):`,
+        instructions: `Choose an action to discard for ${CardView.render(haunted_mirror)}: (or none to skip)`,
         cards: eligible_cards,
         minimum: 0,
         maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(trasher.game, trasher.player_cards, turn_event_id)
       turn_event_processor.process(HauntedMirror.gain_card)
+    } else {
+      game.log.push(`&nbsp;&nbsp;but chooses not to discard an action`)
     }
   }
 
@@ -41,6 +44,8 @@ HauntedMirror = class HauntedMirror extends Card {
 
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Ghost')
       card_gainer.gain()
+    } else {
+      game.log.push(`&nbsp;&nbsp;but chooses not to discard an action`)
     }
   }
 
