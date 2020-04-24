@@ -805,6 +805,7 @@ GameCreator = class GameCreator {
       phase: 'action',
       contraband: [],
       bought_cards: [],
+      bought_things: [],
       gained_cards: [],
       played_actions: [],
       gain_event_stack: [],

@@ -34,7 +34,7 @@ BuyEventProcessor = class BuyEventProcessor {
     this.buy_events = []
     if (_.includes(BuyEventProcessor.event_cards(), this.buyer.card.name)) {
       if (this.buyer.card.name === 'Messenger') {
-        if (_.size(this.buyer.game.turn.bought_cards) === 1) {
+        if (_.size(this.buyer.game.turn.bought_things) === 1) {
           this.buy_events.push(this.buyer.card)
         }
       } else {

@@ -60,6 +60,7 @@ CardBuyer = class CardBuyer {
   track_bought_card(card) {
     let bought_card = _.clone(this.card)
     this.game.turn.bought_cards.push(bought_card)
+    this.game.turn.bought_things.push(bought_card)
   }
 
   buy_events() {

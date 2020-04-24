@@ -27,7 +27,7 @@ EventBuyer = class EventBuyer {
 
   track_bought_card(card) {
     let bought_card = _.clone(this.event.to_h())
-    this.game.turn.bought_cards.push(bought_card)
+    this.game.turn.bought_things.push(bought_card)
   }
 
   buy_event() {
