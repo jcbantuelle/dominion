@@ -9,23 +9,21 @@ Locusts = class Locusts extends Hex {
         deck_shuffler.shuffle()
       }
 
-      let top_card = player_cards.deck.shift()
-      player_cards.revealed.push(top_card)
+      let card_trasher = new CardTrasher(game, player_cards, 'deck', player_cards.deck[0])
+      let trashed_cards = card_trasher.trash()
 
-      let card_trasher = new CardTrasher(game, player_cards, 'revealed', top_card)
-      card_trasher.trash()
-
-      if (_.includes(['Copper', 'Estate'], top_card.name)) {
+      if (_.includes(['Copper', 'Estate'], trashed_cards[0].name)) {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
         card_gainer.gain()
       } else {
-        GameModel.update(game._id, game)
         let eligible_cards = _.filter(game.cards, function(card) {
-          let intersecting_types = _.intersection(_.words(card.top_card.types), _.words(top_card.types))
-          return card.count > 0 && card.top_card.purchasable && !_.isEmpty(intersecting_types) && CardCostComparer.card_less_than(game, top_card, card.top_card)
+          let intersecting_types = _.intersection(_.words(card.top_card.types), _.words(trashed_cards[0].types))
+          return card.count > 0 && card.supply && !_.isEmpty(intersecting_types) && CardCostComparer.card_less_than(game, trashed_cards[0], card.top_card)
         })
 
-        if (_.size(eligible_cards) > 0) {
+        if (_.size(eligible_cards) > 1) {
+          GameModel.update(game._id, game)
+          PlayerCardsModel.update(game._id, player_cards)
           let turn_event_id = TurnEventModel.insert({
             game_id: game._id,
             player_id: player_cards.player_id,
@@ -39,6 +37,8 @@ Locusts = class Locusts extends Hex {
           })
           let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
           turn_event_processor.process(Locusts.gain_card)
+        } else if (_.size(eligible_cards) === 1) {
+          Locusts.gain_card(game, player_cards, eligible_cards)
         } else {
           game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
         }
