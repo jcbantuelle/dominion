@@ -18,8 +18,8 @@ TrackerCard = class TrackerCard extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
 
     let boon_receiver = new EffectReceiver(game, player_cards, 'boon')
     boon_receiver.receive()
@@ -41,9 +41,11 @@ TrackerCard = class TrackerCard extends Card {
 
   static put_on_deck(game, player_cards, response, gainer) {
     if (response === 'yes') {
-      player_cards.deck.unshift(player_cards[gainer.destination].shift())
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(gainer.gained_card)} on top of their deck`)
-      gainer.destination = 'deck'
+      let card_mover = new CardMover(game, player_cards)
+      if (card_mover.move(player_cards[gainer.destination], player_cards.deck, gainer.gained_card)) {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(gainer.gained_card)} on top of their deck`)
+        gainer.destination = 'deck'
+      }
     }
   }
 
