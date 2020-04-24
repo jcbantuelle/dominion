@@ -8,7 +8,6 @@ AllCoinPlayer = class AllCoinPlayer {
       'Fools Gold',
       'Gold',
       'Harem',
-      'Haunted Mirror',
       'Humble Castle',
       'Masterpiece',
       'Pasture',
