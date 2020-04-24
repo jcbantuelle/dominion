@@ -4,7 +4,11 @@ CardPlayer = class CardPlayer {
     this.game = game
     this.player_cards = player_cards
     this.card = card
-    this.originating_card = originating_card
+    if (originating_card) {
+      this.originating_card = _.find(player_cards.in_play, (card) => {
+        return card.id === originating_card.id
+      })
+    }
   }
 
   play_without_announcement() {
