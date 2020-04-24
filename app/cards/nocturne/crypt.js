@@ -1,4 +1,4 @@
-Crypt = class Crypt extends Card {
+Crypt = class Crypt extends Duration {
 
   types() {
     return ['night', 'duration']
