@@ -58,7 +58,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
 
     _.each(this.player_cards.states, (card) => {
       if (_.includes(StartTurnEventProcessor.state_events(), card.name)) {
-        this.start_turn_events.push(state)
+        this.start_turn_events.push(card)
       }
     })
   }
