@@ -50,6 +50,10 @@ GainEventProcessor = class GainEventProcessor {
         if (this.gainer.game.turn.player._id === this.gainer.player_cards.player_id) {
           this.gain_events.push(this.gainer.gained_card)
         }
+      } else if (this.gainer.gained_card.name === 'Experiment') {
+        if (!this.gainer.gained_by || this.gainer.gained_by.name !== 'Experiment') {
+          this.gain_events.push(this.gainer.gained_card)
+        }
       } else {
         this.gain_events.push(this.gainer.gained_card)
       }
