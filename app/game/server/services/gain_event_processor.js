@@ -160,12 +160,18 @@ GainEventProcessor = class GainEventProcessor {
       travelling_fair.id = this.generate_event_id()
       this.gain_events.push(travelling_fair)
     }
+
+    if (this.gainer.player_cards._id === this.player_cards._id && this.gainer.game.turn.player._id === this.gainer.player_cards.player_id && !_.isEmpty(this.gainer.game.turn.cargo_ships)) {
+      _.each(this.gainer.game.turn.cargo_ships, (cargo_ship) => {
+        this.gain_events.push(cargo_ship)
+      })
+    }
   }
 
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, (event) => {
-        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route']), event.name)
+        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route', 'Cargo Ship']), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.gainer.player_cards, this.gain_events, this)

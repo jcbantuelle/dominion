@@ -166,6 +166,16 @@
       Estate Token: <span class="{{estate.types}}">{{estate.name}}</span>
       <br />
     {{/if}}
+    {{#if cargo_ship}}
+      Cargo Ship:
+      {{#each cargo_ship}}
+        <span class="{{types}} cargo-ship-card">{{name}}</span>
+        <div class="card-tooltip">
+          <img src="{{static_image image}}" width="220" height="341" />
+        </div>
+      {{/each}}
+      <br />
+    {{/if}}
     {{#if tavern}}
       Tavern:
       {{#each tavern}}

@@ -820,6 +820,7 @@ GameCreator = class GameCreator {
       potions: 0,
       phase: 'action',
       contraband: [],
+      cargo_ships: [],
       bought_cards: [],
       bought_things: [],
       gained_cards: [],

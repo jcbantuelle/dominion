@@ -617,7 +617,7 @@ CardList = class CardList {
       'Ducat',
       'Lackeys',
       'ActingTroupe',
-      // 'CargoShip',
+      'CargoShip',
       'Experiment',
       // 'Improve',
       // 'FlagBearer',

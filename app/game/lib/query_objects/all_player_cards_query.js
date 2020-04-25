@@ -4,6 +4,7 @@ AllPlayerCardsQuery = class AllPlayerCardsQuery {
     return [
       'archive',
       'aside',
+      'cargo_ship',
       'church',
       'crypt',
       'deck',
