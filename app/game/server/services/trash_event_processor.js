@@ -15,6 +15,7 @@ TrashEventProcessor = class TrashEventProcessor {
   constructor(trasher, card) {
     this.trasher = trasher
     this.card = card
+    this.event_id = 7000
     this.find_trash_events()
   }
 
@@ -36,10 +37,10 @@ TrashEventProcessor = class TrashEventProcessor {
       }
     })
 
-    _.times(this.trasher.game.priests, (count) => {
-      if (this.trasher.source === 'hand' && this.trasher.player_cards.player_id === this.trasher.game.turn.player._id) {
+    _.times(this.trasher.game.turn.priests, (count) => {
+      if (this.trasher.player_cards.player_id === this.trasher.game.turn.player._id) {
         priest = ClassCreator.create('Priest').to_h()
-        priest.id = 0
+        priest.id = this.generate_event_id()
         this.trash_events.push(priest)
       }
     })
@@ -95,6 +96,12 @@ TrashEventProcessor = class TrashEventProcessor {
       PlayerCardsModel.update(game._id, player_cards)
       trash_event_processor.process()
     }
+  }
+
+  generate_event_id() {
+    let event_id = _.toString(this.event_id)
+    this.event_id += 1
+    return event_id
   }
 
 }
