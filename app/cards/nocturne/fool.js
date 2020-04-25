@@ -9,30 +9,10 @@ Fool = class Fool extends Card {
   }
 
   play(game, player_cards) {
-    this.source = player_cards.states
-    let lost_in_the_woods = this.find_lost_in_the_woods()
+    let card_mover = new CardMover(game, player_cards)
+    let took_lost_in_the_woods = card_mover.take_unique_card('states', 'Lost In The Woods')
 
-    if (!lost_in_the_woods) {
-      this.source = game.states
-      lost_in_the_woods = this.find_lost_in_the_woods()
-      if (!lost_in_the_woods) {
-        let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
-        ordered_player_cards.shift()
-        _.each(ordered_player_cards, (next_player_cards) => {
-          this.next_player_cards = next_player_cards
-          this.source = next_player_cards.states
-          lost_in_the_woods = this.find_lost_in_the_woods()
-          if (lost_in_the_woods) {
-            return false
-          }
-        })
-      }
-      let card_mover = new CardMover(game, player_cards)
-      card_mover.move(this.source, player_cards.states, lost_in_the_woods)
-      if (this.next_player_cards) {
-        PlayerCardsModel.update(game._id, this.next_player_cards)
-      }
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(lost_in_the_woods)}`)
+    if (took_lost_in_the_woods) {
 
       revealed_boons = _.take(game.boons_deck, 3)
       game.boons_deck = _.drop(game.boons_deck, 3)
@@ -82,15 +62,7 @@ Fool = class Fool extends Card {
         })
         revealed_boons.splice(choice_index, 1)
       })
-    } else {
-      game.log.push(`&nbsp;&nbsp;but already has ${CardView.render(lost_in_the_woods)}`)
     }
-  }
-
-  find_lost_in_the_woods() {
-    return _.find(this.source, (state) => {
-      return state.name === 'Lost In The Woods'
-    })
   }
 
   static choose_boon(game, player_cards, selected_cards) {
