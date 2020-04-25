@@ -5,7 +5,7 @@ EndBuyEventProcessor = class EndBuyEventProcessor {
   }
 
   static project_events() {
-    return ['Pageant']
+    return ['Pageant', 'Exploration']
   }
 
   constructor(game, player_cards) {
@@ -33,6 +33,10 @@ EndBuyEventProcessor = class EndBuyEventProcessor {
       if (_.includes(EndBuyEventProcessor.project_events(), card.name)) {
         if (card.name === 'Pageant') {
           if (this.game.turn.coins > 0) {
+            events.push(card)
+          }
+        } else if (card.name === 'Exploration') {
+          if (_.isEmpty(this.game.turn.bought_cards)) {
             events.push(card)
           }
         } else {
