@@ -830,6 +830,7 @@ GameCreator = class GameCreator {
       charms: 0,
       priests: 0,
       schemes: 0,
+      improves: 0,
       merchants: 0,
       possessions: 0,
       coppersmiths: 0,
