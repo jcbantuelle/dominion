@@ -613,7 +613,7 @@ CardList = class CardList {
 
   static renaissance() {
     return [
-      'Border Guard',
+      'BorderGuard',
       'Ducat',
       'Lackeys',
       'ActingTroupe',
