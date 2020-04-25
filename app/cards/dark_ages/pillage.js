@@ -32,7 +32,8 @@ Pillage = class Pillage extends Card {
   attack(game, player_cards) {
     if (game.turn.pillage_attack) {
       if (_.size(player_cards.hand) >= 5) {
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
+        let card_revealer = new CardRevealer(game, player_cards)
+        card_revealer.reveal('hand')
         GameModel.update(game._id, game)
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
