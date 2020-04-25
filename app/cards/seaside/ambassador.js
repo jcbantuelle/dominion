@@ -49,7 +49,8 @@ Ambassador = class Ambassador extends Card {
       return card.name === game.turn.ambassador_selected_card.stack_name && card.supply
     })
 
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(game.turn.ambassador_selected_card)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(game.turn.ambassador_selected_card, game.turn.ambassador_selected_card)
 
     if (game.turn.ambassador_game_stack) {
       let copies_in_hand = _.filter(player_cards.hand, function(card) {
