@@ -9,22 +9,14 @@ Villain = class Villain extends Card {
   }
 
   play(game, player_cards) {
-    if (game.turn.possessed) {
-      possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-      possessing_player_cards.coin_tokens += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes 2 coin tokens`)
-      PlayerCardsModel.update(game._id, possessing_player_cards)
-    } else {
-      player_cards.coin_tokens += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes 2 coin tokens`)
-    }
+    let coffer_gainer = new CofferGainer(game, player_cards)
+    coffer_gainer.gain(2)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
   }
 
   attack(game, player_cards) {
-
     if (_.size(player_cards.hand) > 4) {
       let eligible_cards = _.filter(player_cards.hand, function (card) {
         return CardCostComparer.coin_greater_than(game, card, 1)
@@ -47,7 +39,8 @@ Villain = class Villain extends Card {
       } else if (_.size(eligible_cards) === 1) {
         Villain.discard_from_hand(game, player_cards, eligible_cards)
       } else {
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
+        let card_revealer = new CardRevealer(game, player_cards)
+        card_revealer.reveal('hand')
       }
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> only has ${_.size(player_cards.hand)} cards in hand`)
