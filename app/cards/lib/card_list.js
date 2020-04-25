@@ -710,16 +710,15 @@ CardList = class CardList {
 
   static test() {
     return [
-      'Skulk',
-      'Bard',
-      'Castles',
-      'Werewolf',
-      'Fool',
+      'Village',
       'Chapel',
-      'Scout',
-      'PoorHouse',
-      'Ducat',
-      'HornOfPlenty'
+      'Smithy',
+      'Militia',
+      'CouncilRoom',
+      'Caravan',
+      'Moat',
+      'ThroneRoom',
+      'Festival'
     ]
   }
 }
