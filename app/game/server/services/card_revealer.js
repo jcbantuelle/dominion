@@ -15,6 +15,26 @@ CardRevealer = class CardRevealer {
       this.game.log.push(`&nbsp;&nbsp;but <strong>${this.player_cards.username}</strong> has nothing to reveal`)
     } else {
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> reveals ${CardView.render(cards)}`)
+
+      if (this.has_events(cards)) {
+        GameModel.update(this.game._id, this.game)
+        if (_.size(cards) > 1) {
+          let turn_event_id = TurnEventModel.insert({
+            game_id: this.game._id,
+            player_id: this.player_cards.player_id,
+            username: this.player_cards.username,
+            type: 'sort_cards',
+            instructions: 'Choose order to resolve revealed cards: (leftmost will be first)',
+            cards: cards
+          })
+          let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+          cards = turn_event_processor.process(CardRevealer.order_cards)
+        }
+        _.each(cards, (card) => {
+          let reveal_event_processor = new RevealEventProcessor(this, card)
+          reveal_event_processor.process()
+        })
+      }
     }
   }
 
@@ -65,6 +85,17 @@ CardRevealer = class CardRevealer {
     } else {
       this.look(revealed_cards)
     }
+  }
+
+  has_events(cards) {
+    return _.some(cards, (card) => {
+      let reveal_event_processor = new RevealEventProcessor(this, card)
+      return !_.isEmpty(reveal_event_processor.reveal_events)
+    })
+  }
+
+  static order_cards(game, player_cards, ordered_cards) {
+    return ordered_cards
   }
 
 }
