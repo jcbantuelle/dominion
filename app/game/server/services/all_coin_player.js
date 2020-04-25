@@ -19,6 +19,7 @@ AllCoinPlayer = class AllCoinPlayer {
       'Pouch',
       'Royal Seal',
       'Silver',
+      'Spices',
       'Stash'
     ]
   }
