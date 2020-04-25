@@ -666,6 +666,7 @@ CardList = class CardList {
     return [
       'Cathedral',
       'CityGate',
+      'Pageant',
     ]
   }
 

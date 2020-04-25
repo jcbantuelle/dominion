@@ -4,6 +4,10 @@ EndBuyEventProcessor = class EndBuyEventProcessor {
     return ['Wine Merchant']
   }
 
+  static project_events() {
+    return ['Pageant']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
@@ -17,6 +21,18 @@ EndBuyEventProcessor = class EndBuyEventProcessor {
       if (_.includes(EndBuyEventProcessor.reserve_events(), card.name)) {
         if (card.name === 'Wine Merchant') {
           if (this.game.turn.coins >= 2) {
+            events.push(card)
+          }
+        } else {
+          events.push(card)
+        }
+      }
+    })
+
+    _.each(this.player_cards.projects, (card) => {
+      if (_.includes(EndBuyEventProcessor.project_events(), card.name)) {
+        if (card.name === 'Pageant') {
+          if (this.game.turn.coins > 0) {
             events.push(card)
           }
         } else {
