@@ -12,6 +12,10 @@ TrashEventProcessor = class TrashEventProcessor {
     return ['Overgrown Estate', 'Squire', 'Feodum', 'Fortress', 'Sir Vander', 'Cultist', 'Hunting Grounds', 'Rats', 'Catacombs', 'Crumbling Castle', 'Rocks', 'Haunted Mirror', 'Silk Merchant', 'Flag Bearer']
   }
 
+  static project_cards() {
+    return ['Sewers']
+  }
+
   constructor(trasher, card) {
     this.trasher = trasher
     this.card = card
@@ -37,6 +41,18 @@ TrashEventProcessor = class TrashEventProcessor {
       }
     })
 
+    _.each(this.trasher.player_cards.projects, (card) => {
+      if (_.includes(TrashEventProcessor.project_cards(), card.name)) {
+        if (card.name === 'Sewers') {
+          if (!this.trasher.trashed_by || this.trasher.trashed_by.name !== 'Sewers') {
+            this.trash_events.push(card)
+          }
+        } else {
+          this.trash_events.push(card)
+        }
+      }
+    })
+
     _.times(this.trasher.game.turn.priests, (count) => {
       if (this.trasher.player_cards.player_id === this.trasher.game.turn.player._id) {
         priest = ClassCreator.create('Priest').to_h()
@@ -55,6 +71,7 @@ TrashEventProcessor = class TrashEventProcessor {
         TrashEventProcessor.trash_event(this.trasher.game, this.trasher.player_cards, this.trash_events, this)
       } else {
         GameModel.update(this.trasher.game._id, this.trasher.game)
+        PlayerCardsModel.update(this.trasher.game._id, this.trasher.player_cards)
         let instructions = `Choose Trash Event To Resolve for ${CardView.render(this.card)}`
         let minimum = 1
         if (_.isEmpty(mandatory_trash_events)) {
