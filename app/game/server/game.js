@@ -80,6 +80,24 @@ Meteor.methods({
       }
     })).detach()
   },
+  buyProject: function(card_name, game_id) {
+    Future.task(Meteor.bindEnvironment(function() {
+      if (!ActionLock[game_id]) {
+        let current_game = game(game_id)
+        if (allowed_to_play(current_game)) {
+          ActionLock[game_id] = true
+          let current_player_cards = player_cards(current_game)
+          let project_buyer = new ProjectBuyer(current_game, current_player_cards, card_name)
+          project_buyer.buy()
+          if (turn_over(current_game, current_player_cards)) {
+            let turn_ender = new TurnEnder(current_game, current_player_cards)
+            turn_ender.end_turn()
+          }
+          ActionLock[game_id] = false
+        }
+      }
+    })).detach()
+  },
   endTurn: function(game_id) {
     Future.task(Meteor.bindEnvironment(function() {
       if (!ActionLock[game_id]) {

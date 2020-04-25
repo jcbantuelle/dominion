@@ -9,6 +9,7 @@ Template.game.events({
   "click #hand .card": playCard,
   "click .card-container .card": buyCard,
   "click .event-container .card": buyEvent,
+  "click .project-container .card": buyProject,
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
   "click #play-coffer": playCoinToken,
@@ -72,6 +73,10 @@ function buyCard(event) {
 
 function buyEvent(event) {
   Meteor.call('buyEvent', $(event.target).attr('data-name'), Router.current().params.id)
+}
+
+function buyProject(event) {
+  Meteor.call('buyProject', $(event.target).attr('data-name'), Router.current().params.id)
 }
 
 function endTurn() {

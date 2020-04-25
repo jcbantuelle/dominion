@@ -8,15 +8,8 @@ Project = class Project {
     return _.snakeCase(this.constructor.name)
   }
 
-  debt_cost() {
-    return 0
-  }
-
   type_class() {
     return 'project'
-  }
-
-  buy(game, player_cards) {
   }
 
   to_h() {
@@ -25,8 +18,8 @@ Project = class Project {
       image: this.image(),
       types: 'project',
       wide: true,
-      coin_cost: this.coin_cost(),
-      debt_cost: this.debt_cost()
+      cubes: [],
+      coin_cost: this.coin_cost()
     }
   }
 }

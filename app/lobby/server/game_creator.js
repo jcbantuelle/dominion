@@ -160,6 +160,7 @@ GameCreator = class GameCreator {
       username: player.username,
       boons: [],
       states: [],
+      projects: [],
       artifacts: [],
       start_turn_event_effects: [],
       end_turn_event_effects: [],
