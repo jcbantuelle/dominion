@@ -8,6 +8,10 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
     return ['Lost In The Woods']
   }
 
+  static artifact_events() {
+    return ['Key']
+  }
+
   static aside_events() {
     return ['Horse Traders', 'Prince']
   }
@@ -58,6 +62,12 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
 
     _.each(this.player_cards.states, (card) => {
       if (_.includes(StartTurnEventProcessor.state_events(), card.name)) {
+        this.start_turn_events.push(card)
+      }
+    })
+
+    _.each(this.player_cards.artifacts, (card) => {
+      if (_.includes(StartTurnEventProcessor.artifact_events(), card.name)) {
         this.start_turn_events.push(card)
       }
     })

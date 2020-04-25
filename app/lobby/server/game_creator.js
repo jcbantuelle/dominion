@@ -572,6 +572,10 @@ GameCreator = class GameCreator {
       artifact_cards.push(new TreasureChest())
     }
 
+    if (this.game_has_card(cards, 'Treasurer')) {
+      artifact_cards.push(new Key())
+    }
+
     artifact_cards = _.sortBy(artifact_cards, function(artifact) {
       return artifact.name()
     })
