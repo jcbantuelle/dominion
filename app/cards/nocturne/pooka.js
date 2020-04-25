@@ -9,7 +9,7 @@ Pooka = class Pooka extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.hand, function(card) {
+    let eligible_cards = _.filter(player_cards.hand, (card) => {
       return _.includes(_.words(card.types), 'treasure') && card.name !== 'Cursed Gold'
     })
     if (_.size(eligible_cards) > 0) {
@@ -19,7 +19,7 @@ Pooka = class Pooka extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a treasure to trash (Or none to skip):',
+        instructions: 'Choose a treasure to trash: (or none to skip)',
         cards: eligible_cards,
         minimum: 0,
         maximum: 1
@@ -33,9 +33,7 @@ Pooka = class Pooka extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let selected_card = selected_cards[0]
-
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card)
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0])
       card_trasher.trash()
 
       let card_drawer = new CardDrawer(game, player_cards)
