@@ -55,7 +55,7 @@ Scepter = class Scepter extends Card {
     }
   }
 
-  static process_response(game, player_cards, response, scepter) {
+  static process_response(game, player_cards, response) {
     return response[0]
   }
 
