@@ -41,6 +41,7 @@ GameCreator = class GameCreator {
       duchess: this.game_has_card(cards, 'Duchess'),
       prizes: this.prizes(cards),
       states: this.states(cards),
+      artifacts: this.artifacts(cards),
       trash: []
     }
     if (this.black_market_deck) {
@@ -553,6 +554,22 @@ GameCreator = class GameCreator {
 
     return this.set_card_ids_for_collection(_.map(state_cards, function(state) {
       return state.to_h()
+    }))
+  }
+
+  artifacts(cards) {
+    let artifact_cards = []
+    if (this.game_has_card(cards, 'Border Guard')) {
+      artifact_cards.push(new Lantern())
+      artifact_cards.push(new Horn())
+    }
+
+    artifact_cards = _.sortBy(artifact_cards, function(artifact) {
+      return artifact.name()
+    })
+
+    return this.set_card_ids_for_collection(_.map(artifact_cards, function(artifact) {
+      return artifact.to_h()
     }))
   }
 

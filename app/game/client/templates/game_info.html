@@ -32,6 +32,17 @@
     <br />
     <br />
   {{/if}}
+  {{#if game.artifacts}}
+    Artifacts:
+    {{#each game.artifacts}}
+      <span class="{{types}} state-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="341" height="220" />
+      </div>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
   {{#if game.trade_route_tokens}}
     Trade Route Tokens:
     {{#each times game.trade_route_tokens}}
