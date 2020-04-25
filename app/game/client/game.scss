@@ -58,6 +58,8 @@ body {
 .event-details,
 .landmark-thumbnail,
 .landmark-details,
+.project-thumbnail,
+.project-details,
 .boon-thumbnail,
 .boon-details {
   float: right;
@@ -84,13 +86,14 @@ body {
   padding-top: 5px;
 }
 
-.event-container, .landmark-container, .boon-container {
+.event-container, .landmark-container, .project-container, .boon-container {
   height: $event_height;
   padding-bottom: $event_height + 5px;
 }
 
 .landmark-name,
 .event-name,
+.project-name,
 .boon-name {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -101,12 +104,14 @@ body {
 
 .landmark-name span,
 .event-name span,
+.project-name span,
 .boon-name span {
   line-height: $event_height;
 }
 
 .landmark-details,
 .event-details,
+.project-details,
 .boon-details {
   text-align: center;
   padding-left: 8px;

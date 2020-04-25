@@ -15,8 +15,13 @@ GameCreator = class GameCreator {
     })
     this.landmarks = this.landmark_cards(landmarks)
 
+    let projects = _.filter(cards, function(card) {
+      return _.includes(CardList.project_cards(), _.titleize(card.name))
+    })
+    this.projects = this.project_cards(projects)
+
     this.cards = _.reject(cards, function(card) {
-      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card.name))
+      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()).concat(CardList.project_cards()), _.titleize(card.name))
     })
     this.colors = ['red', 'blue', 'yellow', 'green']
   }
@@ -48,6 +53,7 @@ GameCreator = class GameCreator {
       cards: cards,
       events: this.events,
       landmarks: this.landmarks,
+      projects: this.projects,
       duchess: this.game_has_card(cards, 'Duchess'),
       prizes: this.prizes(cards),
       states: this.states(cards),
@@ -201,6 +207,13 @@ GameCreator = class GameCreator {
     events = this.set_card_ids_for_collection(events)
     return _.sortBy(events, function(event) {
       return -event.coin_cost
+    })
+  }
+
+  project_cards(projects) {
+    projects = this.set_card_ids_for_collection(projects)
+    return _.sortBy(projects, function(project) {
+      return -project.coin_cost
     })
   }
 
@@ -794,9 +807,11 @@ GameCreator = class GameCreator {
     let game_cards = this.selected_kingdom_cards.concat(this.events)
     if (this.black_market_deck) game_cards = game_cards.concat(this.black_market_deck)
 
-    return _.some(game_cards, function(card) {
+    has_token_card = _.some(game_cards, (card) => {
       return _.includes(['Peasant', 'Ferry', 'Plan', 'Seaway', 'Lost Arts', 'Training', 'Pathfinding'], card.name)
     })
+
+    return has_token_card || !_.isEmpty(this.projects)
   }
 
   trade_route_game() {
