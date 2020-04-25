@@ -13,7 +13,8 @@ BlackMarket = class BlackMarket extends Card {
     coin_gainer.gain(2)
 
     let black_market_card_buyer = new BlackMarketCardBuyer(game, player_cards)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(game.revealed_black_market)} from the ${CardView.render(card_player.card)} deck`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(game.revealed_black_market, game.revealed_black_market)
 
     let eligible_treasures = _.filter(player_cards.hand, function(card) {
       return _.includes(_.words(card.types), 'treasure')
