@@ -701,8 +701,10 @@ CardList = class CardList {
       // 'Pilgrimage'
     ]
   }
+
   static test_projects() {
     return [
+      // 'CityGate'
     ]
   }
 
