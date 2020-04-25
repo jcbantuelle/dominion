@@ -91,8 +91,10 @@ CardMover = class CardMover {
         PlayerCardsModel.update(this.game._id, last_checked_player_cards)
       }
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${CardView.render(unique_card)}`)
+      return true
     } else {
       this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> already has ${CardView.render(unique_card)}`)
+      return false
     }
   }
 
