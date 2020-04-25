@@ -104,6 +104,17 @@
     <br />
     <br />
   {{/if}}
+  {{#if player_cards.research}}
+    Research:
+    {{#each player_cards.research}}
+      <span class="{{types}} archive-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="220" height="341" />
+      </div>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
   {{#if player_cards.crypt}}
     Crypt:
     {{#each player_cards.crypt}}

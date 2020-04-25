@@ -16,6 +16,7 @@ AllPlayerCardsQuery = class AllPlayerCardsQuery {
       'inheritance',
       'island',
       'native_village',
+      'research',
       'revealed',
       'tavern'
     ]

@@ -626,7 +626,7 @@ CardList = class CardList {
       'MountainVillage',
       'Patron',
       'Priest',
-      // 'Research',
+      'Research',
       'SilkMerchant',
       // 'OldWitch',
       'Recruiter',
