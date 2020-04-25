@@ -19,17 +19,19 @@ WineMerchant = class WineMerchant extends Reserve {
   }
 
   end_buy_event(game, player_cards, wine_merchant) {
-    let turn_event_id = TurnEventModel.insert({
-      game_id: game._id,
-      player_id: player_cards.player_id,
-      username: player_cards.username,
-      type: 'choose_yes_no',
-      instructions: `Discard ${CardView.render(wine_merchant)}?`,
-      minimum: 1,
-      maximum: 1
-    })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, wine_merchant)
-    turn_event_processor.process(WineMerchant.discard_card)
+    if (game.turn.coins >= 2) {
+      let turn_event_id = TurnEventModel.insert({
+        game_id: game._id,
+        player_id: player_cards.player_id,
+        username: player_cards.username,
+        type: 'choose_yes_no',
+        instructions: `Discard ${CardView.render(wine_merchant)}?`,
+        minimum: 1,
+        maximum: 1
+      })
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, wine_merchant)
+      turn_event_processor.process(WineMerchant.discard_card)
+    }
   }
 
   static discard_card(game, player_cards, response, wine_merchant) {
