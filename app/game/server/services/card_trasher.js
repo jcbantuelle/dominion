@@ -1,6 +1,6 @@
 CardTrasher = class CardTrasher {
 
-  constructor(game, player_cards, source, cards) {
+  constructor(game, player_cards, source, cards, trashed_by) {
     this.game = game
     this.player_cards = player_cards
     this.source = source
@@ -11,6 +11,7 @@ CardTrasher = class CardTrasher {
     }
     this.cards = _.clone(cards)
     this.trashed_cards = []
+    this.trashed_by = trashed_by
   }
 
   trash() {
