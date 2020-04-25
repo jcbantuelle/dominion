@@ -46,13 +46,10 @@ CardTrasher = class CardTrasher {
   }
 
   has_events() {
-    let has_event_cards = _.some(this.cards, (card) => {
-      return _.includes(TrashEventProcessor.event_cards(), card.name)
+    return _.some(this.cards, (card) => {
+      let trash_event_processor = new TrashEventProcessor(this, card)
+      return !_.isEmpty(trash_event_processor.trash_events)
     })
-    let has_reaction_cards = _.some(this.player_cards.hand, (card) => {
-      return _.includes(TrashEventProcessor.reaction_cards(), card.name)
-    })
-    return has_event_cards || has_reaction_cards
   }
 
   put_card_in_trash(trashed_card) {
