@@ -24,11 +24,21 @@ GameCreator = class GameCreator {
   create() {
     let game_id = this.create_game()
     this.game = GameModel.findOne(game_id)
+    this.format_player_usernames()
     this.create_turn()
     this.start_game_log()
     this.set_up_players()
     this.assign_game_to_players()
     GameModel.update(this.game._id, this.game)
+  }
+
+  format_player_usernames() {
+    this.game.players = _.map(this.game.players, (player, index) => {
+      if (this.assign_colors) {
+        player.username = `<span class="${this.colors[index]}">${player.username}</span>`
+      }
+      return player
+    })
   }
 
   create_game() {
@@ -69,8 +79,7 @@ GameCreator = class GameCreator {
 
   start_game_log() {
     let turn_order =  _.map(this.game.players, (player, index) => {
-      let color = this.assign_colors ? this.colors[index] : ''
-      return `<span class="${color}">${player.username}</span>`
+      return player.username
     })
 
     this.game.log = [
