@@ -568,6 +568,10 @@ GameCreator = class GameCreator {
       artifact_cards.push(new Flag())
     }
 
+    if (this.game_has_card(cards, 'Swashbuckler')) {
+      artifact_cards.push(new TreasureChest())
+    }
+
     artifact_cards = _.sortBy(artifact_cards, function(artifact) {
       return artifact.name()
     })
