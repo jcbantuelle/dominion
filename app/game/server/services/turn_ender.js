@@ -113,7 +113,13 @@ TurnEnder = class TurnEnder {
   }
 
   draw_new_hand() {
+    let flag = _.find(this.player_cards.artifacts, (artifact) => {
+      return artifact.name === 'Flag'
+    })
     let cards_to_draw = this.game.turn.outpost ? 3 : 5
+    if (flag) {
+      cards_to_draw += 1
+    }
     let card_drawer = new CardDrawer(this.game, this.player_cards)
     card_drawer.draw(cards_to_draw, false)
   }

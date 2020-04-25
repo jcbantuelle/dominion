@@ -564,6 +564,10 @@ GameCreator = class GameCreator {
       artifact_cards.push(new Horn())
     }
 
+    if (this.game_has_card(cards, 'Flag Bearer')) {
+      artifact_cards.push(new Flag())
+    }
+
     artifact_cards = _.sortBy(artifact_cards, function(artifact) {
       return artifact.name()
     })
