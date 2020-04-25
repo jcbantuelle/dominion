@@ -66,4 +66,40 @@ CardMover = class CardMover {
     })
   }
 
+  take_unique_card(source, unique_card_name) {
+    let card_source = this.player_cards[source]
+    let unique_card = this.find_unique_card(card_source, unique_card_name)
+
+    if (!unique_card) {
+      card_source = this.game[source]
+      unique_card = this.find_unique_card(card_source, unique_card_name)
+      let last_checked_player_cards
+      if (!unique_card) {
+        let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game, this.player_cards)
+        ordered_player_cards.shift()
+        _.each(ordered_player_cards, (next_player_cards) => {
+          last_checked_player_cards = next_player_cards
+          card_source = next_player_cards[source]
+          unique_card = this.find_unique_card(card_source, unique_card_name)
+          if (unique_card) {
+            return false
+          }
+        })
+      }
+      this.move(card_source, this.player_cards[source], unique_card)
+      if (last_checked_player_cards) {
+        PlayerCardsModel.update(this.game._id, last_checked_player_cards)
+      }
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${CardView.render(unique_card)}`)
+    } else {
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> already has ${CardView.render(unique_card)}`)
+    }
+  }
+
+  find_unique_card(card_source, card_name) {
+    return _.find(card_source, (unique_card) => {
+      return unique_card.name === card_name
+    })
+  }
+
 }
