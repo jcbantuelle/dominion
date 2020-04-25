@@ -9,16 +9,11 @@ Ducat = class Ducat extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.buys += 1
-    if (game.turn.possessed) {
-      possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-      possessing_player_cards.coin_tokens += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and <strong>${possessing_player_cards.username}</strong> takes a coin token`)
-      PlayerCardsModel.update(game._id, possessing_player_cards)
-    } else {
-      player_cards.coin_tokens += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and takes a coin token`)
-    }
+    let coffer_gainer = new CofferGainer(game, player_cards)
+    coffer_gainer.gain(1)
+
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
   }
 
   gain_event(gainer) {
@@ -32,7 +27,7 @@ Ducat = class Ducat extends Card {
         player_id: gainer.player_cards.player_id,
         username: gainer.player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Trash a ${CardView.render(new Copper())}?`,
+        instructions: `Trash a ${CardView.render(copper)}?`,
         minimum: 1,
         maximum: 1
       })
