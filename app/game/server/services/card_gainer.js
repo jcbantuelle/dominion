@@ -1,11 +1,12 @@
 CardGainer = class CardGainer {
 
-  constructor(game, player_cards, destination, card_name, buy = false) {
+  constructor(game, player_cards, destination, card_name, buy = false, gained_by) {
     this.game = game
     this.player_cards = player_cards
     this.card_name = card_name
     this.destination = destination
     this.buy = buy
+    this.gained_by = gained_by
   }
 
   gain(source = 'supply') {
