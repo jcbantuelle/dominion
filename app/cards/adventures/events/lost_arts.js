@@ -6,7 +6,7 @@ LostArts = class LostArts extends Event {
 
   buy(game, player_cards) {
     let eligible_piles = _.filter(game.cards, (card) => {
-      return card.supply && _.includes(_.words(card.top_card.types), 'action')
+      return card.supply && _.includes(_.words(card.top_card.pile_types), 'action')
     })
 
     if (_.size(eligible_piles) > 1) {

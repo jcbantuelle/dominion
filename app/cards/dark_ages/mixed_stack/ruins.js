@@ -1,9 +1,5 @@
 Ruins = class Ruins extends Card {
 
-  types() {
-    return ['ruins']
-  }
-
   stack_name() {
     return 'Ruins'
   }

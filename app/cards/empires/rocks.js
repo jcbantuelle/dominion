@@ -4,6 +4,10 @@ Rocks = class Rocks extends Card {
     return ['treasure']
   }
 
+  pile_types() {
+    return ['action']
+  }
+
   coin_cost() {
     return 4
   }

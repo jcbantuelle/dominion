@@ -4,6 +4,10 @@ Fortune = class Fortune extends Card {
     return ['treasure']
   }
 
+  pile_types() {
+    return ['action']
+  }
+
   coin_cost() {
     return 8
   }

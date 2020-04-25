@@ -4,6 +4,10 @@ Knights = class Knights extends Card {
     return ['action', 'attack', 'knight']
   }
 
+  pile_types() {
+    return ['action', 'attack', 'knight']
+  }
+
   coin_cost() {
     return 4.5
   }

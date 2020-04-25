@@ -4,6 +4,10 @@ Castles = class Castles extends Card {
     return ['victory', 'castle']
   }
 
+  pile_types() {
+    return ['victory', 'castle']
+  }
+
   coin_cost() {
     return 3
   }

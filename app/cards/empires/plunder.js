@@ -4,6 +4,10 @@ Plunder = class Plunder extends Card {
     return ['treasure']
   }
 
+  pile_types() {
+    return ['action']
+  }
+
   coin_cost() {
     return 5
   }

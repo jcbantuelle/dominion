@@ -36,6 +36,10 @@ Card = class Card {
     return this.types().join(' ')
   }
 
+  pile_types() {
+    return this.types()
+  }
+
   destination() {
     return false
   }
@@ -66,6 +70,7 @@ Card = class Card {
       name: this.name(),
       image: this.image(),
       types: this.types().join(' '),
+      pile_types: this.pile_types().join(' '),
       coin_cost: this.coin_cost(),
       potion_cost: this.potion_cost(),
       debt_cost: this.debt_cost(),

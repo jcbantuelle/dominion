@@ -57,7 +57,7 @@ Teacher = class Teacher extends Reserve {
       let has_player_token = _.some(card.tokens, function(pile_token) {
         return pile_token.username === player_cards.username
       })
-      return !has_player_token && card.supply && _.includes(_.words(card.top_card.types), 'action')
+      return !has_player_token && card.supply && _.includes(_.words(card.top_card.pile_types), 'action')
     })
 
     let turn_event_id = TurnEventModel.insert({
