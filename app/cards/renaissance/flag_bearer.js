@@ -22,39 +22,8 @@ FlagBearer = class FlagBearer extends Card {
   }
 
   take_flag(game, player_cards) {
-    this.source = player_cards.artifacts
-    let flag = this.find_flag()
-
-    if (!flag) {
-      this.source = game.artifacts
-      flag = this.find_flag()
-      if (!flag) {
-        let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
-        ordered_player_cards.shift()
-        _.each(ordered_player_cards, (next_player_cards) => {
-          this.next_player_cards = next_player_cards
-          this.source = next_player_cards.artifacts
-          flag = this.find_flag()
-          if (flag) {
-            return false
-          }
-        })
-      }
-      let card_mover = new CardMover(game, player_cards)
-      card_mover.move(this.source, player_cards.artifacts, flag)
-      if (this.next_player_cards) {
-        PlayerCardsModel.update(game._id, this.next_player_cards)
-      }
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(flag)}`)
-    } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has ${CardView.render(flag)}`)
-    }
-  }
-
-  find_flag() {
-    return _.find(this.source, (artifact) => {
-      return artifact.name === 'Flag'
-    })
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.take_unique_card('artifacts', 'Flag')
   }
 
 }
