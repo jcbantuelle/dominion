@@ -9,8 +9,9 @@ BorderGuard = class BorderGuard extends Card {
   }
 
   play(game, player_cards) {
-    this.source = player_cards.artifacts
-    let lantern = this.find_artifact('Lantern')
+    let lantern = _.find(player_cards.artifacts, (artifact) => {
+      return artifact.name === 'Lantern'
+    })
 
     let card_count_to_reveal = lantern ? 3 : 2
 
@@ -56,7 +57,9 @@ BorderGuard = class BorderGuard extends Card {
         card_discarder.discard()
 
         if (gain_artifact) {
-          let horn = this.find_artifact('Horn')
+          let horn = _.find(player_cards.artifacts, (artifact) => {
+            return artifact.name === 'Horn'
+          })
           if (lantern && horn) {
             game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> already has ${CardView.render(lantern)} and ${CardView.render(horn)}`)
           } else {
@@ -82,35 +85,12 @@ BorderGuard = class BorderGuard extends Card {
               artifact_name = turn_event_processor.process(BorderGuard.choose_artifact)
             }
 
-            this.source = game.artifacts
-            let artifact = this.find_artifact(artifact_name)
-            if (!artifact) {
-              let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
-              ordered_player_cards.shift()
-              _.each(ordered_player_cards, (next_player_cards) => {
-                this.next_player_cards = next_player_cards
-                this.source = next_player_cards.artifacts
-                artifact = this.find_artifact(artifact_name)
-                if (artifact) {
-                  return false
-                }
-              })
-            }
-            card_mover.move(this.source, player_cards.artifacts, artifact)
-            if (this.next_player_cards) {
-              PlayerCardsModel.update(game._id, this.next_player_cards)
-            }
-            game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(artifact)}`)
+            let card_mover = new CardMover(game, player_cards)
+            card_mover.take_unique_card('artifacts', artifact_name)
           }
         }
       }
     }
-  }
-
-  find_artifact(artifact_name) {
-    return _.find(this.source, (artifact) => {
-      return artifact.name === artifact_name
-    })
   }
 
   static put_card_in_hand(game, player_cards, selected_cards) {
