@@ -13,9 +13,9 @@ Lackeys = class Lackeys extends Card {
     card_drawer.draw(2)
   }
 
-  gain_event(gainer) {
-    gainer.player_cards.villagers += 2
-    gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> takes 2 villagers`)
+  gain_event(gainer, lackeys) {
+    let villager_gainer = new VillagerGainer(gainer.game, gainer.player_cards, lackeys)
+    villager_gainer.gain(2)
   }
 
 }
