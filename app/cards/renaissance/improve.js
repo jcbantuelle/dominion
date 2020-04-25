@@ -26,7 +26,7 @@ Improve = class Improve extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose an action to trash: (or none to skip)',
+        instructions: `Choose an action to trash from play for ${CardView.render(improve)}: (or none to skip)`,
         cards: actions_to_discard,
         minimum: 0,
         maximum: 0
