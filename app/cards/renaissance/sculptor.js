@@ -10,7 +10,7 @@ Sculptor = class Sculptor extends Card {
 
   play(game, player_cards) {
     let eligible_cards = _.filter(game.cards, function (card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 5)
+      return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 5)
     })
 
     if (_.size(eligible_cards) > 0) {
@@ -35,18 +35,10 @@ Sculptor = class Sculptor extends Card {
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'hand', selected_cards[0].name)
     let gained_card = card_gainer.gain()
-    let types = _.words(gained_card.types)
 
-    if (_.includes(types, 'treasure')) {
-      if (game.turn.possessed) {
-        possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-        possessing_player_cards.villagers += 1
-        game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes a villager`)
-        PlayerCardsModel.update(game._id, possessing_player_cards)
-      } else {
-        player_cards.villagers += 1
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes a villager`)
-      }
+    if (_.includes(_.words(gained_card.types), 'treasure')) {
+      let villager_gainer = new VillagerGainer(game, player_cards)
+      villager_gainer.gain(1)
     }
   }
 
