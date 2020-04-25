@@ -624,7 +624,7 @@ CardList = class CardList {
       'Hideout',
       'Inventor',
       'MountainVillage',
-      // 'Patron',
+      'Patron',
       'Priest',
       // 'Research',
       'SilkMerchant',
