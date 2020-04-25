@@ -664,6 +664,7 @@ CardList = class CardList {
 
   static renaissance_projects() {
     return [
+      'Cathedral',
     ]
   }
 

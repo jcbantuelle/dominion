@@ -12,6 +12,10 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
     return ['Key']
   }
 
+  static project_events() {
+    return ['Cathedral']
+  }
+
   static aside_events() {
     return ['Horse Traders', 'Prince']
   }
@@ -68,6 +72,12 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
 
     _.each(this.player_cards.artifacts, (card) => {
       if (_.includes(StartTurnEventProcessor.artifact_events(), card.name)) {
+        this.start_turn_events.push(card)
+      }
+    })
+
+    _.each(this.player_cards.projects, (card) => {
+      if (_.includes(StartTurnEventProcessor.project_events(), card.name)) {
         this.start_turn_events.push(card)
       }
     })
