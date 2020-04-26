@@ -4,6 +4,10 @@ ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
     return ['Coin Of The Realm', 'Royal Carriage']
   }
 
+  static project_events() {
+    return ['Citadel']
+  }
+
   constructor(game, player_cards, resolved_action) {
     this.game = game
     this.player_cards = player_cards
@@ -12,7 +16,7 @@ ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
   }
 
   find_action_resolution_events() {
-    reserve_events = []
+    let action_resolution_events = []
     _.each(this.player_cards.tavern, (tavern_card) => {
       if (_.includes(ActionResolutionEventProcessor.reserve_events(), tavern_card.name)) {
         if (tavern_card.name === 'Royal Carriage') {
@@ -20,15 +24,25 @@ ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
             return in_play_card.id === this.resolved_action.id
           })
           if (resolved_action) {
-            reserve_events.push(tavern_card)
+            action_resolution_events.push(tavern_card)
           }
         } else {
-          reserve_events.push(tavern_card)
+          action_resolution_events.push(tavern_card)
         }
       }
     })
 
-    return reserve_events
+    _.each(this.player_cards.projects, (card) => {
+      if (_.includes(ActionResolutionEventProcessor.project_events(), card.name)) {
+        if (card.name === 'Citadel') {
+          if (_.size(this.game.turn.played_actions) === 1) {
+            action_resolution_events.push(card)
+          }
+        }
+      }
+    })
+
+    return action_resolution_events
   }
 
   process() {
@@ -52,15 +66,10 @@ ActionResolutionEventProcessor = class ActionResolutionEventProcessor {
 
   static event_order(game, player_cards, ordered_events, resolved_action) {
     _.each(ordered_events, function(ordered_event) {
-      let card = _.find(player_cards.tavern, function(card) {
-        return card.id === ordered_event.id
-      })
-      if (card) {
-        let card_object = ClassCreator.create(card.name)
-        card_object.action_resolution_event(game, player_cards, card, resolved_action)
-        GameModel.update(game._id, game)
-        PlayerCardsModel.update(game._id, player_cards)
-      }
+      let card_object = ClassCreator.create(ordered_event.name)
+      card_object.action_resolution_event(game, player_cards, ordered_event, resolved_action)
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
     })
   }
 
