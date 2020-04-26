@@ -1,3 +1,5 @@
+import Bootstrap from 'bootstrap'
+
 Template.lobby.onCreated(registerStreams)
 Template.lobby.onRendered(createPopovers)
 
