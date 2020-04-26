@@ -11,7 +11,6 @@ GameProposer = class GameProposer {
     this.select_cards()
     this.proposal_id = this.create_proposal()
     this.update_players()
-    this.set_proposal_timeout()
   }
 
   create_proposal(proposal_cards) {
@@ -46,15 +45,6 @@ GameProposer = class GameProposer {
         $unset: {declined_proposal: ''}
       })
     })
-  }
-
-  set_proposal_timeout() {
-    Meteor.setTimeout(() => {
-      if (ProposalModel.findOne(this.proposal_id)) {
-        let proposal_decliner = new ProposalDecliner(this.proposal_id)
-        proposal_decliner.timeout_decline()
-      }
-    }, 30000)
   }
 
   find_players(player_ids) {

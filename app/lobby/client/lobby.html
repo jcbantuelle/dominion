@@ -40,15 +40,16 @@
 
         {{#if accepted}}
           <div>Waiting for others to accept...</div>
-        {{else}}
-          <div id="proposal-form-container">
-            <form id="proposed-game">
-              <input type="hidden" id="proposal_id" value="{{_id}}" />
-              <button id="decline-proposal" class="btn btn-small btn-danger" type="submit" value="Decline Game">Decline Game</button>
-              <button id="accept-proposal" class="btn btn-small btn-success" type="submit" value="Accept Game">Accept Game</button>
-            </form>
-          </div>
         {{/if}}
+        <div id="proposal-form-container">
+          <form id="proposed-game">
+            <input type="hidden" id="proposal_id" value="{{_id}}" />
+            <button id="decline-proposal" class="btn btn-small btn-danger" type="submit" value="Decline Game">Decline Game</button>
+            {{#unless accepted}}
+              <button id="accept-proposal" class="btn btn-small btn-success" type="submit" value="Accept Game">Accept Game</button>
+            {{/unless}}
+          </form>
+        </div>
       {{/with}}
     </div>
 

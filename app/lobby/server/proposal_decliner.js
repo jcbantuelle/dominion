@@ -10,13 +10,6 @@ ProposalDecliner = class ProposalDecliner {
     this.decline()
   }
 
-  timeout_decline() {
-    this.declined_players = _.filter(this.proposal.players, function(player) {
-      return !player.accepted
-    })
-    this.decline()
-  }
-
   decline() {
     ProposalModel.remove(this.proposal._id)
     this.update_players()
