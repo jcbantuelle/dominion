@@ -25,7 +25,7 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static project_cards() {
-    return ['Academy', 'Guildhall']
+    return ['Academy', 'Guildhall', 'Road Network']
   }
 
   constructor(gainer, player_cards) {
@@ -167,6 +167,16 @@ GainEventProcessor = class GainEventProcessor {
       }
     })
 
+    _.each(this.player_cards.projects, (card) => {
+      if (this.gainer.player_cards._id !== this.player_cards._id && _.includes(GainEventProcessor.project_cards(), card.name)) {
+        if (card.name === 'Road Network') {
+          if (_.includes(_.words(this.gainer.gained_card.types), 'victory')) {
+            this.gain_events.push(card)
+          }
+        }
+      }
+    })
+
     if (this.gainer.player_cards._id === this.player_cards._id && _.includes(_.words(this.gainer.gained_card.types), 'victory') && this.gainer.supply_pile && this.gainer.supply_pile.has_trade_route_token) {
       let trade_route = ClassCreator.create('Trade Route').to_h()
       trade_route.id = this.generate_event_id()
@@ -189,10 +199,9 @@ GainEventProcessor = class GainEventProcessor {
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, (event) => {
-        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall']), event.name)
+        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall', 'Road Network']), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
-        GainEventProcessor.gain_event(this.gainer.game, this.gainer.player_cards, this.gain_events, this)
         GainEventProcessor.gain_event(this.gainer.game, this.player_cards, this.gain_events, this)
       } else {
         GameModel.update(this.gainer.game._id, this.gainer.game)
