@@ -174,6 +174,7 @@ GameCreator = class GameCreator {
       debt_tokens: 0,
       victory_tokens: 0,
       pirate_ship_coins: 0,
+      sinister_plot_tokens: 0,
       tokens: {pile: []},
       turns: (this.game.turn.player._id === player._id) ? 1 : 0
     }

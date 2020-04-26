@@ -13,7 +13,7 @@ StartTurnEventProcessor = class StartTurnEventProcessor {
   }
 
   static project_events() {
-    return ['Cathedral', 'City Gate', 'Fair', 'Silos']
+    return ['Cathedral', 'City Gate', 'Fair', 'Silos', 'Sinister Plot']
   }
 
   static aside_events() {
