@@ -679,6 +679,7 @@ CardList = class CardList {
       'Guildhall',
       'Piazza',
       'RoadNetwork',
+      'Barracks',
     ]
   }
 
