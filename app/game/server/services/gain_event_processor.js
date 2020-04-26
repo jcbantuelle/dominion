@@ -25,7 +25,7 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static project_cards() {
-    return ['Academy', 'Guildhall', 'Road Network']
+    return ['Academy', 'Guildhall', 'Road Network', 'Innovation']
   }
 
   constructor(gainer, player_cards) {
@@ -163,6 +163,14 @@ GainEventProcessor = class GainEventProcessor {
           if (_.includes(_.words(this.gainer.gained_card.types), 'treasure')) {
             this.gain_events.push(card)
           }
+        } else if (card.name === 'Innovation') {
+          let gained_actions = _.filter(this.gainer.game.turn.gained_cards, (card) => {
+            return _.includes(_.words(card.types), 'action')
+          })
+          if (!this.gainer.game.turn.innovation && _.size(gained_actions) === 1 && gained_actions[0].id === this.gainer.gained_card.id) {
+            this.gainer.game.turn.innovation = true
+            this.gain_events.push(card)
+          }
         }
       }
     })
@@ -199,7 +207,7 @@ GainEventProcessor = class GainEventProcessor {
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, (event) => {
-        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall', 'Road Network']), event.name)
+        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall', 'Road Network', 'Innovation']), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.player_cards, this.gain_events, this)
