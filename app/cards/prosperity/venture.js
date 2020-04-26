@@ -9,45 +9,30 @@ Venture = class Venture extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 1)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1, false)
 
-    let revealed_treasure = this.reveal(game, player_cards)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal_from_deck_until((game, player_cards, revealed_cards) => {
+      if (!_.isEmpty(revealed_cards)) {
+        return _.includes(_.words(_.last(revealed_cards).types), 'treasure')
+      } else {
+        return false
+      }
+    })
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
+    let non_treasures = _.filter(player_cards.revealed, (card) => {
+      return !_.includes(_.words(card.types), 'treasure')
+    })
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', non_treasures)
     card_discarder.discard()
 
-    if (revealed_treasure) {
-      player_cards.hand.push(revealed_treasure)
-      let card_player = new CardPlayer(game, player_cards, revealed_treasure.name, true)
-      card_player.play()
+    if (_.isEmpty(player_cards.revealed)) {
+      game.log.push(`&nbsp;&nbsp;but there is no treasure to play`)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not have any treasures in their deck`)
+      let card_player = new CardPlayer(game, player_cards, player_cards.revealed[0])
+      card_player.play(true, true, 'revealed')
     }
-    delete player_cards.revealed_treasure
-  }
-
-  reveal(game, player_cards) {
-    let revealed_cards = []
-    var revealed_treasure
-    while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !revealed_treasure) {
-      if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
-      }
-      let card = player_cards.deck.shift()
-      revealed_cards.push(card)
-      if (_.includes(_.words(card.types), 'treasure')) {
-        revealed_treasure = card
-      } else {
-        player_cards.revealed.push(card)
-      }
-    }
-    if (!_.isEmpty(revealed_cards)) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_cards)}`)
-    } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in their deck`)
-    }
-
-    return revealed_treasure
   }
 
 }

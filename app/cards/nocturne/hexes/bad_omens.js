@@ -1,31 +1,21 @@
 BadOmens = class BadOmens extends Hex {
 
   receive(game, player_cards) {
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move_all(player_cards.deck, player_cards.discard)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts their deck into their discard pile`)
-    player_cards.discard = player_cards.discard.concat(player_cards.deck)
-    player_cards.deck = []
 
-    this.coppers = []
-    this.find_copper(player_cards)
-    if (_.size(this.coppers) > 0) {
-      this.find_copper(player_cards)
-    }
-
-    if (_.size(this.coppers) > 0) {
-      player_cards.deck = this.coppers
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${_.size(player_cards.deck)} ${CardView.card_html('treasure', 'Copper')} on their deck`)
-    } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.discard)}`)
-    }
-  }
-
-  find_copper(player_cards) {
-    let copper_index = _.findIndex(player_cards.discard, function(card) {
+    let coppers = _.take(_.filter(player_cards.discard, function(card) {
       return card.name === 'Copper'
-    })
+    }), 2)
 
-    if (copper_index !== -1) {
-      this.coppers.push(player_cards.discard.splice(copper_index, 1)[0])
+    _.each(coppers, (copper) => {
+      card_mover.move(player_cards.discard, player_cards.deck, copper)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(copper)} on their deck`)
+    })
+    if (_.size(coppers) < 2) {
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal('discard')
     }
   }
 

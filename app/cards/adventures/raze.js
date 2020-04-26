@@ -8,20 +8,20 @@ Raze = class Raze extends Card {
     return 2
   }
 
-  play(game, player_cards, player) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+  play(game, player_cards, card_player) {
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     let trashable_cards = _.map(player_cards.hand, function(card) {
       let new_card = _.clone(card)
       new_card.source = 'H'
       return new_card
     })
-    let raze_in_play = _.some(player_cards.playing, function(card) {
-      return card.name === player.card.name()
+    let raze_in_play = _.find(player_cards.in_play, function(card) {
+      return card.id === card_player.card.id
     })
     if (raze_in_play) {
-      let raze = _.clone(player.card.to_h(player_cards))
+      let raze = _.clone(raze_in_play)
       raze.source = 'P'
       trashable_cards.push(raze)
     }
@@ -49,26 +49,19 @@ Raze = class Raze extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     let trashed_card = selected_cards[0]
-    let source = trashed_card.source === 'H' ? 'hand' : 'playing'
-    let card_trasher = new CardTrasher(game, player_cards, source, trashed_card.name)
+    let source = trashed_card.source === 'H' ? 'hand' : 'in_play'
+    let card_trasher = new CardTrasher(game, player_cards, source, trashed_card)
     card_trasher.trash()
 
     let coin_cost = CostCalculator.calculate(game, trashed_card)
 
     if (coin_cost > 0) {
-      player_cards.revealed = _.take(player_cards.deck, coin_cost)
-      player_cards.deck = _.drop(player_cards.deck, coin_cost)
-
-      let revealed_card_count = _.size(player_cards.revealed)
-      if (revealed_card_count < coin_cost && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(game, player_cards)
-        player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, coin_cost - revealed_card_count))
-        player_cards.deck = _.drop(player_cards.deck, coin_cost - revealed_card_count)
-      }
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck(coin_cost, false)
 
       if (_.size(player_cards.revealed) > 1) {
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> looks at the top ${_.size(player_cards.revealed)} cards of their deck`)
         GameModel.update(game._id, game)
+        PlayerCardsModel.update(game._id, player_cards)
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
@@ -93,11 +86,10 @@ Raze = class Raze extends Card {
   }
 
   static put_card_in_hand(game, player_cards, selected_cards) {
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move(player_cards.revealed, player_cards.hand, selected_cards[0])
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts a card in their hand`)
-    let selected_card_index = _.findIndex(player_cards.revealed, function(card) {
-      return card.name === selected_cards[0].name
-    })
-    player_cards.hand.push(player_cards.revealed.splice(selected_card_index, 1)[0])
+
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard()
   }

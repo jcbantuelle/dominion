@@ -1,7 +1,11 @@
 Treasury = class Treasury extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -12,41 +16,33 @@ Treasury = class Treasury extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$${gained_coins}`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
+
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
   }
 
-  discard_event(discarder, card_name = 'Treasury') {
-    let discard_card = this
-    if (card_name === 'Estate') {
-      discard_card = _.find(discarder.player_cards.discarding, function(card) {
-        return card.name === 'Estate'
-      })
-    }
+  discard_event(discarder, treasury) {
     let turn_event_id = TurnEventModel.insert({
       game_id: discarder.game._id,
       player_id: discarder.player_cards.player_id,
       username: discarder.player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Put ${CardView.render(discard_card)} On Top of Deck?`,
+      instructions: `Put ${CardView.render(treasury)} On Top of Deck?`,
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id, treasury)
     turn_event_processor.process(Treasury.put_on_deck)
   }
 
-  static put_on_deck(game, player_cards, response) {
+  static put_on_deck(game, player_cards, response, treasury) {
     if (response === 'yes') {
-      let treasury = player_cards.discarding.pop()
-      game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(treasury)} on top of their deck`)
-      delete treasury.scheme
-      delete treasury.prince
-      if (treasury.misfit) {
-        treasury = treasury.misfit
+      let card_mover = new CardMover(game, player_cards)
+      if (card_mover.move(player_cards.in_play, player_cards.deck, treasury)) {
+        game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(treasury)} on top of their deck`)
       }
-      player_cards.deck.unshift(treasury)
     }
   }
 

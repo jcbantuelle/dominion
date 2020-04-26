@@ -1,4 +1,4 @@
-Wharf = class Wharf extends Card {
+Wharf = class Wharf extends Duration {
 
   types() {
     return ['action', 'duration']
@@ -8,22 +8,23 @@ Wharf = class Wharf extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
-
+  play(game, player_cards, card_player) {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
+
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    let card_drawer = new CardDrawer(game, player_cards)
-    let drawn_count = card_drawer.draw(2, false)
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${drawn_count} card(s) and gets +1 buy from ${CardView.render(duration_card)}`)
+  duration(game, player_cards, wharf) {
+    let card_drawer = new CardDrawer(game, player_cards, wharf)
+    let drawn_count = card_drawer.draw(2)
+
+    let buy_gainer = new BuyGainer(game, player_cards, wharf)
+    buy_gainer.gain(1)
   }
 
 }

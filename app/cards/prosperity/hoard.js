@@ -9,12 +9,13 @@ Hoard = class Hoard extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 2)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2, false)
   }
 
   buy_event(buyer) {
     let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', 'Gold')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

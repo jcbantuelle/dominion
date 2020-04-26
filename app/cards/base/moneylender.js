@@ -1,7 +1,11 @@
 Moneylender = class Moneylender extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,35 +13,36 @@ Moneylender = class Moneylender extends Card {
   }
 
   play(game, player_cards) {
-    let has_copper = _.some(player_cards.hand, function(card) {
+    let copper = _.find(player_cards.hand, (card) => {
       return card.name === 'Copper'
     })
 
-    if (has_copper) {
+    if (copper) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
         username: game.turn.player.username,
         type: 'choose_yes_no',
-        instructions: `Trash a ${CardView.card_html('treasure', 'Copper')}?`,
+        instructions: `Trash a ${CardView.render(copper)}?`,
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, copper)
       turn_event_processor.process(Moneylender.trash_copper)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.card_html('treasure', 'Copper')}`)
+      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(new Copper())}`)
     }
   }
 
-  static trash_copper(game, player_cards, response) {
+  static trash_copper(game, player_cards, response, copper) {
     if (response === 'yes') {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', 'Copper')
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', copper)
       card_trasher.trash()
-      let gained_coins = CoinGainer.gain(game, player_cards, 3)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(3)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.card_html('treasure', 'Copper')}`)
+      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(copper)}`)
     }
   }
 

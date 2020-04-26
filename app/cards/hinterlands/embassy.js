@@ -12,6 +12,7 @@ Embassy = class Embassy extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(5)
 
+    GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
 
     if (_.size(player_cards.hand) > 3) {
@@ -37,7 +38,7 @@ Embassy = class Embassy extends Card {
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 
@@ -46,7 +47,7 @@ Embassy = class Embassy extends Card {
     ordered_player_cards.shift()
     _.each(ordered_player_cards, function(other_player_cards) {
       let card_gainer = new CardGainer(gainer.game, other_player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 

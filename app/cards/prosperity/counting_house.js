@@ -9,7 +9,7 @@ CountingHouse = class CountingHouse extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.discard, function(card) {
+    let eligible_cards = _.filter(player_cards.discard, (card) => {
       return card.name === 'Copper'
     })
 
@@ -33,18 +33,21 @@ CountingHouse = class CountingHouse extends Card {
   }
 
   static add_coppers(game, player_cards, selected_cards) {
-    let copper_count = _.size(selected_cards)
-    _.times(copper_count, function() {
-      let card_index = _.findIndex(player_cards.discard, function(card) {
-        return card.name === 'Copper'
-      })
-      player_cards.hand.push(player_cards.discard.splice(card_index, 1)[0])
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(player_cards.discard, selected_cards)
+
+    let copper_count = 0
+    _.each(selected_cards, (selected_card) => {
+      let card_mover = new CardMover(game, player_cards)
+      if (card_mover.move(player_cards.discard, player_cards.hand, selected_card)) {
+        copper_count += 1
+      }
     })
 
     if (copper_count === 0) {
       game.log.push(`&nbsp;&nbsp;but does not put any coppers into their hand`)
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${copper_count} ${CardView.card_html('treasure', 'Copper')} in their hand`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${copper_count} ${CardView.render(new Copper())} in their hand`)
     }
   }
 

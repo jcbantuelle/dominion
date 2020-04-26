@@ -9,7 +9,7 @@ Mine = class Mine extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.hand, function(card) {
+    let eligible_cards = _.filter(player_cards.hand, (card) => {
       return _.includes(_.words(card.types), 'treasure')
     })
 
@@ -20,7 +20,7 @@ Mine = class Mine extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a treasure to trash (Or none to skip):',
+        instructions: 'Choose a treasure to trash (or none to skip):',
         cards: eligible_cards,
         minimum: 0,
         maximum: 1
@@ -34,13 +34,11 @@ Mine = class Mine extends Card {
 
   static trash_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let selected_card = selected_cards[0]
-
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0])
       card_trasher.trash()
 
-      let eligible_cards = _.filter(game.cards, function(card) {
-        return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'treasure') && CardCostComparer.card_less_than(game, selected_card, card.top_card, 4)
+      let eligible_cards = _.filter(game.cards, (card) => {
+        return card.count > 0 && card.supply && _.includes(_.words(card.top_card.types), 'treasure') && CardCostComparer.card_less_than(game, selected_cards[0], card.top_card, 4)
       })
 
       if (_.size(eligible_cards) > 0) {
@@ -66,9 +64,8 @@ Mine = class Mine extends Card {
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'hand', selected_card.name)
-    card_gainer.gain_game_card()
+    let card_gainer = new CardGainer(game, player_cards, 'hand', selected_cards[0].name)
+    card_gainer.gain()
   }
 
 }

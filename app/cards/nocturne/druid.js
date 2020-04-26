@@ -9,8 +9,8 @@ Druid = class Druid extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
 
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
@@ -18,7 +18,6 @@ Druid = class Druid extends Card {
       username: player_cards.username,
       type: 'choose_cards',
       player_cards: true,
-      boon: true,
       instructions: 'Choose a boon to receive:',
       cards: game.druid_boons,
       minimum: 1,
@@ -29,10 +28,8 @@ Druid = class Druid extends Card {
   }
 
   static receive_boon(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(selected_card, true)}`)
-    boon = ClassCreator.create(selected_card.name)
-    boon.receive(game, player_cards)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(selected_cards)}`)
+    ClassCreator.create(selected_cards[0].name).receive(game, player_cards)
   }
 
 }

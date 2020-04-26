@@ -1,4 +1,4 @@
-GhostTown = class GhostTown extends Card {
+GhostTown = class GhostTown extends Duration {
 
   types() {
     return ['night', 'duration']
@@ -8,16 +8,17 @@ GhostTown = class GhostTown extends Card {
     return 3
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
+  play(game, player_cards, card_player) {
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    let card_drawer = new CardDrawer(game, player_cards)
-    let drawn_count = card_drawer.draw(1, false)
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${drawn_count} card(s) and +1 action from ${CardView.render(this)}`)
+  duration(game, player_cards, ghost_town) {
+    let card_drawer = new CardDrawer(game, player_cards, ghost_town)
+    let drawn_count = card_drawer.draw(1)
+
+    let action_gainer = new ActionGainer(game, player_cards, ghost_town)
+    action_gainer.gain(1)
   }
 
   destination() {

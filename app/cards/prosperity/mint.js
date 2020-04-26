@@ -9,7 +9,7 @@ Mint = class Mint extends Card {
   }
 
   play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.hand, function(card) {
+    let eligible_cards = _.filter(player_cards.hand, (card) => {
       return _.includes(_.words(card.types), 'treasure')
     })
     if (_.size(eligible_cards) > 0) {
@@ -19,7 +19,7 @@ Mint = class Mint extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a treasure to reveal (Or none to skip):',
+        instructions: 'Choose a treasure to reveal (or none to skip):',
         cards: eligible_cards,
         minimum: 0,
         maximum: 1
@@ -27,14 +27,17 @@ Mint = class Mint extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Mint.reveal_card)
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not trash anything`)
+      game.log.push(`&nbsp;&nbsp;but does not reveal a treasure`)
     }
   }
 
   static reveal_card(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal(player_cards.hand, selected_cards)
+
       let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     } else {
       game.log.push(`&nbsp;&nbsp;but does not reveal a treasure`)
     }
@@ -44,7 +47,7 @@ Mint = class Mint extends Card {
     let treasures_to_trash = _.filter(buyer.player_cards.in_play, function(card) {
       return _.includes(_.words(card.types), 'treasure')
     })
-    let card_trasher = new CardTrasher(buyer.game, buyer.player_cards, 'in_play', _.map(treasures_to_trash, 'name'))
+    let card_trasher = new CardTrasher(buyer.game, buyer.player_cards, 'in_play', treasures_to_trash)
     card_trasher.trash()
   }
 

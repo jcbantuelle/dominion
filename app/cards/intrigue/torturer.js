@@ -35,11 +35,8 @@ Torturer = class Torturer extends Card {
   }
 
   static process_response(game, player_cards, response) {
-    response = response[0]
-    if (response === 'discard') {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to discard 2 cards`)
-      let hand_size = _.size(player_cards.hand)
-      if (hand_size > 2) {
+    if (response[0] === 'discard') {
+      if (_.size(player_cards.hand) > 2) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
@@ -56,18 +53,19 @@ Torturer = class Torturer extends Card {
       } else {
         Torturer.discard_cards(game, player_cards, player_cards.hand)
       }
-    } else if (response === 'curse') {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to gain a curse`)
+    } else if (response[0] === 'curse') {
       let card_gainer = new CardGainer(game, player_cards, 'hand', 'Curse')
-      card_gainer.gain_game_card()
+      if (!card_gainer.gain()) {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to gain ${CardView.render(new Curse())} but there are none left`)
+      }
     }
   }
 
   static discard_cards(game, player_cards, selected_cards) {
     if (_.size(selected_cards) === 0) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in hand`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to discard but has no cards in hand`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
     }
   }

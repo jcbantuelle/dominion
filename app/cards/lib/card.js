@@ -1,7 +1,21 @@
 Card = class Card {
 
-  is_purchasable() {
-    return true
+  constructor(game) {
+    this.game = game
+  }
+
+  capitalism_types(current_types) {
+    if (this.game) {
+      let player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.player._id)
+      if (player_cards.capitalism) {
+        current_types.push('treasure')
+      }
+    }
+    return current_types
+  }
+
+  capitalism() {
+    return false
   }
 
   potion_cost() {
@@ -24,48 +38,58 @@ Card = class Card {
     return _.startCase(this.constructor.name)
   }
 
-  inherited_name() {
-    return this.name()
-  }
-
   image() {
     return _.snakeCase(this.constructor.name)
-  }
-
-  type_class(player_cards) {
-    return this.types(player_cards).join(' ')
   }
 
   stack_name() {
     return this.name()
   }
 
-  move_to_tavern(game, player_cards, name) {
-    let reserve_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === name
-    })
-    if (reserve_index !== -1) {
-      let reserve_card = player_cards.playing.splice(reserve_index, 1)[0]
-      delete reserve_card.prince
-      if (reserve_card.misfit) {
-        reserve_card = reserve_card.misfit
+  type_class() {
+    return this.types().join(' ')
+  }
+
+  pile_types() {
+    return this.types()
+  }
+
+  destination() {
+    return false
+  }
+
+  stay_in_play(game, player_cards, card) {
+    _.each(card.belongs_to, (belongs_to, i) => {
+      if (belongs_to.expect_in_play) {
+        let still_in_play = _.find(player_cards.in_play, (in_play_card) => {
+          return in_play_card.id === belongs_to.id
+        })
+        if (!still_in_play) {
+          delete card.belongs_to[i]
+          return false
+        }
       }
-      player_cards.tavern.push(reserve_card)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(reserve_card)} on their Tavern`)
-    }
+      let stay_in_play = ClassCreator.create(belongs_to.name).stay_in_play(game, player_cards, belongs_to)
+      if (!stay_in_play) {
+        delete card.belongs_to[i]
+      }
+    })
+    card.belongs_to = _.compact(card.belongs_to)
+
+    return !_.isEmpty(card.belongs_to)
   }
 
   to_h(player_cards) {
     return {
       name: this.name(),
-      inherited_name: this.inherited_name(player_cards),
       image: this.image(),
-      types: this.type_class(player_cards),
+      types: this.types().join(' '),
+      pile_types: this.pile_types().join(' '),
       coin_cost: this.coin_cost(),
       potion_cost: this.potion_cost(),
       debt_cost: this.debt_cost(),
-      purchasable: this.is_purchasable(),
-      stack_name: this.stack_name()
+      stack_name: this.stack_name(),
+      capitalism: this.capitalism()
     }
   }
 

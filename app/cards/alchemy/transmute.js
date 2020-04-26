@@ -13,7 +13,7 @@ Transmute = class Transmute extends Card {
   }
 
   play(game, player_cards) {
-    if (_.size(player_cards.hand) > 0) {
+    if (_.size(player_cards.hand) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -27,35 +27,33 @@ Transmute = class Transmute extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Transmute.trash_card)
+    } else if (_.size(player_cards.hand) === 1) {
+      Transmute.trash_card(game, player_cards, player_cards.hand)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     card_trasher.trash()
 
     let trashed_card = selected_cards[0]
-    if (player_cards.tokens.estate && trashed_card.name === 'Estate') {
-      trashed_card = ClassCreator.create('Estate').to_h()
-    }
-
     let selected_card_types = _.words(trashed_card.types)
 
     if (_.includes(selected_card_types, 'action')) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
 
     if (_.includes(selected_card_types, 'treasure')) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Transmute')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
 
     if (_.includes(selected_card_types, 'victory')) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

@@ -17,17 +17,11 @@ CrumblingCastle = class CrumblingCastle extends Castles {
   }
 
   gain_victory_token_and_silver(event_handler) {
-    if (event_handler.game.turn.possessed) {
-      possessing_player_cards = PlayerCardsModel.findOne(event_handler.game._id, event_handler.game.turn.possessed._id)
-      possessing_player_cards.victory_tokens += 1
-      event_handler.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +1 &nabla;`)
-      PlayerCardsModel.update(event_handler.game._id, possessing_player_cards)
-    } else {
-      event_handler.player_cards.victory_tokens += 1
-      event_handler.game.log.push(`&nbsp;&nbsp;<strong>${event_handler.player_cards.username}</strong> gets +1 &nabla;`)
-    }
+    let victory_token_gainer = new VictoryTokenGainer(event_handler.game, event_handler.player_cards)
+    victory_token_gainer.gain(1)
+
     let card_gainer = new CardGainer(event_handler.game, event_handler.player_cards, 'discard', 'Silver')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

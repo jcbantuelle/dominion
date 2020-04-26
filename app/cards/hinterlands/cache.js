@@ -9,13 +9,14 @@ Cache = class Cache extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 3)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(3, false)
   }
 
   gain_event(gainer) {
     _.times(2, function() {
       let card_gainer = new CardGainer(gainer.game, gainer.player_cards, 'discard', 'Copper')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 }

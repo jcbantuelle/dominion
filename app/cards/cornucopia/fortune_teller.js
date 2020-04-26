@@ -1,7 +1,11 @@
 FortuneTeller = class FortuneTeller extends Card {
 
   types() {
-    return ['action', 'attack']
+    return this.capitalism_types(['action', 'attack'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,47 +13,34 @@ FortuneTeller = class FortuneTeller extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
   }
 
   attack(game, player_cards) {
-    this.reveal(game, player_cards)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal_from_deck_until((game, player_cards, revealed_cards) => {
+      if (!_.isEmpty(revealed_cards)) {
+        return _.includes(_.words(_.last(revealed_cards).types), 'victory') || _.last(revealed_cards).name === 'Curse'
+      } else {
+        return false
+      }
+    })
 
-    if (player_cards.top_card) {
-      player_cards.deck.unshift(player_cards.top_card)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.top_card)} on top of their deck`)
+    let last_revealed = _.last(player_cards.revealed)
+    if (_.includes(_.words(last_revealed.types), 'victory') || last_revealed.name === 'Curse') {
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards.revealed, player_cards.deck, last_revealed)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(last_revealed)} on top of their deck`)
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> does not have any victory or curse cards in their deck`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no victory cards or curses in their deck`)
     }
-    delete player_cards.top_card
 
     let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard()
-  }
-
-  reveal(game, player_cards) {
-    let revealed_cards = []
-    while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.top_card) {
-      if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
-      }
-      let card = player_cards.deck.shift()
-      revealed_cards.push(card)
-      if (_.includes(_.words(card.types), 'victory') || _.includes(card.types, 'curse')) {
-        player_cards.top_card = card
-      } else {
-        player_cards.revealed.push(card)
-      }
-    }
-    if (!_.isEmpty(revealed_cards)) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_cards)}`)
-    } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in their deck`)
-    }
   }
 
 }

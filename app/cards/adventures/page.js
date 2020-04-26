@@ -12,12 +12,12 @@ Page = class Page extends Traveller {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
   }
 
-  discard_event(discarder, card_name = 'Page') {
-    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Treasure Hunter')
+  discard_event(discarder, page) {
+    this.choose_exchange(discarder.game, discarder.player_cards, page, 'Treasure Hunter')
   }
 
 }

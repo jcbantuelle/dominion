@@ -10,7 +10,7 @@ Bandit = class Bandit extends Card {
 
   play(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
@@ -20,25 +20,17 @@ Bandit = class Bandit extends Card {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
-      player_cards.revealed = _.take(player_cards.deck, 2)
-      player_cards.deck = _.drop(player_cards.deck, 2)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck(2)
 
-      let revealed_card_count = _.size(player_cards.revealed)
-      if (revealed_card_count < 2 && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(game, player_cards)
-        player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 2 - revealed_card_count))
-        player_cards.deck = _.drop(player_cards.deck, 2 - revealed_card_count)
-      }
-
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
       GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
 
-      let revealed_treasures = _.filter(player_cards.revealed, function(card) {
+      let revealed_treasures = _.filter(player_cards.revealed, (card) => {
         return _.includes(_.words(card.types), 'treasure') && card.name !== 'Copper'
       })
       if (_.size(revealed_treasures) === 1) {
-        let card_trasher = new CardTrasher(game, player_cards, 'revealed', revealed_treasures[0].name)
-        card_trasher.trash()
+        Bandit.trash_treasure(game, player_cards, revealed_treasures)
       } else if (_.size(revealed_treasures) > 1) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
@@ -52,15 +44,15 @@ Bandit = class Bandit extends Card {
           maximum: 1
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        turn_event_processor.process(Bandit.choose_trashed_treasure)
+        turn_event_processor.process(Bandit.trash_treasure)
       }
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
     }
   }
 
-  static choose_trashed_treasure(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_cards[0].name)
+  static trash_treasure(game, player_cards, selected_cards) {
+    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_cards)
     card_trasher.trash()
   }
 

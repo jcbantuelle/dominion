@@ -12,8 +12,8 @@ Margrave = class Margrave extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(3)
 
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
@@ -23,6 +23,7 @@ Margrave = class Margrave extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
+    GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
 
     let number_to_discard = _.size(player_cards.hand) - 3
@@ -47,7 +48,7 @@ Margrave = class Margrave extends Card {
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 

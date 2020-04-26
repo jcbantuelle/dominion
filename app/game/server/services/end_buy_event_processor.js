@@ -4,24 +4,48 @@ EndBuyEventProcessor = class EndBuyEventProcessor {
     return ['Wine Merchant']
   }
 
+  static project_events() {
+    return ['Pageant', 'Exploration']
+  }
+
   constructor(game, player_cards) {
     this.game = game
     this.player_cards = player_cards
-    this.find_end_buy_events()
+    this.end_buy_events = this.find_end_buy_events()
   }
 
   find_end_buy_events() {
-    let reserve_events = _.filter(this.player_cards.tavern, (card) => {
-      if (_.includes(EndBuyEventProcessor.reserve_events(), card.inherited_name)) {
-        if (card.inherited_name === 'Wine Merchant') {
-          return this.game.turn.coins >= 2
+    let events = []
+
+    _.each(this.player_cards.tavern, (card) => {
+      if (_.includes(EndBuyEventProcessor.reserve_events(), card.name)) {
+        if (card.name === 'Wine Merchant') {
+          if (this.game.turn.coins >= 2) {
+            events.push(card)
+          }
         } else {
-          return true
+          events.push(card)
         }
       }
     })
 
-    this.end_buy_events = reserve_events
+    _.each(this.player_cards.projects, (card) => {
+      if (_.includes(EndBuyEventProcessor.project_events(), card.name)) {
+        if (card.name === 'Pageant') {
+          if (this.game.turn.coins > 0) {
+            events.push(card)
+          }
+        } else if (card.name === 'Exploration') {
+          if (_.isEmpty(this.game.turn.bought_cards)) {
+            events.push(card)
+          }
+        } else {
+          events.push(card)
+        }
+      }
+    })
+
+    return events
   }
 
   process() {
@@ -36,25 +60,18 @@ EndBuyEventProcessor = class EndBuyEventProcessor {
           instructions: 'Choose order to resolve end of buy phase events (leftmost will be first):',
           cards: this.end_buy_events
         })
-        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this.end_buy_events)
+        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
         turn_event_processor.process(EndBuyEventProcessor.event_order)
       } else {
-        EndBuyEventProcessor.event_order(this.game, this.player_cards, _.map(this.end_buy_events, 'name'), this.end_buy_events)
+        EndBuyEventProcessor.event_order(this.game, this.player_cards, this.end_buy_events)
       }
     }
   }
 
-  static event_order(game, player_cards, event_name_order, events) {
-    _.each(event_name_order, function(event_name) {
-      let event_index = _.findIndex(events, function(event) {
-        return event.name === event_name
-      })
-      let event = events.splice(event_index, 1)[0]
-      if (event_name === 'Estate' && player_cards.tokens.estate) {
-        event_name = 'InheritedEstate'
-      }
-      let selected_event = ClassCreator.create(event_name)
-      selected_event.end_buy_event(game, player_cards)
+  static event_order(game, player_cards, ordered_events) {
+    _.each(ordered_events, function(event) {
+      let event_object = ClassCreator.create(event.name)
+      event_object.end_buy_event(game, player_cards, event)
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
     })

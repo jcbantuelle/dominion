@@ -1,7 +1,11 @@
 Herbalist = class Herbalist extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,13 +13,15 @@ Herbalist = class Herbalist extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.buys += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and +$${gained_coins}`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
+
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
   }
 
-  discard_event(discarder) {
-    let treasures = _.filter(discarder.player_cards.to_discard, function(card) {
+  discard_event(discarder, herbalist) {
+    let treasures = _.filter(discarder.player_cards.in_play, function(card) {
       return _.includes(_.words(card.types), 'treasure')
     })
     let turn_event_id = TurnEventModel.insert({
@@ -24,7 +30,7 @@ Herbalist = class Herbalist extends Card {
       username: discarder.player_cards.username,
       type: 'choose_cards',
       player_cards: true,
-      instructions: 'Choose a treasure to put on your deck (Or none to skip):',
+      instructions: 'Choose a treasure to put on your deck (or none to skip):',
       cards: treasures,
       minimum: 0,
       maximum: 1
@@ -35,18 +41,10 @@ Herbalist = class Herbalist extends Card {
 
   static put_on_deck(game, player_cards, selected_cards) {
     if (!_.isEmpty(selected_cards)) {
-      let card_index = _.findIndex(player_cards.to_discard, function(card) {
-        return card.name === selected_cards[0].name
-      })
-
-      let card = player_cards.to_discard.splice(card_index, 1)[0]
-      delete card.scheme
-      delete card.prince
-      if (card.misfit) {
-        card = card.misfit
+      let card_mover = new CardMover(game, player_cards)
+      if (card_mover.move(player_cards.in_play, player_cards.deck, selected_cards[0])) {
+        game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(selected_cards)} on top of their deck`)
       }
-      player_cards.deck.unshift(card)
-      game.log.push(`<strong>${player_cards.username}</strong> puts ${CardView.render(card)} on top of their deck`)
     }
   }
 

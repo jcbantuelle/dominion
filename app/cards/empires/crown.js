@@ -8,8 +8,8 @@ Crown = class Crown extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.hand, function(card) {
+  play(game, player_cards, card_player) {
+    let eligible_cards = _.filter(player_cards.hand, (card) => {
       return _.includes(_.words(card.types), game.turn.phase)
     })
 
@@ -25,21 +25,21 @@ Crown = class Crown extends Card {
         minimum: 0,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player.card)
       turn_event_processor.process(Crown.play_twice)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no ${game.turn.phase} cards in hand`)
+      let article_text = game.turn.phase === 'action' ? 'an' : 'a'
+      game.log.push(`&nbsp;&nbsp;but does not play ${article_text} ${game.turn.phase}`)
     }
   }
 
-  static play_twice(game, player_cards, selected_cards) {
-    if (_.size(selected_cards) > 0) {
-      let selected_card = selected_cards[0]
-
-      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.name)
-      repeat_card_player.play(2, 'Crown')
+  static play_twice(game, player_cards, selected_cards, crown) {
+    if (!_.isEmpty(selected_cards)) {
+      let card_player = new CardPlayer(game, player_cards, selected_cards[0], crown)
+      card_player.play(true, true, 'hand', 2)
     } else {
-      game.log.push(`&nbsp;&nbsp;but chooses not to play anything`)
+      let article_text = game.turn.phase === 'action' ? 'an' : 'a'
+      game.log.push(`&nbsp;&nbsp;but does not play ${article_text} ${game.turn.phase}`)
     }
   }
 

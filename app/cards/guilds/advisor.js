@@ -9,29 +9,21 @@ Advisor = class Advisor extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     if (_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) {
-      player_cards.revealed = _.take(player_cards.deck, 3)
-      player_cards.deck = _.drop(player_cards.deck, 3)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck(3)
 
-      let revealed_card_count = _.size(player_cards.revealed)
-      if (revealed_card_count < 3 && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(game, player_cards)
-        player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 3 - revealed_card_count))
-        player_cards.deck = _.drop(player_cards.deck, 3 - revealed_card_count)
-      }
-
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.revealed)}`)
       GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
 
-      let next_player_query = new NextPlayerQuery(game, player_cards.player_id)
-      let next_player = next_player_query.next_player()
+      let player_to_left = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)[1]
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
-        player_id: next_player._id,
-        username: next_player.username,
+        player_id: player_to_left.player_id,
+        username: player_to_left.username,
         type: 'choose_cards',
         player_cards: true,
         instructions: `Choose a card for <strong>${player_cards.username}</strong> to discard:`,
@@ -47,15 +39,12 @@ Advisor = class Advisor extends Card {
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', selected_cards)
     card_discarder.discard()
 
-    if (_.size(player_cards.revealed) > 0) {
-      player_cards.hand = player_cards.hand.concat(player_cards.revealed)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} in their hand`)
-    }
-
-    player_cards.revealed = []
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} in their hand`)
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move_all(player_cards.revealed, player_cards.hand)
   }
 
 }

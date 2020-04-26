@@ -43,12 +43,12 @@ TheSkysGift = class TheSkysGift extends Boon {
   static discard_cards(game, player_cards, selected_cards) {
     let discarded_card_count = _.size(selected_cards)
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
 
     if (discarded_card_count === 3) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

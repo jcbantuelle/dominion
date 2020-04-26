@@ -9,8 +9,8 @@ NativeVillage = class NativeVillage extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
 
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
@@ -21,8 +21,8 @@ NativeVillage = class NativeVillage extends Card {
       minimum: 1,
       maximum: 1,
       options: [
-        {text: 'Set Aside Card', value: 'set_aside'},
-        {text: 'Put Cards In Hand', value: 'gain'}
+        {text: 'Set aside card', value: 'set_aside'},
+        {text: 'Put cards in hand', value: 'gain'}
       ]
     })
     let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
@@ -43,16 +43,18 @@ NativeVillage = class NativeVillage extends Card {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to set aside the top card of their deck, but has no cards`)
     } else {
       if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
+        let deck_shuffler = new DeckShuffler(game, player_cards)
+        deck_shuffler.shuffle()
       }
-      player_cards.native_village.push(player_cards.deck.shift())
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards.deck, player_cards.native_village, player_cards.deck[0])
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside the top card of their deck`)
     }
   }
 
   static put_cards_in_hand(game, player_cards) {
-    player_cards.hand = player_cards.hand.concat(player_cards.native_village)
-    player_cards.native_village = []
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move_all(player_cards.native_village, player_cards.hand)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts all cards in hand`)
   }
 

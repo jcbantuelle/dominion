@@ -16,13 +16,13 @@ RoyalBlacksmith = class RoyalBlacksmith extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(5)
 
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal('hand')
 
     let coppers = _.filter(player_cards.hand, function(card) {
       return card.name === 'Copper'
     })
-
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(coppers, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', coppers)
     card_discarder.discard()
   }
 

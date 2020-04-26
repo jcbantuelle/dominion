@@ -8,7 +8,7 @@ TheFlamesGift = class TheFlamesGift extends Boon {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a card to trash (Or none to skip):',
+        instructions: 'Choose a card to trash (or none to skip):',
         cards: player_cards.hand,
         minimum: 0,
         maximum: 1
@@ -24,7 +24,7 @@ TheFlamesGift = class TheFlamesGift extends Boon {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not trash a card`)
     } else {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
     }
   }

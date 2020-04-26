@@ -9,7 +9,7 @@ Dismantle = class Dismantle extends Card {
   }
 
   play(game, player_cards) {
-    if (_.size(player_cards.hand) > 0) {
+    if (_.size(player_cards.hand) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -23,6 +23,8 @@ Dismantle = class Dismantle extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Dismantle.trash_card)
+    } else if (_.size(player_cards.hand) === 1) {
+      Dismantle.trash_card(game, player_cards, player_cards.hand)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
@@ -31,15 +33,15 @@ Dismantle = class Dismantle extends Card {
   static trash_card(game, player_cards, selected_cards) {
     let selected_card = selected_cards[0]
 
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     card_trasher.trash()
 
     if (CardCostComparer.coin_greater_than(game, selected_card, 0)) {
       let eligible_cards = _.filter(game.cards, function(card) {
-        return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(game, selected_card, card.top_card)
+        return card.count > 0 && card.supply && CardCostComparer.card_less_than(game, selected_card, card.top_card)
       })
 
-      if (_.size(eligible_cards) > 0) {
+      if (_.size(eligible_cards) > 1) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
@@ -53,19 +55,20 @@ Dismantle = class Dismantle extends Card {
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Dismantle.gain_card)
+      } else if (_.size(eligible_cards) === 1) {
+        Dismantle.gain_card(game, player_cards, eligible_cards)
       } else {
         game.log.push(`&nbsp;&nbsp;but there are no cheaper cards available`)
       }
 
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
-    card_gainer.gain_game_card()
+    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
+    card_gainer.gain()
   }
 
 }

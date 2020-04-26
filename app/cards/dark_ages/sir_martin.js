@@ -8,14 +8,12 @@ SirMartin = class SirMartin extends Knights {
     return 4
   }
 
-  play(game, player_cards) {
-    game.turn.buys += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 buys`)
+  play(game, player_cards, card_player) {
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(2)
 
-    let player_attacker = new PlayerAttacker(game, this)
+    let player_attacker = new PlayerAttacker(game, this, card_player)
     player_attacker.attack(player_cards)
-
-    this.trash_knight(game, player_cards)
   }
 
 }

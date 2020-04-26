@@ -12,17 +12,8 @@ Catacombs = class Catacombs extends Card {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
     } else {
-      player_cards.revealed = _.take(player_cards.deck, 3)
-      player_cards.deck = _.drop(player_cards.deck, 3)
-
-      let revealed_card_count = _.size(player_cards.revealed)
-      if (revealed_card_count < 3 && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(game, player_cards)
-        player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 3 - revealed_card_count))
-        player_cards.deck = _.drop(player_cards.deck, 3 - revealed_card_count)
-      }
-
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> looks at the top ${_.size(player_cards.revealed)} cards of their deck`)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck(3, false)
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -43,12 +34,11 @@ Catacombs = class Catacombs extends Card {
   }
 
   static process_response(game, player_cards, response) {
-    response = response[0]
-    if (response === 'keep') {
-      player_cards.hand = player_cards.hand.concat(player_cards.revealed)
-      player_cards.revealed = []
+    if (response[0] === 'keep') {
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move_all(player_cards.revealed, player_cards.hand)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts the cards in their hand`)
-    } else if (response === 'discard') {
+    } else if (response[0] === 'discard') {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
 
@@ -57,17 +47,12 @@ Catacombs = class Catacombs extends Card {
     }
   }
 
-  trash_event(trasher, card_name = 'Catacombs') {
-    let trashed_card = this
-    if (card_name === 'Estate') {
-      trashed_card = ClassCreator.create('Estate')
-    }
-
+  trash_event(trasher, catacombs) {
     let eligible_cards = _.filter(trasher.game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.card_less_than(trasher.game, trashed_card.to_h(), card.top_card)
+      return card.count > 0 && card.supply && CardCostComparer.card_less_than(trasher.game, catacombs, card.top_card)
     })
 
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: trasher.game._id,
         player_id: trasher.player_cards.player_id,
@@ -81,15 +66,16 @@ Catacombs = class Catacombs extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(trasher.game, trasher.player_cards, turn_event_id)
       turn_event_processor.process(Catacombs.gain_card)
+    } else if (_.size(eligible_cards) === 1) {
+      Catacombs.gain_card(game, player_cards, eligible_cards)
     } else {
       trasher.game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
-    card_gainer.gain_game_card()
+    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
+    card_gainer.gain()
   }
 
 }

@@ -12,8 +12,8 @@ Spy = class Spy extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     PlayerCardsModel.update(game._id, player_cards)
     Spy.reveal_card(game, player_cards)
@@ -30,20 +30,15 @@ Spy = class Spy extends Card {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in deck`)
     } else {
-      if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
-      }
-
-      let revealed_card = player_cards.deck.shift()
-      player_cards.revealed.push(revealed_card)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck(1)
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: game.turn.player._id,
         username: game.turn.player.username,
         type: 'choose_yes_no',
-        instructions: `Make <strong>${player_cards.username}</strong> discard ${CardView.render(revealed_card)}?`,
+        instructions: `Make <strong>${player_cards.username}</strong> discard ${CardView.render(player_cards.revealed)}?`,
         minimum: 1,
         maximum: 1
       })
@@ -54,13 +49,11 @@ Spy = class Spy extends Card {
 
   static discard_card(game, player_cards, response) {
     if (response === 'yes') {
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
     } else {
-      let card = player_cards.revealed[0]
-      player_cards.deck.unshift(card)
-      player_cards.revealed = []
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(card)} on top of deck`)
+      let card_returner = new CardReturner(game, player_cards)
+      card_returner.return_to_deck(player_cards.revealed)
     }
   }
 

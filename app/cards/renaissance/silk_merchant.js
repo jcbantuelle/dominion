@@ -12,29 +12,23 @@ SilkMerchant = class SilkMerchant extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
   }
 
-  gain_or_trash_event(player) {
-    if (player.game.turn.possessed) {
-      possessing_player_cards = PlayerCardsModel.findOne(player.game._id, player.game.turn.possessed._id)
-      possessing_player_cards.coin_tokens += 1
-      possessing_player_cards.villagers += 1
-      player.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes a coin token and a villager`)
-      PlayerCardsModel.update(player.game._id, possessing_player_cards)
-    } else {
-      player.player_cards.coin_tokens += 1
-      player.player_cards.villagers += 1
-      player.game.log.push(`&nbsp;&nbsp;<strong>${player.player_cards.username}</strong> takes a coin token and a villager`)
-    }
+  gain_or_trash_event(player, silk_merchant) {
+    let coffer_gainer = new CofferGainer(player.game, player.player_cards, silk_merchant)
+    coffer_gainer.gain(1)
+
+    let villager_gainer = new VillagerGainer(player.game, player.player_cards, silk_merchant)
+    villager_gainer.gain(1)
   }
 
-  gain_event(buyer) {
-    this.gain_or_trash_event(buyer)
+  gain_event(buyer, silk_merchant) {
+    this.gain_or_trash_event(buyer, silk_merchant)
   }
 
-  trash_event(trasher) {
-    this.gain_or_trash_event(trasher)
+  trash_event(trasher, silk_merchant) {
+    this.gain_or_trash_event(trasher, silk_merchant)
   }
 }

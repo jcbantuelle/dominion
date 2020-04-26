@@ -1,4 +1,4 @@
-BridgeTroll = class BridgeTroll extends Card {
+BridgeTroll = class BridgeTroll extends Duration {
 
   types() {
     return ['action', 'duration', 'attack']
@@ -8,15 +8,14 @@ BridgeTroll = class BridgeTroll extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 
-    player_cards.duration_effects.push(this.to_h())
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
 
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy`)
-
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
@@ -29,9 +28,9 @@ BridgeTroll = class BridgeTroll extends Card {
     }
   }
 
-  duration(game, player_cards, duration_card) {
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy from ${CardView.render(this)}`)
+  duration(game, player_cards, bridge_troll) {
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1, bridge_troll)
   }
 
 }

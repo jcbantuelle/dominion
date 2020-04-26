@@ -25,12 +25,12 @@ Trade = class Trade extends Event {
   }
 
   static trash_cards(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
-    card_trasher.trash()
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
+    let trashed_cards = card_trasher.trash()
 
-    _.times(_.size(selected_cards), function() {
+    _.times(_.size(trashed_cards), () => {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 }

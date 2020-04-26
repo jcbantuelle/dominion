@@ -1,6 +1,7 @@
 GameCreator = class GameCreator {
 
   constructor(players, cards, exclusions, edition) {
+    this.card_id = 1
     this.players = players
     this.exclusions = exclusions
     this.edition = edition
@@ -14,8 +15,13 @@ GameCreator = class GameCreator {
     })
     this.landmarks = this.landmark_cards(landmarks)
 
+    let projects = _.filter(cards, function(card) {
+      return _.includes(CardList.project_cards(), _.titleize(card.name))
+    })
+    this.projects = this.project_cards(projects)
+
     this.cards = _.reject(cards, function(card) {
-      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()), _.titleize(card.name))
+      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()).concat(CardList.project_cards()), _.titleize(card.name))
     })
     this.colors = ['red', 'blue', 'yellow', 'green']
   }
@@ -23,11 +29,21 @@ GameCreator = class GameCreator {
   create() {
     let game_id = this.create_game()
     this.game = GameModel.findOne(game_id)
+    this.format_player_usernames()
     this.create_turn()
     this.start_game_log()
     this.set_up_players()
     this.assign_game_to_players()
     GameModel.update(this.game._id, this.game)
+  }
+
+  format_player_usernames() {
+    this.game.players = _.map(this.game.players, (player, index) => {
+      if (this.assign_colors) {
+        player.username = `<span class="${this.colors[index]}">${player.username}</span>`
+      }
+      return player
+    })
   }
 
   create_game() {
@@ -37,8 +53,11 @@ GameCreator = class GameCreator {
       cards: cards,
       events: this.events,
       landmarks: this.landmarks,
+      projects: this.projects,
       duchess: this.game_has_card(cards, 'Duchess'),
       prizes: this.prizes(cards),
+      states: this.states(cards),
+      artifacts: this.artifacts(cards),
       trash: []
     }
     if (this.black_market_deck) {
@@ -59,17 +78,14 @@ GameCreator = class GameCreator {
       game_attributes.obelisk = this.obelisk
     }
     if (this.game_has_card(cards, 'Necromancer')) {
-      game_attributes.trash.push((new ZombieApprentice()).to_h())
-      game_attributes.trash.push((new ZombieMason()).to_h())
-      game_attributes.trash.push((new ZombieSpy()).to_h())
+      game_attributes.trash = game_attributes.trash.concat(this.zombies())
     }
     return GameModel.insert(game_attributes)
   }
 
   start_game_log() {
     let turn_order =  _.map(this.game.players, (player, index) => {
-      let color = this.assign_colors ? this.colors[index] : ''
-      return `<span class="${color}">${player.username}</span>`
+      return player.username
     })
 
     this.game.log = [
@@ -79,28 +95,8 @@ GameCreator = class GameCreator {
   }
 
   create_turn() {
-    this.game.turn = {
-      player: _.head(this.game.players),
-      actions: 1,
-      buys: 1,
-      coins: 0,
-      potions: 0,
-      phase: 'action',
-      bought_cards: [],
-      gained_cards: [],
-      gain_event_stack: [],
-      contraband: [],
-      forbidden_events: [],
-      schemes: 0,
-      possessions: 0,
-      coin_discount: 0,
-      played_actions: 0,
-      coppersmiths: 0,
-      river_gifts: [],
-      expeditions: 0,
-      charms: 0,
-      priests: 0
-    }
+    this.game.turn = GameCreator.new_turn()
+    this.game.turn.player = _.head(this.game.players)
   }
 
   set_up_players() {
@@ -152,24 +148,43 @@ GameCreator = class GameCreator {
       victory_cards = _.times(3, function() { return estate.to_h() })
     }
 
-    deck = _.shuffle(starting_treasures.concat(victory_cards))
+    deck = this.set_card_ids_for_collection(_.shuffle(starting_treasures.concat(victory_cards)))
     hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
-    let coin_tokens = this.game_has_card(this.selected_kingdom_cards, 'Baker') ? 1 : 0
+    let coffers = this.game_has_card(this.selected_kingdom_cards, 'Baker') ? 1 : 0
 
     let player_card_data = {
       player_id: player._id,
       game_id: this.game._id,
       username: player.username,
-      deck: deck,
-      hand: hand,
-      coin_tokens: coin_tokens,
+      boons: [],
+      states: [],
+      projects: [],
+      artifacts: [],
+      start_turn_event_effects: [],
+      end_turn_event_effects: [],
+      possession_trash: [],
+      duration_effects: [],
+      duration_attacks: [],
+      last_turn_gained_cards: [],
+      coffers: coffers,
+      champions: 0,
       villagers: 0,
       debt_tokens: 0,
+      victory_tokens: 0,
+      pirate_ship_coins: 0,
+      sinister_plot_tokens: 0,
       tokens: {pile: []},
       turns: (this.game.turn.player._id === player._id) ? 1 : 0
     }
+
+    _.each(AllPlayerCardsQuery.card_sources(), (source) => {
+      player_card_data[source] = []
+    })
+
+    player_card_data.deck = deck
+    player_card_data.hand = hand
 
     if (this.assign_colors) {
       player_card_data.color = this.colors[index]
@@ -191,12 +206,21 @@ GameCreator = class GameCreator {
   }
 
   event_cards(events) {
+    events = this.set_card_ids_for_collection(events)
     return _.sortBy(events, function(event) {
       return -event.coin_cost
     })
   }
 
+  project_cards(projects) {
+    projects = this.set_card_ids_for_collection(projects)
+    return _.sortBy(projects, function(project) {
+      return -project.coin_cost
+    })
+  }
+
   landmark_cards(landmarks) {
+    landmarks = this.set_card_ids_for_collection(landmarks)
     return _.map(landmarks, (landmark) => {
       if (_.includes(['Arena', 'Basilica', 'Baths', 'Battlefield', 'Colonnade', 'Labyrinth'], landmark.name)) {
         landmark.victory_tokens = 6 * _.size(this.players)
@@ -247,7 +271,7 @@ GameCreator = class GameCreator {
       this.hexes_deck = _.shuffle(this.hexes())
     }
 
-    if (this.game_has_event_or_landmark(this.landmarks, 'Obelisk')) {
+    if (this.game_has_event_or_landmark(this.landmarks, 'Obelisk') && _.some(kingdom_cards, (card) => { return _.includes(_.words(card.top_card.types), 'action') })) {
       let obelisk_card
       do {
         obelisk_card = _.sample(kingdom_cards)
@@ -351,17 +375,20 @@ GameCreator = class GameCreator {
 
   game_card(card, source) {
     let card_stack = this.create_card_stack(card)
-    let debt_token = this.game_has_event_or_landmark(this.events, 'Tax') && _.head(card_stack).purchasable ? 1 : 0
+    let supply_card = source !== 'not_supply'
 
+    let debt_token = this.game_has_event_or_landmark(this.events, 'Tax') && supply_card ? 1 : 0
     let victory_tokens = this.game_card_victory_tokens(card_stack, source)
+
     return {
-      name: card.name,
+      name: (this.is_split_stack(card.stack_name) ? card.stack_name : card.name),
       count: _.size(card_stack),
       embargos: 0,
       top_card: _.head(card_stack),
       stack: card_stack,
       stack_name: card.stack_name,
       source: source,
+      supply: supply_card,
       bane: card.bane,
       victory_tokens: victory_tokens,
       debt_tokens: debt_token,
@@ -381,19 +408,21 @@ GameCreator = class GameCreator {
   }
 
   create_card_stack(card) {
+    let stack = []
     if (card.name === 'Ruins') {
-      return this.ruins_stack(card)
+      stack = this.ruins_stack(card)
     } else if (card.name === 'Knights') {
-      return this.knights_stack(card)
+      stack = this.knights_stack(card)
     } else if (card.name === 'Castles') {
-      return this.castles_stack(card)
-    } else if (_.includes(['Encampment', 'Patrician', 'Settlers', 'Catapult', 'Gladiator', 'Sauna'], card.name)) {
-      return this.split_stack(card)
+      stack = this.castles_stack(card)
+    } else if (this.is_split_stack(card.stack_name)) {
+      stack = this.split_stack(card)
     } else {
-      return _.times(this.stack_size(card), function(counter) {
-        return card
+      stack = _.times(this.stack_size(card), function(counter) {
+        return _.clone(card)
       })
     }
+    return this.set_card_ids_for_collection(stack)
   }
 
   stack_size(card) {
@@ -494,26 +523,9 @@ GameCreator = class GameCreator {
   }
 
   split_stack(card) {
-    let top_card, bottom_card
-    if (card.name === 'Encampment') {
-      top_card = 'Encampment'
-      bottom_card = 'Plunder'
-    } else if (card.name === 'Patrician') {
-      top_card = 'Patrician'
-      bottom_card = 'Emporium'
-    } else if (card.name === 'Settlers') {
-      top_card = 'Settlers'
-      bottom_card = 'Bustling Village'
-    } else if (card.name === 'Catapult') {
-      top_card = 'Catapult'
-      bottom_card = 'Rocks'
-    } else if (card.name === 'Gladiator') {
-      top_card = 'Gladiator'
-      bottom_card = 'Fortune'
-    } else if (card.name === 'Sauna') {
-      top_card = 'Sauna'
-      bottom_card = 'Avanto'
-    }
+    stack_names = _.split(card.stack_name, '/')
+    let top_card = stack_names[0]
+    let bottom_card = stack_names[1]
 
     top_card = ClassCreator.create(top_card).to_h()
     top_card.bane = card.bane
@@ -539,10 +551,62 @@ GameCreator = class GameCreator {
         new Princess(),
         new TrustySteed()
       ]
-      return _.map(prizes, function(prize) {
+      return this.set_card_ids_for_collection(_.map(prizes, function(prize) {
         return prize.to_h()
+      }))
+    }
+  }
+
+  states(cards) {
+    let state_cards = []
+    if (this.game_has_card(cards, 'Fool')) {
+      state_cards.push(new LostInTheWoods())
+    }
+
+    if (this.hexes_deck) {
+      _.times(_.size(this.players), (count) => {
+        state_cards.push(new Deluded())
+        state_cards.push(new Envious())
+        state_cards.push(new Miserable())
+        state_cards.push(new TwiceMiserable())
       })
     }
+
+    state_cards = _.sortBy(state_cards, function(state) {
+      return state.name()
+    })
+
+    return this.set_card_ids_for_collection(_.map(state_cards, function(state) {
+      return state.to_h()
+    }))
+  }
+
+  artifacts(cards) {
+    let artifact_cards = []
+    if (this.game_has_card(cards, 'Border Guard')) {
+      artifact_cards.push(new Lantern())
+      artifact_cards.push(new Horn())
+    }
+
+    if (this.game_has_card(cards, 'Flag Bearer')) {
+      artifact_cards.push(new Flag())
+    }
+
+    if (this.game_has_card(cards, 'Swashbuckler')) {
+      artifact_cards.push(new TreasureChest())
+    }
+
+    if (this.game_has_card(cards, 'Treasurer')) {
+      artifact_cards.push(new Key())
+    }
+
+    artifact_cards = _.sortBy(artifact_cards, function(artifact) {
+      return artifact.name()
+    })
+
+    return this.set_card_ids_for_collection(_.map(artifact_cards, function(artifact) {
+      return artifact.to_h()
+    }))
   }
 
   boons() {
@@ -560,9 +624,9 @@ GameCreator = class GameCreator {
       new TheSwampsGift(),
       new TheWindsGift()
     ]
-    return _.map(boons, function(boon) {
+    return this.set_card_ids_for_collection(_.map(boons, function(boon) {
       return boon.to_h()
-    })
+    }))
   }
 
   hexes() {
@@ -580,9 +644,20 @@ GameCreator = class GameCreator {
       new Poverty(),
       new War()
     ]
-    return _.map(hexes, function(hex) {
+    return this.set_card_ids_for_collection(_.map(hexes, function(hex) {
       return hex.to_h()
-    })
+    }))
+  }
+
+  zombies() {
+    let zombies = [
+      new ZombieApprentice(),
+      new ZombieMason(),
+      new ZombieSpy()
+    ]
+    return this.set_card_ids_for_collection(_.map(zombies, function(zombie) {
+      return zombie.to_h()
+    }))
   }
 
   game_has_card(cards, card_name) {
@@ -659,9 +734,9 @@ GameCreator = class GameCreator {
       let knight_names = _.shuffle(['SirMartin', 'DameAnna', 'DameJosephine', 'DameMolly', 'DameNatalie', 'DameSylvia', 'SirBailey', 'SirDestry', 'SirMichael', 'SirVander'])
       black_market_card_names.splice(knight_index, 1, _.take(knight_names, 1))
     }
-    this.black_market_deck = _.map(black_market_card_names, function(name) {
+    this.black_market_deck = this.set_card_ids_for_collection(_.map(black_market_card_names, function(name) {
       return ClassCreator.create(name).to_h()
-    })
+    }))
   }
 
   select_druid_boons() {
@@ -734,9 +809,11 @@ GameCreator = class GameCreator {
     let game_cards = this.selected_kingdom_cards.concat(this.events)
     if (this.black_market_deck) game_cards = game_cards.concat(this.black_market_deck)
 
-    return _.some(game_cards, function(card) {
+    has_token_card = _.some(game_cards, (card) => {
       return _.includes(['Peasant', 'Ferry', 'Plan', 'Seaway', 'Lost Arts', 'Training', 'Pathfinding'], card.name)
     })
+
+    return has_token_card || !_.isEmpty(this.projects)
   }
 
   trade_route_game() {
@@ -753,6 +830,50 @@ GameCreator = class GameCreator {
 
   random_number(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+
+  is_split_stack(stack_name) {
+    return _.includes(stack_name, '/')
+  }
+
+  set_card_ids_for_collection(cards) {
+    return _.map(cards, (card) => {
+      card.id = this.assign_card_id()
+      card.belongs_to = []
+      return card
+    })
+  }
+
+  assign_card_id() {
+    let assigned_card_id = _.toString(this.card_id)
+    this.card_id += 1
+    return assigned_card_id
+  }
+
+  static new_turn() {
+    return {
+      actions: 1,
+      buys: 1,
+      coins: 0,
+      potions: 0,
+      phase: 'action',
+      contraband: [],
+      cargo_ships: [],
+      bought_cards: [],
+      bought_things: [],
+      gained_cards: [],
+      played_actions: [],
+      gain_event_stack: [],
+      forbidden_events: [],
+      charms: 0,
+      priests: 0,
+      schemes: 0,
+      improves: 0,
+      merchants: 0,
+      possessions: 0,
+      coppersmiths: 0,
+      coin_discount: 0
+    }
   }
 
 }

@@ -9,12 +9,13 @@ Talisman = class Talisman extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 1)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1, false)
   }
 
   buy_event(buyer) {
-    let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', buyer.card.name())
-    card_gainer.gain_game_card()
+    let card_gainer = new CardGainer(buyer.game, buyer.player_cards, 'discard', buyer.card.name)
+    card_gainer.gain()
   }
 
 }

@@ -1,7 +1,11 @@
 Oasis = class Oasis extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -12,11 +16,13 @@ Oasis = class Oasis extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$${gained_coins}`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    if (_.size(player_cards.hand) > 0) {
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
+
+    if (_.size(player_cards.hand) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -30,13 +36,15 @@ Oasis = class Oasis extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Oasis.discard_card)
+    } else if (_.size(player_cards.hand) === 1) {
+      Oasis.discard_card(game, player_cards, player_cards.hand)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards to discard`)
     }
   }
 
   static discard_card(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 

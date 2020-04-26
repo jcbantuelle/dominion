@@ -1,4 +1,4 @@
-Crypt = class Crypt extends Card {
+Crypt = class Crypt extends Duration {
 
   types() {
     return ['night', 'duration']
@@ -8,11 +8,12 @@ Crypt = class Crypt extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let eligible_cards = _.filter(player_cards.in_play, function(card) {
       return _.includes(_.words(card.types), 'treasure')
     })
 
+    let chosen_treasures = []
     if (_.size(eligible_cards) > 0) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -26,70 +27,68 @@ Crypt = class Crypt extends Card {
         maximum: 0
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      turn_event_processor.process(Crypt.set_aside)
+      chosen_treasures = turn_event_processor.process(Crypt.choose_treasures)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no treasures in play`)
     }
 
-    if (_.isEmpty(game.turn.crypt_cards)) {
-      game.log.push(`&nbsp;&nbsp;but does not set aside any treasures`)
-    } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(game.turn.crypt_cards)}`)
-      player_cards.crypt = player_cards.crypt.concat(game.turn.crypt_cards)
-      let crypt_effect = this.to_h()
-      crypt_effect.set_aside_cards = game.turn.crypt_cards
+    if (!_.isEmpty(chosen_treasures)) {
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(chosen_treasures)}`)
+      _.each(chosen_treasures, (treasure) => {
+        let card_mover = new CardMover(game, player_cards)
+        card_mover.move(player_cards.in_play, player_cards.crypt, treasure)
+      })
+
+      let crypt_effect = _.clone(card_player.card)
+      crypt_effect.crypt_cards = _.clone(chosen_treasures)
+
       player_cards.duration_effects.push(crypt_effect)
-      delete game.turn.crypt_cards
       return 'duration'
     }
   }
 
-  static set_aside(game, player_cards, selected_cards) {
-    game.turn.crypt_cards = []
-    _.each(selected_cards, function(selected_card) {
-      let card_index = _.findIndex(player_cards.in_play, (in_play_card) => {
-        return selected_card.name === in_play_card.name
-      })
-      if (card_index !== -1) {
-        game.turn.crypt_cards.push(player_cards.in_play.splice(card_index, 1)[0])
-      }
-    })
+  static choose_treasures(game, player_cards, selected_cards) {
+    if (!_.isEmpty(selected_cards)) {
+      return selected_cards
+    } else {
+      game.log.push(`&nbsp;&nbsp;but does not set aside any treasures`)
+      return []
+    }
   }
 
-  duration(game, player_cards, duration_card) {
-    if (_.size(duration_card.set_aside_cards) > 1) {
+  duration(game, player_cards, crypt) {
+    if (_.size(crypt.crypt_cards) > 1) {
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a treasure to put in hand:',
-        cards: duration_card.set_aside_cards,
+        instructions: 'Choose a card to put in hand:',
+        cards: crypt.crypt_cards,
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, duration_card)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, crypt)
       turn_event_processor.process(Crypt.put_card_in_hand)
     } else {
-      Crypt.put_card_in_hand(game, player_cards, duration_card.set_aside_cards, duration_card)
+      Crypt.put_card_in_hand(game, player_cards, crypt.crypt_cards, crypt)
     }
   }
 
-  static put_card_in_hand(game, player_cards, selected_card, duration_card) {
-    selected_card = selected_card[0]
-    let selected_card_index = _.findIndex(player_cards.crypt, function(card) {
-      return selected_card.name === card.name
-    })
-    player_cards.hand.push(player_cards.crypt.splice(selected_card_index, 1)[0])
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts a set aside card in hand from ${CardView.card_html('duration night', 'Crypt')}`)
+  static put_card_in_hand(game, player_cards, selected_cards, crypt) {
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move(player_cards.crypt, player_cards.hand, selected_cards[0])
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts a set aside card in hand from ${CardView.render(crypt)}`)
 
-    let duration_card_index = _.findIndex(duration_card.set_aside_cards, function(card) {
-      return selected_card.name === card.name
+    let aside_card_index = _.findIndex(crypt.crypt_cards, function(card) {
+      return selected_cards[0].id === card.id
     })
-    duration_card.set_aside_cards.splice(duration_card_index, 1)
-    if (_.size(duration_card.set_aside_cards) > 0) {
-      player_cards.duration_effects.push(duration_card)
+    crypt.crypt_cards.splice(aside_card_index, 1)
+    if (_.size(crypt.crypt_cards) > 0) {
+      player_cards.duration_effects.push(crypt)
     }
   }
 

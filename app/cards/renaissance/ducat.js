@@ -9,16 +9,11 @@ Ducat = class Ducat extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.buys += 1
-    if (game.turn.possessed) {
-      possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-      possessing_player_cards.coin_tokens += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and <strong>${possessing_player_cards.username}</strong> takes a coin token`)
-      PlayerCardsModel.update(game._id, possessing_player_cards)
-    } else {
-      player_cards.coin_tokens += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and takes a coin token`)
-    }
+    let coffer_gainer = new CofferGainer(game, player_cards)
+    coffer_gainer.gain(1)
+
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
   }
 
   gain_event(gainer) {
@@ -32,23 +27,23 @@ Ducat = class Ducat extends Card {
         player_id: gainer.player_cards.player_id,
         username: gainer.player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Trash a ${CardView.card_html('treasure', 'Copper')}?`,
+        instructions: `Trash a ${CardView.render(copper)}?`,
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id, copper)
       turn_event_processor.process(Ducat.trash_copper)
     } else {
-      gainer.game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.card_html('treasure', 'Copper')}`)
+      gainer.game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(new Copper())}`)
     }
   }
 
-  static trash_copper(game, player_cards, response) {
+  static trash_copper(game, player_cards, response, copper) {
     if (response === 'yes') {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', 'Copper')
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', copper)
       card_trasher.trash()
     } else {
-      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.card_html('treasure', 'Copper')}`)
+      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(copper)}`)
     }
   }
 

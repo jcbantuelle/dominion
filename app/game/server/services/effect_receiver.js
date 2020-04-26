@@ -20,7 +20,7 @@ EffectReceiver = class EffectReceiver {
     }
 
     let received_effect = this.effect_deck.shift()
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> receives ${CardView.render(received_effect, true)}`)
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> receives ${CardView.render(received_effect)}`)
     GameModel.update(this.game._id, this.game)
     let player_keeps_effect = this.effect(received_effect).receive(this.game, this.player_cards)
 

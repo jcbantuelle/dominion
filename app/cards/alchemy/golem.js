@@ -13,90 +13,55 @@ Golem = class Golem extends Card {
   }
 
   play(game, player_cards) {
-    let has_cards = this.reveal(game, player_cards)
+    if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
+      game.log.push(`&nbsp;&nbsp;but there are no cards in their deck`)
+    } else {
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck_until((game, player_cards, revealed_cards) => {
+        let actions = _.filter(revealed_cards, (card) => {
+          return _.includes(_.words(card.types), 'action') && card.name !== 'Golem'
+        })
+        return _.size(actions) === 2
+      })
 
-    if (has_cards) {
-
-      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
+      let non_actions = _.filter(player_cards.revealed, (card) => {
+        return !_.includes(_.words(card.types), 'action') || card.name === 'Golem'
+      })
+      let card_discarder = new CardDiscarder(game, player_cards, 'revealed', non_actions)
       card_discarder.discard()
 
-      GameModel.update(game._id, game)
-
-      if (player_cards.second_golem_card) {
-        let turn_event_id = TurnEventModel.insert({
-          game_id: game._id,
-          player_id: player_cards.player_id,
-          username: player_cards.username,
-          type: 'choose_options',
-          instructions: `Choose which card to play first:`,
-          minimum: 1,
-          maximum: 1,
-          options: [
-            {text: `${CardView.render(player_cards.first_golem_card)}`, value: 'first'},
-            {text: `${CardView.render(player_cards.second_golem_card)}`, value: 'second'}
-          ]
-        })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-        turn_event_processor.process(Golem.choose_first_action)
-      } else if (player_cards.first_golem_card) {
-        player_cards.hand.push(player_cards.first_golem_card)
-        let card_player = new CardPlayer(game, player_cards, player_cards.first_golem_card.name, true)
-        delete player_cards.first_golem_card
-        card_player.play()
-      } else {
+      if (_.isEmpty(player_cards.revealed)) {
         game.log.push(`&nbsp;&nbsp;but there are no action cards to play`)
-      }
-    }
-  }
-
-  reveal(game, player_cards) {
-    let revealed_cards = []
-    while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.second_golem_card) {
-      if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
-      }
-      let card = player_cards.deck.shift()
-      revealed_cards.push(card)
-      if (_.includes(_.words(card.types), 'action') && card.name !== 'Golem') {
-        if (player_cards.first_golem_card) {
-          player_cards.second_golem_card = card
-        } else {
-          player_cards.first_golem_card = card
-        }
       } else {
-        player_cards.revealed.push(card)
+        PlayerCardsModel.update(game._id, player_cards)
+        GameModel.update(game._id, game)
+
+        player_cards.golem_actions = player_cards.revealed
+        player_cards.revealed = []
+
+        if (_.size(player_cards.golem_actions) === 2) {
+          let turn_event_id = TurnEventModel.insert({
+            game_id: game._id,
+            player_id: player_cards.player_id,
+            username: player_cards.username,
+            type: 'choose_cards',
+            player_cards: true,
+            instructions: 'Choose which card to play first:',
+            cards: player_cards.golem_actions,
+            minimum: 1,
+            maximum: 1
+          })
+          let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+          turn_event_processor.process(Golem.play_action)
+        }
+        Golem.play_action(game, player_cards, player_cards.golem_actions)
       }
-    }
-    if (_.isEmpty(revealed_cards)) {
-      game.log.push(`&nbsp;&nbsp;but there are no cards in their deck`)
-      return false
-    } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_cards)}`)
-      return true
     }
   }
 
-  static choose_first_action(game, player_cards, response) {
-    response = response[0]
-    var first_played_card
-    var second_played_card
-
-    if (response === 'first') {
-      first_played_card = player_cards.first_golem_card
-      second_played_card = player_cards.second_golem_card
-    } else if (response === 'second') {
-      first_played_card = player_cards.second_golem_card
-      second_played_card = player_cards.first_golem_card
-    }
-
-    delete player_cards.first_golem_card
-    delete player_cards.second_golem_card
-
-    _.each([first_played_card, second_played_card], function(card) {
-      player_cards.hand.push(card)
-      let card_player = new CardPlayer(game, player_cards, card.name, true)
-      card_player.play()
-    })
+  static play_action(game, player_cards, selected_cards) {
+    let card_player = new CardPlayer(game, player_cards, selected_cards[0])
+    card_player.play(true, true, 'golem_actions')
   }
 
 }

@@ -9,41 +9,29 @@ FarmingVillage = class FarmingVillage extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
 
-    this.reveal(game, player_cards)
-
-    if (player_cards.revealed_card) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed_card)} in their hand`)
-    }
-
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
-    card_discarder.discard()
-
-    delete player_cards.revealed_card
-  }
-
-  reveal(game, player_cards) {
-    let revealed_cards = []
-    while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.revealed_card) {
-      if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
-      }
-      let card = player_cards.deck.shift()
-      revealed_cards.push(card)
-      if (_.includes(_.words(card.types), 'treasure') || _.includes(_.words(card.types), 'action')) {
-        player_cards.hand.push(card)
-        player_cards.revealed_card = card
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal_from_deck_until((game, player_cards, revealed_cards) => {
+      if (!_.isEmpty(revealed_cards)) {
+        return _.includes(_.words(_.last(revealed_cards).types), 'action') || _.includes(_.words(_.last(revealed_cards).types), 'treasure')
       } else {
-        player_cards.revealed.push(card)
+        return false
       }
-    }
-    if (!_.isEmpty(revealed_cards)) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_cards)}`)
+    })
+
+    let last_revealed = _.last(player_cards.revealed)
+    if (_.includes(_.words(last_revealed.types), 'action') || _.includes(_.words(last_revealed.types), 'treasure')) {
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards.revealed, player_cards.hand, last_revealed)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(last_revealed)} in their hand`)
     } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in their deck`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no action or treasure cards in their deck`)
     }
+
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
+    card_discarder.discard()
   }
 
 }

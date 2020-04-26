@@ -21,7 +21,7 @@ Feodum = class Feodum extends Card {
   trash_event(trasher) {
     _.times(3, function() {
       let card_gainer = new CardGainer(trasher.game, trasher.player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 

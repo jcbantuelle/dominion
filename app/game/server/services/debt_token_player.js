@@ -18,6 +18,7 @@ DebtTokenPlayer = class DebtTokenPlayer {
 
   update_phase() {
     if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
+      this.game.turn.phase = 'treasure'
       let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
       start_buy_event_processor.process()
       this.game.turn.phase = 'buy'

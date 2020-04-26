@@ -1,11 +1,11 @@
 TreasureHunter = class TreasureHunter extends Traveller {
 
-  is_purchasable() {
-    false
+  types() {
+    return this.capitalism_types(['action', 'traveller'])
   }
 
-  types() {
-    return ['action', 'traveller']
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -13,21 +13,23 @@ TreasureHunter = class TreasureHunter extends Traveller {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$${gained_coins}`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
+
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
 
     let previous_player_query = new PreviousPlayerQuery(game, player_cards.player_id)
     let previous_player_cards = PlayerCardsModel.findOne(game._id, previous_player_query.previous_player()._id)
 
     _.times(_.size(previous_player_cards.last_turn_gained_cards), function() {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 
-  discard_event(discarder, card_name = 'Treasure Hunter') {
-    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Warrior')
+  discard_event(discarder, treasure_hunter) {
+    this.choose_exchange(discarder.game, discarder.player_cards, treasure_hunter, 'Warrior')
   }
 
 }

@@ -1,7 +1,11 @@
 Count = class Count extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -24,7 +28,7 @@ Count = class Count extends Card {
       ]
     })
     let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-    turn_event_processor.process(Count.process_first_response)
+    turn_event_processor.process(Count.process_response)
 
     GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
@@ -44,12 +48,11 @@ Count = class Count extends Card {
       ]
     })
     turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-    turn_event_processor.process(Count.process_second_response)
+    turn_event_processor.process(Count.process_response)
   }
 
-  static process_first_response(game, player_cards, response) {
-    response = response[0]
-    if (response === 'discard') {
+  static process_response(game, player_cards, response) {
+    if (response[0] === 'discard') {
       if (_.size(player_cards.hand) > 2) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
@@ -69,7 +72,7 @@ Count = class Count extends Card {
       } else {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to discard 2 cards, but has no cards in their hand`)
       }
-    } else if (response === 'deck') {
+    } else if (response[0] === 'deck') {
       if (_.size(player_cards.hand) > 1) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
@@ -89,38 +92,29 @@ Count = class Count extends Card {
       } else {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to put a card on their deck, but has no cards in their hand`)
       }
-    } else if (response === 'copper') {
+    } else if (response[0] === 'copper') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
+    } else if (response[0] === 'coin') {
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(3)
+    } else if (response[0] === 'trash') {
+      let card_trasher = new CardTrasher(game, player_cards, 'hand')
+      card_trasher.trash()
+    } else if (response[0] === 'duchy') {
+      let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
+      card_gainer.gain()
     }
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 
   static return_to_deck(game, player_cards, selected_cards) {
-    let returned_card_index = _.findIndex(player_cards.hand, function(card) {
-      return card.name === selected_cards[0].name
-    })
-    let returned_card = player_cards.hand.splice(returned_card_index, 1)[0]
-    player_cards.deck.unshift(returned_card)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places a card on their deck`)
-  }
-
-  static process_second_response(game, player_cards, response) {
-    response = response[0]
-    if (response === 'coin') {
-      let gained_coins = CoinGainer.gain(game, player_cards, 3)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
-    } else if (response === 'trash') {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(player_cards.hand, 'name'))
-      card_trasher.trash()
-    } else if (response === 'duchy') {
-      let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
-      card_gainer.gain_game_card()
-    }
+    let card_returner = new CardReturner(game, player_cards)
+    card_returner.return_to_deck(player_cards.hand, selected_cards)
   }
 
 }

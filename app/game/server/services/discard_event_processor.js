@@ -25,49 +25,51 @@ DiscardEventProcessor = class DiscardEventProcessor {
 
   find_discard_events() {
     this.discard_events = []
-    if (_.includes(DiscardEventProcessor.event_cards(), this.card.inherited_name)) {
-      if (_.includes(['Tunnel', 'Faithful Hound'], this.card.inherited_name) && this.discarder.game.turn.phase !== 'cleanup') {
+    if (_.includes(DiscardEventProcessor.event_cards(), this.card.name)) {
+      if (_.includes(['Tunnel', 'Faithful Hound'], this.card.name) && this.discarder.game.turn.phase !== 'cleanup') {
         this.discard_events.push(this.card)
-      } else if (this.card.inherited_name === 'Treasury' && this.discarder.source === 'in_play') {
-        let no_bought_victory_cards = !_.some(this.discarder.game.turn.bought_cards, function(card) {
-          return _.includes(_.words(card.types), 'victory')
-        })
-        if (no_bought_victory_cards) {
+      } else if (this.discarder.source === 'in_play') {
+        if (this.card.name === 'Treasury') {
+          let bought_victory_card = _.some(this.discarder.game.turn.bought_cards, function(card) {
+            return _.includes(_.words(card.types), 'victory')
+          })
+          if (!bought_victory_card) {
+            this.discard_events.push(this.card)
+          }
+        } else if (this.card.name === 'Herbalist') {
+          let has_treasures = _.some(this.discarder.player_cards.in_play, function(card) {
+            return _.includes(_.words(card.types), 'treasure')
+          })
+          if (has_treasures) {
+            this.discard_events.push(this.card)
+          }
+        } else if (this.card.name === 'Alchemist') {
+          let has_potions = _.some(this.discarder.player_cards.in_play, function(card) {
+            return card.name === 'Potion'
+          })
+          if (has_potions) {
+            this.discard_events.push(this.card)
+          }
+        } else if (this.card.name === 'Capital') {
           this.discard_events.push(this.card)
-        }
-      } else if (this.card.inherited_name === 'Herbalist' && this.discarder.source === 'in_play') {
-        let has_treasures = _.some(this.discarder.player_cards.to_discard, function(card) {
-          return _.includes(_.words(card.types), 'treasure')
-        })
-        if (has_treasures) {
-          this.discard_events.push(this.card)
-        }
-      } else if (this.card.inherited_name === 'Alchemist' && this.discarder.source === 'in_play') {
-        let has_potions = _.some(this.discarder.player_cards.to_discard, function(card) {
-          return card.name === 'Potion'
-        })
-        if (has_potions) {
-          this.discard_events.push(this.card)
-        }
-      } else if (this.card.inherited_name === 'Capital' && this.discarder.source === 'in_play') {
-        this.discard_events.push(this.card)
-      } else if (this.card.inherited_name === 'Hermit' && this.discarder.source === 'in_play') {
-        if (_.isEmpty(this.discarder.game.turn.bought_cards)) {
-          this.discard_events.push(this.card)
-        }
-      } else if (this.card.inherited_name === 'Border Guard' && this.discarder.source === 'in_play' && !this.discarder.game.turn.discarded_border_guard) {
-        let has_horn = _.some(this.discarder.player_cards.artifacts, function(artifact) {
-          return artifact.name == 'Horn'
-        })
-        if (has_horn) {
-          this.discard_events.push(this.card)
+        } else if (this.card.name === 'Hermit') {
+          if (_.isEmpty(this.discarder.game.turn.bought_cards)) {
+            this.discard_events.push(this.card)
+          }
+        } else if (this.card.name === 'Border Guard' && !this.discarder.game.turn.discarded_border_guard) {
+          let has_horn = _.some(this.discarder.player_cards.artifacts, function(artifact) {
+            return artifact.name == 'Horn'
+          })
+          if (has_horn) {
+            this.discard_events.push(this.card)
+          }
         }
       }
     }
 
     if (this.discarder.source === 'in_play') {
       let traveller = _.find(DiscardEventProcessor.traveller_cards(), (traveller_card) => {
-        return traveller_card.name === this.card.inherited_name
+        return traveller_card.name === this.card.name
       })
       if (traveller) {
         let traveller_stack = _.find(this.discarder.game.cards, function(card) {
@@ -77,13 +79,20 @@ DiscardEventProcessor = class DiscardEventProcessor {
           let upgrade_stack = _.find(this.discarder.game.cards, function(stack) {
             return stack.name === traveller.upgrade
           })
-          let discarding_upgrades = _.some(this.discarder.player_cards.to_discard, function(card) {
+          let discarding_upgrades = _.some(this.discarder.player_cards.in_play, function(card) {
             return card.name === traveller.upgrade
           })
           if (upgrade_stack.count > 0 || discarding_upgrades) {
             this.discard_events.push(this.card)
           }
         }
+      }
+
+      let prince = _.find(this.discarder.player_cards.aside, (card) => {
+        return card.name === 'Prince' && card.target && card.target.id === this.card.id
+      })
+      if (prince) {
+        this.discard_events.push(prince)
       }
     }
   }
@@ -99,7 +108,7 @@ DiscardEventProcessor = class DiscardEventProcessor {
           username: this.discarder.player_cards.username,
           type: 'choose_cards',
           player_cards: true,
-          instructions: 'Choose Card to Resolve:',
+          instructions: 'Choose Discard Effect to Resolve:',
           cards: this.discard_events,
           minimum: 1,
           maximum: 1
@@ -111,14 +120,11 @@ DiscardEventProcessor = class DiscardEventProcessor {
   }
 
   static discard_event(game, player_cards, selected_cards, discard_event_processor) {
-    let card_name = selected_cards[0].name
-    if (card_name === 'Estate' && player_cards.tokens.estate) {
-      card_name = 'InheritedEstate'
-    }
-    let selected_card = ClassCreator.create(card_name)
-    selected_card.discard_event(discard_event_processor.discarder)
+    let card = selected_cards[0]
+    let card_object = ClassCreator.create(card.name)
+    card_object.discard_event(discard_event_processor.discarder, card)
     let discard_event_index = _.findIndex(discard_event_processor.discard_events, function(event) {
-      return event.name === selected_cards[0].name
+      return event.id === card.id
     })
     discard_event_processor.discard_events.splice(discard_event_index, 1)
 

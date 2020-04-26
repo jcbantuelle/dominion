@@ -1,7 +1,11 @@
 Miser = class Miser extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -18,8 +22,8 @@ Miser = class Miser extends Card {
       minimum: 1,
       maximum: 1,
       options: [
-        {text: `Put a ${CardView.card_html('treasure', 'Copper')} on your Tavern`, value: 'copper'},
-        {text: `+$1 per ${CardView.card_html('treasure', 'Copper')} on your Tavern`, value: 'coin'}
+        {text: `Put a ${CardView.render(new Copper())} on your Tavern`, value: 'copper'},
+        {text: `+$1 per ${CardView.render(new Copper())} on your Tavern`, value: 'coin'}
       ]
     })
     let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
@@ -27,23 +31,23 @@ Miser = class Miser extends Card {
   }
 
   static process_response(game, player_cards, response) {
-    response = response[0]
-    if (response === 'copper') {
-      let copper_index = _.findIndex(player_cards.hand, function(card) {
+    if (response[0] === 'copper') {
+      let copper = _.find(player_cards.hand, function(card) {
         return card.name === 'Copper'
       })
-      if (copper_index !== -1) {
-        player_cards.tavern.push(player_cards.hand.splice(copper_index, 1)[0])
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.card_html('treasure', 'Copper')} on their Tavern`)
+      if (copper) {
+        let card_mover = new CardMover(game, player_cards)
+        card_mover.move(player_cards.hand, player_cards.tavern, copper)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(copper)} on their Tavern`)
       } else {
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to move a copper, but has none in hand`)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to move a ${CardView.render(new Copper())}, but has none in hand`)
       }
-    } else if (response === 'coin') {
+    } else if (response[0] === 'coin') {
       let copper_count = _.size(_.filter(player_cards.tavern, function(card) {
         return card.name === 'Copper'
       }))
-      let gained_coins = CoinGainer.gain(game, player_cards, copper_count)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(copper_count)
     }
   }
 

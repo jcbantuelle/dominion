@@ -9,9 +9,10 @@ Idol = class Idol extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 2)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2, false)
 
-    let idol_count = _.size(_.filter(player_cards.in_play.concat(player_cards.playing).concat(player_cards.duration).concat(player_cards.permanent), function(card) {
+    let idol_count = _.size(_.filter(player_cards.in_play, function(card) {
       return card.name === 'Idol'
     }))
 
@@ -26,7 +27,7 @@ Idol = class Idol extends Card {
 
   attack(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

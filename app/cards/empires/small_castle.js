@@ -12,7 +12,7 @@ SmallCastle = class SmallCastle extends Castles {
     return 5
   }
 
-  play(game, player_cards, player) {
+  play(game, player_cards, card_player) {
     let castles = _.filter(player_cards.hand, function(card) {
       return _.includes(_.words(card.types), 'castle')
     })
@@ -21,11 +21,11 @@ SmallCastle = class SmallCastle extends Castles {
       new_card.source = 'H'
       return new_card
     })
-    let small_castle_in_play = _.some(player_cards.playing, function(card) {
-      return card.name === player.card.name()
+    let small_castle_in_play = _.find(player_cards.in_play, function(card) {
+      return card.id === card_player.card.id
     })
     if (small_castle_in_play) {
-      let small_castle = _.clone(player.card.to_h(player_cards))
+      let small_castle = _.clone(small_castle_in_play)
       small_castle.source = 'P'
       trashable_cards.push(small_castle)
     }
@@ -47,20 +47,18 @@ SmallCastle = class SmallCastle extends Castles {
     } else if (_.size(trashable_cards) === 1) {
       SmallCastle.trash_card(game, player_cards, trashable_cards)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no castles to trash`)
-    }
+      game.log.push(`&nbsp;&nbsp;but there are no castles to trash`)    }
 
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let trashed_card = selected_cards[0]
-    let source = trashed_card.source === 'H' ? 'hand' : 'playing'
-    let source_size = _.size(player_cards[source])
-    let card_trasher = new CardTrasher(game, player_cards, source, trashed_card.name)
-    card_trasher.trash()
-    if (source_size > _.size(player_cards[source])) {
+    let source = selected_cards[0].source === 'H' ? 'hand' : 'in_play'
+
+    let card_trasher = new CardTrasher(game, player_cards, source, selected_cards)
+    let trashed_cards = card_trasher.trash()
+    if (_.size(trashed_cards) > 0) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Castles')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 

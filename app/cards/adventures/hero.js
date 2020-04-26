@@ -1,11 +1,11 @@
 Hero = class Hero extends Traveller {
 
-  is_purchasable() {
-    false
+  types() {
+    return this.capitalism_types(['action', 'traveller'])
   }
 
-  types() {
-    return ['action', 'traveller']
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -13,14 +13,14 @@ Hero = class Hero extends Traveller {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'treasure')
+      return card.count > 0 && card.supply && _.includes(_.words(card.top_card.types), 'treasure')
     })
 
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -34,6 +34,8 @@ Hero = class Hero extends Traveller {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Hero.gain_card)
+    } else if (_.size(eligible_cards) === 1) {
+      Hero.gain_card(game, player_cards, eligible_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available treasures to gain`)
     }
@@ -41,11 +43,11 @@ Hero = class Hero extends Traveller {
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
-  discard_event(discarder, card_name = 'Hero') {
-    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Champion')
+  discard_event(discarder, hero) {
+    this.choose_exchange(discarder.game, discarder.player_cards, hero, 'Champion')
   }
 
 }

@@ -1,4 +1,4 @@
-Caravan = class Caravan extends Card {
+Caravan = class Caravan extends Duration {
 
   types() {
     return ['action', 'duration']
@@ -8,21 +8,20 @@ Caravan = class Caravan extends Card {
     return 4
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
-
+  play(game, player_cards, card_player) {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
+
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    let card_drawer = new CardDrawer(game, player_cards)
-    let drawn_count = card_drawer.draw(1, false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${drawn_count} card(s) from ${CardView.render(duration_card)}`)
+  duration(game, player_cards, caravan) {
+    let card_drawer = new CardDrawer(game, player_cards, caravan)
+    card_drawer.draw(1)
   }
 
 }

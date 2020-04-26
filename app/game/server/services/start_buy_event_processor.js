@@ -4,6 +4,10 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     return ['Arena']
   }
 
+  static artifact_events() {
+    return ['Treasure Chest']
+  }
+
   static state_events() {
     return ['Deluded', 'Envious']
   }
@@ -18,10 +22,10 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     let landmark_events = _.filter(this.game.landmarks, (card) => {
       if (_.includes(StartBuyEventProcessor.landmark_events(), card.name)) {
         if (card.name === 'Arena') {
-          let eligible_cards = _.filter(this.player_cards.hand, function(card) {
+          let has_actions = _.some(this.player_cards.hand, function(card) {
             return _.includes(_.words(card.types), 'action')
           })
-          return _.size(eligible_cards) > 0
+          return has_actions
         } else {
           return false
         }
@@ -33,7 +37,11 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     let state_events = _.filter(this.player_cards.states, function(card) {
       return _.includes(StartBuyEventProcessor.state_events(), card.name)
     })
-    this.start_buy_events = landmark_events.concat(state_events)
+
+    let artifact_events = _.filter(this.player_cards.artifacts, function(card) {
+      return _.includes(StartBuyEventProcessor.artifact_events(), card.name)
+    })
+    this.start_buy_events = landmark_events.concat(state_events).concat(artifact_events)
   }
 
   process() {
@@ -56,17 +64,14 @@ StartBuyEventProcessor = class StartBuyEventProcessor {
     }
   }
 
-  static event_order(game, player_cards, event_name_order, events) {
-    _.each(event_name_order, function(event_name) {
+  static event_order(game, player_cards, ordered_events, events) {
+    _.each(ordered_events, function(ordered_event) {
       let event_index = _.findIndex(events, function(event) {
-        return event.name === event_name
+        return event.id === ordered_event.id
       })
       let event = events.splice(event_index, 1)[0]
-      if (event_name === 'Estate' && player_cards.tokens.estate) {
-        event_name = 'InheritedEstate'
-      }
-      let selected_event = ClassCreator.create(event_name)
-      selected_event.start_buy_event(game, player_cards)
+      let selected_event = ClassCreator.create(event.name)
+      selected_event.start_buy_event(game, player_cards, event)
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
     })

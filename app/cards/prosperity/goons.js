@@ -1,7 +1,11 @@
 Goons = class Goons extends Card {
 
   types() {
-    return ['action', 'attack']
+    return this.capitalism_types(['action', 'attack'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,9 +13,11 @@ Goons = class Goons extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.buys += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and +$${gained_coins}`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
+
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
@@ -39,8 +45,13 @@ Goons = class Goons extends Card {
     }
   }
 
+  buy_event(buyer) {
+    let victory_token_gainer = new VictoryTokenGainer(buyer.game, buyer.player_cards, buyer.card)
+    victory_token_gainer.gain(1)
+  }
+
   static discard_from_hand(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 

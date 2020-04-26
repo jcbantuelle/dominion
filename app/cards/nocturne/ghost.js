@@ -1,8 +1,4 @@
-Ghost = class Ghost extends Card {
-
-  is_purchasable() {
-    false
-  }
+Ghost = class Ghost extends Duration {
 
   types() {
     return ['night', 'duration', 'spirit']
@@ -12,48 +8,41 @@ Ghost = class Ghost extends Card {
     return 4
   }
 
-  play(game, player_cards) {
-    this.reveal(game, player_cards)
+  play(game, player_cards, card_player) {
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal_from_deck_until((game, player_cards, revealed_cards) => {
+      if (!_.isEmpty(revealed_cards)) {
+        return _.includes(_.words(_.last(revealed_cards).types), 'action')
+      } else {
+        return false
+      }
+    })
+    let last_revealed = _.last(player_cards.revealed)
+    let ghost = false
 
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(player_cards.revealed, 'name'))
+    if (_.includes(_.words(last_revealed.types), 'action')) {
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(last_revealed)}`)
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards.revealed, player_cards.aside, last_revealed)
+
+      ghost = _.clone(card_player.card)
+      ghost.ghost_card = last_revealed
+      player_cards.duration_effects.push(ghost)
+    }
+
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
     card_discarder.discard()
 
-    if (player_cards.revealed_card) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(player_cards.revealed_card)}`)
-      delete player_cards.revealed_card
+    if (ghost) {
       return 'duration'
     }
   }
 
-  reveal(game, player_cards) {
-    let revealed_cards = []
-    while((_.size(player_cards.deck) > 0 || _.size(player_cards.discard) > 0) && !player_cards.revealed_card) {
-      if (_.size(player_cards.deck) === 0) {
-        DeckShuffler.shuffle(game, player_cards)
-      }
-      let card = player_cards.deck.shift()
-      revealed_cards.push(card)
-      if (_.includes(_.words(card.types), 'action')) {
-        player_cards.ghost.push(card)
-        player_cards.duration_effects.push(this.to_h())
-        player_cards.revealed_card = card
-      } else {
-        player_cards.revealed.push(card)
-      }
-    }
-    if (!_.isEmpty(revealed_cards)) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_cards)}`)
-    } else {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in their deck`)
-    }
+  duration(game, player_cards, ghost) {
+    game.log.push(`<strong>${player_cards.username}</strong> resolves ${CardView.render(ghost)}`)
+    let card_player = new CardPlayer(game, player_cards, ghost.ghost_card, ghost)
+    card_player.play(true, true, 'aside', 2)
   }
 
-  duration(game, player_cards, duration_card) {
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> resolves ${CardView.render(duration_card)}`)
-    let set_aside_card = player_cards.ghost.pop()
-    player_cards.hand.push(set_aside_card)
-    let repeat_card_player = new RepeatCardPlayer(game, player_cards, set_aside_card.name)
-    repeat_card_player.play(2, 'Ghost')
-  }
 
 }

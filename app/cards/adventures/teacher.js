@@ -1,43 +1,38 @@
-Teacher = class Teacher extends Card {
-
-  is_purchasable() {
-    false
-  }
+Teacher = class Teacher extends Reserve {
 
   types() {
-    return ['action', 'reserve']
+    return this.capitalism_types(['action', 'reserve'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
     return 6
   }
 
-  play(game, player_cards) {
-    this.move_to_tavern(game, player_cards, 'Teacher')
+  play(game, player_cards, card_player) {
+    Reserve.move_to_tavern(game, player_cards, card_player.card)
   }
 
-  reserve(game, player_cards) {
+  reserve(game, player_cards, teacher) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Call ${CardView.render(this)}?`,
+      instructions: `Call ${CardView.render(teacher)}?`,
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, teacher)
     turn_event_processor.process(Teacher.choose_token)
   }
 
-  static choose_token(game, player_cards, response) {
+  static choose_token(game, player_cards, response, teacher) {
     if (response === 'yes') {
-      let teacher_index = _.findIndex(player_cards.tavern, function(card) {
-        return card.name === 'Teacher'
-      })
-      teacher = player_cards.tavern.splice(teacher_index, 1)[0]
-      game.log.push(`<strong>${player_cards.username}</strong> calls ${CardView.render(teacher)}`)
-      player_cards.in_play.push(teacher)
+      Reserve.call_from_tavern(game, player_cards, teacher)
 
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -66,7 +61,7 @@ Teacher = class Teacher extends Card {
       let has_player_token = _.some(card.tokens, function(pile_token) {
         return pile_token.username === player_cards.username
       })
-      return !has_player_token && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action')
+      return !has_player_token && card.supply && _.includes(_.words(card.top_card.pile_types), 'action')
     })
 
     let turn_event_id = TurnEventModel.insert({

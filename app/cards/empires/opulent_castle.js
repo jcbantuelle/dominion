@@ -1,7 +1,11 @@
 OpulentCastle = class OpulentCastle extends Castles {
 
   types() {
-    return ['action', 'victory', 'castle']
+    return this.capitalism_types(['action', 'victory', 'castle'])
+  }
+
+  capitalism() {
+    return true
   }
 
   victory_points(player_cards) {
@@ -39,11 +43,11 @@ OpulentCastle = class OpulentCastle extends Castles {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard any victory cards`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
-      let gained_coins = CoinGainer.gain(game, player_cards, _.size(selected_cards)*2)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(_.size(selected_cards)*2)
     }
   }
 

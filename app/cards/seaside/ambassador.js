@@ -9,7 +9,7 @@ Ambassador = class Ambassador extends Card {
   }
 
   play(game, player_cards) {
-    if (_.size(player_cards.hand) > 0) {
+    if (_.size(player_cards.hand) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -23,6 +23,8 @@ Ambassador = class Ambassador extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Ambassador.reveal_card)
+    } else if (_.size(player_cards.hand) === 1) {
+      Ambassador.reveal_card(game, player_cards, player_cards.hand)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
@@ -37,20 +39,20 @@ Ambassador = class Ambassador extends Card {
   attack(game, player_cards) {
     if (game.turn.ambassador_game_stack && game.turn.ambassador_game_stack.source !== 'not_supply' && game.turn.ambassador_game_stack.top_card.name === game.turn.ambassador_selected_card.name) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', game.turn.ambassador_game_stack.name)
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 
   static reveal_card(game, player_cards, selected_cards) {
     game.turn.ambassador_selected_card = selected_cards[0]
     game.turn.ambassador_game_stack = _.find(game.cards, function(card) {
-      return card.name === game.turn.ambassador_selected_card.stack_name && card.source !== 'not_supply'
+      return card.name === game.turn.ambassador_selected_card.stack_name && card.supply
     })
 
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(game.turn.ambassador_selected_card)}`)
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(game.turn.ambassador_selected_card, game.turn.ambassador_selected_card)
 
     if (game.turn.ambassador_game_stack) {
-
       let copies_in_hand = _.filter(player_cards.hand, function(card) {
         return card.name === game.turn.ambassador_selected_card.name
       })
@@ -73,43 +75,23 @@ Ambassador = class Ambassador extends Card {
         maximum: 1,
         options: options
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, copies_in_hand)
       turn_event_processor.process(Ambassador.return_copies)
     } else {
       game.log.push(`&nbsp;&nbsp;but ${CardView.render(game.turn.ambassador_selected_card)} is not in the supply`)
-      delete game.turn.ambassador_selected_card
-      delete game.turn.ambassador_game_stack
     }
   }
 
-  static return_copies(game, player_cards, response) {
+  static return_copies(game, player_cards, response, copies_in_hand) {
     response = response[0]
-
     if (response === '0') {
       game.log.push('&nbsp;&nbsp;but does not return any to the supply')
     } else {
-      let returned_card_indexes = []
-      returned_card_indexes.push(_.findIndex(player_cards.hand, function(card) {
-        return card.name === game.turn.ambassador_selected_card.name
-      }))
-      if (response === '2') {
-        returned_card_indexes.push(_.findLastIndex(player_cards.hand, function(card) {
-          return card.name === game.turn.ambassador_selected_card.name
-        }))
-      }
+      let cards_to_return = _.take(copies_in_hand, response)
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.return_to_supply(player_cards.hand, game.turn.ambassador_game_stack.name, cards_to_return)
 
-      let returned_cards = _.pullAt(player_cards.hand, returned_card_indexes)
-      if (game.turn.ambassador_selected_card.name === 'Estate' && player_cards.tokens.estate) {
-        returned_cards = _.map(returned_cards, function(card) {
-          return ClassCreator.create('Estate').to_h()
-        })
-      }
-
-      game.turn.ambassador_game_stack.count += _.size(returned_card_indexes)
-      game.turn.ambassador_game_stack.stack = returned_cards.concat(game.turn.ambassador_game_stack.stack)
-      game.turn.ambassador_game_stack.top_card = _.head(game.turn.ambassador_game_stack.stack)
-
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(returned_cards)} to the supply`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(cards_to_return)} to the supply`)
     }
   }
 

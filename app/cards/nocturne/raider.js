@@ -1,4 +1,4 @@
-Raider = class Raider extends Card {
+Raider = class Raider extends Duration {
 
   types() {
     return ['night', 'duration', 'attack']
@@ -8,17 +8,17 @@ Raider = class Raider extends Card {
     return 6
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 
-    player_cards.duration_effects.push(this.to_h())
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  attack(game, player_cards, attacker) {
+  attack(game, player_cards, attacker_player_cards) {
     if (_.size(player_cards.hand) > 4) {
-      let copy_card_names = _.uniq(_.map(attacker.playing.concat(attacker.in_play).concat(attacker.duration).concat(attacker.permanent), 'name'))
+      let copy_card_names = _.uniq(_.map(attacker_player_cards.in_play, 'name'))
       let eligible_cards = _.filter(player_cards.hand, function(card) {
         return _.includes(copy_card_names, card.name)
       })
@@ -39,7 +39,8 @@ Raider = class Raider extends Card {
       } else if (_.size(eligible_cards) === 1) {
         Raider.discard_from_hand(game, player_cards, eligible_cards)
       } else {
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(player_cards.hand)}`)
+        let card_revealer = new CardRevealer(game, player_cards)
+        card_revealer.reveal('hand')
       }
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> only has ${_.size(player_cards.hand)} cards in hand`)
@@ -47,13 +48,13 @@ Raider = class Raider extends Card {
   }
 
   static discard_from_hand(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
   }
 
-  duration(game, player_cards, duration_card) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 3)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} from ${CardView.render(duration_card)}`)
+  duration(game, player_cards, raider) {
+    let coin_gainer = new CoinGainer(game, player_cards, raider)
+    coin_gainer.gain(3)
   }
 
 }

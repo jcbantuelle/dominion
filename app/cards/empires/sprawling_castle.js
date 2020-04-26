@@ -18,8 +18,8 @@ SprawlingCastle = class SprawlingCastle extends Castles {
       minimum: 1,
       maximum: 1,
       options: [
-        {text: `Gain a ${CardView.card_html('victory', 'Duchy')}`, value: 'duchy'},
-        {text: `Gain 3 ${CardView.card_html('victory', 'Estate')}`, value: 'estate'}
+        {text: `Gain a ${CardView.render(new Duchy())}`, value: 'duchy'},
+        {text: `Gain 3 ${CardView.render(new Estate(gainer.game))}`, value: 'estate'}
       ]
     })
     let turn_event_processor = new TurnEventProcessor(gainer.game, gainer.player_cards, turn_event_id)
@@ -27,14 +27,13 @@ SprawlingCastle = class SprawlingCastle extends Castles {
   }
 
   static process_response(game, player_cards, response) {
-    response = response[0]
-    if (response === 'duchy') {
+    if (response[0] === 'duchy') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
-      card_gainer.gain_game_card()
-    } else if (response === 'estate') {
+      card_gainer.gain()
+    } else if (response[0] === 'estate') {
       _.times(3, function() {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Estate')
-        card_gainer.gain_game_card()
+        card_gainer.gain()
       })
     }
   }

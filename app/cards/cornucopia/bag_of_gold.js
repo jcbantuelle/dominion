@@ -1,9 +1,5 @@
 BagOfGold = class BagOfGold extends Card {
 
-  is_purchasable() {
-    return false
-  }
-
   types() {
     return ['action', 'prize']
   }
@@ -13,11 +9,11 @@ BagOfGold = class BagOfGold extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     let card_gainer = new CardGainer(game, player_cards, 'deck', 'Gold')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

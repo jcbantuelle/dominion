@@ -1,4 +1,4 @@
-Cobbler = class Cobbler extends Card {
+Cobbler = class Cobbler extends Duration {
 
   types() {
     return ['night', 'duration']
@@ -8,19 +8,19 @@ Cobbler = class Cobbler extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    player_cards.duration_effects.push(this.to_h())
+  play(game, player_cards, card_player) {
+    player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> resolves ${CardView.render(duration_card)}`)
+  duration(game, player_cards, cobbler) {
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> resolves ${CardView.render(cobbler)}`)
 
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 5)
+      return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 5)
     })
 
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -34,6 +34,8 @@ Cobbler = class Cobbler extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Cobbler.gain_card)
+    } else if (_.size(eligible_cards) === 1) {
+      Cobbler.gain_card(game, player_cards, eligible_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
@@ -41,7 +43,7 @@ Cobbler = class Cobbler extends Card {
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'hand', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

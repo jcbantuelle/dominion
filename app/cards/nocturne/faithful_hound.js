@@ -13,41 +13,32 @@ FaithfulHound = class FaithfulHound extends Card {
     card_drawer.draw(2)
   }
 
-  discard_event(discarder, card_name = 'FaithfulHound') {
-    let discard_card = this
-    if (card_name === 'Estate') {
-      discard_card = _.find(discarder.player_cards.discarding, function(card) {
-        return card.name === 'Estate'
-      })
-    }
+  discard_event(discarder, faithful_hound) {
     let turn_event_id = TurnEventModel.insert({
       game_id: discarder.game._id,
       player_id: discarder.player_cards.player_id,
       username: discarder.player_cards.username,
       type: 'choose_yes_no',
-      instructions: `Set aside ${CardView.render(this)}?`,
+      instructions: `Set aside ${CardView.render(faithful_hound)}?`,
       minimum: 1,
       maximum: 1
     })
-    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(discarder.game, discarder.player_cards, turn_event_id, {source: discarder.source, faithful_hound: _.clone(faithful_hound)})
     turn_event_processor.process(FaithfulHound.set_aside)
   }
 
-  static set_aside(game, player_cards, response) {
+  static set_aside(game, player_cards, response, params) {
     if (response === 'yes') {
-      let faithful_hound = player_cards.discarding.pop()
-      game.log.push(`<strong>${player_cards.username}</strong> sets aside ${CardView.render(faithful_hound)}`)
-      delete faithful_hound.scheme
-      delete faithful_hound.prince
-      if (faithful_hound.misfit) {
-        faithful_hound = faithful_hound.misfit
-      }
-      player_cards.faithful_hounds.push(faithful_hound)
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move(player_cards[params.source], player_cards.aside, params.faithful_hound)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> sets aside ${CardView.render(params.faithful_hound)}`)
+      player_cards.end_turn_event_effects.push(params.faithful_hound)
     }
   }
 
   end_turn_event(game, player_cards, faithful_hound) {
-    player_cards.hand.push(faithful_hound)
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move(player_cards.aside, player_cards.hand, faithful_hound)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(faithful_hound)} in hand`)
   }
 

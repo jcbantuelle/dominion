@@ -4,16 +4,12 @@ CardBuyer = class CardBuyer {
     this.game = game
     this.player_cards = player_cards
     if (card_name) {
-      this.game_card = this.find_game_card(card_name)
-      this.card = ClassCreator.create(this.game_card.top_card.name)
+      this.game_card = _.find(this.game.cards, function(card) {
+        return card.name === card_name
+      })
+      this.card = this.game_card.top_card
       this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', card_name, true)
     }
-  }
-
-  find_game_card(card_name) {
-    return _.find(this.game.cards, function(card) {
-      return card.name === card_name
-    })
   }
 
   buy() {
@@ -26,12 +22,13 @@ CardBuyer = class CardBuyer {
   }
 
   can_buy() {
-    return this.is_debt_free() && this.is_purchasable() && this.is_valid_buy() && !this.is_contraband() && !this.game.turn.mission_turn && (!this.game.turn.deluded || !_.includes(this.card.types(), 'action'))
+    return this.is_debt_free() && this.is_purchasable() && this.is_valid_buy() && !this.is_contraband() && !this.game.turn.mission_turn && (!this.game.turn.deluded || !_.includes(_.words(this.card.types), 'action'))
   }
 
   update_phase() {
-    if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
+    if (!this.black_market && _.includes(['action', 'treasure'], this.game.turn.phase)) {
       if (this.game.turn.phase === 'action') {
+        this.game.turn.phase = 'treasure'
         let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
         start_buy_event_processor.process()
       }
@@ -42,41 +39,28 @@ CardBuyer = class CardBuyer {
   buy_card() {
     this.update_log()
     this.update_turn()
-    this.charm_events()
     this.track_bought_card()
     this.buy_events()
     this.gain_card()
-    this.embargo()
-    this.debt_tokens()
-    this.goons()
-    this.merchant_guild()
-  }
-
-  charm_events() {
-    let charm_events_processor = new CharmEventsProcessor(this)
-    charm_events_processor.process()
   }
 
   update_turn() {
-    this.game.turn.buys -= 1
-    this.game.turn.coins -= CostCalculator.calculate(this.game, this.game_card.top_card, true)
-    this.game.turn.potions -= this.game_card.top_card.potion_cost
+    if (!this.black_market) {
+      this.game.turn.buys -= 1
+    }
+    this.game.turn.coins -= CostCalculator.calculate(this.game, this.card, true)
+    this.game.turn.potions -= this.card.potion_cost
 
-    if (this.game_card.top_card.debt_cost > 0) {
-      if (this.game.turn.possessed) {
-        possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
-        possessing_player_cards.debt_tokens += this.game_card.top_card.debt_cost
-        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes ${this.game_card.top_card.debt_cost} debt tokens`)
-        PlayerCardsModel.update(this.game._id, possessing_player_cards)
-      } else {
-        this.player_cards.debt_tokens += this.game_card.top_card.debt_cost
-      }
+    if (this.card.debt_cost > 0) {
+      let debt_token_gainer = new DebtTokenGainer(this.game, this.player_cards)
+      debt_token_gainer.gain(this.card.debt_cost)
     }
   }
 
   track_bought_card(card) {
-    let bought_card = _.clone(this.game_card.top_card)
+    let bought_card = _.clone(this.card)
     this.game.turn.bought_cards.push(bought_card)
+    this.game.turn.bought_things.push(bought_card)
   }
 
   buy_events() {
@@ -85,55 +69,10 @@ CardBuyer = class CardBuyer {
   }
 
   gain_card() {
-    this.card_gainer.gain_game_card()
-  }
-
-  embargo() {
-    _.times(this.game_card.embargos, () => {
-      let card_gainer = new CardGainer(this.game, this.player_cards, 'discard', 'Curse')
-      card_gainer.gain_game_card()
-    })
-  }
-
-  debt_tokens() {
-    if (this.game_card.debt_tokens > 0) {
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${this.game_card.debt_tokens} debt token(s)`)
-      this.player_cards.debt_tokens += this.game_card.debt_tokens
-      this.game_card.debt_tokens = 0
-    }
-  }
-
-  goons() {
-    let goon_count = _.size(_.filter(this.player_cards.in_play, function(card) {
-      return card.name === 'Goons'
-    }))
-    if (goon_count > 0) {
-      if (this.game.turn.possessed) {
-        possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
-        possessing_player_cards.victory_tokens += goon_count
-        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
-        PlayerCardsModel.update(this.game._id, possessing_player_cards)
-      } else {
-        this.player_cards.victory_tokens += goon_count
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${goon_count} &nabla; from ${CardView.card_html('action', 'Goons')}`)
-      }
-    }
-  }
-
-  merchant_guild() {
-    let merchant_guild_count = _.size(_.filter(this.player_cards.in_play, function(card) {
-      return card.name === 'Merchant Guild'
-    }))
-    if (merchant_guild_count > 0) {
-      if (this.game.turn.possessed) {
-        possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
-        possessing_player_cards.coin_tokens += merchant_guild_count
-        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.card_html('action', 'Merchant Guild')}`)
-        PlayerCardsModel.update(this.game._id, possessing_player_cards)
-      } else {
-        this.player_cards.coin_tokens += merchant_guild_count
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> takes ${merchant_guild_count} coin token(s) from ${CardView.card_html('action', 'Merchant Guild')}`)
-      }
+    let gain_source = this.black_market ? this.game.revealed_black_market : 'supply'
+    let gained_card = this.card_gainer.gain(gain_source)
+    if (gained_card && gained_card.id !== this.card.id && gained_card.name !== this.card.name) {
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.card_gainer.player_cards.username}</strong> gains ${CardView.render(gained_card)} instead`)
     }
   }
 
@@ -142,7 +81,7 @@ CardBuyer = class CardBuyer {
   }
 
   is_purchasable() {
-    return this.card.is_purchasable() && (this.card.name() !== 'Grand Market' || this.allow_grand_market())
+    return (this.black_market || this.game_card.supply) && (this.card.name !== 'Grand Market' || this.allow_grand_market())
   }
 
   allow_grand_market() {
@@ -157,33 +96,28 @@ CardBuyer = class CardBuyer {
   }
 
   is_contraband() {
-    return _.includes(this.game.turn.contraband, this.card.name())
+    return _.includes(this.game.turn.contraband, this.card.name)
   }
 
   has_remaining_stock() {
-    return this.game_card.count > 0
+    return this.black_market || this.game_card.count > 0
   }
 
   has_enough_buys() {
-    return this.game.turn.buys > 0
+    return this.black_market || this.game.turn.buys > 0
   }
 
   has_enough_money() {
-    let coin_cost = CostCalculator.calculate(this.game, this.game_card.top_card, true)
-    return this.game.turn.coins >= coin_cost && this.game.turn.potions >= this.game_card.top_card.potion_cost
+    let coin_cost = CostCalculator.calculate(this.game, this.card, true)
+    return this.game.turn.coins >= coin_cost && this.game.turn.potions >= this.card.potion_cost
   }
 
   update_log() {
-    let log_message = `<strong>${this.player_cards.username}</strong> buys ${CardView.render(this.card)}`
-    if (this.game.turn.possessed) {
-      log_message += ` but <strong>${this.game.turn.possessed.username}</strong> gains it`
+    let player_username = this.player_cards.username
+    if (this.possessed_player_cards) {
+      player_username = this.possessed_player_cards.username
     }
-    if (this.card_gainer.destination === 'hand') {
-      log_message += ', placing it in hand'
-    } else if (this.card_gainer.destination === 'deck') {
-      log_message += ', placing it on top of their deck'
-    }
-    this.game.log.push(log_message)
+    this.game.log.push(`<strong>${player_username}</strong> buys ${CardView.render(this.card)}`)
   }
 
 }

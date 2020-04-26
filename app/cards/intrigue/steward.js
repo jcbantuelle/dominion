@@ -1,7 +1,11 @@
 Steward = class Steward extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -28,14 +32,13 @@ Steward = class Steward extends Card {
   }
 
   static process_choice(game, player_cards, choice) {
-    choice = choice[0]
-    if (choice === 'cards') {
+    if (choice[0] === 'cards') {
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(2)
-    } else if (choice === 'coins') {
-      let gained_coins = CoinGainer.gain(game, player_cards, 2)
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
-    } else if (choice === 'trash') {
+    } else if (choice[0] === 'coins') {
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(2)
+    } else if (choice[0] === 'trash') {
       if (_.size(player_cards.hand) > 2) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
@@ -58,9 +61,9 @@ Steward = class Steward extends Card {
 
   static trash_cards(game, player_cards, selected_cards) {
     if (_.size(selected_cards) === 0) {
-      game.log.push(`&nbsp;&nbsp;but does not trash anything`)
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to trash but has no cards in hand`)
     } else {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
     }
   }

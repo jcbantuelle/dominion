@@ -12,10 +12,11 @@ PhilosophersStone = class PhilosophersStone extends Card {
     return 1
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let coins = Math.floor(_.size(player_cards.deck.concat(player_cards.discard)) / 5)
-    let gained_coins = CoinGainer.gain(game, player_cards, coins)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+
+    let coin_gainer = new CoinGainer(game, player_cards, card_player.card)
+    coin_gainer.gain(coins)
   }
 
 }

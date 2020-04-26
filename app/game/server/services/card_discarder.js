@@ -1,122 +1,118 @@
 CardDiscarder = class CardDiscarder {
 
-  constructor(game, player_cards, source, card_names) {
+  constructor(game, player_cards, source, cards) {
     this.game = game
     this.player_cards = player_cards
     this.source = source
-    if (!card_names) {
-      this.card_names = _.map(player_cards[source], 'name')
-    } else {
-      this.card_names = _.isArray(card_names) ? card_names : [card_names]
+    if (!cards) {
+      cards = player_cards[source]
+    } else if (!_.isArray(cards)) {
+      cards = [cards]
     }
-    this.discard_reaction_cards = ['Tunnel']
+    this.cards = _.clone(cards)
   }
 
   discard(announce = true) {
-    if (!_.isEmpty(this.card_names)) {
-      _.each(this.card_names, (card_name) => {
-        this.player_cards.to_discard.push(this.find_card(card_name))
+    if (!_.isEmpty(this.cards)) {
+      let ordered_discard = this.has_events() || this.has_schemes()
+      if (_.size(this.cards) > 1 && ordered_discard) {
+        let turn_event_id = TurnEventModel.insert({
+          game_id: this.game._id,
+          player_id: this.player_cards.player_id,
+          username: this.player_cards.username,
+          type: 'sort_cards',
+          instructions: 'Choose order to discard cards: (leftmost will be first)',
+          cards: this.cards
+        })
+        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, this)
+        turn_event_processor.process(CardDiscarder.order_cards)
+      }
+
+      if (!ordered_discard && announce) {
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(this.cards)}${this.source_text()}`)
+      }
+
+      _.each(this.cards, (card_to_discard) => {
+        if (ordered_discard && announce) {
+          this.update_log(card_to_discard)
+        }
+        let discard_event_processor = new DiscardEventProcessor(this, card_to_discard)
+        discard_event_processor.process()
+        this.put_card_in_discard(card_to_discard)
       })
-      this.player_cards.to_discard = _.compact(this.player_cards.to_discard)
-
-      if (!_.isEmpty(this.player_cards.to_discard)) {
-
-        let events = this.has_events()
-        if (_.size(this.player_cards.to_discard) > 1 && events) {
-          let turn_event_id = TurnEventModel.insert({
-            game_id: this.game._id,
-            player_id: this.player_cards.player_id,
-            username: this.player_cards.username,
-            type: 'sort_cards',
-            instructions: 'Choose order to discard cards: (leftmost will be first)',
-            cards: this.player_cards.to_discard
-          })
-          let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
-          turn_event_processor.process(CardDiscarder.order_cards)
-        }
-
-        if (!events && announce) {
-          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(this.player_cards.to_discard)}`)
-        }
-
-        var discarded_card
-        do {
-          discarded_card = this.player_cards.to_discard.shift()
-          if (discarded_card) {
-            this.track_discarded_card(discarded_card)
-            if (events && announce) {
-              this.update_log(discarded_card)
-            }
-            let discard_event_processor = new DiscardEventProcessor(this, discarded_card)
-            discard_event_processor.process()
-            this.put_card_in_discard()
-          }
-        } while (discarded_card)
-      }
-    }
-  }
-
-  put_card_in_discard() {
-    if (_.size(this.player_cards.discarding) === this.discarded_card_count) {
-      let discarding_card = this.player_cards.discarding.pop()
-      let destination = 'discard'
-      if (discarding_card.scheme) {
-        destination = 'deck'
-        delete discarding_card.scheme
-        delete discarding_card.prince
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> places ${CardView.render(discarding_card)} on their deck`)
-      }
-      if (discarding_card.prince) {
-        destination = 'princed'
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> sets aside ${CardView.render(discarding_card)} from ${CardView.card_html('action', 'Prince')}`)
-      }
-      if (discarding_card.misfit) {
-        discarding_card = discarding_card.misfit
-      }
-      this.player_cards[destination].unshift(discarding_card)
     }
   }
 
   has_events() {
-    let has_event_cards = _.some(this.player_cards.to_discard, (card) => {
+    return _.some(this.cards, (card) => {
       let discard_event_processor = new DiscardEventProcessor(this, card)
       return !_.isEmpty(discard_event_processor.discard_events)
     })
-    let multiple_schemes = _.size(_.filter(this.player_cards.to_discard, function(card) {
-      return card.scheme
-    })) > 1
-    return (has_event_cards || multiple_schemes)
   }
 
-  find_card(card_name) {
-    let card_index = _.findIndex(this.player_cards[this.source], (card) => {
-      return card.name === card_name
+  has_schemes() {
+    return this.source === 'in_play' && this.game.turn.schemes > 0 && _.some(this.cards, (card) => {
+      return _.includes(_.words(card.types), 'action')
     })
-    if (card_index !== -1) {
-      return this.player_cards[this.source].splice(card_index, 1)[0]
-    } else {
-      return undefined
-    }
   }
 
-  track_discarded_card(discarded_card) {
-    this.player_cards.discarding.push(discarded_card)
-    this.discarded_card_count = _.size(this.player_cards.discarding)
+  put_card_in_discard(card) {
+    if (!card.destination) {
+      card.destination = 'discard'
+    }
+
+    if (destination !== 'deck' && this.has_schemes() && _.includes(_.words(card.types), 'action')) {
+      let turn_event_id = TurnEventModel.insert({
+        game_id: this.game._id,
+        player_id: this.player_cards.player_id,
+        username: this.player_cards.username,
+        type: 'choose_yes_no',
+        instructions: `Place ${CardView.render(card)} on top of deck from ${CardView.render(new Scheme())}?`,
+        minimum: 1,
+        maximum: 1
+      })
+      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id, card)
+      turn_event_processor.process(CardDiscarder.choose_scheme)
+    }
+
+    let source_text = ''
+    if (card.destination === 'scheme') {
+      source_text = ` from ${CardView.render(new Scheme())}`
+      card.destination = 'deck'
+    }
+    let destination = card.destination
+    delete card.destination
+
+    let card_mover = new CardMover(this.game, this.player_cards)
+    card_mover.move(this.player_cards[this.source], this.player_cards[destination], card)
+
+    if (destination === 'deck') {
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> places ${CardView.render(card)} on their deck${source_text}`)
+    } else if (destination === 'aside') {
+      this.game.log.push(`<strong>${this.player_cards.username}</strong> sets aside ${CardView.render(card)}`)
+    }
+
+    GameModel.update(this.game._id, this.game)
+    PlayerCardsModel.update(this.game._id, this.player_cards)
   }
 
   update_log(card) {
-    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(card)}`)
+    this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards ${CardView.render(card)}${this.source_text()}`)
   }
 
-  static order_cards(game, player_cards, ordered_card_names) {
-    let new_discard_order = []
-    _.each(ordered_card_names, function(card_name) {
-      let discard_card_index = _.findIndex(player_cards.to_discard, function(card) {
-        return card.name === card_name
-      })
-      new_discard_order.push(player_cards.to_discard.splice(discard_card_index, 1)[0])
-    })
-    player_cards.to_discard = new_discard_order
+  source_text() {
+    return this.source === 'deck' ? ' from the top of their deck' : ''
+  }
+
+  static order_cards(game, player_cards, ordered_cards, card_discarder) {
+    card_discarder.cards = ordered_cards
+  }
+
+  static choose_scheme(game, player_cards, response, card) {
+    if (response === 'yes') {
+      game.turn.schemes -= 1
+      card.destination = 'scheme'
+    }
   }
 
 }

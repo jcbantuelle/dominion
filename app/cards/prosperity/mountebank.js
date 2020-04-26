@@ -1,7 +1,11 @@
 Mountebank = class Mountebank extends Card {
 
   types() {
-    return ['action', 'attack']
+    return this.capitalism_types(['action', 'attack'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,38 +13,38 @@ Mountebank = class Mountebank extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
   }
 
   attack(game, player_cards) {
-    let curses = _.filter(player_cards.hand, function(card) {
-      return card.name === 'Curse'
+    let curse = _.find(player_cards.hand, function(card) {
+      return _.includes(_.words(card.types), 'curse')
     })
 
-    if (!_.isEmpty(curses)) {
+    if (curse) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_yes_no',
-        instructions: `Discard a ${CardView.card_html('curse', 'Curse')}?`,
+        instructions: `Discard ${CardView.render(curse)}?`,
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, curse)
       turn_event_processor.process(Mountebank.discard_curse)
     } else {
       Mountebank.gain_cards(game, player_cards)
     }
   }
 
-  static discard_curse(game, player_cards, response) {
+  static discard_curse(game, player_cards, response, curse) {
     if (response === 'yes') {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', 'Curse')
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', curse)
       card_discarder.discard()
     } else {
       Mountebank.gain_cards(game, player_cards)
@@ -49,10 +53,10 @@ Mountebank = class Mountebank extends Card {
 
   static gain_cards(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
 
     card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

@@ -11,7 +11,7 @@ Pilgrimage = class Pilgrimage extends Event {
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> turns their Journey Token face ${player_cards.tokens.journey}`)
 
     if (player_cards.tokens.journey === 'up') {
-      let cards_in_play = player_cards.in_play.concat(player_cards.duration).concat(player_cards.permanent)
+      let cards_in_play = player_cards.in_play
       let unique_cards = _.uniqBy(cards_in_play, 'name')
       if (_.size(unique_cards) > 0) {
         let turn_event_id = TurnEventModel.insert({
@@ -36,7 +36,7 @@ Pilgrimage = class Pilgrimage extends Event {
   static gain_cards(game, player_cards, selected_cards) {
     _.each(selected_cards, function(selected_card) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     })
   }
 }

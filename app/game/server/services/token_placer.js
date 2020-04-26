@@ -7,7 +7,7 @@ TokenPlacer = class TokenPlacer {
     this.pile = pile
     if (this.pile) {
       this.new_pile_index = _.findIndex(this.game.cards, (card) => {
-        return card.name === this.pile.name
+        return card.stack_name === this.pile.stack_name
       })
     }
   }

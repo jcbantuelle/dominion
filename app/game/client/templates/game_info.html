@@ -21,6 +21,28 @@
     <br />
     <br />
   {{/if}}
+  {{#if game.states}}
+    States:
+    {{#each game.states}}
+      <span class="{{types}} state-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="341" height="220" />
+      </div>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
+  {{#if game.artifacts}}
+    Artifacts:
+    {{#each game.artifacts}}
+      <span class="{{types}} state-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="341" height="220" />
+      </div>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
   {{#if game.trade_route_tokens}}
     Trade Route Tokens:
     {{#each times game.trade_route_tokens}}
@@ -31,7 +53,7 @@
   {{/if}}
   Trash:
   {{#each game.trash}}
-    <span class="{{types}} trash-card">{{name}}</span>
+    <span class="{{types}} trash-card {{#if face_down}}face-down{{/if}}">{{name}}</span>
     <div class="card-tooltip">
       <img src="{{static_image image}}" width="220" height="341" />
     </div>
@@ -49,9 +71,42 @@
     <br />
     <br />
   {{/if}}
+  {{#if player_cards.haven}}
+    Haven:
+    {{#each player_cards.haven}}
+      <span class="{{types}} haven-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="220" height="341" />
+      </div>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
+  {{#if player_cards.church}}
+    Haven:
+    {{#each player_cards.church}}
+      <span class="{{types}} church-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="220" height="341" />
+      </div>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
   {{#if player_cards.archive}}
     Archive:
     {{#each player_cards.archive}}
+      <span class="{{types}} archive-card">{{name}}</span>
+      <div class="card-tooltip">
+        <img src="{{static_image image}}" width="220" height="341" />
+      </div>
+    {{/each}}
+    <br />
+    <br />
+  {{/if}}
+  {{#if player_cards.research}}
+    Research:
+    {{#each player_cards.research}}
       <span class="{{types}} archive-card">{{name}}</span>
       <div class="card-tooltip">
         <img src="{{static_image image}}" width="220" height="341" />
@@ -72,7 +127,7 @@
     <br />
   {{/if}}
   {{#each public_info}}
-    <strong class="{{color}}">{{username}}</strong><br />
+    <strong>{{{username}}}</strong><br />
     Score: {{points}}
     <br />
     {{#if villagers}}
@@ -80,8 +135,8 @@
       <br />
     {{/if}}
     <br />
-    {{#if coin_tokens}}
-      Coin Tokens: {{coin_tokens}}
+    {{#if coffers}}
+      Coffers: {{coffers}}
       <br />
     {{/if}}
     {{#if debt_tokens}}
@@ -94,6 +149,10 @@
     {{/if}}
     {{#if pirate_ship_coins}}
       Pirate Ship Coins: {{pirate_ship_coins}}
+      <br />
+    {{/if}}
+    {{#if sinister_plot_tokens}}
+      Sinister Plot Tokens: {{sinister_plot_tokens}}
       <br />
     {{/if}}
     {{#if island}}
@@ -120,6 +179,16 @@
     {{/if}}
     {{#if estate}}
       Estate Token: <span class="{{estate.types}}">{{estate.name}}</span>
+      <br />
+    {{/if}}
+    {{#if cargo_ship}}
+      Cargo Ship:
+      {{#each cargo_ship}}
+        <span class="{{types}} cargo-ship-card">{{name}}</span>
+        <div class="card-tooltip">
+          <img src="{{static_image image}}" width="220" height="341" />
+        </div>
+      {{/each}}
       <br />
     {{/if}}
     {{#if tavern}}

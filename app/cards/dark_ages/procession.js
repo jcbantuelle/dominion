@@ -8,9 +8,9 @@ Procession = class Procession extends Card {
     return 4
   }
 
-  play(game, player_cards) {
-    let eligible_cards = _.filter(player_cards.hand, function(card) {
-      return _.includes(_.words(card.types), 'action')
+  play(game, player_cards, card_player) {
+    let eligible_cards = _.filter(player_cards.hand, (card) => {
+      return _.includes(_.words(card.types), 'action') && !_.includes(_.words(card.types), 'duration')
     })
 
     if (_.size(eligible_cards) > 0) {
@@ -20,38 +20,32 @@ Procession = class Procession extends Card {
         username: player_cards.username,
         type: 'choose_cards',
         player_cards: true,
-        instructions: 'Choose a card to play two times: (Or none to skip)',
+        instructions: 'Choose a card to play two times: (or none to skip)',
         cards: eligible_cards,
         minimum: 0,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player.card)
       turn_event_processor.process(Procession.play_twice)
     } else {
-      game.log.push(`&nbsp;&nbsp;but there are no action cards in hand`)
+      game.log.push(`&nbsp;&nbsp;but does not play an action`)
     }
   }
 
-  static play_twice(game, player_cards, selected_cards) {
+  static play_twice(game, player_cards, selected_cards, procession) {
     if (!_.isEmpty(selected_cards)) {
       let selected_card = selected_cards[0]
 
-      let repeat_card_player = new RepeatCardPlayer(game, player_cards, selected_card.name)
-      repeat_card_player.play(2, 'Procession')
+      let card_player = new CardPlayer(game, player_cards, selected_card, procession)
+      card_player.play(true, true, 'hand', 2)
 
-      let played_card_index = _.findIndex(player_cards.playing, function(card) {
-        return card.name == repeat_card_player.card.name()
+      let card_trasher = new CardTrasher(game, player_cards, 'in_play', selected_card)
+      card_trasher.trash()
+
+      let eligible_cards = _.filter(game.cards, (card) => {
+        return card.count > 0 && card.supply && _.includes(_.words(card.top_card.types), 'action') && CardCostComparer.card_equal_to(game, selected_card, card.top_card, 1)
       })
-      if (played_card_index !== -1) {
-        let card_trasher = new CardTrasher(game, player_cards, 'playing', repeat_card_player.card.name())
-        card_trasher.trash()
-      }
-
-      let eligible_cards = _.filter(game.cards, function(card) {
-        return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'action') && CardCostComparer.card_equal_to(game, selected_card, card.top_card, 1)
-      })
-
-      if (_.size(eligible_cards) > 0) {
+      if (_.size(eligible_cards) > 1) {
         GameModel.update(game._id, game)
         PlayerCardsModel.update(game._id, player_cards)
         let turn_event_id = TurnEventModel.insert({
@@ -67,15 +61,19 @@ Procession = class Procession extends Card {
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Procession.gain_card)
+      } else if (_.size(eligible_cards) === 1) {
+        Procession.gain_card(game, player_cards, eligible_cards)
       } else {
         game.log.push(`&nbsp;&nbsp;but there are no available actions to gain`)
       }
+    } else {
+      game.log.push(`&nbsp;&nbsp;but does not play an action`)
     }
   }
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

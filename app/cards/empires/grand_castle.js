@@ -9,19 +9,14 @@ GrandCastle = class GrandCastle extends Castles {
   }
 
   gain_event(gainer) {
-    if (_.size(gainer.player_cards) > 0) {
-      gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> reveals ${CardView.render(gainer.player_cards.hand)}`)
-    } else {
-      gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> reveals an empty hand`)
-    }
+    let card_revealer = new CardRevealer(gainer.game, gainer.player_cards)
+    card_revealer.reveal('hand')
 
-    let victory_card_count = _.size(_.filter(gainer.player_cards.hand.concat(gainer.player_cards.in_play).concat(gainer.player_cards.playing).concat(gainer.player_cards.duration).concat(gainer.player_cards.permanent), function(card) {
+    let victory_card_count = _.size(_.filter(gainer.player_cards.hand.concat(gainer.player_cards.in_play), function(card) {
       return _.includes(_.words(card.types), 'victory')
     }))
-    if (victory_card_count > 0) {
-      gainer.player_cards.victory_tokens += victory_card_count
-      gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> gets +${victory_card_count} &nabla;`)
-    }
+    let victory_token_gainer = new VictoryTokenGainer(gainer.game, gainer.player_cards)
+    victory_token_gainer.gain(victory_card_count)
   }
 
 }

@@ -1,9 +1,5 @@
 Madman = class Madman extends Card {
 
-  is_purchasable() {
-    return false
-  }
-
   types() {
     return ['action']
   }
@@ -12,25 +8,15 @@ Madman = class Madman extends Card {
     return 0
   }
 
-  play(game, player_cards) {
-    game.turn.actions += 2
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
+  play(game, player_cards, card_player) {
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(2)
 
-    let madman_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Madman'
-    })
-    if (madman_index !== -1) {
-      let madman_pile = _.find(game.cards, function(card) {
-        return card.name === 'Madman'
-      })
+    let card_mover = new CardMover(game, player_cards)
+    let return_count = card_mover.return_to_supply(player_cards.in_play, 'Madman', [card_player.card])
 
-      let madman_card = player_cards.playing.splice(madman_index, 1)[0]
-
-      madman_pile.count += 1
-      madman_pile.stack.unshift(madman_card)
-      madman_pile.top_card = _.head(madman_pile.stack)
-
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(madman_card)} to the Madman pile`)
+    if (return_count === 1) {
+      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(card_player.card)} to the ${CardView.render(card_player.card)} pile`)
 
       let card_drawer = new CardDrawer(game, player_cards)
       card_drawer.draw(_.size(player_cards.hand))

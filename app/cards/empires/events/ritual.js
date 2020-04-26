@@ -6,14 +6,12 @@ Ritual = class Ritual extends Event {
 
   buy(game, player_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-    let gained = card_gainer.gain_game_card()
-
-    let eligible_cards = _.filter(game.cards, function(card) {
-      return !_.includes(_.words(card.top_card.types), 'victory') && card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 6)
-    })
+    let gained = card_gainer.gain()
 
     if (gained && gained.name === 'Curse') {
-      if (_.size(player_cards.hand) > 0) {
+      if (_.size(player_cards.hand) > 1) {
+        GameModel.update(game._id, game)
+        PlayerCardsModel.update(game._id, player_cards)
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
@@ -27,6 +25,8 @@ Ritual = class Ritual extends Event {
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(Ritual.trash_card)
+      } else if (_.size(player_cards.hand) === 1) {
+        Ritual.trash_card(game, player_cards, player_cards.hand)
       } else {
         game.log.push(`&nbsp;&nbsp;but <strong>${player_cards.username}</strong> has no cards in hand`)
       }
@@ -34,22 +34,13 @@ Ritual = class Ritual extends Event {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
+    let victory_tokens = CostCalculator.calculate(game, selected_cards[0])
 
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     card_trasher.trash()
 
-    let victory_tokens = CostCalculator.calculate(game, selected_card)
-
-    if (game.turn.possessed) {
-      possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-      possessing_player_cards.victory_tokens += victory_tokens
-      game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
-      PlayerCardsModel.update(game._id, possessing_player_cards)
-    } else {
-      player_cards.victory_tokens += victory_tokens
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
-    }
+    let victory_token_gainer = new VictoryTokenGainer(game, player_cards)
+    victory_token_gainer.gain(victory_tokens)
   }
 
 }

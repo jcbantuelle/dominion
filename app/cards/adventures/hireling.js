@@ -1,4 +1,4 @@
-Hireling = class Hireling extends Card {
+Hireling = class Hireling extends Duration {
 
   types() {
     return ['action', 'duration']
@@ -8,16 +8,15 @@ Hireling = class Hireling extends Card {
     return 6
   }
 
-  play(game, player_cards) {
-    player_cards.permanent_duration_effects.push(this.to_h())
-
-    return 'permanent'
+  play(game, player_cards, card_player) {
+    player_cards.duration_effects.push(_.clone(card_player.card))
+    return 'duration'
   }
 
-  duration(game, player_cards, duration_card) {
-    let card_drawer = new CardDrawer(game, player_cards)
-    let drawn_count = card_drawer.draw(1, false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${drawn_count} card(s) from ${CardView.render(duration_card)}`)
+  duration(game, player_cards, hireling) {
+    let card_drawer = new CardDrawer(game, player_cards, hireling)
+    let drawn_count = card_drawer.draw(1)
+    player_cards.duration_effects.push(hireling)
   }
 
 }

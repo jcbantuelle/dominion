@@ -1,7 +1,11 @@
 Scavenger = class Scavenger extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,8 +13,8 @@ Scavenger = class Scavenger extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
     if (_.size(player_cards.deck) > 0) {
       let turn_event_id = TurnEventModel.insert({
@@ -28,7 +32,7 @@ Scavenger = class Scavenger extends Card {
       game.log.push(`&nbsp;&nbsp;but the deck is empty`)
     }
 
-    if (_.size(player_cards.discard) > 0) {
+    if (_.size(player_cards.discard) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -49,18 +53,15 @@ Scavenger = class Scavenger extends Card {
 
   static discard_deck(game, player_cards, response) {
     if (response === 'yes') {
+      let card_mover = new CardMover(game, player_cards)
+      card_mover.move_all(player_cards.deck, player_cards.discard)
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts their deck into their discard pile`)
-      player_cards.discard = player_cards.discard.concat(player_cards.deck)
-      player_cards.deck = []
     }
   }
 
   static put_on_deck(game, player_cards, selected_cards) {
-    let discard_card_index = _.findIndex(player_cards.discard, function(card) {
-      return card.name === selected_cards[0].name
-    })
-
-    player_cards.deck.unshift(player_cards.discard.splice(discard_card_index, 1)[0])
+    let card_mover = new CardMover(game, player_cards)
+    card_mover.move(player_cards.discard, player_cards.deck, selected_cards[0])
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts a card from their discard on top of their deck`)
   }
 

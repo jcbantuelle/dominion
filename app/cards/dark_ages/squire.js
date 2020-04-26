@@ -1,7 +1,11 @@
 Squire = class Squire extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,8 +13,10 @@ Squire = class Squire extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
+
+    GameModel.update(game._id, game)
 
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
@@ -31,25 +37,24 @@ Squire = class Squire extends Card {
   }
 
   static process_choice(game, player_cards, choice) {
-    choice = choice[0]
-    if (choice === 'actions') {
-      game.turn.actions += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 actions`)
-    } else if (choice === 'buys') {
-      game.turn.buys += 2
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +2 buys`)
-    } else if (choice === 'silver') {
+    if (choice[0] === 'actions') {
+      let action_gainer = new ActionGainer(game, player_cards)
+      action_gainer.gain(2)
+    } else if (choice[0] === 'buys') {
+      let buy_gainer = new BuyGainer(game, player_cards)
+      buy_gainer.gain(2)
+    } else if (choice[0] === 'silver') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 
   trash_event(trasher) {
     let eligible_cards = _.filter(trasher.game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && _.includes(_.words(card.top_card.types), 'attack')
+      return card.count > 0 && card.supply && _.includes(_.words(card.top_card.types), 'attack')
     })
 
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: trasher.game._id,
         player_id: trasher.player_cards.player_id,
@@ -63,6 +68,8 @@ Squire = class Squire extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(trasher.game, trasher.player_cards, turn_event_id)
       turn_event_processor.process(Squire.gain_card)
+    } else if (_.size(eligible_cards) === 1) {
+      Squire.gain_card(trasher.game, trasher.player_cards, eligible_cards)
     } else {
       trasher.game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
@@ -70,7 +77,7 @@ Squire = class Squire extends Card {
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

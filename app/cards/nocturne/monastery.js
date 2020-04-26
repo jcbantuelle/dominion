@@ -11,22 +11,20 @@ Monastery = class Monastery extends Card {
   play(game, player_cards, player) {
     let gained_card_count = _.size(game.turn.gained_cards)
     if (gained_card_count > 0) {
-      let cards_in_hand = _.map(player_cards.hand, function(card) {
+      let trashable_cards = _.map(player_cards.hand, function(card) {
         let new_card = _.clone(card)
         new_card.source = 'H'
         return new_card
       })
-      let coppers_in_play = _.filter(player_cards.in_play, function(card) {
-        return card.name === 'Copper'
-      })
-      coppers_in_play = _.map(coppers_in_play, function(copper) {
-        let cloned_copper = _.clone(copper)
-        cloned_copper.source = 'P'
-        return cloned_copper
+      _.each(player_cards.in_play, function(card) {
+        if (card.name === 'Copper') {
+          let copper = _.clone(card)
+          copper.source = 'P'
+          trashable_cards.push(copper)
+        }
       })
 
-      let trashable_cards = cards_in_hand.concat(coppers_in_play)
-      if (_.size(trashable_cards) > 1) {
+      if (_.size(trashable_cards) > 0) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
@@ -51,7 +49,7 @@ Monastery = class Monastery extends Card {
   static trash_cards(game, player_cards, selected_cards) {
     _.each(selected_cards, function(card) {
       let source = card.source === 'H' ? 'hand' : 'in_play'
-      let card_trasher = new CardTrasher(game, player_cards, source, card.name)
+      let card_trasher = new CardTrasher(game, player_cards, source, card)
       card_trasher.trash()
     })
   }

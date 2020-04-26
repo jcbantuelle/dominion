@@ -9,9 +9,11 @@ CursedGold = class CursedGold extends Card {
   }
 
   play(game, player_cards) {
-    CoinGainer.gain(game, player_cards, 3)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(3, false)
+
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Curse')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

@@ -21,6 +21,7 @@ Event = class Event {
       name: this.name(),
       image: this.image(),
       types: 'event',
+      wide: true,
       coin_cost: this.coin_cost(),
       debt_cost: this.debt_cost()
     }

@@ -13,7 +13,8 @@ Gold = class Gold extends Card {
     if (game.turn.envious) {
       gained_coin = 1
     }
-    CoinGainer.gain(game, player_cards, gained_coin)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(gained_coin, false)
   }
 
 }

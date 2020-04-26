@@ -1,7 +1,11 @@
 Bishop = class Bishop extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,18 +13,13 @@ Bishop = class Bishop extends Card {
   }
 
   play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    if (game.turn.possessed) {
-      possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-      possessing_player_cards.victory_tokens += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} and <strong>${possessing_player_cards.username}</strong> gets +1 &nabla;`)
-      PlayerCardsModel.update(game._id, possessing_player_cards)
-    } else {
-      player_cards.victory_tokens += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins} and +1 &nabla;`)
-    }
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
 
-    if (_.size(player_cards.hand) > 0) {
+    let victory_token_gainer = new VictoryTokenGainer(game, player_cards)
+    victory_token_gainer.gain(1)
+
+    if (_.size(player_cards.hand) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -34,6 +33,8 @@ Bishop = class Bishop extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Bishop.trash_card)
+    } else if (_.size(player_cards.hand) === 1) {
+      Bishop.trash_card(game, player_cards, player_cards.hand)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
@@ -65,25 +66,16 @@ Bishop = class Bishop extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let trashed_card = selected_cards[0]
-    if (trashed_card) {
-      let coin_cost = CostCalculator.calculate(game, trashed_card)
+    if (!_.isEmpty(selected_cards)) {
+      let coin_cost = CostCalculator.calculate(game, selected_cards[0])
 
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', trashed_card.name)
+      let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
 
       if (game.turn.player._id === player_cards.player_id) {
         let victory_tokens = Math.floor(coin_cost / 2)
-
-        if (game.turn.possessed) {
-          possessing_player_cards = PlayerCardsModel.findOne(game._id, game.turn.possessed._id)
-          possessing_player_cards.victory_tokens += victory_tokens
-          game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
-          PlayerCardsModel.update(game._id, possessing_player_cards)
-        } else {
-          player_cards.victory_tokens += victory_tokens
-          game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +${victory_tokens} &nabla;`)
-        }
+        let victory_token_gainer = new VictoryTokenGainer(game, player_cards)
+        victory_token_gainer.gain(victory_tokens)
       }
     }
   }

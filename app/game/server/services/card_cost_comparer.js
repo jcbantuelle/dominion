@@ -4,6 +4,10 @@ CardCostComparer = class CardCostComparer {
     return card.potion_cost === 0 && card.debt_cost === 0 && CostCalculator.calculate(game, card) === coin
   }
 
+  static cost_equal_to(game, card, coin, potion, debt) {
+    return card.potion_cost === potion && card.debt_cost === debt && CostCalculator.calculate(game, card) === coin
+  }
+
   static coin_less_than(game, card, coin) {
     return card.potion_cost === 0 && card.debt_cost === 0 && CostCalculator.calculate(game, card) < coin
   }

@@ -22,7 +22,7 @@ Haunting = class Haunting extends Hex {
 
   static return_to_deck(game, player_cards, selected_cards) {
     let returned_card_index = _.findIndex(player_cards.hand, function(card) {
-      return card.name === selected_cards[0].name
+      return card.id === selected_cards[0].id
     })
     let returned_card = player_cards.hand.splice(returned_card_index, 1)[0]
     player_cards.deck.unshift(returned_card)

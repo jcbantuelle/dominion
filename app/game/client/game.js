@@ -9,9 +9,10 @@ Template.game.events({
   "click #hand .card": playCard,
   "click .card-container .card": buyCard,
   "click .event-container .card": buyEvent,
+  "click .project-container .card": buyProject,
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
-  "click #play-coin-token": playCoinToken,
+  "click #play-coffer": playCoinToken,
   "click #play-villager": playVillager,
   "click #play-debt-token": playDebtToken,
   "submit #turn-event": turnEvent,
@@ -24,7 +25,7 @@ function registerStreams() {
 
 function createPopovers() {
   $('body').popover({
-    selector: '.card-container .card, .event-container .card, .hand-card, .prize-card, .native-village-card, .archive-card, .crypt-card, .island-card, .tavern-card, .state-card, .artifact-card, .trash-card, .black-market-card, .choose-card, .landmark-container .card, .boon-container .card, #game-log span.card, #instructions .card, #action-response span.boon, #action-response span.hex',
+    selector: '.card-container .card, .event-container .card, .project-container .card, .hand-card, .prize-card, .state-card, .native-village-card, .haven-card, .cargo-ship-card, .church-card, .archive-card, .crypt-card, .island-card, .tavern-card, .state-card, .artifact-card, .trash-card, .black-market-card, .choose-card, .landmark-container .card, .boon-container .card, #game-log span.card, #instructions .card, #action-response .card, #action-response span.boon, #action-response span.hex',
     html: true,
     content: function() {
       return $(this).next('.card-tooltip').html()
@@ -63,7 +64,7 @@ function sendMessage(event) {
 }
 
 function playCard(event) {
-  Meteor.call('playCard', $(event.target).attr('data-name'), Router.current().params.id)
+  Meteor.call('playCard', $(event.target).attr('data-id'), Router.current().params.id)
 }
 
 function buyCard(event) {
@@ -72,6 +73,10 @@ function buyCard(event) {
 
 function buyEvent(event) {
   Meteor.call('buyEvent', $(event.target).attr('data-name'), Router.current().params.id)
+}
+
+function buyProject(event) {
+  Meteor.call('buyProject', $(event.target).attr('data-name'), Router.current().params.id)
 }
 
 function endTurn() {

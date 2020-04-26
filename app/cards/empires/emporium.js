@@ -1,7 +1,11 @@
 Emporium = class Emporium extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -16,26 +20,16 @@ Emporium = class Emporium extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +$${gained_coins}`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
+
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
   }
 
   gain_event(gainer) {
-    let action_count = _.size(_.filter(gainer.player_cards.in_play.concat(gainer.player_cards.duration).concat(gainer.player_cards.permanent), function(card) {
-      return _.includes(_.words(card.types), 'action')
-    }))
-    if (action_count >= 5) {
-      if (gainer.game.turn.possessed) {
-        possessing_player_cards = PlayerCardsModel.findOne(gainer.game._id, gainer.game.turn.possessed._id)
-        possessing_player_cards.victory_tokens += 2
-        gainer.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> gets +2 &nabla;`)
-        PlayerCardsModel.update(gainer.game._id, possessing_player_cards)
-      } else {
-        gainer.player_cards.victory_tokens += 2
-        gainer.game.log.push(`&nbsp;&nbsp;<strong>${gainer.player_cards.username}</strong> gets +2 &nabla;`)
-      }
-    }
+    let victory_token_gainer = new VictoryTokenGainer(gainer.game, gainer.player_cards)
+    victory_token_gainer.gain(2)
   }
 
 }

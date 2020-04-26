@@ -31,7 +31,7 @@ TurnEventSubmission = class TurnEventSubmission {
     } else if (this.turn_event.type === 'choose_options') {
       return this.options_selection()
     } else if (this.turn_event.type === 'sort_cards') {
-      return this.selection
+      return this.sort_selection()
     } else if (this.turn_event.type === 'overpay') {
       return this.selection
     }
@@ -51,7 +51,15 @@ TurnEventSubmission = class TurnEventSubmission {
     let indexes = this.selection.map(function() {
       return $(this).val()
     }).get()
-    return _.pullAt(this.turn_event.cards, indexes)
+    return _.map(indexes, (index) => {
+      return this.turn_event.cards[index]
+    })
+  }
+
+  sort_selection() {
+    return _.map(this.selection, (index) => {
+      return this.turn_event.cards[index]
+    })
   }
 
   error_message() {

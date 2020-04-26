@@ -9,24 +9,19 @@ Lookout = class Lookout extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
     } else {
-      player_cards.revealed = _.take(player_cards.deck, 3)
-      player_cards.deck = _.drop(player_cards.deck, 3)
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck(3)
 
-      let revealed_card_count = _.size(player_cards.revealed)
-      if (revealed_card_count < 3 && _.size(player_cards.discard) > 0) {
-        DeckShuffler.shuffle(game, player_cards)
-        player_cards.revealed = player_cards.revealed.concat(_.take(player_cards.deck, 3 - revealed_card_count))
-        player_cards.deck = _.drop(player_cards.deck, 3 - revealed_card_count)
-      }
+      GameModel.update(game._id, game)
 
       if (_.size(player_cards.revealed) === 1) {
-        let card_trasher = new CardTrasher(game, player_cards, 'revealed', player_cards.revealed[0].name)
+        let card_trasher = new CardTrasher(game, player_cards, 'revealed')
         card_trasher.trash()
         game.log.push(`&nbsp;&nbsp;but has no cards left to continue`)
       } else {
@@ -48,8 +43,7 @@ Lookout = class Lookout extends Card {
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_card.name)
+    let card_trasher = new CardTrasher(game, player_cards, 'revealed', selected_cards[0])
     card_trasher.trash()
     if (_.size(player_cards.revealed) === 1) {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
@@ -73,12 +67,11 @@ Lookout = class Lookout extends Card {
   }
 
   static discard_card(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'revealed', selected_cards)
     card_discarder.discard()
 
-    player_cards.deck.unshift(player_cards.revealed[0])
-    player_cards.revealed = []
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts the remaining card on top of their deck`)
+    let card_returner = new CardReturner(game, player_cards)
+    card_returner.return_to_deck(player_cards.revealed)
   }
 
 }

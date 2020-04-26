@@ -1,7 +1,11 @@
 Vault = class Vault extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -12,6 +16,7 @@ Vault = class Vault extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(2)
 
+    GameModel.update(game._id, game)
     PlayerCardsModel.update(game._id, player_cards)
 
     if (_.size(player_cards.hand) > 0) {
@@ -35,6 +40,7 @@ Vault = class Vault extends Card {
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
     ordered_player_cards.shift()
     _.each(ordered_player_cards, function(cards) {
+      GameModel.update(game._id, game)
       if (!_.isEmpty(cards.hand)) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
@@ -57,11 +63,11 @@ Vault = class Vault extends Card {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
-      let gained_coins = CoinGainer.gain(game, player_cards, _.size(selected_cards))
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+      let coin_gainer = new CoinGainer(game, player_cards)
+      coin_gainer.gain(_.size(selected_cards))
     }
   }
 
@@ -90,7 +96,7 @@ Vault = class Vault extends Card {
   }
 
   static discard_cards_for_draw(game, player_cards, selected_cards) {
-    let card_discarder = new CardDiscarder(game, player_cards, 'hand', _.map(selected_cards, 'name'))
+    let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
 
     if (_.size(selected_cards) > 1) {

@@ -1,7 +1,11 @@
 Pawn = class Pawn extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -29,23 +33,21 @@ Pawn = class Pawn extends Card {
   }
 
   static process_choices(game, player_cards, choices) {
-    let gained = []
-    _.each(choices, function(choice) {
+    _.each(choices, (choice) => {
       if (choice === 'card') {
         let card_drawer = new CardDrawer(game, player_cards)
         card_drawer.draw(1)
       } else if (choice === 'action') {
-        game.turn.actions += 1
-        gained.push('+1 action')
+        let action_gainer = new ActionGainer(game, player_cards)
+        action_gainer.gain(1)
       } else if (choice === 'buy') {
-        game.turn.buys += 1
-        gained.push('+1 buy')
+        let buy_gainer = new BuyGainer(game, player_cards)
+        buy_gainer.gain(1)
       } else if (choice === 'coin') {
-        let gained_coins = CoinGainer.gain(game, player_cards, 1)
-        gained.push(`+$${gained_coins}`)
+        let coin_gainer = new CoinGainer(game, player_cards)
+        coin_gainer.gain(1)
       }
     })
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets ${gained.join(' and ')}`)
   }
 
 }

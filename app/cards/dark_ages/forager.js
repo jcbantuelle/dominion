@@ -1,7 +1,11 @@
 Forager = class Forager extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,11 +13,16 @@ Forager = class Forager extends Card {
   }
 
   play(game, player_cards) {
-    game.turn.actions += 1
-    game.turn.buys += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 action and +1 buy`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
-    if (_.size(player_cards.hand) > 0) {
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
+
+    if (_.size(player_cards.hand) > 1) {
+      GameModel.update(game._id, game)
+      PlayerCardsModel.update(game._id, player_cards)
+
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -27,6 +36,8 @@ Forager = class Forager extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Forager.trash_card)
+    } else if (_.size(player_cards.hand) === 1) {
+      Forager.trash_card(player_cards.hand)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
@@ -36,12 +47,12 @@ Forager = class Forager extends Card {
     })
     let unique_treasure_count = _.size(_.uniqBy(trashed_treasures, 'name'))
 
-    let gained_coins = CoinGainer.gain(game, player_cards, unique_treasure_count)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(unique_treasure_count)
   }
 
   static trash_card(game, player_cards, selected_cards) {
-    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0].name)
+    let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     card_trasher.trash()
   }
 

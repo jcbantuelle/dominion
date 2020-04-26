@@ -6,7 +6,9 @@ Mission = class Mission extends Event {
 
   buy(game, player_cards) {
     game.turn.forbidden_events.push(this.name())
-    game.turn.mission = true
+    if (game.turn.previous_player._id !== game.turn.player._id) {
+      game.turn.mission = this.to_h()
+    }
   }
 
 }

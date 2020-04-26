@@ -26,23 +26,11 @@ Courtyard = class Courtyard extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
-      return turn_event_processor.process(Courtyard.return_card_to_deck)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, player_cards.hand)
+      return turn_event_processor.process(CardReturner.return_ordered_cards_to_deck)
     } else {
-      game.log.push(`&nbsp;&nbsp;but has no cards in their hand`)
+      game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }
-  }
-
-  static return_card_to_deck(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_index = _.findIndex(player_cards.hand, function(card) {
-      return card.name === selected_card.name
-    })
-
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> places a card on top of their deck`)
-
-    player_cards.deck.unshift(player_cards.hand[card_index])
-    player_cards.hand.splice(card_index, 1)
   }
 
 }

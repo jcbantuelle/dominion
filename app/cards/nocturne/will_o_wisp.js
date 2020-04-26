@@ -4,10 +4,6 @@ WillOWisp = class WillOWisp extends Card {
     return ['action', 'spirit']
   }
 
-  is_purchasable() {
-    false
-  }
-
   coin_cost() {
     return 0
   }
@@ -16,27 +12,20 @@ WillOWisp = class WillOWisp extends Card {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    game.turn.actions += 1
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 actions`)
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     if (_.size(player_cards.deck) + _.size(player_cards.discard) > 0) {
+      let card_revealer = new CardRevealer(game, player_cards)
+      card_revealer.reveal_from_deck(1)
 
-      if (_.isEmpty(player_cards.deck)) {
-        DeckShuffler.shuffle(game, player_cards)
-      }
-
-      let top_card = player_cards.deck[0]
-      let log_message = `&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(top_card)}`
-
-
-      if (CardCostComparer.coin_less_than(game, top_card, 3)) {
-        player_cards.hand.push(player_cards.deck.shift())
-        log_message += ', putting it in their hand'
+      let card_mover = new CardMover(game, player_cards)
+      if (CardCostComparer.coin_less_than(game, player_cards.revealed[0], 3)) {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} in thier hand`)
+        card_mover.move_all(player_cards.revealed, player_cards.hand)
       } else {
-        log_message += ', putting it back on top of their deck'
+        card_mover.move_all(player_cards.revealed, player_cards.deck)
       }
-
-      game.log.push(log_message)
     } else {
       game.log.push(`&nbsp;&nbsp;but has no cards to reveal`)
     }

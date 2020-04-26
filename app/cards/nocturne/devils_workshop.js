@@ -9,16 +9,15 @@ DevilsWorkshop = class DevilsWorkshop extends Card {
   }
 
   play(game, player_cards) {
-    let gained_card_count = _.size(game.turn.gained_cards)
-    if (gained_card_count > 1) {
+    if (_.size(game.turn.gained_cards) > 1) {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Imp')
-      card_gainer.gain_game_card()
-    } else if (gained_card_count == 1) {
+      card_gainer.gain()
+    } else if (_.size(game.turn.gained_cards) == 1) {
       let eligible_cards = _.filter(game.cards, function(card) {
-        return card.count > 0 && card.top_card.purchasable && CardCostComparer.coin_less_than(game, card.top_card, 5)
+        return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 5)
       })
 
-      if (_.size(eligible_cards) > 0) {
+      if (_.size(eligible_cards) > 1) {
         let turn_event_id = TurnEventModel.insert({
           game_id: game._id,
           player_id: player_cards.player_id,
@@ -32,18 +31,20 @@ DevilsWorkshop = class DevilsWorkshop extends Card {
         })
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         turn_event_processor.process(DevilsWorkshop.gain_card)
+      } else if (_.size(eligible_cards) === 1) {
+        DevilsWorkshop.gain_card(game, player_cards, eligible_cards)
       } else {
         game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
       }
     } else {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Gold')
-      card_gainer.gain_game_card()
+      card_gainer.gain()
     }
   }
 
   static gain_card(game, player_cards, selected_cards) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
 }

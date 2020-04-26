@@ -8,26 +8,25 @@ Vampire = class Vampire extends Card {
     return 5
   }
 
-  play(game, player_cards, player) {
+  play(game, player_cards, card_player) {
     if (_.size(game.hexes_deck) === 0) {
       game.hexes_deck = _.shuffle(game.hexes_discard)
       game.hexes_discard = []
     }
 
-    game.turn.vampire_hex = game.hexes_deck.shift()
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${CardView.render(game.turn.vampire_hex)} from the Hex Deck`)
+    hex = game.hexes_deck.shift()
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${CardView.render(hex)} from the Hex Deck`)
 
     let player_attacker = new PlayerAttacker(game, this)
-    player_attacker.attack(player_cards)
+    player_attacker.attack(player_cards, hex)
 
-    game.hexes_discard.push(game.turn.vampire_hex)
-    delete game.turn.vampire_hex
+    game.hexes_discard.push(hex)
 
-    let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.top_card.purchasable && card.name !== 'Vampire' && CardCostComparer.coin_less_than(game, card.top_card, 6)
+    let eligible_cards = _.filter(game.cards, (card) => {
+      return card.count > 0 && card.supply && card.name !== 'Vampire' && CardCostComparer.coin_less_than(game, card.top_card, 6)
     })
 
-    if (_.size(eligible_cards) > 0) {
+    if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
         player_id: player_cards.player_id,
@@ -41,53 +40,43 @@ Vampire = class Vampire extends Card {
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Vampire.gain_card)
+    } else if (_.size(eligible_cards) === 1) {
+      Vampire.gain_card(game, player_cards, eligible_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
 
-    let played_vampire_index = _.findIndex(player_cards.playing, function(card) {
-      return card.name === 'Vampire'
+    let vampire_in_play = _.find(player_cards.in_play, (card) => {
+      return card.id === card_player.card.id
     })
-    if (played_vampire_index !== -1) {
-      let played_vampire = player_cards.playing.splice(played_vampire_index, 1)[0]
-      let vampire_stack = _.find(game.cards, (card) => {
-        return card.name === 'Vampire'
-      })
-      vampire_stack.stack.unshift(played_vampire)
-      vampire_stack.top_card = played_vampire
-      vampire_stack.count += 1
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(played_vampire)}`)
-
+    if (vampire_in_play) {
       let bat_stack = _.find(game.cards, (card) => {
         return card.name === 'Bat'
       })
-      if (bat_stack.count > 0) {
-        let gained_bat = bat_stack.stack.shift()
-        bat_stack.count -= 1
-        if (bat_stack.count > 0) {
-          bat_stack.top_card = _.head(bat_stack.stack)
+      if (bat_stack && bat_stack.count > 0) {
+        let card_mover = new CardMover(game, player_cards)
+        if (card_mover.return_to_supply(player_cards.in_play, 'Vampire', [card_player.card])) {
+          card_mover.take_from_supply(player_cards.discard, bat_stack.top_card)
+          game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> exchanges ${CardView.render(card_player.card)} for ${CardView.render(bat_stack.top_card)}`)
         }
-        player_cards.discard.unshift(gained_bat)
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> takes ${CardView.render(gained_bat)}`)
       } else {
-        game.log.push(`&nbsp;&nbsp;but the ${CardView.render(new Bat())} pile is empty`)
+        game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(new Bat())} to exchange with ${CardView.render(card_player.card)}`)
       }
     } else {
-      game.log.push(`&nbsp;&nbsp;but ${CardView.render(new Vampire())} is no longer in play`)
+      game.log.push(`&nbsp;&nbsp;but cannot exhange ${CardView.render(card_player.card)} because it is no longer in play`)
     }
   }
 
   static gain_card(game, player_cards, selected_cards) {
-    let selected_card = selected_cards[0]
-    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_card.name)
-    card_gainer.gain_game_card()
+    let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
+    card_gainer.gain()
   }
 
-  attack(game, player_cards) {
-    let hex = ClassCreator.create(game.turn.vampire_hex.name)
+  attack(game, player_cards, attacker_player_cards, card_player, hex) {
+    let hex_object = ClassCreator.create(hex.name)
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> receives ${CardView.render(hex)}`)
     GameModel.update(game._id, game)
-    hex.receive(game, player_cards)
+    hex_object.receive(game, player_cards)
   }
 
 }

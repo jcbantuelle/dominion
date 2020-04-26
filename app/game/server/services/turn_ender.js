@@ -11,12 +11,23 @@ TurnEnder = class TurnEnder {
     }
     this.end_buy_events()
     this.game.turn.phase = 'cleanup'
+    this.start_cleanup_events()
     this.discard_hand()
     this.clean_up_cards_in_play()
     this.draw_new_hand()
     this.end_turn_events()
     this.track_gained_cards()
     this.game.log.push(`<strong>${this.game.turn.player.username}</strong> ends their turn`)
+    if (!_.isEmpty(this.player_cards.inheritance)) {
+      Inheritance.convert_estates(this.game, this.player_cards, false)
+    }
+    if (this.player_cards.capitalism) {
+      Capitalism.convert_cards(this.game, this.player_cards, false)
+    }
+    if (this.game.game_over) {
+      delete this.player_cards.fleet
+      PlayerCardsModel.update(this.game._id, this.player_cards)
+    }
     if (this.game_over()) {
       this.end_game()
     } else {
@@ -27,13 +38,17 @@ TurnEnder = class TurnEnder {
         GameModel.update(this.game._id, this.game)
       }
       this.flip_trash_cards_face_up()
-      this.donate()
-      this.mountain_pass()
+      this.between_turn_events()
       this.set_next_turn()
       this.clear_duration_attacks()
       GameModel.update(this.game._id, this.game)
+      if (!_.isEmpty(this.next_player_cards.inheritance)) {
+        Inheritance.convert_estates(this.game, this.next_player_cards, true)
+      }
+      if (this.next_player_cards.capitalism) {
+        Capitalism.convert_cards(this.game, this.next_player_cards, true)
+      }
       this.start_turn_events()
-      this.move_duration_cards()
       this.update_db(false)
     }
   }
@@ -47,6 +62,7 @@ TurnEnder = class TurnEnder {
   }
 
   start_buy_events() {
+    this.game.turn.phase = 'treasure'
     let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
     start_buy_event_processor.process()
     this.game.turn.phase = 'buy'
@@ -57,9 +73,24 @@ TurnEnder = class TurnEnder {
     end_buy_event_processor.process()
   }
 
+  start_cleanup_events() {
+    let start_cleanup_event_processor = new StartCleanupEventProcessor(this.game, this.player_cards)
+    start_cleanup_event_processor.process()
+  }
+
   end_turn_events() {
-    let end_turn_event_processor = new EndTurnEventProcessor(this.game, this.player_cards)
-    end_turn_event_processor.process()
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
+    ordered_player_cards.shift()
+    ordered_player_cards.unshift(this.player_cards)
+    _.each(ordered_player_cards, (player_cards) => {
+      let end_turn_event_processor = new EndTurnEventProcessor(this.game, player_cards)
+      end_turn_event_processor.process()
+    })
+  }
+
+  between_turn_events() {
+    let between_turn_event_processor = new BetweenTurnEventProcessor(this.game, this.player_cards)
+    between_turn_event_processor.process()
   }
 
   flip_trash_cards_face_up() {
@@ -69,37 +100,12 @@ TurnEnder = class TurnEnder {
   }
 
   clean_up_cards_in_play() {
-    let walled_villages = _.filter(this.player_cards.in_play, function(card) {
-      return card.name === 'Walled Village'
+    let cards_to_discard = _.filter(this.player_cards.in_play, (card) => {
+      return !ClassCreator.create(card.name).stay_in_play(this.game, this.player_cards, card)
     })
-    if (!_.isEmpty(walled_villages)) {
-      WalledVillageResolver.resolve(this.game, this.player_cards, walled_villages)
-    }
-    if (!_.isEmpty(this.player_cards.encampments)) {
-      _.each(this.player_cards.encampments, (encampment) => {
-        let stack_name = encampment.misfit ? encampment.misfit.stack_name : encampment.stack_name
-        let encampment_stack = _.find(this.game.cards, function(card) {
-          return card.stack_name === stack_name
-        })
-        if (encampment_stack) {
-          delete encampment.scheme
-          delete encampment.prince
-          if (encampment.misfit) {
-            encampment = encampment.misfit
-          }
-          encampment_stack.count += 1
-          encampment_stack.stack.unshift(encampment)
-          encampment_stack.top_card = _.head(encampment_stack.stack)
-          this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> returns ${CardView.render(encampment)} to the supply`)
-        }
-      })
-      this.player_cards.encampments = []
-    }
-    if (this.game.turn.schemes > 0) {
-      SchemeChooser.choose(this.game, this.player_cards)
-    }
-    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play')
+    let card_discarder = new CardDiscarder(this.game, this.player_cards, 'in_play', cards_to_discard)
     card_discarder.discard(false)
+    Prince.unset_prince_tracking(this.game, this.player_cards)
 
     if (this.game.turn.possessed && !_.isEmpty(this.player_cards.possession_trash)) {
       this.player_cards.discard = this.player_cards.discard.concat(this.player_cards.possession_trash)
@@ -107,12 +113,8 @@ TurnEnder = class TurnEnder {
       this.player_cards.possession_trash = []
     }
 
-    if (!_.isEmpty(this.player_cards.boons)) {
-      _.each(this.player_cards.boons, (boon) => {
-        this.game.boons_discard.unshift(boon)
-      })
-      this.player_cards.boons = []
-    }
+    let card_mover = new CardMover(this.game, this.player_cards)
+    card_mover.move_all(this.player_cards.boons, this.game.boons_discard)
   }
 
   discard_hand() {
@@ -121,94 +123,24 @@ TurnEnder = class TurnEnder {
   }
 
   draw_new_hand() {
+    let flag = _.find(this.player_cards.artifacts, (artifact) => {
+      return artifact.name === 'Flag'
+    })
     let cards_to_draw = this.game.turn.outpost ? 3 : 5
-    cards_to_draw += (this.game.turn.expeditions * 2)
+    if (flag) {
+      cards_to_draw += 1
+    }
     let card_drawer = new CardDrawer(this.game, this.player_cards)
     card_drawer.draw(cards_to_draw, false)
-    if (!_.isEmpty(this.player_cards.save)) {
-      this.player_cards.hand = this.player_cards.hand.concat(this.player_cards.save)
-      this.player_cards.save = []
-      this.game.log.push(`<strong>${this.player_cards.username}</strong> puts thier set aside card in hand from ${CardView.card_html('event', 'Save')}`)
-    }
   }
 
   track_gained_cards() {
     this.player_cards.last_turn_gained_cards = this.game.turn.gained_cards
   }
 
-  donate() {
-    if (this.game.turn.donate) {
-      this.player_cards.hand = this.player_cards.hand.concat(this.player_cards.discard).concat(this.player_cards.deck)
-      this.player_cards.discard = []
-      this.player_cards.deck = []
-      if (_.size(this.player_cards.hand) > 0) {
-        let turn_event_id = TurnEventModel.insert({
-          game_id: this.game._id,
-          player_id: this.player_cards.player_id,
-          username: this.player_cards.username,
-          type: 'choose_cards',
-          player_cards: true,
-          instructions: 'Choose any number of cards to trash:',
-          cards: this.player_cards.hand,
-          minimum: 0,
-          maximum: 0
-        })
-        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
-        turn_event_processor.process(TurnEnder.trash_cards)
-      } else {
-        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> has no cards to trash from ${CardView.card_html('event', 'Donate')}`)
-      }
-      GameModel.update(this.game._id, this.game)
-      PlayerCardsModel.update(this.game._id, this.player_cards)
-    }
-  }
-
-  mountain_pass() {
-    if (this.game.mountain_pass) {
-      PlayerCardsModel.update(this.game._id, this.player_cards)
-      let mountain_pass = new MountainPass()
-      mountain_pass.start_bid(this.game)
-      this.player_cards = PlayerCardsModel.findOne(this.game._id, this.player_cards.player_id)
-    }
-  }
-
-  static trash_cards(game, player_cards, selected_cards) {
-    if (_.size(selected_cards) === 0) {
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses not to trash anything from ${CardView.card_html('event', 'Donate')}`)
-    } else {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', _.map(selected_cards, 'name'))
-      card_trasher.trash()
-    }
-    player_cards.deck = _.shuffle(player_cards.hand)
-    player_cards.hand = []
-    let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(5, false)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> shuffles their hand into their deck and draws a new hand`)
-  }
-
   set_next_turn() {
-    this.new_turn = {
-      actions: 1,
-      buys: 1,
-      coins: 0,
-      potions: 0,
-      phase: 'action',
-      gained_cards: [],
-      bought_cards: [],
-      gain_event_stack: [],
-      contraband: [],
-      forbidden_events: [],
-      schemes: 0,
-      possessions: 0,
-      coin_discount: 0,
-      played_actions: 0,
-      coppersmiths: 0,
-      river_gifts: [],
-      expeditions: 0,
-      charms: 0,
-      priests: 0,
-      previous_player: this.game.turn.player
-    }
+    this.new_turn = GameCreator.new_turn()
+    this.new_turn.previous_player = this.game.turn.player
 
     this.set_up_extra_turns()
 
@@ -248,13 +180,11 @@ TurnEnder = class TurnEnder {
 
   set_up_extra_player_turns() {
     let queued_turns = []
-    if (this.game.turn.previous_player && this.game.turn.previous_player._id !== this.game.turn.player._id) {
-      if (this.game.turn.outpost) {
-        queued_turns.push(ClassCreator.create('Outpost').to_h())
-      }
-      if (this.game.turn.mission) {
-        queued_turns.push(ClassCreator.create('Mission').to_h())
-      }
+    if (this.game.turn.outpost) {
+      queued_turns.push(this.game.turn.outpost)
+    }
+    if (this.game.turn.mission) {
+      queued_turns.push(this.game.turn.mission)
     }
     if (!_.isEmpty(queued_turns)) {
       if (this.is_possessed_next_turn()) {
@@ -297,14 +227,14 @@ TurnEnder = class TurnEnder {
   static process_extra_player_turns_order(game, player_cards, ordered_extra_turns) {
     ordered_extra_turns = ordered_extra_turns.reverse()
     let possession_index = _.findIndex(ordered_extra_turns, function(turn) {
-      return turn === 'Possession'
+      return turn.name === 'Possession'
     })
     _.each(ordered_extra_turns, function(turn, turn_index) {
-      if (turn !== 'Possession') {
-        let next_extra_turn = {type: turn, player: game.turn.player}
+      if (turn.name !== 'Possession') {
+        let next_extra_turn = {type: turn.name, player: game.turn.player}
         if (turn_index < possession_index) {
           let possession_turn_index = _.findIndex(game.extra_turns, function(extra_turn) {
-            return extra_turn.type === 'Possession'
+            return extra_turn.type.name === 'Possession'
           })
           game.extra_turns.splice(possession_turn_index + 1, 0, next_extra_turn)
         } else {
@@ -323,20 +253,12 @@ TurnEnder = class TurnEnder {
 
   process_extra_turns() {
     let extra_turn = this.game.extra_turns.shift()
-    if (extra_turn.type === 'Mission' && this.game.turn.previous_player._id === this.game.turn.player._id) {
-      if (!_.isEmpty(this.game.extra_turns)) {
-        this.process_extra_turns()
-      } else {
-        this.next_player_turn()
-      }
-    } else {
-      if (extra_turn.type === 'Outpost') {
-        this.outpost_turn(extra_turn.player)
-      } else if (extra_turn.type === 'Mission') {
-        this.mission_turn(extra_turn.player)
-      } else if (extra_turn.type === 'Possession') {
-        this.possession_turn(extra_turn.player)
-      }
+    if (extra_turn.type === 'Outpost') {
+      this.outpost_turn(extra_turn.player)
+    } else if (extra_turn.type === 'Mission') {
+      this.mission_turn(extra_turn.player)
+    } else if (extra_turn.type === 'Possession') {
+      this.possession_turn(extra_turn.player)
     }
   }
 
@@ -351,14 +273,14 @@ TurnEnder = class TurnEnder {
   outpost_turn(player) {
     this.new_turn.player = player
     this.new_turn.extra_turn = true
-    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('action duration', 'Outpost')} -</strong>`)
+    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.render(new Outpost())} -</strong>`)
   }
 
   mission_turn(player) {
     this.new_turn.player = player
     this.new_turn.extra_turn = true
     this.new_turn.mission_turn = true
-    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.card_html('event', 'Mission')} -</strong>`)
+    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.render(new Mission())} -</strong>`)
   }
 
   possession_turn(player) {
@@ -379,39 +301,16 @@ TurnEnder = class TurnEnder {
     }
     this.new_turn.extra_turn = false
     this.game.turn_number += 1
-    this.game.log.push(`<strong>- ${this.new_turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
+    if (this.game.game_over) {
+      this.game.log.push(`<strong>- ${this.new_turn.player.username} takes an extra turn from ${CardView.render(new Fleet())} -</strong>`)
+    } else {
+      this.game.log.push(`<strong>- ${this.new_turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
+    }
   }
 
   start_turn_events() {
     let start_turn_event_processor = new StartTurnEventProcessor(this.game, this.next_player_cards)
     start_turn_event_processor.process()
-  }
-
-  move_duration_cards() {
-    if (!_.isEmpty(this.next_player_cards.duration)) {
-      let archive_effect_count = _.size(_.filter(this.next_player_cards.duration_effects, function(effect) {
-        return effect.name === 'Archive'
-      }))
-      let crypt_effect_count = _.size(_.filter(this.next_player_cards.duration_effects, function(effect) {
-        return effect.name === 'Crypt'
-      }))
-      let duration_cards_to_move = []
-      let duration_cards_remaining = []
-      _.each(this.next_player_cards.duration, function(card) {
-        delete card.prince
-        if (card.name === 'Archive' && archive_effect_count > 0) {
-          duration_cards_remaining.push(card)
-          archive_effect_count -= 1
-        } else if (card.name === 'Crypt' && crypt_effect_count > 0) {
-          duration_cards_remaining.push(card)
-          crypt_effect_count -= 1
-        } else {
-          duration_cards_to_move.push(card)
-        }
-      })
-      this.next_player_cards.in_play = this.next_player_cards.in_play.concat(duration_cards_to_move)
-      this.next_player_cards.duration = duration_cards_remaining
-    }
   }
 
   player_turn_number() {
@@ -424,7 +323,19 @@ TurnEnder = class TurnEnder {
   }
 
   game_over() {
-    return this.three_empty_stacks() || this.no_more_provinces_or_colonies()
+    let end_game_trigger = this.game.game_over || this.three_empty_stacks() || this.no_more_provinces_or_colonies()
+    let fleet_game = _.find(this.game.projects, (project) => {
+      return project.name === 'Fleet'
+    })
+    if (end_game_trigger && fleet_game) {
+      this.game.game_over = true
+      let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
+      let fleet_turns = _.filter(ordered_player_cards, (player_cards) => {
+        return player_cards.fleet
+      })
+      this.game.fleet = !_.isEmpty(fleet_turns)
+    }
+    return end_game_trigger && !this.game.fleet
   }
 
   three_empty_stacks() {
@@ -439,7 +350,7 @@ TurnEnder = class TurnEnder {
 
   empty_stacks() {
     return _.filter(this.game.cards, function(game_card) {
-      return game_card.count === 0 && game_card.top_card.purchasable
+      return game_card.count === 0 && game_card.supply
     })
   }
 

@@ -28,22 +28,19 @@ Annex = class Annex extends Event {
     }
 
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Duchy')
-    card_gainer.gain_game_card()
+    card_gainer.gain()
   }
 
   static shuffle_discard(game, player_cards, selected_cards) {
-    let new_discard = []
-    _.each(selected_cards, function(selected_card) {
-      let card_index = _.findIndex(player_cards.discard, function(discard_card) {
-        return discard_card.name === selected_card.name
-      })
-      new_discard.push(player_cards.discard.splice(card_index, 1)[0])
+    let selected_card_ids = _.map(selected_cards, 'id')
+    let cards_to_shuffle = _.filter(player_cards.discard, (card) => {
+      return !_.includes(selected_card_ids, card.id)
     })
-    player_cards.deck = _.shuffle(player_cards.deck.concat(player_cards.discard))
-    player_cards.discard = new_discard
+    let deck_shuffler = new DeckShuffler(game, player_cards)
+    deck_shuffler.shuffle('discard', cards_to_shuffle)
     let discard_size = _.size(player_cards.discard)
     let shuffle_text = discard_size > 0 ? `all but ${discard_size} cards` : 'their discard'
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> shuffles ${shuffle_text} into thier deck`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> shuffles ${shuffle_text} into their deck`)
   }
 }
 

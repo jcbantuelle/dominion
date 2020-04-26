@@ -1,21 +1,23 @@
 DameSylvia = class DameSylvia extends Knights {
 
   types() {
-    return ['action', 'attack', 'knight']
+    return this.capitalism_types(['action', 'attack', 'knight'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
     return 5
   }
 
-  play(game, player_cards) {
-    let gained_coins = CoinGainer.gain(game, player_cards, 2)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +$${gained_coins}`)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(2)
 
-    let player_attacker = new PlayerAttacker(game, this)
+    let player_attacker = new PlayerAttacker(game, this, card_player)
     player_attacker.attack(player_cards)
-
-    this.trash_knight(game, player_cards)
   }
 
 }

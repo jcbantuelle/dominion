@@ -9,29 +9,20 @@ Watchtower = class Watchtower extends Card {
   }
 
   play(game, player_cards) {
-    let cards_to_draw = 6 - _.size(player_cards.hand)
-    if (cards_to_draw > 0 && player_cards.tokens.minus_card) {
-      this.game.log.push(`&nbsp;&nbsp;${this.player_cards.username} discards their -1 card token`)
-      delete this.player_cards.tokens.minus_card
-    }
     let card_drawer = new CardDrawer(game, player_cards)
-    card_drawer.draw(cards_to_draw)
+    card_drawer.draw_until(6)
   }
 
-  gain_reaction(game, player_cards, gainer, card_name = 'Watchtower') {
-    let revealed_card = this
-    if (card_name === 'Estate') {
-      revealed_card = _.find(player_cards.hand, function(card) {
-        return card.name === 'Estate'
-      })
-    }
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> reveals ${CardView.render(revealed_card)}`)
+  gain_reaction(game, player_cards, gainer, watchtower) {
+    let card_revealer = new CardRevealer(game, player_cards)
+    card_revealer.reveal(player_cards.hand, watchtower)
+
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
       username: player_cards.username,
       type: 'choose_options',
-      instructions: `Trash ${CardView.render(_.head(player_cards[gainer.destination]))} or put it on top of your deck?`,
+      instructions: `Trash ${CardView.render(gainer.gained_card)} or put it on top of your deck?`,
       minimum: 1,
       maximum: 1,
       options: [
@@ -44,15 +35,15 @@ Watchtower = class Watchtower extends Card {
   }
 
   static process_response(game, player_cards, response, gainer) {
-    response = response[0]
-    if (response === 'trash') {
-      let card_trasher = new CardTrasher(game, player_cards, gainer.destination, gainer.card_name)
+    if (response[0] === 'trash') {
+      let card_trasher = new CardTrasher(game, player_cards, gainer.destination, gainer.gained_card)
       card_trasher.trash()
-      gainer.card_name = ''
-    } else if (response === 'deck') {
-      player_cards.deck.unshift(player_cards[gainer.destination].shift())
-      game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(_.head(player_cards.deck))} on top of their deck`)
-      gainer.destination = 'deck'
+    } else if (response[0] === 'deck') {
+      let card_mover = new CardMover(game, player_cards)
+      if (card_mover.move(player_cards[gainer.destination], player_cards.deck, gainer.gained_card)) {
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(gainer.gained_card)} on top of their deck`)
+        gainer.destination = 'deck'
+      }
     }
   }
 

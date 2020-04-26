@@ -1,7 +1,11 @@
 Peasant = class Peasant extends Traveller {
 
   types() {
-    return ['action', 'traveller']
+    return this.capitalism_types(['action', 'traveller'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
@@ -9,13 +13,15 @@ Peasant = class Peasant extends Traveller {
   }
 
   play(game, player_cards) {
-    game.turn.buys += 1
-    let gained_coins = CoinGainer.gain(game, player_cards, 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> gets +1 buy and +$${gained_coins}`)
+    let buy_gainer = new BuyGainer(game, player_cards)
+    buy_gainer.gain(1)
+
+    let coin_gainer = new CoinGainer(game, player_cards)
+    coin_gainer.gain(1)
   }
 
-  discard_event(discarder, card_name = 'Peasant') {
-    this.choose_exchange(discarder.game, discarder.player_cards, card_name, 'Soldier')
+  discard_event(discarder, peasant) {
+    this.choose_exchange(discarder.game, discarder.player_cards, peasant, 'Soldier')
   }
 
 }

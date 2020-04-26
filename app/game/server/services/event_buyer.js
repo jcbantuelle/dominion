@@ -9,6 +9,7 @@ EventBuyer = class EventBuyer {
   buy() {
     if (this.is_valid_buy()) {
       this.update_phase()
+      this.track_bought_card()
       this.buy_event()
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, this.player_cards)
@@ -17,10 +18,16 @@ EventBuyer = class EventBuyer {
 
   update_phase() {
     if (_.includes(['action', 'treasure'], this.game.turn.phase)) {
+      this.game.turn.phase = 'treasure'
       let start_buy_event_processor = new StartBuyEventProcessor(this.game, this.player_cards)
       start_buy_event_processor.process()
       this.game.turn.phase = 'buy'
     }
+  }
+
+  track_bought_card(card) {
+    let bought_card = _.clone(this.event.to_h())
+    this.game.turn.bought_things.push(bought_card)
   }
 
   buy_event() {
@@ -32,16 +39,9 @@ EventBuyer = class EventBuyer {
   update_turn() {
     this.game.turn.buys -= 1
     this.game.turn.coins -= this.event.coin_cost()
-
     if (this.event.debt_cost() > 0) {
-      if (this.game.turn.possessed) {
-        possessing_player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.possessed._id)
-        possessing_player_cards.debt_tokens += this.event.debt_cost()
-        this.game.log.push(`&nbsp;&nbsp;<strong>${possessing_player_cards.username}</strong> takes ${this.event.debt_cost()} debt tokens`)
-        PlayerCardsModel.update(this.game._id, possessing_player_cards)
-      } else {
-        this.player_cards.debt_tokens += this.event.debt_cost()
-      }
+      let debt_token_gainer = new DebtTokenGainer(this.game, this.player_cards)
+      debt_token_gainer.gain(this.event.debt_cost())
     }
   }
 
@@ -62,7 +62,7 @@ EventBuyer = class EventBuyer {
   }
 
   not_forbidden() {
-    return !_.includes(this.game.turn.forbidden_events, this.event.name()) && !(this.event.name() === 'Inheritance' && this.player_cards.tokens.estate)
+    return !_.includes(this.game.turn.forbidden_events, this.event.name()) && !(this.event.name() === 'Inheritance' && !_.isEmpty(this.player_cards.inheritance))
   }
 
   update_log() {
