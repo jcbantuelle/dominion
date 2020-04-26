@@ -1,10 +1,10 @@
 <template name="game_over">
   <div id="game-over">
-    <strong>Winner(s):</strong> {{winners}}
+    <strong>Winner(s): {{{winners}}}</strong>
     <br />
     <br />
     {{#each scores}}
-      <strong>{{username}}</strong>: &nbsp;&nbsp;{{points}} Points ({{turns}} turns)
+      <strong>{{{username}}}</strong>: &nbsp;&nbsp;{{points}} Points ({{turns}} turns)
       <br />
       {{#if victory_tokens}}
         <strong>Victory Tokens:</strong> {{victory_tokens}}
