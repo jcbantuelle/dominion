@@ -193,6 +193,7 @@ GainEventProcessor = class GainEventProcessor {
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.gainer.player_cards, this.gain_events, this)
+        GainEventProcessor.gain_event(this.gainer.game, this.player_cards, this.gain_events, this)
       } else {
         GameModel.update(this.gainer.game._id, this.gainer.game)
         let instructions = `Choose Gain Event To Resolve for ${CardView.render(this.gainer.gained_card)}`
