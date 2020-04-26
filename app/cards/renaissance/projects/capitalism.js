@@ -7,7 +7,6 @@ Capitalism = class Capitalism extends Project {
   buy(game, player_cards) {
     player_cards.capitalism = true
     Capitalism.convert_cards(game, player_cards, true)
-    console.log(player_cards.hand)
   }
 
   static convert_cards(game, player_cards, convert) {
