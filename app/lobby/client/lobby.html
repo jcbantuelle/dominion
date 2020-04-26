@@ -26,6 +26,13 @@
           <strong>Cards:</strong>
           {{#each cards}}
             <span class="lobby-card {{types}}">{{name}}</span>
+            <div class="card-tooltip">
+              {{#if wide}}
+                <img src="{{static_image image}}" width="341" height="220" />
+              {{else}}
+                  <img src="{{static_image image}}" width="220" height="341" />
+              {{/if}}
+            </div>
           {{/each}}
         </div>
 
