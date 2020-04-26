@@ -671,6 +671,7 @@ CardList = class CardList {
       'StarChart',
       'Exploration',
       'Fair',
+      'Silos',
     ]
   }
 
