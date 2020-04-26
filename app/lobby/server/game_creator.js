@@ -280,7 +280,11 @@ GameCreator = class GameCreator {
       obelisk_card.obelisk = true
     }
 
-    return _.sortBy(kingdom_cards, function(card) {
+    let alpha_sort = _.sortBy(kingdom_cards, function(card) {
+      return card.stack_name
+    })
+
+    return _.sortBy(alpha_sort, function(card) {
       if (card.name === 'Knights') {
         return -4.5
       } else {

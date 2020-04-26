@@ -34,6 +34,9 @@ GameProposer = class GameProposer {
     } else {
       this.cards = card_list.pull_from_history(this.kingdom_id)
     }
+    this.cards = _.sortBy(this.cards, function(card) {
+      return card.stack_name
+    })
   }
 
   update_players() {
