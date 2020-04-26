@@ -1,25 +1,27 @@
 <template name="accounts">
-  <h2>Unapproved Players</h2>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Approve</th>
-        <th>Disable</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each unapproved_players}}
+  {{#unless empty unapproved_players}}
+    <h2>Unapproved Players</h2>
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td>{{username}}</td>
-          <td>{{emails.[0].address}}</td>
-          <td><button type="submit" data-player-id="{{_id}}" class="btn btn-success approve">Approve</button></td>
-          <td><button type="submit" data-player-id="{{_id}}" class="btn btn-warning disable">Disable</button></td>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Approve</th>
+          <th>Disable</th>
         </tr>
-      {{/each}}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {{#each unapproved_players}}
+          <tr>
+            <td>{{username}}</td>
+            <td>{{emails.[0].address}}</td>
+            <td><button type="submit" data-player-id="{{_id}}" class="btn btn-success approve">Approve</button></td>
+            <td><button type="submit" data-player-id="{{_id}}" class="btn btn-warning disable">Disable</button></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{/unless}}
   <h2>Approved Players</h2>
   <table class="table table-striped">
     <thead>
@@ -41,23 +43,25 @@
       {{/each}}
     </tbody>
   </table>
-  <h2>Disabled Players</h2>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Enable</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each disabled_players}}
+  {{#unless empty disabled_players}}
+    <h2>Disabled Players</h2>
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td>{{username}}</td>
-          <td>{{emails.[0].address}}</td>
-          <td><button type="submit" data-player-id="{{_id}}" class="btn btn-success enable">Enable</button></td>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Enable</th>
         </tr>
-      {{/each}}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {{#each disabled_players}}
+          <tr>
+            <td>{{username}}</td>
+            <td>{{emails.[0].address}}</td>
+            <td><button type="submit" data-player-id="{{_id}}" class="btn btn-success enable">Enable</button></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{/unless}}
 </template>
