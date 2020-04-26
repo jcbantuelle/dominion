@@ -1,7 +1,11 @@
 CaravanGuard = class CaravanGuard extends Duration {
 
   types() {
-    return ['action', 'duration', 'reaction']
+    return this.capitalism_types(['action', 'duration', 'reaction'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

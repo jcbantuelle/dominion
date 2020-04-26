@@ -1,5 +1,13 @@
 AbandonedMine = class AbandonedMine extends Ruins {
 
+  types() {
+    return this.capitalism_types(super.types())
+  }
+
+  capitalism() {
+    return true
+  }
+
   play(game, player_cards) {
     let coin_gainer = new CoinGainer(game, player_cards)
     coin_gainer.gain(1)

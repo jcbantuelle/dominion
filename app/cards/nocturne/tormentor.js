@@ -1,7 +1,11 @@
 Tormentor = class Tormentor extends Card {
 
   types() {
-    return ['action', 'attack', 'doom']
+    return this.capitalism_types(['action', 'attack', 'doom'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

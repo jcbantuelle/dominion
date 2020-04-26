@@ -4,6 +4,20 @@ Card = class Card {
     this.game = game
   }
 
+  capitalism_types(current_types) {
+    if (this.game) {
+      let player_cards = PlayerCardsModel.findOne(this.game._id, this.game.turn.player._id)
+      if (player_cards.capitalism) {
+        current_types.push('treasure')
+      }
+    }
+    return current_types
+  }
+
+  capitalism() {
+    return false
+  }
+
   potion_cost() {
     return 0
   }
@@ -74,7 +88,8 @@ Card = class Card {
       coin_cost: this.coin_cost(),
       potion_cost: this.potion_cost(),
       debt_cost: this.debt_cost(),
-      stack_name: this.stack_name()
+      stack_name: this.stack_name(),
+      capitalism: this.capitalism()
     }
   }
 

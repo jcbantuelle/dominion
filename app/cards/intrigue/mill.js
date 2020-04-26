@@ -1,7 +1,11 @@
 Mill = class Mill extends Card {
 
   types() {
-    return ['victory', 'action']
+    return this.capitalism_types(['action', 'victory'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

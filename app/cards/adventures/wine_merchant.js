@@ -1,7 +1,11 @@
 WineMerchant = class WineMerchant extends Reserve {
 
   types() {
-    return ['action', 'reserve']
+    return this.capitalism_types(['action', 'reserve'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

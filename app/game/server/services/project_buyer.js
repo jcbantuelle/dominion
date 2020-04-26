@@ -14,6 +14,7 @@ ProjectBuyer = class ProjectBuyer {
       this.update_log()
       this.update_turn()
       this.update_projects()
+      this.project_buy_event()
       GameModel.update(this.game._id, this.game)
       PlayerCardsModel.update(this.game._id, this.player_cards)
     }
@@ -31,6 +32,13 @@ ProjectBuyer = class ProjectBuyer {
   update_projects() {
     this.project.cubes.push(`<span class="${this.player_cards.color}">&block;</span>`)
     this.player_cards.projects.push(this.project)
+  }
+
+  project_buy_event() {
+    let project_object = ClassCreator.create(this.project.name)
+    if (typeof project_object.buy === 'function') {
+      project_object.buy(this.game, this.player_cards)
+    }
   }
 
   update_turn() {

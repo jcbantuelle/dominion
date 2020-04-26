@@ -1,7 +1,11 @@
 TreasureHunter = class TreasureHunter extends Traveller {
 
   types() {
-    return ['action', 'traveller']
+    return this.capitalism_types(['action', 'traveller'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

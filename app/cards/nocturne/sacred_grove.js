@@ -1,7 +1,11 @@
 SacredGrove = class SacredGrove extends Card {
 
   types() {
-    return ['action', 'fate']
+    return this.capitalism_types(['action', 'fate'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

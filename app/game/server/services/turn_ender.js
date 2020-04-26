@@ -21,6 +21,9 @@ TurnEnder = class TurnEnder {
     if (!_.isEmpty(this.player_cards.inheritance)) {
       Inheritance.convert_estates(this.game, this.player_cards, false)
     }
+    if (this.player_cards.capitalism) {
+      Capitalism.convert_cards(this.game, this.player_cards, false)
+    }
     if (this.game_over()) {
       this.end_game()
     } else {
@@ -37,6 +40,9 @@ TurnEnder = class TurnEnder {
       GameModel.update(this.game._id, this.game)
       if (!_.isEmpty(this.next_player_cards.inheritance)) {
         Inheritance.convert_estates(this.game, this.next_player_cards, true)
+      }
+      if (this.next_player_cards.capitalism) {
+        Capitalism.convert_cards(this.game, this.next_player_cards, true)
       }
       this.start_turn_events()
       this.update_db(false)

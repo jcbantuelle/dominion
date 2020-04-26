@@ -1,7 +1,11 @@
 OpulentCastle = class OpulentCastle extends Castles {
 
   types() {
-    return ['action', 'victory', 'castle']
+    return this.capitalism_types(['action', 'victory', 'castle'])
+  }
+
+  capitalism() {
+    return true
   }
 
   victory_points(player_cards) {

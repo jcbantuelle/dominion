@@ -1,7 +1,11 @@
 Merchant = class Merchant extends Card {
 
   types() {
-    return ['action']
+    return this.capitalism_types(['action'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

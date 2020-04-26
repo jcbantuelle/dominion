@@ -1,7 +1,11 @@
 Patron = class Patron extends Card {
 
   types() {
-    return ['action', 'reaction']
+    return this.capitalism_types(['action', 'reaction'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

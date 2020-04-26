@@ -1,7 +1,11 @@
 NobleBrigand = class NobleBrigand extends Card {
 
   types() {
-    return ['action', 'attack']
+    return this.capitalism_types(['action', 'attack'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

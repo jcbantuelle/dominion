@@ -1,7 +1,11 @@
 FarmersMarket = class FarmersMarket extends Card {
 
   types() {
-    return ['action', 'gathering']
+    return this.capitalism_types(['action', 'gathering'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

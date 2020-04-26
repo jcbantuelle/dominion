@@ -1,7 +1,11 @@
 DameSylvia = class DameSylvia extends Knights {
 
   types() {
-    return ['action', 'attack', 'knight']
+    return this.capitalism_types(['action', 'attack', 'knight'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

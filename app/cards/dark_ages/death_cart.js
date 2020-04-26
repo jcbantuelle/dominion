@@ -1,7 +1,11 @@
 DeathCart = class DeathCart extends Card {
 
   types() {
-    return ['action', 'looter']
+    return this.capitalism_types(['action', 'looter'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

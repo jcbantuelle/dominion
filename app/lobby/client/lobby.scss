@@ -134,6 +134,10 @@ hr {
   @include gradient($action, $victory);
 }
 
+.ruins.treasure {
+  @include gradient($ruins, $treasure);
+}
+
 .treasure.victory {
   @include gradient($treasure, $victory);
 }

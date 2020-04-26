@@ -1,7 +1,11 @@
 TrustySteed = class TrustySteed extends Card {
 
   types() {
-    return ['action', 'prize']
+    return this.capitalism_types(['action', 'prize'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

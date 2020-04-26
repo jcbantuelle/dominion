@@ -2,7 +2,11 @@
 TrackerCard = class TrackerCard extends Card {
 
   types() {
-    return ['action', 'fate']
+    return this.capitalism_types(['action', 'fate'])
+  }
+
+  capitalism() {
+    return true
   }
 
   name() {

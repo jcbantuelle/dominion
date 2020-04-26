@@ -1,7 +1,11 @@
 FishingVillage = class FishingVillage extends Duration {
 
   types() {
-    return ['action', 'duration']
+    return this.capitalism_types(['action', 'duration'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

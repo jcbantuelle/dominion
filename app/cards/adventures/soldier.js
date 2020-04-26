@@ -1,7 +1,11 @@
 Soldier = class Soldier extends Traveller {
 
   types() {
-     return ['action', 'attack', 'traveller']
+    return this.capitalism_types(['action', 'attack', 'traveller'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {

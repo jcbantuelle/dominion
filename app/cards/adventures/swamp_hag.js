@@ -1,7 +1,11 @@
 SwampHag = class SwampHag extends Duration {
 
   types() {
-    return ['action', 'duration', 'attack']
+    return this.capitalism_types(['action', 'duration', 'attack'])
+  }
+
+  capitalism() {
+    return true
   }
 
   coin_cost() {
