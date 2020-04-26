@@ -39,6 +39,7 @@ GameCreator = class GameCreator {
 
   format_player_usernames() {
     this.game.players = _.map(this.game.players, (player, index) => {
+      player.unstyled_username = player.username
       if (this.assign_colors) {
         player.username = `<span class="${this.colors[index]}">${player.username}</span>`
       }
