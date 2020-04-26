@@ -675,6 +675,7 @@ CardList = class CardList {
       'SinisterPlot',
       'Academy',
       'Capitalism',
+      'Fleet',
     ]
   }
 

@@ -24,6 +24,10 @@ TurnEnder = class TurnEnder {
     if (this.player_cards.capitalism) {
       Capitalism.convert_cards(this.game, this.player_cards, false)
     }
+    if (this.game.game_over) {
+      delete this.player_cards.fleet
+      PlayerCardsModel.update(this.game._id, this.player_cards)
+    }
     if (this.game_over()) {
       this.end_game()
     } else {
@@ -297,7 +301,11 @@ TurnEnder = class TurnEnder {
     }
     this.new_turn.extra_turn = false
     this.game.turn_number += 1
-    this.game.log.push(`<strong>- ${this.new_turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
+    if (this.game.game_over) {
+      this.game.log.push(`<strong>- ${this.new_turn.player.username} takes an extra turn from ${CardView.render(new Fleet())} -</strong>`)
+    } else {
+      this.game.log.push(`<strong>- ${this.new_turn.player.username}'s turn ${this.player_turn_number()} -</strong>`)
+    }
   }
 
   start_turn_events() {
@@ -315,7 +323,19 @@ TurnEnder = class TurnEnder {
   }
 
   game_over() {
-    return this.three_empty_stacks() || this.no_more_provinces_or_colonies()
+    let end_game_trigger = this.game.game_over || this.three_empty_stacks() || this.no_more_provinces_or_colonies()
+    let fleet_game = _.find(this.game.projects, (project) => {
+      return project.name === 'Fleet'
+    })
+    if (end_game_trigger && fleet_game) {
+      this.game.game_over = true
+      let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
+      let fleet_turns = _.filter(ordered_player_cards, (player_cards) => {
+        return player_cards.fleet
+      })
+      this.game.fleet = !_.isEmpty(fleet_turns)
+    }
+    return end_game_trigger && !this.game.fleet
   }
 
   three_empty_stacks() {
