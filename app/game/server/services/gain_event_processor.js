@@ -25,7 +25,7 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static project_cards() {
-    return ['Academy']
+    return ['Academy', 'Guildhall']
   }
 
   constructor(gainer, player_cards) {
@@ -159,6 +159,10 @@ GainEventProcessor = class GainEventProcessor {
           if (_.includes(_.words(this.gainer.gained_card.types), 'action')) {
             this.gain_events.push(card)
           }
+        } else if (card.name === 'Guildhall') {
+          if (_.includes(_.words(this.gainer.gained_card.types), 'treasure')) {
+            this.gain_events.push(card)
+          }
         }
       }
     })
@@ -185,7 +189,7 @@ GainEventProcessor = class GainEventProcessor {
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, (event) => {
-        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy']), event.name)
+        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall']), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.gainer.player_cards, this.gain_events, this)
