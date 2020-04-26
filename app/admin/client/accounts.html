@@ -4,6 +4,7 @@
     <thead>
       <tr>
         <th>Username</th>
+        <th>Email</th>
         <th>Approve</th>
         <th>Disable</th>
       </tr>
@@ -12,6 +13,7 @@
       {{#each unapproved_players}}
         <tr>
           <td>{{username}}</td>
+          <td>{{emails.[0].address}}</td>
           <td><button type="submit" data-player-id="{{_id}}" class="btn btn-success approve">Approve</button></td>
           <td><button type="submit" data-player-id="{{_id}}" class="btn btn-warning disable">Disable</button></td>
         </tr>
@@ -23,6 +25,7 @@
     <thead>
       <tr>
         <th>Username</th>
+        <th>Email</th>
         <th>Unapprove</th>
         <th>Disable</th>
       </tr>
@@ -31,6 +34,7 @@
       {{#each approved_players}}
         <tr>
           <td>{{username}}</td>
+          <td>{{emails.[0].address}}</td>
           <td><button type="submit" data-player-id="{{_id}}" class="btn btn-danger unapprove">Unapprove</button></td>
           <td><button type="submit" data-player-id="{{_id}}" class="btn btn-warning disable">Disable</button></td>
         </tr>
@@ -42,6 +46,7 @@
     <thead>
       <tr>
         <th>Username</th>
+        <th>Email</th>
         <th>Enable</th>
       </tr>
     </thead>
@@ -49,6 +54,7 @@
       {{#each disabled_players}}
         <tr>
           <td>{{username}}</td>
+          <td>{{emails.[0].address}}</td>
           <td><button type="submit" data-player-id="{{_id}}" class="btn btn-success enable">Enable</button></td>
         </tr>
       {{/each}}
