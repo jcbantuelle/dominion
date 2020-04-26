@@ -67,15 +67,11 @@
               {{> deck}}
             {{/with}}
           </div>
-          {{#unless turn_event}}
-            {{#unless pending_players}}
-              <div id="turn-actions">
-                {{#with game.turn}}
-                  {{> turn_actions}}
-                {{/with}}
-              </div>
-            {{/unless}}
-          {{/unless}}
+          <div id="turn-actions">
+            {{#with game.turn}}
+              {{> turn_actions}}
+            {{/with}}
+          </div>
         </div>
         <!-- required for floating divs in #action-area -->
         <br class="clear" />
