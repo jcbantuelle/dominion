@@ -39,7 +39,10 @@ Inheritance = class Inheritance extends Event {
   }
 
   static convert_estates(game, player_cards, convert) {
-    _.each(TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards), (next_player_cards) => {
+    let turn_ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
+    turn_ordered_player_cards.shift()
+    turn_ordered_player_cards.unshift(player_cards)
+    _.each(turn_ordered_player_cards, (next_player_cards) => {
       _.each(AllPlayerCardsQuery.card_sources(), (source) => {
         next_player_cards[source] = _.map(_.clone(next_player_cards[source]), (card) => {
           return Inheritance.convert_card(card, convert)
