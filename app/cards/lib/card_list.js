@@ -682,6 +682,7 @@ CardList = class CardList {
       'Barracks',
       'CropRotation',
       'Innovation',
+      'Canal',
     ]
   }
 

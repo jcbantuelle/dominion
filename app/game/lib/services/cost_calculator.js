@@ -27,6 +27,13 @@ CostCalculator = class CostCalculator {
       cost -= 2
     }
 
+    let canal = _.find(current_player_cards.projects, (project) => {
+      return project.name === 'Canal'
+    })
+    if (canal) {
+      cost -= 1
+    }
+
     let highways = _.size(_.filter(in_play_cards, function(player_card) {
       return player_card.name === 'Highway'
     }))
