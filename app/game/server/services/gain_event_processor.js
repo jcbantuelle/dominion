@@ -232,7 +232,7 @@ GainEventProcessor = class GainEventProcessor {
       if (_.includes(GainEventProcessor.reaction_cards(), card.name)) {
         card_object.gain_reaction(game, player_cards, gain_event_processor.gainer, card)
       } else {
-        card_object.gain_event(gain_event_processor.gainer, card)
+        card_object.gain_event(gain_event_processor.gainer, card, player_cards)
       }
       let event_index = _.findIndex(gain_event_processor.gain_events, (event) => {
         return event.id === card.id
