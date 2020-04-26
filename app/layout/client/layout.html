@@ -6,16 +6,16 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="/">Dominion</a>
     {{#if currentUser}}
-      <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="#">Welcome {{currentUser.username}}!</a></li>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#">Welcome {{currentUser.username}}!</a></li>
           {{#if currentUser.admin}}
-            <li><a href="/accounts">Accounts</a></li>
-            <li><a href="/active_games">Games</a></li>
+            <li class="nav-item"><a class="nav-link" href="/accounts">Accounts</a></li>
+            <li class="nav-item"><a class="nav-link" href="/active_games">Games</a></li>
           {{/if}}
-          <li><a href="/game_history">Game History</a></li>
-          <li><a href="/players">Players</a></li>
-          <li><a class="js-logout btn-secondary">Logout</a></li>
+          <li class="nav-item"><a class="nav-link" href="/game_history">Game History</a></li>
+          <li class="nav-item"><a class="nav-link" href="/players">Players</a></li>
+          <li class="nav-item"><a class="nav-link js-logout">Logout</a></li>
         </ul>
       </div>
     {{/if}}
