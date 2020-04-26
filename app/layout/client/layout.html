@@ -3,36 +3,26 @@
   <title>Dominion</title>
 </head>
 <template name="layout">
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">Dominion</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/">Dominion</a>
+    {{#if currentUser}}
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="#">Welcome {{currentUser.username}}!</a></li>
+          {{#if currentUser.admin}}
+            <li><a href="/accounts">Accounts</a></li>
+            <li><a href="/active_games">Games</a></li>
+          {{/if}}
+          <li><a href="/game_history">Game History</a></li>
+          <li><a href="/players">Players</a></li>
+          <li><a class="js-logout btn-secondary">Logout</a></li>
+        </ul>
       </div>
-      {{#if currentUser}}
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#">Welcome {{currentUser.username}}!</a></li>
-            {{#if currentUser.admin}}
-              <li><a href="/accounts">Accounts</a></li>
-              <li><a href="/active_games">Games</a></li>
-            {{/if}}
-            <li><a href="/game_history">Game History</a></li>
-            <li><a href="/players">Players</a></li>
-            <li><a class="js-logout btn-secondary">Logout</a></li>
-          </ul>
-        </div>
-      {{/if}}
-    </div>
+    {{/if}}
   </nav>
-
-  <div class="container-fluid">
+  <main role="main" class="container">
     <div class="starter-template">
       {{> yield}}
     </div>
-  </div>
+  </main>
 </template>
