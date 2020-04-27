@@ -3,15 +3,15 @@
   <form id="turn-event">
     <div class="checkbox">
       {{#each cards}}
-        <label for="card_{{@index}}">
-          <input type="checkbox" id="card_{{@index}}" value="{{@index}}" />
+        <div class="form-check form-check-inline">
+          <input type="checkbox" class="form-check-input" id="card_{{@index}}" value="{{@index}}" />
           {{#if ../game_cards}}
-            <span class="{{top_card.types}} choose-card">{{top_card.name}}</span>
+            <label class="{{top_card.types}} choose-card form-check-label" for="card_{{@index}}">{{top_card.name}}</label>
             <div class="card-tooltip">
               <img src="{{static_image top_card.image}}" width="220" height="341" />
             </div>
           {{else}}
-            <span class="{{types}} choose-card">{{name}}</span>{{#if source}} ({{source}}){{/if}}
+            <label class="{{types}} choose-card form-check-label" for="card_{{@index}}">{{name}}</label>{{#if source}} ({{source}}){{/if}}
             <div class="card-tooltip">
               {{#if wide}}
                 <img src="{{static_image image}}" width="341" height="220" />
@@ -24,10 +24,9 @@
               {{/if}}
             </div>
           {{/if}}
-        </label>
+        </div>
       {{/each}}
     </div>
-    <br class="clear" />
     <button type="submit" id="turn-event-button" class="btn btn-primary btn-xs">Choose</button>
   </form>
 </template>
