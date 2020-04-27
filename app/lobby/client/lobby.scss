@@ -31,20 +31,6 @@ $player_margin: 25px;
   margin-right: auto;
 }
 
-#players label, #card-sets label {
-  display: inline;
-  float: left;
-  margin-right: $player_margin;
-}
-
-hr {
-  margin-top: 50px;
-}
-
-#edition-hr {
-  margin-top: 20px;
-}
-
 #propose-game {
   margin-top: 10px;
 }
@@ -188,7 +174,29 @@ hr {
   @include gradient($action, $night);
 }
 
-#lobby-chat {
+#lobby-chat, #game-chat {
   height: 300px;
   overflow: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  color: purple;
+  padding: 9.5px;
+}
+
+#lobby #choose-sets {
+  margin-bottom: 5px;
+}
+
+.choose-set-container {
+  min-width: 112px;
+}
+
+#lobby label {
+  padding-left: 2px;
+}
+
+.lobby-instructions {
+  text-decoration: underline;
+  margin-bottom: 5px;
 }

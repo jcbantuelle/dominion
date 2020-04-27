@@ -55,43 +55,42 @@
 
     {{#unless proposal}}
       <form id="lobby">
-        <div>Choose any sets you'd like to exclude:</div>
+        <div class="lobby-instructions">Choose any sets you'd like to exclude:</div>
         <div id="card-sets" class="checkbox">
           {{#each card_sets}}
-            <label for="set_{{id}}">
-              <input type="checkbox" class="card-set" id="set_{{id}}" value="{{id}}" />
-              <span class="set-text">{{name}}</span>
-            </label>
+            <div class="choose-set-container form-check form-check-inline">
+              <input type="checkbox" class="form-check-input card-set" id="set_{{id}}" value="{{id}}" />
+              <label class="form-check-label" for="set_{{id}}">{{name}}</label>
+            </div>
           {{/each}}
         </div>
-        <hr class="clear" />
-        <div>Choose which edition you would like to play with:</div>
+        <hr>
+        <div class="lobby-instructions">Choose which edition you would like to play with:</div>
         <div class="checkbox">
-          <label for="edition_2">
-            <input type="radio" id="edition_2" class="edition" name="edition" value="2" checked="checked" />
-            <span class="set-text">2nd Edition</span>
-          </label>
-          <label for="edition_1">
-            <input type="radio" id="edition_1" class="edition" name="edition" value="1" />
-            <span class="set-text">1st Edition</span>
-          </label>
+          <div class="form-check form-check-inline">
+            <input type="radio" id="edition_2" class="form-check-input edition" name="edition" value="2" checked="checked" />
+            <label class="form-check-label" for="edition_2">2nd Edition</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input type="radio" id="edition_1" class="form-check-input edition" name="edition" value="1" />
+            <label class="form-check-label" for="edition_1">1st Edition</label>
+          </div>
         </div>
-        <hr id="edition-hr" class="clear" />
-        <div>Select up to 3 other players to play a game with:</div>
+        <hr />
+        <div class="lobby-instructions">Select up to 3 other players to play a game with:</div>
         <div id="players" class="checkbox">
           {{#each lobby_players}}
             {{#if has_proposal}}
               <span class="busy">{{username}}</span>
             {{else}}
-              <label for="player_{{_id}}">
-                <input type="checkbox" class="lobby-player" id="player_{{_id}}" value="{{_id}}" />
-                {{username}}
-              </label>
+              <div class="form-check form-check-inline">
+                <input type="checkbox" class="lobby-player form-check-input" id="player_{{_id}}" value="{{_id}}" />
+                <label class="form-check-label" for="player_{{_id}}">{{username}}</label>
+              </div>
             {{/if}}
           {{/each}}
         </div>
-        <br class="clear" />
-        <br />
+        <hr />
         Replay Old Game: <input class="kingdom-id" placeholder="Game ID">
         <br class="clear" />
         <button id="propose-game" class="btn btn-primary" type="submit" value="Start Game">Propose Game</button>
