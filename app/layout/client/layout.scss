@@ -5,3 +5,13 @@ body {
 .clear {
   clear: both;
 }
+
+button.btn-warning {
+  color: #FFF;
+}
+
+#game .btn-xs {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+}
