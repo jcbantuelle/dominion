@@ -99,12 +99,12 @@
     </div>
   </div>
 
-  <div id='info-modal' class="modal fade" role="dialog">
+  <div id='game-info-modal' class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
           <h3 class="modal-title">Game Info</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body" id="extra-info">
           {{> game_info game=game player_cards=player_cards public_info=public_info}}
