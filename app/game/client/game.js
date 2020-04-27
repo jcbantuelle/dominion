@@ -8,10 +8,10 @@ Template.sort_cards.onRendered(addSortable)
 
 Template.game.events({
   "submit #chat": sendMessage,
-  "click #hand .card": playCard,
-  "click .card-container .card": buyCard,
-  "click .event-container .card": buyEvent,
-  "click .project-container .card": buyProject,
+  "click #hand .card-image": playCard,
+  "click .card-container .card-image": buyCard,
+  "click .event-container .card-image": buyEvent,
+  "click .project-container .card-image": buyProject,
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
   "click #play-coffer": playCoinToken,
@@ -27,7 +27,7 @@ function registerStreams() {
 
 function createPopovers() {
   $('body').popover({
-    selector: '.card-container .card, .event-container .card, .project-container .card, .hand-card, .prize-card, .state-card, .native-village-card, .haven-card, .cargo-ship-card, .church-card, .archive-card, .crypt-card, .island-card, .tavern-card, .state-card, .artifact-card, .trash-card, .black-market-card, .choose-card, .landmark-container .card, .boon-container .card, #game-log span.card, #instructions .card, #action-response .card, #action-response span.boon, #action-response span.hex',
+    selector: '.card-container .card-image, .event-container .card-image, .project-container .card-image, .hand-card, .prize-card, .state-card, .native-village-card, .haven-card, .cargo-ship-card, .church-card, .archive-card, .research-card, .crypt-card, .island-card, .tavern-card, .state-card, .artifact-card, .trash-card, .black-market-card, .choose-card, .landmark-container .card-image, .boon-container .card-image, #game-log span.card-image, #instructions .card-image, #action-response .card-image, #action-response span.boon, #action-response span.hex',
     html: true,
     content: function() {
       return $(this).next('.card-tooltip').html()
