@@ -1,3 +1,5 @@
+import Bootstrap from 'bootstrap'
+
 Template.game.onCreated(registerStreams)
 Template.game.onRendered(createPopovers)
 
