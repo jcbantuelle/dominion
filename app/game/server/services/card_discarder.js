@@ -61,7 +61,7 @@ CardDiscarder = class CardDiscarder {
       card.destination = 'discard'
     }
 
-    if (destination !== 'deck' && this.has_schemes() && _.includes(_.words(card.types), 'action')) {
+    if (card.destination !== 'deck' && this.has_schemes() && _.includes(_.words(card.types), 'action')) {
       let turn_event_id = TurnEventModel.insert({
         game_id: this.game._id,
         player_id: this.player_cards.player_id,
