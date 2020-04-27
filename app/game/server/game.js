@@ -187,13 +187,3 @@ function allowed_to_play(game) {
     return Meteor.userId() === game.turn.player._id
   }
 }
-
-function player_connection_message(game_id, username, direction) {
-  let game = GameModel.findOne(game_id)
-  if (game) {
-    let player_ids = _.map(game.players, '_id')
-    Streamy.sessionsForUsers(player_ids).emit('game_message', {
-      message: `<em>${username} has ${direction} the game</em>`
-    })
-  }
-}
