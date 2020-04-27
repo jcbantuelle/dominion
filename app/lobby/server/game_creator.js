@@ -149,8 +149,8 @@ GameCreator = class GameCreator {
       victory_cards = _.times(3, function() { return estate.to_h() })
     }
 
-    deck = this.set_card_ids_for_collection(_.shuffle(starting_treasures.concat(victory_cards)))
-    hand = _.take(deck, 5)
+    let deck = this.set_card_ids_for_collection(_.shuffle(starting_treasures.concat(victory_cards)))
+    let hand = _.take(deck, 5)
     deck = _.drop(deck, 5)
 
     let coffers = this.game_has_card(this.selected_kingdom_cards, 'Baker') ? 1 : 0
@@ -528,7 +528,7 @@ GameCreator = class GameCreator {
   }
 
   split_stack(card) {
-    stack_names = _.split(card.stack_name, '/')
+    let stack_names = _.split(card.stack_name, '/')
     let top_card = stack_names[0]
     let bottom_card = stack_names[1]
 
@@ -814,7 +814,7 @@ GameCreator = class GameCreator {
     let game_cards = this.selected_kingdom_cards.concat(this.events)
     if (this.black_market_deck) game_cards = game_cards.concat(this.black_market_deck)
 
-    has_token_card = _.some(game_cards, (card) => {
+    let has_token_card = _.some(game_cards, (card) => {
       return _.includes(['Peasant', 'Ferry', 'Plan', 'Seaway', 'Lost Arts', 'Training', 'Pathfinding'], card.name)
     })
 

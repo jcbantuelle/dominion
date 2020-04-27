@@ -89,7 +89,7 @@ CardList = class CardList {
   }
 
   static kingdom_cards(exclusions = [], edition) {
-    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
+    let exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
     return _.reduce(CardList.sets(edition), function(card_list, set) {
       if (!_.includes(exclusions_for_edition, set)) {
         if (_.includes(['base', 'intrigue'], set)) {
@@ -106,7 +106,7 @@ CardList = class CardList {
   }
 
   static event_cards(exclusions = [], edition) {
-    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
+    let exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
     return _.reduce(CardList.event_sets(edition), function(card_list, set) {
       if (!_.includes(exclusions_for_edition, set)) {
         if (_.includes(['base', 'intrigue'], set)) {
@@ -119,7 +119,7 @@ CardList = class CardList {
   }
 
   static landmark_cards(exclusions = [], edition) {
-    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
+    let exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
     return _.reduce(CardList.landmark_sets(edition), function(card_list, set) {
       if (!_.includes(exclusions_for_edition, set)) {
         if (_.includes(['base', 'intrigue'], set)) {
@@ -132,7 +132,7 @@ CardList = class CardList {
   }
 
   static project_cards(exclusions = [], edition) {
-    exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
+    let exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
     return _.reduce(CardList.project_sets(edition), function(card_list, set) {
       if (!_.includes(exclusions_for_edition, set)) {
         if (_.includes(['base', 'intrigue'], set)) {
