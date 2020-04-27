@@ -185,16 +185,6 @@ body {
   padding: 1px;
 }
 
-#game-chat {
-  height: 100px;
-  overflow: auto;
-}
-
-#game-chat, #message {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 #sortable-cards>div {
   float: left;
 }
@@ -238,4 +228,30 @@ body {
 
 .face-down {
   text-decoration: line-through;
+}
+
+#game {
+  font-size: .9rem;
+
+  #game-log {
+    font-size: .83rem;
+  }
+
+  #turn-event-button {
+    margin: 10px 0px;
+  }
+
+  #game-chat {
+    height: 175px;
+    overflow: auto;
+  }
+
+  #game-chat, #message {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+#game-info-modal {
+  font-size: .9rem;
 }
