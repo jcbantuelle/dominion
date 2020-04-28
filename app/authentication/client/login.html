@@ -2,7 +2,7 @@
   <h2>Sign In</h2>
   <br />
 
-  <form class="form-horizontal">
+  <form>
     {{#if errorMessages}}
       <ul class="list-errors">
         {{#each errorMessages}}
@@ -12,28 +12,20 @@
     {{/if}}
 
     <div class="form-group">
-      <label for="email" class="col-sm-1 control-label">Email</label>
-      <div class="col-sm-2">
-        <input type="email" name="email" class="form-control" />
-      </div>
+      <label for="email">Email</label>
+      <input type="email" name="email" class="form-control col-sm-3" />
     </div>
 
     <div class="form-group">
-      <label for="password" class="col-sm-1 control-label">Password</label>
-      <div class="col-sm-2">
-        <input type="password" name="password" class="form-control" />
-      </div>
+      <label for="password">Password</label>
+      <input type="password" name="password" class="form-control col-sm-3" />
     </div>
 
-    <div class="col-sm-offset-1">
-      <button type="submit" class="btn btn-primary">Log In</button>
-    </div>
-
+    <button type="submit" class="btn btn-primary">Log In</button>
   </form>
 
   <br />
-  <a href="{{pathFor 'signup'}}" class="link-auth-alt">Don't have an account? Sign Up.</a>
-  <br />
-  <br />
-  <a href="/forgot-password" class="link-auth-alt">Forgot your password?</a>
+  <a href="{{pathFor 'signup'}}" class="link-auth-alt mr-2">Sign Up</a>
+  |
+  <a href="/forgot-password" class="link-auth-alt ml-2">Reset Password</a>
 </template>

@@ -1,3 +1,21 @@
+Template.accounts.helpers({
+  accounts() {
+    return {
+      unapproved_players: Meteor.users.find({
+        approved: {$exists: false},
+        disabled: {$exists: false}
+      }),
+      approved_players: Meteor.users.find({
+        approved: true,
+        disabled: {$exists: false}
+      }),
+      disabled_players: Meteor.users.find({
+        disabled: true
+      })
+    }
+  }
+})
+
 Template.accounts.events({
   "click .approve": approveAccount,
   "click .unapprove": unapproveAccount,

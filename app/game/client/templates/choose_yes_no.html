@@ -2,16 +2,15 @@
   <strong id="instructions">{{{instructions}}}</strong>
   <form id="turn-event">
     <div class="checkbox">
-      <label for="yes-choice">
-        <input type="checkbox" id="yes-choice" value="yes" />
-        <span>Yes</span>
-      </label>
-      <label for="no-choice">
-        <input type="checkbox" id="no-choice" value="no" />
-        <span>No</span>
-      </label>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="yes-choice" value="yes" />
+        <label class="form-check-label" for="yes-choice">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" id="no-choice" value="no" />
+        <label class="form-check-label" for="no-choice">No</label>
+      </div>
     </div>
-    <br class="clear" />
     <button type="submit" id="turn-event-button" class="btn btn-primary btn-xs">Choose</button>
   </form>
 </template>

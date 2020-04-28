@@ -18,7 +18,7 @@ CardView = class CardView {
   }
 
   static card_html(types, name, image) {
-    let rendered_html = `<span class="${types} card">${name}</span>`
+    let rendered_html = `<span class="${types} card-image">${name}</span>`
 
     let width = 220
     let height = 341

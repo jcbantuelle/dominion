@@ -1,4 +1,5 @@
 <template name="gameHistoryListing">
+{{#with games_history}}
   <h2>Game History</h2>
   <table class="table table-striped">
     <thead>
@@ -34,4 +35,5 @@
     </tbody>
   </table>
   {{> pagination}}
+{{/with}}
 </template>

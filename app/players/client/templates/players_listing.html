@@ -1,4 +1,5 @@
 <template name="playersListing">
+{{#with players_listing}}
   <h2>Players</h2>
   <table class="table table-striped">
     <thead>
@@ -22,4 +23,5 @@
       {{/each}}
     </tbody>
   </table>
+{{/with}}
 </template>

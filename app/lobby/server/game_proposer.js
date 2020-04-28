@@ -27,7 +27,7 @@ GameProposer = class GameProposer {
   }
 
   select_cards() {
-    card_list = new CardList(this.exclusions, this.edition)
+    let card_list = new CardList(this.exclusions, this.edition)
     if (this.kingdom_id === '') {
       this.cards = card_list.pull_set()
     } else {

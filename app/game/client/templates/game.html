@@ -1,27 +1,12 @@
 <template name="game">
+{{#with current_game}}
+  <div class="row" id="game">
 
-  <div class="row">
-
-    <div class="col-xs-6" id="cards-area">
+    <div class="col" id="cards-area">
       <div class="row">
 
-        <!-- Kingdom Cards -->
-        <div class="col-xs-6 col-lg-5 col-lg-push-4" id="kingdom-cards">
-          {{#each game.kingdom_cards}}
-            {{> card}}
-          {{/each}}
-        </div>
-
-        <!-- Common Cards -->
-        <div class="col-xs-6 col-lg-3 col-lg-push-4" id="common-cards">
-          {{#each game.common_cards}}
-            {{> card}}
-          {{/each}}
-        </div>
-
         <!-- Not Supply Cards -->
-        <div class="col-xs-6 col-lg-4 col-lg-pull-8" id="not-supply-cards">
-          <hr class="hidden-lg" />
+        <div class="col" id="not-supply-cards">
           {{#each game.events}}
             {{> event}}
           {{/each}}
@@ -39,10 +24,23 @@
           {{/each}}
         </div>
 
+        <!-- Kingdom Cards -->
+        <div class="col" id="kingdom-cards">
+          {{#each game.kingdom_cards}}
+            {{> card}}
+          {{/each}}
+        </div>
+
+        <!-- Common Cards -->
+        <div class="col" id="common-cards">
+          {{#each game.common_cards}}
+            {{> card}}
+          {{/each}}
+        </div>
       </div>
     </div>
 
-    <div class="col-xs-6" id="game-area">
+    <div class="col" id="game-area">
       <div id="game-log">
         {{#each game.log}}
           {{> log}}
@@ -99,12 +97,12 @@
     </div>
   </div>
 
-  <div id='info-modal' class="modal fade" role="dialog">
+  <div id='game-info-modal' class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
           <h3 class="modal-title">Game Info</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body" id="extra-info">
           {{> game_info game=game player_cards=player_cards public_info=public_info}}
@@ -112,5 +110,5 @@
       </div>
     </div>
   </div>
-
+{{/with}}
 </template>

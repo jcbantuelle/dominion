@@ -1,7 +1,17 @@
 body {
-    padding-top: 65px;
+  padding-top: 65px;
 }
 
 .clear {
   clear: both;
+}
+
+button.btn-warning {
+  color: #FFF;
+}
+
+#game .btn-xs {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
 }

@@ -1,3 +1,5 @@
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
+
 Template.ResetPassword.helpers({
   resetPassword: function(){
     return Session.get('resetPassword')
@@ -5,7 +7,8 @@ Template.ResetPassword.helpers({
 })
 
 Template.ResetPassword.onCreated(function() {
-  if(Accounts._resetPasswordToken) {
+  if(FlowRouter.getParam('token')) {
+    Accounts._resetPasswordToken = FlowRouter.getParam('token')
     Session.set('resetPassword', Accounts._resetPasswordToken);
   }
 })

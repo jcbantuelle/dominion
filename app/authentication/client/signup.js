@@ -1,3 +1,5 @@
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
+
 const FORM_ERRORS = 'signupErrors'
 
 Template.signup.onCreated(function() {
@@ -22,6 +24,10 @@ Template.signup.events({
         create_account(email, username, password)
       }
     })
+  },
+  'click a': function(event) {
+    event.preventDefault()
+    FlowRouter.go(event.target.getAttribute('href'))
   }
 })
 
@@ -43,7 +49,7 @@ function create_account(email, username, password) {
       if (error) {
         Session.set(FORM_ERRORS, {'none': error.reason})
       } else {
-        Router.go('/')
+        FlowRouter.go('/')
       }
     }
   )

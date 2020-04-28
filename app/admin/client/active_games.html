@@ -1,4 +1,5 @@
 <template name="activeGames">
+{{#with active_games}}
   <h2>Active Games</h2>
   <table class="table table-striped">
     <thead>
@@ -33,4 +34,5 @@
       {{/each}}
     </tbody>
   </table>
+{{/with}}
 </template>
