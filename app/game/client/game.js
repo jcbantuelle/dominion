@@ -153,6 +153,7 @@ Template.game.events({
 
 function registerStreams() {
   Streamy.on('game_message', updateChatWindow)
+  Streamy.on('game_destroyed', redirectToLobby)
 }
 
 function createPopovers() {
@@ -259,4 +260,10 @@ function turnEvent(event) {
 
 function removePopover() {
   $('.popover').remove()
+}
+
+function redirectToLobby(data) {
+  if (data.game_id === FlowRouter.getParam(`id`)) {
+    FlowRouter.go(`/lobby`)
+  }
 }
