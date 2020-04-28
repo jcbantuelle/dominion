@@ -87,15 +87,11 @@ CardGainer = class CardGainer {
   }
 
   gain_events() {
-    this.game.turn.gain_event_stack.push(this.gained_card.name)
-
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game, this.player_cards)
     _.each(ordered_player_cards, (player_cards) => {
       let gain_event_processor = new GainEventProcessor(this, player_cards)
       gain_event_processor.process()
     })
-
-    this.game.turn.gain_event_stack.pop()
   }
 
   would_gain_reactions() {

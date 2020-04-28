@@ -66,7 +66,7 @@ GainEventProcessor = class GainEventProcessor {
     _.each(this.player_cards.hand, (card) => {
       if (_.includes(GainEventProcessor.reaction_cards(), card.name)) {
         if (card.name === 'Fools Gold') {
-          if (this.player_cards._id !== this.gainer.player_cards._id && _.last(this.gainer.game.turn.gain_event_stack) === 'Province') {
+          if (this.player_cards._id !== this.gainer.player_cards._id && this.gainer.gained_card.name === 'Province') {
             this.gain_events.push(card)
           }
         } else if (card.name === 'Watchtower') {

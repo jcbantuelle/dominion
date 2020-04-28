@@ -871,7 +871,6 @@ GameCreator = class GameCreator {
       bought_things: [],
       gained_cards: [],
       played_actions: [],
-      gain_event_stack: [],
       forbidden_events: [],
       charms: 0,
       priests: 0,
