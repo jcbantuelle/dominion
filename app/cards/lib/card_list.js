@@ -690,7 +690,8 @@ CardList = class CardList {
   static menagerie() {
     return [
       'BlackCat',
-      'Sleigh'
+      'Sleigh',
+      'Supplies'
     ]
   }
 

@@ -317,7 +317,7 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist') || this.game_has_card(this.selected_kingdom_cards, 'Tormentor')) {
       not_supply_cards.push(this.game_card((new Imp()).to_h(), 'not_supply'))
     }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Sleigh')) {
+    if (this.game_has_card(this.selected_kingdom_cards, 'Sleigh') || this.game_has_card(this.selected_kingdom_cards, 'Supplies')) {
       not_supply_cards.push(this.game_card((new Horse()).to_h(), 'not_supply'))
     }
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
