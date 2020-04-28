@@ -204,6 +204,9 @@ GameCreator = class GameCreator {
         $set: {current_game: this.game._id}
       })
     })
+    Streamy.sessionsForUsers(_.map(this.players, '_id')).emit('game_started', {
+      game_id: this.game._id
+    })
   }
 
   event_cards(events) {

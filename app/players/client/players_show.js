@@ -1,19 +1,8 @@
-PlayersShowController = LoggedInController.extend({
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 
-  onRun: function() {
-    Session.set('player_show_page', 1)
-  },
-
-  waitOn: function() {
-    return [
-      Meteor.subscribe('player_rankings'),
-      Meteor.subscribe('game_history', Session.get('player_show_page'), this.params.id),
-      Meteor.subscribe('players')
-    ]
-  },
-
-  data: function () {
-    let player = PlayerRankings.findOne({username: this.params.id}, {
+Template.playersShow.helpers({
+  player() {
+    let player = PlayerRankings.findOne({username: FlowRouter.getParam('id')}, {
       transform: function(player) {
         let total_games = player.wins + player.losses
         player.win_ratio = total_games === 0 ? 0 : ((player.wins / total_games) * 100).toFixed(2)
@@ -44,5 +33,13 @@ PlayersShowController = LoggedInController.extend({
     }
     return player
   }
-
 })
+
+Template.playersShow.events({
+  'click a': function(event) {
+    event.preventDefault()
+    FlowRouter.go(event.target.getAttribute('href'))
+  }
+})
+
+

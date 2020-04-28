@@ -1,16 +1,8 @@
-GameHistoryShowController = LoggedInController.extend({
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 
-  waitOn: function() {
-    return [
-      Meteor.subscribe('game_history'),
-      Meteor.subscribe('players')
-    ]
-  },
-
-  template: 'game',
-
-  data: function () {
-    let game_history = GameHistory.findOne(this.params.id, {
+Template.gameHistoryShow.helpers({
+  current_game() {
+    let game_history = GameHistory.findOne(FlowRouter.getParam('id'), {
       transform: function(game) {
         game.kingdom_cards = []
         game.common_cards = []
@@ -33,5 +25,4 @@ GameHistoryShowController = LoggedInController.extend({
       }
     }
   }
-
 })

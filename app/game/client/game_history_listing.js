@@ -1,17 +1,7 @@
-GameHistoryListingController = LoggedInController.extend({
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 
-  onRun: function() {
-    Session.set('game_history_listing_page', 1)
-  },
-
-  waitOn: function () {
-    return [
-      Meteor.subscribe('players'),
-      Meteor.subscribe('game_history', Session.get('game_history_listing_page'))
-    ]
-  },
-
-  data: function () {
+Template.gameHistoryListing.helpers({
+  games_history() {
     return {
       games: GameHistory.find({}, {
         transform: function(game) {
@@ -29,5 +19,11 @@ GameHistoryListingController = LoggedInController.extend({
       page_name: 'game_history_listing_page'
     }
   }
+})
 
+Template.gameHistoryListing.events({
+  'click a': function(event) {
+    event.preventDefault()
+    FlowRouter.go(event.target.getAttribute('href'))
+  }
 })

@@ -1,0 +1,63 @@
+<template name="gameHistoryShow">
+{{#with current_game}}
+  <div class="row" id="game">
+
+    <div class="col" id="cards-area">
+      <div class="row">
+
+        <!-- Not Supply Cards -->
+        <div class="col" id="not-supply-cards">
+          {{#each game.events}}
+            {{> event}}
+          {{/each}}
+          {{#each game.projects}}
+            {{> project}}
+          {{/each}}
+          {{#each game.landmarks}}
+            {{> landmark}}
+          {{/each}}
+          {{#each game.druid_boons}}
+            {{> druid_boon}}
+          {{/each}}
+          {{#each game.not_supply_cards}}
+            {{> card}}
+          {{/each}}
+        </div>
+
+        <!-- Kingdom Cards -->
+        <div class="col" id="kingdom-cards">
+          {{#each game.kingdom_cards}}
+            {{> card}}
+          {{/each}}
+        </div>
+
+        <!-- Common Cards -->
+        <div class="col" id="common-cards">
+          {{#each game.common_cards}}
+            {{> card}}
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    <div class="col" id="game-area">
+      <div id="game-log">
+        {{#each game.log}}
+          {{> log}}
+        {{/each}}
+      </div>
+
+      <div id="finished-game">
+        {{#with game}}
+          {{> game_over}}
+        {{/with}}
+      </div>
+
+      <pre id="game-chat"></pre>
+      <form id="chat" action="">
+        <input id="message" class="form-control" autocomplete="off">
+      </form>
+    </div>
+  </div>
+{{/with}}
+</template>

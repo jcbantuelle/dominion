@@ -1,3 +1,4 @@
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 import Bootstrap from 'bootstrap'
 
 Template.lobby.onCreated(registerStreams)
@@ -10,8 +11,46 @@ Template.lobby.events({
   "click #accept-proposal": acceptProposal
 })
 
+Template.lobby.helpers({
+  lobby() {
+    let proposals = Proposals.find({}, {
+      transform: function(proposal) {
+        proposal.is_proposer = proposal.proposer.id == Meteor.userId()
+        _.each(proposal.players, function(player) {
+          if (player._id == Meteor.userId() && player.accepted) {
+            proposal.accepted = true
+          }
+        })
+        return proposal
+      }
+    }).fetch()
+
+    let relevant_proposal = _.find(proposals, function(proposal) {
+      return proposal ? _.includes(_.map(proposal.players, '_id'), Meteor.userId()) : false
+    })
+
+    return {
+      card_sets: _.map(CardList.sets(), function(set) {
+        return {
+          id: set,
+          name: _.startCase(set)
+        }
+      }),
+      lobby_players: Meteor.users.find({
+        _id: {$ne: Meteor.userId()},
+        'status.online': true,
+        lobby: true,
+        current_game: {$exists: false}
+      }),
+      proposal: relevant_proposal,
+      player: Meteor.user()
+    }
+  }
+})
+
 function registerStreams() {
   Streamy.on('lobby_message', updateChatWindow)
+  Streamy.on('game_started', redirectToGame)
 }
 
 function createPopovers() {
@@ -29,6 +68,10 @@ function updateChatWindow(data) {
   let chat_window = $('#lobby-chat')
   chat_window.append(`<strong>${data.username}:</strong> ${data.message}\n`)
   chat_window.scrollTop(chat_window[0].scrollHeight)
+}
+
+function redirectToGame(data) {
+  FlowRouter.go(`/game/${data.game_id}`)
 }
 
 function isValidKingdom(kingdom_id) {

@@ -1,4 +1,5 @@
 <template name="lobby">
+{{#with lobby}}
   <div id="lobby-container">
     <div id="proposal-message">{{{currentUser.declined_proposal}}}</div>
 
@@ -105,5 +106,5 @@
       <input type="text" name="message" id="message" class="form-control" autocomplete="off" />
     </form>
   </div>
-
+{{/with}}
 </template>

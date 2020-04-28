@@ -1,13 +1,7 @@
-PlayersListingController = LoggedInController.extend({
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 
-  waitOn: function () {
-    return [
-      Meteor.subscribe('players'),
-      Meteor.subscribe('player_rankings')
-    ]
-  },
-
-  data: function () {
+Template.playersListing.helpers({
+  players_listing() {
     return {
       players: PlayerRankings.find({$or: [ {wins: {$gt: 0}}, {losses: {$gt: 0}}]}, {
         sort: {username: 1},
@@ -19,5 +13,11 @@ PlayersListingController = LoggedInController.extend({
       })
     }
   }
+})
 
+Template.playersListing.events({
+  'click a': function(event) {
+    event.preventDefault()
+    FlowRouter.go(event.target.getAttribute('href'))
+  }
 })
