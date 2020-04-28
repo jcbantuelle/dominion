@@ -1,7 +1,7 @@
 GainEventProcessor = class GainEventProcessor {
 
   static reaction_cards() {
-    return ['Fools Gold', 'Watchtower', 'Black Cat']
+    return ['Fools Gold', 'Watchtower', 'Black Cat', 'Sleigh']
   }
 
   static event_cards() {
@@ -75,6 +75,10 @@ GainEventProcessor = class GainEventProcessor {
           }
         } else if (card.name === 'Black Cat') {
           if (this.player_cards._id !== this.gainer.player_cards._id && _.includes(_.words(this.gainer.gained_card.types), 'victory')) {
+            this.gain_events.push(card)
+          }
+        } else if (card.name === 'Sleigh') {
+          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).id === this.gainer.gained_card.id) {
             this.gain_events.push(card)
           }
         }
@@ -262,7 +266,7 @@ GainEventProcessor = class GainEventProcessor {
 
       if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).id !== gain_event_processor.gainer.gained_card.id) {
         gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, (event) => {
-          return event.name !== 'Watchtower' && event.name !== 'Royal Seal'
+          return event.name !== 'Watchtower' && event.name !== 'Royal Seal' && event.name !== 'Sleigh'
         })
       }
 

@@ -317,6 +317,9 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist') || this.game_has_card(this.selected_kingdom_cards, 'Tormentor')) {
       not_supply_cards.push(this.game_card((new Imp()).to_h(), 'not_supply'))
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Sleigh')) {
+      not_supply_cards.push(this.game_card((new Horse()).to_h(), 'not_supply'))
+    }
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
       _.each(['Treasure Hunter', 'Warrior', 'Hero', 'Champion'], (card_name) => {
         let card = ClassCreator.create(card_name)
@@ -442,7 +445,7 @@ GameCreator = class GameCreator {
       return 60
     } else if (card.name === 'Silver') {
       return 40
-    } else if (card.name === 'Gold') {
+    } else if (card.name === 'Gold' || card.name === 'Horse') {
       return 30
     } else if (card.name === 'Platinum') {
       return 12
