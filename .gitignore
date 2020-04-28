@@ -5,3 +5,4 @@ settings-prod.json
 settings.json
 mup.js
 node_modules
+/lib/server/conf.js

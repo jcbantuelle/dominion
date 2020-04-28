@@ -33,7 +33,7 @@ CardView = class CardView {
     }
 
     rendered_html += `<div class="card-tooltip">
-      <img src="${Meteor.settings.public.static.cards}${image}.jpg" width="${width}" height="${height}" />
+      <img src="${Meteor.settings.public.image_url}${image}.jpg" width="${width}" height="${height}" />
     </div>`
 
     return rendered_html
