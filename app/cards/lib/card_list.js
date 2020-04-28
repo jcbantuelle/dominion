@@ -688,6 +688,9 @@ CardList = class CardList {
   }
 
   static menagerie() {
+    return [
+      'BlackCat'
+    ]
   }
 
   static promo() {

@@ -1,7 +1,7 @@
 GainEventProcessor = class GainEventProcessor {
 
   static reaction_cards() {
-    return ['Fools Gold', 'Watchtower']
+    return ['Fools Gold', 'Watchtower', 'Black Cat']
   }
 
   static event_cards() {
@@ -71,6 +71,10 @@ GainEventProcessor = class GainEventProcessor {
           }
         } else if (card.name === 'Watchtower') {
           if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).id === this.gainer.gained_card.id) {
+            this.gain_events.push(card)
+          }
+        } else if (card.name === 'Black Cat') {
+          if (this.player_cards._id !== this.gainer.player_cards._id && _.includes(_.words(this.gainer.gained_card.types), 'victory')) {
             this.gain_events.push(card)
           }
         }
