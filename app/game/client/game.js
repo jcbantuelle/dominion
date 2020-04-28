@@ -2,8 +2,6 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 import Bootstrap from 'bootstrap'
 
 Template.game.onCreated(registerStreams)
-Template.game.onRendered(createPopovers)
-
 Template.log.onRendered(scrollGameLog)
 Template.sort_cards.onRendered(addSortable)
 
@@ -154,17 +152,6 @@ Template.game.events({
 function registerStreams() {
   Streamy.on('game_message', updateChatWindow)
   Streamy.on('game_destroyed', redirectToLobby)
-}
-
-function createPopovers() {
-  $('body').popover({
-    selector: '.card-container .card-image, .event-container .card-image, .project-container .card-image, .hand-card, .prize-card, .state-card, .native-village-card, .haven-card, .cargo-ship-card, .church-card, .archive-card, .research-card, .crypt-card, .island-card, .tavern-card, .state-card, .artifact-card, .trash-card, .black-market-card, .choose-card, .landmark-container .card-image, .boon-container .card-image, #game-log span.card-image, #instructions .card-image, #action-response .card-image, #action-response span.boon, #action-response span.hex',
-    html: true,
-    content: function() {
-      return $(this).next('.card-tooltip').html()
-    },
-    trigger: 'hover'
-  })
 }
 
 function scrollGameLog() {
