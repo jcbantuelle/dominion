@@ -7,7 +7,7 @@ PlayerAttacker = class PlayerAttacker {
   }
 
   attack(attacker_player_cards, params) {
-    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game)
+    let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(this.game, attacker_player_cards)
     ordered_player_cards.shift()
 
     GameModel.update(this.game._id, this.game)
