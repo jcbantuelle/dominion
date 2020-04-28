@@ -65,7 +65,7 @@ CardList = class CardList {
   }
 
   static sets(edition = '') {
-    return ['base'+edition, 'intrigue'+edition, 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'adventures', 'empires', 'nocturne', 'renaissance', 'promo']
+    return ['base'+edition, 'intrigue'+edition, 'seaside', 'alchemy', 'prosperity', 'cornucopia', 'hinterlands', 'dark_ages', 'guilds', 'adventures', 'empires', 'nocturne', 'renaissance', 'menagerie', 'promo']
   }
 
   static event_sets(edition = '') {
@@ -685,6 +685,9 @@ CardList = class CardList {
       'Canal',
       'Citadel'
     ]
+  }
+
+  static menagerie() {
   }
 
   static promo() {
