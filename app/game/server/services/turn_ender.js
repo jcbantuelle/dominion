@@ -16,7 +16,7 @@ TurnEnder = class TurnEnder {
     this.clean_up_cards_in_play()
     this.draw_new_hand()
     this.end_turn_events()
-    this.track_gained_cards()
+    this.track_turn_cards()
     this.game.log.push(`<strong>${this.game.turn.player.username}</strong> ends their turn`)
     if (!_.isEmpty(this.player_cards.inheritance)) {
       Inheritance.convert_estates(this.game, this.player_cards, false)
@@ -134,8 +134,9 @@ TurnEnder = class TurnEnder {
     card_drawer.draw(cards_to_draw, false)
   }
 
-  track_gained_cards() {
+  track_turn_cards() {
     this.player_cards.last_turn_gained_cards = this.game.turn.gained_cards
+    this.player_cards.last_turn_trashed_cards = this.game.turn.trashed_cards
   }
 
   set_next_turn() {
