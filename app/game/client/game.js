@@ -148,8 +148,7 @@ Template.game.events({
   "click #play-coffer": playCoinToken,
   "click #play-villager": playVillager,
   "click #play-debt-token": playDebtToken,
-  "submit #turn-event": turnEvent,
-  "click": removePopover,
+  "submit #turn-event": turnEvent
 })
 
 function registerStreams() {
@@ -246,10 +245,6 @@ function turnEvent(event) {
     alert(turn_event_submission.error_message())
   }
 
-}
-
-function removePopover() {
-  $('.popover').remove()
 }
 
 function redirectToLobby(data) {

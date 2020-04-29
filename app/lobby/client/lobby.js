@@ -110,7 +110,3 @@ function acceptProposal(event) {
   event.preventDefault()
   Meteor.call('acceptProposal', $('#proposal_id').val())
 }
-
-function removePopover() {
-  $('.popover').remove()
-}
