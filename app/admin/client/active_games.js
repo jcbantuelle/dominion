@@ -3,7 +3,7 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 Template.activeGames.helpers({
   active_games() {
     return {
-      games: Games.find({}, {
+      games: Games.find({finished: {$exists: false}}, {
         transform: function(game) {
           game.created_at = dateFormat(game.created_at, "yyyy-mm-dd h:MM:ss TT")
           game.card_list = _.reduce(game.cards, function(cards, card) {
