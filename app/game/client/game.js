@@ -114,6 +114,9 @@ Template.game.helpers({
             if (_.size(player_cards.artifacts) > 0) {
               public_info.artifacts = player_cards.artifacts
             }
+            if (_.size(player_cards.exile) > 0) {
+              public_info.exile = player_cards.exile
+            }
             if (player_cards.tokens.journey) {
               public_info.journey_token = player_cards.tokens.journey
             }

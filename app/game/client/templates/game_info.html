@@ -201,6 +201,16 @@
       {{/each}}
       <br />
     {{/if}}
+    {{#if exile}}
+      Exile:
+      {{#each exile}}
+        <span class="{{types}} exile-card">{{name}}</span>
+        <div class="card-tooltip">
+          <img src="{{static_image image}}" width="220" height="341" />
+        </div>
+      {{/each}}
+      <br />
+    {{/if}}
     {{#if states}}
       States:
       {{#each states}}
