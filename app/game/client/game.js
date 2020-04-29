@@ -2,8 +2,6 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 import Bootstrap from 'bootstrap'
 
 Template.game.onCreated(registerStreams)
-Template.game.onRendered(createPopovers)
-
 Template.log.onRendered(scrollGameLog)
 Template.sort_cards.onRendered(addSortable)
 
@@ -116,6 +114,9 @@ Template.game.helpers({
             if (_.size(player_cards.artifacts) > 0) {
               public_info.artifacts = player_cards.artifacts
             }
+            if (_.size(player_cards.exile) > 0) {
+              public_info.exile = player_cards.exile
+            }
             if (player_cards.tokens.journey) {
               public_info.journey_token = player_cards.tokens.journey
             }
@@ -147,23 +148,12 @@ Template.game.events({
   "click #play-coffer": playCoinToken,
   "click #play-villager": playVillager,
   "click #play-debt-token": playDebtToken,
-  "submit #turn-event": turnEvent,
-  "click": removePopover,
+  "submit #turn-event": turnEvent
 })
 
 function registerStreams() {
   Streamy.on('game_message', updateChatWindow)
-}
-
-function createPopovers() {
-  $('body').popover({
-    selector: '.card-container .card-image, .event-container .card-image, .project-container .card-image, .hand-card, .prize-card, .state-card, .native-village-card, .haven-card, .cargo-ship-card, .church-card, .archive-card, .research-card, .crypt-card, .island-card, .tavern-card, .state-card, .artifact-card, .trash-card, .black-market-card, .choose-card, .landmark-container .card-image, .boon-container .card-image, #game-log span.card-image, #instructions .card-image, #action-response .card-image, #action-response span.boon, #action-response span.hex',
-    html: true,
-    content: function() {
-      return $(this).next('.card-tooltip').html()
-    },
-    trigger: 'hover'
-  })
+  Streamy.on('game_destroyed', redirectToLobby)
 }
 
 function scrollGameLog() {
@@ -257,6 +247,8 @@ function turnEvent(event) {
 
 }
 
-function removePopover() {
-  $('.popover').remove()
+function redirectToLobby(data) {
+  if (data.game_id === FlowRouter.getParam(`id`)) {
+    FlowRouter.go(`/lobby`)
+  }
 }

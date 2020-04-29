@@ -9,5 +9,8 @@ Template.layout.events({
   'click .nav-link, click .navbar-brand': function(event) {
     event.preventDefault()
     FlowRouter.go(event.target.getAttribute('href'))
+  },
+  'click': function() {
+    $('.popover').remove()
   }
 })

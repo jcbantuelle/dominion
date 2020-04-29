@@ -9,6 +9,7 @@ AllPlayerCardsQuery = class AllPlayerCardsQuery {
       'crypt',
       'deck',
       'discard',
+      'exile',
       'gear',
       'hand',
       'haven',

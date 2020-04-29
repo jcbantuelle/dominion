@@ -2,7 +2,6 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 import Bootstrap from 'bootstrap'
 
 Template.lobby.onCreated(registerStreams)
-Template.lobby.onRendered(createPopovers)
 
 Template.lobby.events({
   "submit #chat": sendMessage,
@@ -51,17 +50,6 @@ Template.lobby.helpers({
 function registerStreams() {
   Streamy.on('lobby_message', updateChatWindow)
   Streamy.on('game_started', redirectToGame)
-}
-
-function createPopovers() {
-  $('body').popover({
-    selector: '.lobby-card',
-    html: true,
-    content: function() {
-      return $(this).next('.card-tooltip').html()
-    },
-    trigger: 'hover'
-  })
 }
 
 function updateChatWindow(data) {
@@ -121,8 +109,4 @@ function declineProposal(event) {
 function acceptProposal(event) {
   event.preventDefault()
   Meteor.call('acceptProposal', $('#proposal_id').val())
-}
-
-function removePopover() {
-  $('.popover').remove()
 }

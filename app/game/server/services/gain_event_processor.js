@@ -1,11 +1,11 @@
 GainEventProcessor = class GainEventProcessor {
 
   static reaction_cards() {
-    return ['Fools Gold', 'Watchtower']
+    return ['Fools Gold', 'Watchtower', 'Black Cat', 'Sleigh']
   }
 
   static event_cards() {
-    return ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village', 'Death Cart', 'Lost City', 'Emporium', 'Crumbling Castle', 'Haunted Castle', 'Sprawling Castle', 'Grand Castle', 'Rocks', 'Fortune', 'Temple', 'Villa', 'Blessed Village', 'Cemetery', 'Skulk', 'Cursed Village', 'Ducat', 'Experiment', 'Silk Merchant', 'Lackeys', 'Flag Bearer', 'Spices']
+    return ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village', 'Death Cart', 'Lost City', 'Emporium', 'Crumbling Castle', 'Haunted Castle', 'Sprawling Castle', 'Grand Castle', 'Rocks', 'Fortune', 'Temple', 'Villa', 'Blessed Village', 'Cemetery', 'Skulk', 'Cursed Village', 'Ducat', 'Experiment', 'Silk Merchant', 'Lackeys', 'Flag Bearer', 'Spices', 'Camel Train']
   }
 
   static in_play_event_cards() {
@@ -66,10 +66,18 @@ GainEventProcessor = class GainEventProcessor {
     _.each(this.player_cards.hand, (card) => {
       if (_.includes(GainEventProcessor.reaction_cards(), card.name)) {
         if (card.name === 'Fools Gold') {
-          if (this.player_cards._id !== this.gainer.player_cards._id && _.last(this.gainer.game.turn.gain_event_stack) === 'Province') {
+          if (this.player_cards._id !== this.gainer.player_cards._id && this.gainer.gained_card.name === 'Province') {
             this.gain_events.push(card)
           }
         } else if (card.name === 'Watchtower') {
+          if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).id === this.gainer.gained_card.id) {
+            this.gain_events.push(card)
+          }
+        } else if (card.name === 'Black Cat') {
+          if (this.player_cards._id !== this.gainer.player_cards._id && _.includes(_.words(this.gainer.gained_card.types), 'victory')) {
+            this.gain_events.push(card)
+          }
+        } else if (card.name === 'Sleigh') {
           if (this.player_cards._id === this.gainer.player_cards._id && !_.isEmpty(this.player_cards[this.gainer.destination]) && _.head(this.player_cards[this.gainer.destination]).id === this.gainer.gained_card.id) {
             this.gain_events.push(card)
           }
@@ -202,6 +210,21 @@ GainEventProcessor = class GainEventProcessor {
         this.gain_events.push(cargo_ship)
       })
     }
+
+    if (this.gainer.player_cards._id === this.player_cards._id && !_.isEmpty(this.player_cards.exile)) {
+      let has_exile_cards = _.find(this.player_cards.exile, (card) => {
+        return card.name === this.gainer.gained_card.name
+      })
+      if (has_exile_cards) {
+        this.gain_events.push({
+          name: 'Exile',
+          id: this.generate_event_id(),
+          wide: true,
+          types: 'exile',
+          image: 'exile'
+        })
+      }
+    }
   }
 
   process() {
@@ -245,11 +268,19 @@ GainEventProcessor = class GainEventProcessor {
   static gain_event(game, player_cards, selected_cards, gain_event_processor) {
     if (!_.isEmpty(selected_cards)) {
       let card = selected_cards[0]
-      let card_object = ClassCreator.create(card.name)
-      if (_.includes(GainEventProcessor.reaction_cards(), card.name)) {
-        card_object.gain_reaction(game, player_cards, gain_event_processor.gainer, card)
+      if (card.name === 'Exile') {
+        let exiled_copies = _.filter(player_cards.exile, (card) => {
+          return card.name === gain_event_processor.gainer.gained_card.name
+        })
+        let card_discarder = new CardDiscarder(game, player_cards, 'exile', exiled_copies)
+        card_discarder.discard()
       } else {
-        card_object.gain_event(gain_event_processor.gainer, card, player_cards)
+        let card_object = ClassCreator.create(card.name)
+        if (_.includes(GainEventProcessor.reaction_cards(), card.name)) {
+          card_object.gain_reaction(game, player_cards, gain_event_processor.gainer, card)
+        } else {
+          card_object.gain_event(gain_event_processor.gainer, card, player_cards)
+        }
       }
       let event_index = _.findIndex(gain_event_processor.gain_events, (event) => {
         return event.id === card.id
@@ -258,7 +289,7 @@ GainEventProcessor = class GainEventProcessor {
 
       if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).id !== gain_event_processor.gainer.gained_card.id) {
         gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, (event) => {
-          return event.name !== 'Watchtower' && event.name !== 'Royal Seal'
+          return event.name !== 'Watchtower' && event.name !== 'Royal Seal' && event.name !== 'Sleigh'
         })
       }
 

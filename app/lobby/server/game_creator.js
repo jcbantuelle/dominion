@@ -169,6 +169,7 @@ GameCreator = class GameCreator {
       duration_effects: [],
       duration_attacks: [],
       last_turn_gained_cards: [],
+      last_turn_trashed_cards: [],
       coffers: coffers,
       champions: 0,
       villagers: 0,
@@ -317,6 +318,9 @@ GameCreator = class GameCreator {
     if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist') || this.game_has_card(this.selected_kingdom_cards, 'Tormentor')) {
       not_supply_cards.push(this.game_card((new Imp()).to_h(), 'not_supply'))
     }
+    if (this.game_has_card(this.selected_kingdom_cards, 'Sleigh') || this.game_has_card(this.selected_kingdom_cards, 'Supplies')) {
+      not_supply_cards.push(this.game_card((new Horse()).to_h(), 'not_supply'))
+    }
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
       _.each(['Treasure Hunter', 'Warrior', 'Hero', 'Champion'], (card_name) => {
         let card = ClassCreator.create(card_name)
@@ -442,7 +446,7 @@ GameCreator = class GameCreator {
       return 60
     } else if (card.name === 'Silver') {
       return 40
-    } else if (card.name === 'Gold') {
+    } else if (card.name === 'Gold' || card.name === 'Horse') {
       return 30
     } else if (card.name === 'Platinum') {
       return 12
@@ -870,8 +874,8 @@ GameCreator = class GameCreator {
       bought_cards: [],
       bought_things: [],
       gained_cards: [],
+      trashed_cards: [],
       played_actions: [],
-      gain_event_stack: [],
       forbidden_events: [],
       charms: 0,
       priests: 0,

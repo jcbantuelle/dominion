@@ -43,6 +43,7 @@ CardTrasher = class CardTrasher {
         this.update_log(this.trashed_cards)
       }
     }
+    this.game.turn.trashed_cards = this.game.turn.trashed_cards.concat(this.trashed_cards)
     return this.trashed_cards
   }
 
