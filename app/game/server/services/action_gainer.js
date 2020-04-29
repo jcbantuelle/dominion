@@ -7,6 +7,9 @@ ActionGainer = class ActionGainer {
   }
 
   gain(amount, announce = true) {
+    if (this.game.turn.no_more_actions) {
+      amount = 0
+    }
     this.game.turn.actions += amount
     if (announce) {
       let action_text = amount == 1 ? 'action' : 'actions'
