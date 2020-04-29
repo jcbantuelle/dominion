@@ -1,7 +1,12 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 import Bootstrap from 'bootstrap'
 
-Template.lobby.onCreated(registerStreams)
+Template.lobby.onCreated(function() {
+  Streamy.on('lobby_message', updateLobbyChatWindow)
+  Streamy.on('game_started', function(data) {
+    FlowRouter.go(`/game/${data.game_id}`)
+  })
+})
 
 Template.lobby.events({
   "submit #chat": sendMessage,
@@ -47,19 +52,10 @@ Template.lobby.helpers({
   }
 })
 
-function registerStreams() {
-  Streamy.on('lobby_message', updateChatWindow)
-  Streamy.on('game_started', redirectToGame)
-}
-
-function updateChatWindow(data) {
+function updateLobbyChatWindow(data) {
   let chat_window = $('#lobby-chat')
   chat_window.append(`<strong>${data.username}:</strong> ${data.message}\n`)
   chat_window.scrollTop(chat_window[0].scrollHeight)
-}
-
-function redirectToGame(data) {
-  FlowRouter.go(`/game/${data.game_id}`)
 }
 
 function isValidKingdom(kingdom_id) {
