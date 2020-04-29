@@ -16,11 +16,13 @@ Meteor.methods({
           let card = _.find(current_player_cards.hand, (card) => {
             return card.id === card_id
           })
-          let card_player = new CardPlayer(current_game, current_player_cards, card)
-          card_player.play()
-          if (turn_over(current_game, current_player_cards)) {
-            let turn_ender = new TurnEnder(current_game, current_player_cards)
-            turn_ender.end_turn()
+          if (card) {
+            let card_player = new CardPlayer(current_game, current_player_cards, card)
+            card_player.play()
+            if (turn_over(current_game, current_player_cards)) {
+              let turn_ender = new TurnEnder(current_game, current_player_cards)
+              turn_ender.end_turn()
+            }
           }
           ActionLock[game_id] = false
         }
