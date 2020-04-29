@@ -691,7 +691,8 @@ CardList = class CardList {
     return [
       'BlackCat',
       'Sleigh',
-      'Supplies'
+      'Supplies',
+      'CamelTrain'
     ]
   }
 
