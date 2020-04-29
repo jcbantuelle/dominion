@@ -21,5 +21,17 @@ Meteor.methods({
     }
 
     return errors
+  },
+  create_player_ranking: function(username) {
+    let player = Meteor.users.findOne({username: username})
+    let player_ranking = PlayerRankings.findOne({username: username})
+    if (!player_ranking) {
+      PlayerRankings.insert({
+        username: username,
+        wins: 0,
+        losses: 0,
+        opponents: []
+      })
+    }
   }
 })
