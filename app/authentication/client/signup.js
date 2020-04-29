@@ -49,6 +49,7 @@ function create_account(email, username, password) {
       if (error) {
         Session.set(FORM_ERRORS, {'none': error.reason})
       } else {
+        Meteor.call('create_player_ranking', username)
         FlowRouter.go('/')
       }
     }
