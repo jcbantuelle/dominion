@@ -1,7 +1,14 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra'
 import Bootstrap from 'bootstrap'
 
-Template.game.onCreated(registerStreams)
+Template.game.onCreated(function() {
+  Streamy.on('game_message', updateGameChatWindow)
+  Streamy.on('game_destroyed', function(data) {
+    if (data.game_id === FlowRouter.getParam(`id`)) {
+      FlowRouter.go(`/lobby`)
+    }
+  })
+})
 Template.log.onRendered(scrollGameLog)
 Template.sort_cards.onRendered(addSortable)
 
@@ -151,11 +158,6 @@ Template.game.events({
   "submit #turn-event": turnEvent
 })
 
-function registerStreams() {
-  Streamy.on('game_message', updateChatWindow)
-  Streamy.on('game_destroyed', redirectToLobby)
-}
-
 function scrollGameLog() {
   let game_log = $('#game-log')
   game_log.scrollTop(game_log[0].scrollHeight)
@@ -169,7 +171,7 @@ function addSortable() {
   })
 }
 
-function updateChatWindow(data) {
+function updateGameChatWindow(data) {
   let chat_window = $('#game-chat')
   let message = `${data.message}\n`
   if (data.username) {
@@ -245,10 +247,4 @@ function turnEvent(event) {
     alert(turn_event_submission.error_message())
   }
 
-}
-
-function redirectToLobby(data) {
-  if (data.game_id === FlowRouter.getParam(`id`)) {
-    FlowRouter.go(`/lobby`)
-  }
 }
