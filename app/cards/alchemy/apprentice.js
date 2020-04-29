@@ -1,11 +1,7 @@
 Apprentice = class Apprentice extends Card {
 
   types() {
-    return this.capitalism_types(['action'])
-  }
-
-  capitalism() {
-    return true
+    return ['action']
   }
 
   coin_cost() {
