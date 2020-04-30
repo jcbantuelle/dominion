@@ -332,6 +332,7 @@ GameCreator = class GameCreator {
           'Groom',
           'Hostelry',
           'Livery',
+          'Paddock',
           'Scrap',
           'Sleigh',
           'Supplies'
