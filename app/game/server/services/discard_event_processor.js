@@ -1,7 +1,16 @@
 DiscardEventProcessor = class DiscardEventProcessor {
 
   static event_cards() {
-    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital', 'Faithful Hound', 'Border Guard']
+    return [
+      'Alchemist',
+      'Border Guard',
+      'Capital',
+      'Faithful Hound',
+      'Herbalist',
+      'Hermit',
+      'Treasury',
+      'Tunnel'
+    ]
   }
 
   static traveller_cards() {
