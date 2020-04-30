@@ -30,6 +30,7 @@ GainEventProcessor = class GainEventProcessor {
       'Fortune',
       'Grand Castle',
       'Haunted Castle',
+      'Hostelry',
       'Ill Gotten Gains',
       'Inn',
       'Lackeys',

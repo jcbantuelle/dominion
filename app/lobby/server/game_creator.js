@@ -330,6 +330,7 @@ GameCreator = class GameCreator {
         trigger_cards: [
           'Cavalry',
           'Groom',
+          'Hostelry',
           'Scrap',
           'Sleigh',
           'Supplies'

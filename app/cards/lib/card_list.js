@@ -701,7 +701,8 @@ CardList = class CardList {
       'BountyHunter',
       'Cardinal',
       'Cavalry',
-      'Groom'
+      'Groom',
+      'Hostelry'
     ]
   }
 
