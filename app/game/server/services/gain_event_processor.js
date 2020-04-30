@@ -3,6 +3,7 @@ GainEventProcessor = class GainEventProcessor {
   static reaction_cards() {
     return [
       'Black Cat',
+      'Falconer',
       'Fools Gold',
       'Sheepdog',
       'Sleigh',
@@ -135,6 +136,10 @@ GainEventProcessor = class GainEventProcessor {
           }
         } else if (card.name === 'Sheepdog') {
           if (this.player_cards._id === this.gainer.player_cards._id) {
+            this.gain_events.push(card)
+          }
+        } else if (card.name === 'Falconer') {
+          if (_.size(_.words(this.gainer.gained_card.types)) > 1) {
             this.gain_events.push(card)
           }
         }

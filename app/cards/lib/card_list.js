@@ -706,7 +706,8 @@ CardList = class CardList {
       'VillageGreen',
       'Barge',
       'Coven',
-      'Displace'
+      'Displace',
+      'Falconer'
     ]
   }
 
