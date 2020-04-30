@@ -711,7 +711,8 @@ CardList = class CardList {
       'Gatekeeper',
       'HuntingLodge',
       'Kiln',
-      'Livery'
+      'Livery',
+      'Mastermind'
     ]
   }
 
