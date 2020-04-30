@@ -704,7 +704,8 @@ CardList = class CardList {
       'Groom',
       'Hostelry',
       'VillageGreen',
-      'Barge'
+      'Barge',
+      'Coven'
     ]
   }
 
