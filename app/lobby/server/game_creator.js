@@ -300,27 +300,51 @@ GameCreator = class GameCreator {
 
   not_supply_cards() {
     let not_supply_cards = []
-    if (this.game_has_card(this.selected_kingdom_cards, 'Hermit')) {
-      not_supply_cards.push(this.game_card((new Madman()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Urchin')) {
-      not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Cemetery') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist')) {
-      not_supply_cards.push(this.game_card((new Ghost()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun') || this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
-      not_supply_cards.push(this.game_card((new Wish()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Vampire')) {
-      not_supply_cards.push(this.game_card((new Bat()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist') || this.game_has_card(this.selected_kingdom_cards, 'Tormentor')) {
-      not_supply_cards.push(this.game_card((new Imp()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Sleigh') || this.game_has_card(this.selected_kingdom_cards, 'Supplies') || this.game_has_card(this.selected_kingdom_cards, 'Scrap') || this.game_has_card(this.selected_kingdom_cards, 'Cavalry')) {
-      not_supply_cards.push(this.game_card((new Horse()).to_h(), 'not_supply'))
-    }
+    let conditional_cards = [
+      {
+        card_name: 'Madman',
+        trigger_cards: ['Hermit']
+      },
+      {
+        card_name: 'Mercenary',
+        trigger_cards: ['Urchin']
+      },
+      {
+        card_name: 'Ghost',
+        trigger_cards: ['Cemetery', 'Exorcist']
+      },
+      {
+        card_name: 'Wish',
+        trigger_cards: ['Leprechaun', 'Secret Cave']
+      },
+      {
+        card_name: 'Bat',
+        trigger_cards: ['Vampire']
+      },
+      {
+        card_name: 'Imp',
+        trigger_cards: ['Devils Workshop', 'Exorcist', 'Tormentor']
+      },
+      {
+        card_name: 'Horse',
+        trigger_cards: [
+          'Cavalry',
+          'Groom',
+          'Scrap',
+          'Sleigh',
+          'Supplies'
+        ]
+      }
+    ]
+    _.each(conditional_cards, (card) => {
+      _.each(card.trigger_cards, (trigger_card_name) => {
+        if (this.game_has_card(this.selected_kingdom_cards, trigger_card_name)) {
+          let new_card = ClassCreator.create(card.card_name).to_h()
+          let game_card = this.game_card(new_card, 'not_supply')
+          not_supply_cards.push(game_card)
+        }
+      })
+    })
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
       _.each(['Treasure Hunter', 'Warrior', 'Hero', 'Champion'], (card_name) => {
         let card = ClassCreator.create(card_name)
