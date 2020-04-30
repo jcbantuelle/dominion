@@ -714,7 +714,8 @@ CardList = class CardList {
       'Livery',
       'Mastermind',
       'Paddock',
-      'Sanctuary'
+      'Sanctuary',
+      'Fisherman'
     ]
   }
 

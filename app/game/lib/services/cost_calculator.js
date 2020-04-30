@@ -63,6 +63,10 @@ CostCalculator = class CostCalculator {
       cost -= (action_count * 2)
     }
 
+    if (name === 'Fisherman' && _.isEmpty(current_player_cards.discard)) {
+      cost -= 3
+    }
+
     cost -= game.turn.coin_discount
     if (cost < 0) cost = 0
     return cost
