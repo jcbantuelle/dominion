@@ -16,10 +16,8 @@ CaravanGuard = class CaravanGuard extends Duration {
     let card_drawer = new CardDrawer(game, player_cards)
     card_drawer.draw(1)
 
-    if (player_cards.player_id === game.turn.player._id) {
-      let action_gainer = new ActionGainer(game, player_cards)
-      action_gainer.gain(1)
-    }
+    let action_gainer = new ActionGainer(game, player_cards)
+    action_gainer.gain(1)
 
     player_cards.duration_effects.push(_.clone(card_player.card))
     return 'duration'
