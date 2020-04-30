@@ -703,7 +703,8 @@ CardList = class CardList {
       'Cavalry',
       'Groom',
       'Hostelry',
-      'VillageGreen'
+      'VillageGreen',
+      'Barge'
     ]
   }
 
