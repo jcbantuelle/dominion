@@ -72,6 +72,16 @@ CostCalculator = class CostCalculator {
     }
 
     cost -= game.turn.coin_discount
+
+    if (name === 'Wayfarer' && !_.isEmpty(game.turn.gained_cards)) {
+      let last_non_wayfairer = _.find(game.turn.gained_cards.reverse(), (card) => {
+        return card.name !== 'Wayfarer'
+      })
+      if (last_non_wayfairer) {
+        cost = CostCalculator.calculate(game, last_non_wayfairer, buy_phase, player_cards)
+      }
+    }
+
     if (cost < 0) cost = 0
     return cost
   }
