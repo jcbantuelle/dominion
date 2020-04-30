@@ -26,7 +26,7 @@ BountyHunter = class BountyHunter extends Card {
         player_cards: true,
         instructions: 'Choose a card to exile:',
         cards: player_cards.hand,
-        minimum: 0,
+        minimum: 1,
         maximum: 1
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
