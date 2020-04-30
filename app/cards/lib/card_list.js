@@ -697,7 +697,8 @@ CardList = class CardList {
       'Scrap',
       'Sheepdog',
       'SnowyVillage',
-      'Stockpile'
+      'Stockpile',
+      'BountyHunter'
     ]
   }
 
