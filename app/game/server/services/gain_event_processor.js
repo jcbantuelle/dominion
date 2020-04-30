@@ -81,6 +81,10 @@ GainEventProcessor = class GainEventProcessor {
     ]
   }
 
+  static duration_attack_cards() {
+    return ['Gatekeeper']
+  }
+
   constructor(gainer, player_cards) {
     this.gainer = gainer
     this.player_cards = player_cards
@@ -254,6 +258,21 @@ GainEventProcessor = class GainEventProcessor {
       }
     })
 
+    _.each(this.player_cards.duration_attacks, (card) => {
+      if (_.includes(GainEventProcessor.duration_attack_cards(), card.name)) {
+        if (card.name === 'Gatekeeper' && this.gainer.player_cards._id === this.player_cards._id) {
+          if (_.includes(_.words(this.gainer.gained_card.types), 'treasure') || _.includes(_.words(this.gainer.gained_card.types), 'action')) {
+            let exiled_copy = _.find(this.player_cards.exile, (exile_card) => {
+              return this.gainer.gained_card.name === exile_card.name
+            })
+            if (!exiled_copy) {
+              this.gain_events.push(card)
+            }
+          }
+        }
+      }
+    })
+
     if (this.gainer.player_cards._id === this.player_cards._id && _.includes(_.words(this.gainer.gained_card.types), 'victory') && this.gainer.supply_pile && this.gainer.supply_pile.has_trade_route_token) {
       let trade_route = ClassCreator.create('Trade Route').to_h()
       trade_route.id = this.generate_event_id()
@@ -291,7 +310,7 @@ GainEventProcessor = class GainEventProcessor {
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, (event) => {
-        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall', 'Road Network', 'Innovation']), event.name)
+        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(GainEventProcessor.duration_attack_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall', 'Road Network', 'Innovation']), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.player_cards, this.gain_events, this)
@@ -351,6 +370,11 @@ GainEventProcessor = class GainEventProcessor {
       if (_.isEmpty(player_cards[gain_event_processor.gainer.destination]) || _.head(player_cards[gain_event_processor.gainer.destination]).id !== gain_event_processor.gainer.gained_card.id) {
         gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, (event) => {
           return event.name !== 'Watchtower' && event.name !== 'Royal Seal' && event.name !== 'Sleigh'
+        })
+      }
+      if (gain_event_processor.gainer.destination === 'exile') {
+        gain_event_processor.gain_events = _.filter(gain_event_processor.gain_events, (event) => {
+          return event.name !== 'Gatekeeper'
         })
       }
 
