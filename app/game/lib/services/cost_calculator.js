@@ -67,6 +67,10 @@ CostCalculator = class CostCalculator {
       cost -= 3
     }
 
+    if (name === 'Destrier') {
+      cost -= _.size(game.turn.gained_cards)
+    }
+
     cost -= game.turn.coin_discount
     if (cost < 0) cost = 0
     return cost
