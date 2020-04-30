@@ -14,7 +14,7 @@ CardTrasher = class CardTrasher {
     this.trashed_by = trashed_by
   }
 
-  trash() {
+  trash(announce = true) {
     if (!_.isEmpty(this.cards)) {
       let events = this.has_events()
       if (_.size(this.cards) > 1 && events) {
@@ -31,7 +31,7 @@ CardTrasher = class CardTrasher {
       }
 
       _.each(this.cards, (trashed_card) => {
-        if (events) {
+        if (events && announce) {
           this.update_log(trashed_card)
         }
         this.put_card_in_trash(trashed_card)
@@ -39,7 +39,7 @@ CardTrasher = class CardTrasher {
         trash_event_processor.process()
       })
 
-      if (!events && !_.isEmpty(this.trashed_cards)) {
+      if (!events && !_.isEmpty(this.trashed_cards) && announce) {
         this.update_log(this.trashed_cards)
       }
     }
