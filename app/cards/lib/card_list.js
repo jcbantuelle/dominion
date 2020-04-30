@@ -700,7 +700,8 @@ CardList = class CardList {
       'Stockpile',
       'BountyHunter',
       'Cardinal',
-      'Cavalry'
+      'Cavalry',
+      'Groom'
     ]
   }
 
