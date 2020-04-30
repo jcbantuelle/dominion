@@ -1,15 +1,56 @@
 GainEventProcessor = class GainEventProcessor {
 
   static reaction_cards() {
-    return ['Fools Gold', 'Watchtower', 'Black Cat', 'Sleigh', 'Sheepdog']
+    return [
+      'Black Cat',
+      'Fools Gold',
+      'Sheepdog',
+      'Sleigh',
+      'Watchtower'
+    ]
   }
 
   static event_cards() {
-    return ['Duchy', 'Cache', 'Embassy', 'Ill Gotten Gains', 'Inn', 'Mandarin', 'Border Village', 'Death Cart', 'Lost City', 'Emporium', 'Crumbling Castle', 'Haunted Castle', 'Sprawling Castle', 'Grand Castle', 'Rocks', 'Fortune', 'Temple', 'Villa', 'Blessed Village', 'Cemetery', 'Skulk', 'Cursed Village', 'Ducat', 'Experiment', 'Silk Merchant', 'Lackeys', 'Flag Bearer', 'Spices', 'Camel Train']
+    return [
+      'Blessed Village',
+      'Border Village',
+      'Cache',
+      'Camel Train',
+      'Cavalry',
+      'Cemetery',
+      'Cursed Village',
+      'Crumbling Castle',
+      'Death Cart',
+      'Ducat',
+      'Duchy',
+      'Embassy',
+      'Emporium',
+      'Experiment',
+      'Flag Bearer',
+      'Fortune',
+      'Grand Castle',
+      'Haunted Castle',
+      'Ill Gotten Gains',
+      'Inn',
+      'Lackeys',
+      'Lost City',
+      'Mandarin',
+      'Rocks',
+      'Silk Merchant',
+      'Skulk',
+      'Spices',
+      'Sprawling Castle',
+      'Temple',
+      'Villa'
+    ]
   }
 
   static in_play_event_cards() {
-    return ['Royal Seal', 'Tracker', 'Groundskeeper']
+    return [
+      'Groundskeeper',
+      'Royal Seal',
+      'Tracker'
+    ]
   }
 
   static reserve_cards() {
@@ -21,11 +62,21 @@ GainEventProcessor = class GainEventProcessor {
   }
 
   static landmark_cards() {
-    return ['Aqueduct', 'Battlefield', 'Defiled Shrine', 'Labyrinth']
+    return [
+      'Aqueduct',
+      'Battlefield',
+      'Defiled Shrine',
+      'Labyrinth'
+    ]
   }
 
   static project_cards() {
-    return ['Academy', 'Guildhall', 'Road Network', 'Innovation']
+    return [
+      'Academy',
+      'Guildhall',
+      'Innovation',
+      'Road Network'
+    ]
   }
 
   constructor(gainer, player_cards) {
