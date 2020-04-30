@@ -9,7 +9,8 @@ DiscardEventProcessor = class DiscardEventProcessor {
       'Herbalist',
       'Hermit',
       'Treasury',
-      'Tunnel'
+      'Tunnel',
+      'Village Green'
     ]
   }
 
@@ -35,7 +36,7 @@ DiscardEventProcessor = class DiscardEventProcessor {
   find_discard_events() {
     this.discard_events = []
     if (_.includes(DiscardEventProcessor.event_cards(), this.card.name)) {
-      if (_.includes(['Tunnel', 'Faithful Hound'], this.card.name) && this.discarder.game.turn.phase !== 'cleanup') {
+      if (_.includes(['Tunnel', 'Faithful Hound', 'Village Green'], this.card.name) && this.discarder.game.turn.phase !== 'cleanup') {
         this.discard_events.push(this.card)
       } else if (this.discarder.source === 'in_play') {
         if (this.card.name === 'Treasury') {

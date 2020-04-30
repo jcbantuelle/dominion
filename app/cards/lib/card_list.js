@@ -702,7 +702,8 @@ CardList = class CardList {
       'Cardinal',
       'Cavalry',
       'Groom',
-      'Hostelry'
+      'Hostelry',
+      'VillageGreen'
     ]
   }
 
