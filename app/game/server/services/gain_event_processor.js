@@ -291,6 +291,14 @@ GainEventProcessor = class GainEventProcessor {
       })
     }
 
+    if (this.gainer.player_cards._id === this.player_cards._id && this.gainer.game.turn.player._id === this.gainer.player_cards.player_id && this.gainer.game.turn.liveries > 0 && CardCostComparer.coin_greater_than(this.gainer.game, this.gainer.gained_card, 3)) {
+      _.times(this.gainer.game.turn.liveries, () => {
+        let livery = ClassCreator.create('Livery').to_h()
+        livery.id = this.generate_event_id()
+        this.gain_events.push(livery)
+      })
+    }
+
     if (this.gainer.player_cards._id === this.player_cards._id && !_.isEmpty(this.player_cards.exile)) {
       let has_exile_cards = _.find(this.player_cards.exile, (card) => {
         return card.name === this.gainer.gained_card.name
@@ -310,7 +318,7 @@ GainEventProcessor = class GainEventProcessor {
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, (event) => {
-        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(GainEventProcessor.duration_attack_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall', 'Road Network', 'Innovation']), event.name)
+        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(GainEventProcessor.duration_attack_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall', 'Road Network', 'Innovation', 'Livery']), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.player_cards, this.gain_events, this)
