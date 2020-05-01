@@ -725,7 +725,8 @@ CardList = class CardList {
   static menagerie_events() {
     return [
       'Delay',
-      'Desperation'
+      'Desperation',
+      'Gamble'
     ]
   }
 
