@@ -333,6 +333,7 @@ GameCreator = class GameCreator {
           'Hostelry',
           'Livery',
           'Paddock',
+          'Ride',
           'Scrap',
           'Sleigh',
           'Supplies'
@@ -341,7 +342,7 @@ GameCreator = class GameCreator {
     ]
     _.each(conditional_cards, (card) => {
       _.each(card.trigger_cards, (trigger_card_name) => {
-        if (this.game_has_card(this.selected_kingdom_cards, trigger_card_name)) {
+        if (this.game_has_card(this.selected_kingdom_cards, trigger_card_name) || this.game_has_event_or_landmark(this.events, trigger_card_name)) {
           let new_card = ClassCreator.create(card.card_name).to_h()
           let game_card = this.game_card(new_card, 'not_supply')
           not_supply_cards.push(game_card)
