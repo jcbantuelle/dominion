@@ -33,7 +33,7 @@ Displace = class Displace extends Card {
 
   static exile_card(game, player_cards, selected_cards) {
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.supply && CardCostComparer.card_less_than(game, selected_cards[0], card.top_card, 3)
+      return card.name !== selected_cards[0].name && card.count > 0 && card.supply && CardCostComparer.card_less_than(game, selected_cards[0], card.top_card, 3)
     })
 
     let card_mover = new CardMover(game, player_cards)
