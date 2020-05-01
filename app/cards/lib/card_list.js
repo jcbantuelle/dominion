@@ -726,7 +726,8 @@ CardList = class CardList {
     return [
       'Delay',
       'Desperation',
-      'Gamble'
+      'Gamble',
+      'Pursue'
     ]
   }
 
