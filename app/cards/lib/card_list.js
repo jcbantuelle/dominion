@@ -69,7 +69,7 @@ CardList = class CardList {
   }
 
   static event_sets(edition = '') {
-    return ['adventures', 'promo', 'empires']
+    return ['adventures', 'promo', 'empires', 'menagerie']
   }
 
   static landmark_sets(edition = '') {
@@ -719,6 +719,12 @@ CardList = class CardList {
       'Destrier',
       'Wayfarer',
       'AnimalFair'
+    ]
+  }
+
+  static menagerie_events() {
+    return [
+      'Delay'
     ]
   }
 
