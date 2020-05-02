@@ -8,7 +8,7 @@ Crossroads = class Crossroads extends Card {
     return 2
   }
 
-  play(game, player_cards, player) {
+  play(game, player_cards, card_player) {
     let card_revealer = new CardRevealer(game, player_cards)
     card_revealer.reveal('hand')
 
@@ -16,7 +16,7 @@ Crossroads = class Crossroads extends Card {
       return _.includes(_.words(card.types), 'victory')
     })
     if (_.size(victory_cards) > 0) {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(_.size(victory_cards))
     }
 

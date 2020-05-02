@@ -12,7 +12,7 @@ SpiceMerchant = class SpiceMerchant extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let eligible_cards = _.filter(player_cards.hand, function(card) {
       return _.includes(_.words(card.types), 'treasure')
     })
@@ -28,14 +28,14 @@ SpiceMerchant = class SpiceMerchant extends Card {
         minimum: 0,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(SpiceMerchant.trash_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not trash anything`)
     }
   }
 
-  static trash_card(game, player_cards, selected_cards) {
+  static trash_card(game, player_cards, selected_cards, card_player) {
     if (!_.isEmpty(selected_cards)) {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
@@ -53,16 +53,16 @@ SpiceMerchant = class SpiceMerchant extends Card {
           {text: '+1 buy and +$2', value: 'coins'}
         ]
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(SpiceMerchant.process_response)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not trash anything`)
     }
   }
 
-  static process_response(game, player_cards, response) {
+  static process_response(game, player_cards, response, card_player) {
     if (response[0] === 'cards') {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(2)
 
       let action_gainer = new ActionGainer(game, player_cards)
@@ -71,7 +71,7 @@ SpiceMerchant = class SpiceMerchant extends Card {
       let buy_gainer = new BuyGainer(game, player_cards)
       buy_gainer.gain(1)
 
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(2)
     }
   }
