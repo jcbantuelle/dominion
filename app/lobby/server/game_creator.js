@@ -163,6 +163,7 @@ GameCreator = class GameCreator {
       states: [],
       projects: [],
       artifacts: [],
+      investments: [],
       start_turn_event_effects: [],
       end_turn_event_effects: [],
       possession_trash: [],

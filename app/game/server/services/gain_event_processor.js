@@ -279,6 +279,17 @@ GainEventProcessor = class GainEventProcessor {
       this.gain_events.push(trade_route)
     }
 
+    if (this.gainer.player_cards._id !== this.player_cards._id && !_.isEmpty(this.player_cards.investments)) {
+      let investments = _.find(this.player_cards.investments, (investment) => {
+        return investment.name === this.gainer.gained_card.name
+      })
+      if (investments) {
+        let invest = ClassCreator.create('Invest').to_h()
+        invest.id = this.generate_event_id()
+        this.gain_events.push(invest)
+      }
+    }
+
     if (this.gainer.player_cards._id === this.player_cards._id && this.gainer.game.turn.player._id === this.gainer.player_cards.player_id && this.gainer.game.turn.travelling_fair && this.gainer.destination !== 'deck') {
       let travelling_fair = ClassCreator.create('Travelling Fair').to_h()
       travelling_fair.id = this.generate_event_id()
@@ -318,7 +329,7 @@ GainEventProcessor = class GainEventProcessor {
   process() {
     if (!_.isEmpty(this.gain_events)) {
       let mandatory_gain_events = _.filter(this.gain_events, (event) => {
-        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(GainEventProcessor.duration_attack_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall', 'Road Network', 'Innovation', 'Livery']), event.name)
+        return _.includes(GainEventProcessor.event_cards().concat(GainEventProcessor.in_play_event_cards()).concat(GainEventProcessor.reserve_cards()).concat(GainEventProcessor.landmark_cards()).concat(GainEventProcessor.duration_attack_cards()).concat(['Trade Route', 'Cargo Ship', 'Academy', 'Guildhall', 'Road Network', 'Innovation', 'Livery', 'Invest']), event.name)
       })
       if (_.size(this.gain_events) === 1 && !_.isEmpty(mandatory_gain_events)) {
         GainEventProcessor.gain_event(this.gainer.game, this.player_cards, this.gain_events, this)

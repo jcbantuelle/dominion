@@ -10,6 +10,12 @@ CardMover = class CardMover {
     if (card_index !== -1) {
       source.splice(card_index, 1)
       delete card.face_down
+      let investment_index = _.findIndex(this.player_cards.investments, (investment) => {
+        return investment.id === card.id
+      })
+      if (investment_index !== -1) {
+        this.player_cards.investments.splice(investment_index, 1)
+      }
       destination.splice(destination_index, 0, card)
       return true
     } else {
