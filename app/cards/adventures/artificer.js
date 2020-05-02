@@ -12,17 +12,18 @@ Artificer = class Artificer extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(1)
 
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(1)
 
     if (_.size(player_cards.hand) > 0) {
+      GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
