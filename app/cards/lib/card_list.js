@@ -732,7 +732,8 @@ CardList = class CardList {
       'Toil',
       'Enhance',
       'March',
-      'Transport'
+      'Transport',
+      'Banish'
     ]
   }
 
