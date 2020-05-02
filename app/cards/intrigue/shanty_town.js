@@ -8,7 +8,7 @@ ShantyTown = class ShantyTown extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(2)
 
@@ -19,7 +19,7 @@ ShantyTown = class ShantyTown extends Card {
       return _.includes(_.words(card.types), 'action')
     })
     if (!has_actions) {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(2)
     }
   }

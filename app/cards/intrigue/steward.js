@@ -12,7 +12,7 @@ Steward = class Steward extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
@@ -27,16 +27,16 @@ Steward = class Steward extends Card {
         {text: 'Trash 2 cards', value: 'trash'}
       ]
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(Steward.process_choice)
   }
 
-  static process_choice(game, player_cards, choice) {
+  static process_choice(game, player_cards, choice, card_player) {
     if (choice[0] === 'cards') {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(2)
     } else if (choice[0] === 'coins') {
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(2)
     } else if (choice[0] === 'trash') {
       if (_.size(player_cards.hand) > 2) {

@@ -12,7 +12,7 @@ SecretChamber = class SecretChamber extends Card {
     return 2
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -25,21 +25,21 @@ SecretChamber = class SecretChamber extends Card {
         minimum: 0,
         maximum: 0
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(SecretChamber.discard_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
   }
 
-  static discard_cards(game, player_cards, selected_cards) {
+  static discard_cards(game, player_cards, selected_cards, card_player) {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(_.size(selected_cards))
     }
   }

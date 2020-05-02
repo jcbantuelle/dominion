@@ -12,7 +12,7 @@ Minion = class Minion extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
@@ -29,7 +29,7 @@ Minion = class Minion extends Card {
         {text: 'Discard hand and attack opponents', value: 'discard'}
       ]
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(Minion.process_response)
 
     let player_attacker = new PlayerAttacker(game, this)
@@ -38,14 +38,14 @@ Minion = class Minion extends Card {
     delete game.turn.minion_attack
   }
 
-  static process_response(game, player_cards, response) {
+  static process_response(game, player_cards, response, card_player) {
     response = response[0]
     if (response === 'coins') {
       let coin_gainer = new CoinGainer(game, player_cards)
       coin_gainer.gain(2)
     } else if (response === 'discard') {
       game.turn.minion_attack = true
-      Minion.redraw_hand(game, player_cards)
+      Minion.redraw_hand(game, player_cards, card_player)
     }
   }
 
@@ -57,11 +57,11 @@ Minion = class Minion extends Card {
     }
   }
 
-  static redraw_hand(game, player_cards) {
+  static redraw_hand(game, player_cards, card_player) {
     let card_discarder = new CardDiscarder(game, player_cards, 'hand')
     card_discarder.discard()
 
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(4)
   }
 

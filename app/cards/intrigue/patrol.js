@@ -8,8 +8,8 @@ Patrol = class Patrol extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(3)
 
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {

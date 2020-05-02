@@ -12,7 +12,7 @@ Nobles = class Nobles extends Card {
     return 2
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
@@ -26,13 +26,13 @@ Nobles = class Nobles extends Card {
         {text: '+2 actions', value: 'actions'}
       ]
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(Nobles.process_response)
   }
 
-  static process_response(game, player_cards, response) {
+  static process_response(game, player_cards, response, card_player) {
     if (response[0] === 'cards') {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(3)
     } else if (response[0] === 'actions') {
       let action_gainer = new ActionGainer(game, player_cards)
