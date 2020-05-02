@@ -8,7 +8,7 @@ Groom = class Groom extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let eligible_cards = _.filter(game.cards, function(card) {
       return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 5)
     })
@@ -25,16 +25,16 @@ Groom = class Groom extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Groom.gain_card)
     } else if (_.size(eligible_cards) === 1) {
-      Groom.gain_card(game, player_cards, eligible_cards)
+      Groom.gain_card(game, player_cards, eligible_cards, card_player)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no available cards to gain`)
     }
   }
 
-  static gain_card(game, player_cards, selected_cards) {
+  static gain_card(game, player_cards, selected_cards, card_player) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
     let gained_card = card_gainer.gain()
     let types = _.words(gained_card.types)
@@ -51,7 +51,7 @@ Groom = class Groom extends Card {
       let action_gainer = new ActionGainer(game, player_cards)
       action_gainer.gain(1)
 
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(1)
     }
   }

@@ -8,7 +8,7 @@ Goatherd = class Goatherd extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
@@ -34,7 +34,7 @@ Goatherd = class Goatherd extends Card {
     let previous_player_query = new PreviousPlayerQuery(game, player_cards.player_id)
     let previous_player_cards = PlayerCardsModel.findOne(game._id, previous_player_query.previous_player()._id)
 
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(_.size(previous_player_cards.last_turn_trashed_cards))
   }
 

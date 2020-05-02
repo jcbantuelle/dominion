@@ -26,7 +26,7 @@ Barge = class Barge extends Duration {
     let response = turn_event_processor.process(Barge.process_response)
 
     if (response === 'now') {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(3)
 
       let buy_gainer = new BuyGainer(game, player_cards)
@@ -39,7 +39,7 @@ Barge = class Barge extends Duration {
   }
 
   duration(game, player_cards, barge) {
-    let card_drawer = new CardDrawer(game, player_cards, barge)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, barge)
     card_drawer.draw(3)
 
     let buy_gainer = new BuyGainer(game, player_cards, barge)

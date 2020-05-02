@@ -26,7 +26,7 @@ VillageGreen = class VillageGreen extends Duration {
     let response = turn_event_processor.process(VillageGreen.process_response)
 
     if (response === 'now') {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(1)
 
       let action_gainer = new ActionGainer(game, player_cards)
@@ -39,7 +39,7 @@ VillageGreen = class VillageGreen extends Duration {
   }
 
   duration(game, player_cards, village_green) {
-    let card_drawer = new CardDrawer(game, player_cards, village_green)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, village_green)
     card_drawer.draw(1)
 
     let action_gainer = new ActionGainer(game, player_cards, village_green)
