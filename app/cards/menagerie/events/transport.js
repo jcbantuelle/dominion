@@ -79,7 +79,7 @@ Transport = class Transport extends Event {
   }
 
   static exile_card(game, player_cards, selected_cards) {
-    let supply_card_exiler = new SupplyCardExiler(game, player_cards, selected_cards[0].stack_name, selected_cards[0])
+    let supply_card_exiler = new SupplyCardExiler(game, player_cards, selected_cards[0].stack_name, selected_cards[0].top_card)
     supply_card_exiler.exile()
   }
 
