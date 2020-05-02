@@ -9,7 +9,7 @@ Gear = class Gear extends Duration {
   }
 
   play(game, player_cards, card_player) {
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(2)
 
     if (_.size(player_cards.hand) > 0) {
