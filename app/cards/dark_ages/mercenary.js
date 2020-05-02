@@ -12,7 +12,7 @@ Mercenary = class Mercenary extends Card {
     return 0
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     if (_.size(player_cards.hand) > 0) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -23,7 +23,7 @@ Mercenary = class Mercenary extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Mercenary.choose_trash)
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> has no cards in hand`)
@@ -64,7 +64,7 @@ Mercenary = class Mercenary extends Card {
     card_discarder.discard()
   }
 
-  static choose_trash(game, player_cards, response) {
+  static choose_trash(game, player_cards, response, card_player) {
     if (response === 'yes') {
       if (_.size(player_cards.hand) > 2) {
         let turn_event_id = TurnEventModel.insert({
@@ -78,25 +78,25 @@ Mercenary = class Mercenary extends Card {
           minimum: 2,
           maximum: 2
         })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
         turn_event_processor.process(Mercenary.trash_cards)
       } else {
-        Mercenary.trash_cards(game, player_cards, player_cards.hand)
+        Mercenary.trash_cards(game, player_cards, player_cards.hand, card_player)
       }
     } else {
       game.log.push(`&nbsp;&nbsp;but chooses not to trash`)
     }
   }
 
-  static trash_cards(game, player_cards, selected_cards) {
+  static trash_cards(game, player_cards, selected_cards, card_player) {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     let trashed_card_count = _.size(card_trasher.trash())
 
     if (trashed_card_count === 2) {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(2)
 
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(2)
 
       game.turn.mercenary_attack = true

@@ -12,8 +12,8 @@ Ironmonger = class Ironmonger extends Card {
     return 4
   }
 
-  play(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(1)
 
     let action_gainer = new ActionGainer(game, player_cards)
@@ -47,11 +47,11 @@ Ironmonger = class Ironmonger extends Card {
         action_gainer.gain(1)
       }
       if (_.includes(revealed_card_types, 'treasure')) {
-        let coin_gainer = new CoinGainer(game, player_cards)
+        let coin_gainer = new CoinGainer(game, player_cards, card_player)
         coin_gainer.gain(1)
       }
       if (_.includes(revealed_card_types, 'victory')) {
-        let card_drawer = new CardDrawer(game, player_cards)
+        let card_drawer = new CardDrawer(game, player_cards, card_player)
         card_drawer.draw(1)
       }
     }
