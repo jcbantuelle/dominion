@@ -23,7 +23,7 @@ HauntedWoods = class HauntedWoods extends Duration {
   }
 
   duration(game, player_cards, haunted_woods) {
-    let card_drawer = new CardDrawer(game, player_cards, haunted_woods)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, haunted_woods)
     let drawn_count = card_drawer.draw(3)
   }
 
