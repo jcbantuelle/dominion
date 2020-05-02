@@ -20,6 +20,11 @@ GameCreator = class GameCreator {
     })
     this.projects = this.project_cards(projects)
 
+    let ways = _.filter(cards, function(card) {
+      return _.includes(CardList.way_cards(), _.titleize(card.name))
+    })
+    this.ways = this.way_cards(ways)
+
     this.cards = _.reject(cards, function(card) {
       return _.includes(CardList.event_cards().concat(CardList.landmark_cards()).concat(CardList.project_cards()), _.titleize(card.name))
     })
@@ -55,6 +60,7 @@ GameCreator = class GameCreator {
       events: this.events,
       landmarks: this.landmarks,
       projects: this.projects,
+      ways: this.ways,
       duchess: this.game_has_card(cards, 'Duchess'),
       prizes: this.prizes(cards),
       states: this.states(cards),
@@ -223,6 +229,10 @@ GameCreator = class GameCreator {
     return _.sortBy(projects, function(project) {
       return -project.coin_cost
     })
+  }
+
+  way_cards(ways) {
+    return this.set_card_ids_for_collection(ways)
   }
 
   landmark_cards(landmarks) {
