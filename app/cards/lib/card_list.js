@@ -4,7 +4,7 @@ CardList = class CardList {
     this.edition = edition
     this.exclusions = exclusions
     this.cards = CardList.full_list(this.exclusions, this.edition)
-    // this.cards = CardList.test_landmarks().concat(CardList.test_events()).concat(CardList.test_projects()).concat(CardList.test())
+    // this.cards = CardList.test_landmarks().concat(CardList.test_events()).concat(CardList.test_projects()).concat(CardList.test_ways()).concat(CardList.test())
   }
 
   pull_set() {
@@ -19,7 +19,7 @@ CardList = class CardList {
         return _.includes(CardList.aside_cards(this.exclusions, this.edition), _.titleize(card_name))
       })
       game_cards.push(aside_cards[0])
-      if (_.includes(CardList.ways_cards(this.exclusions, this.edition), _.titleize(aside_cards[0])) && _.includes(CardList.ways_cards(this.exclusions, this.edition), _.titleize(aside_cards[1]))) {
+      if (_.includes(CardList.way_cards(this.exclusions, this.edition), _.titleize(aside_cards[0])) && _.includes(CardList.way_cards(this.exclusions, this.edition), _.titleize(aside_cards[1]))) {
         aside_card_count += 1
       } else {
         game_cards.push(aside_cards[1])
@@ -53,9 +53,9 @@ CardList = class CardList {
         invalid_replacement = true
         let replacement_card_name = CardList.pull_one(this.exclusions, this.edition).name
         let ways_card = _.find(game_cards, (card_name) => {
-          return _.includes(CardList.ways_cards(this.exclusions, this.edition), _.titleize(card_name))
+          return _.includes(CardList.way_cards(this.exclusions, this.edition), _.titleize(card_name))
         })
-        let ways_replacement = _.includes(CardList.ways_cards(this.exclusions, this.edition), _.titleize(replacement_card_name))
+        let ways_replacement = _.includes(CardList.way_cards(this.exclusions, this.edition), _.titleize(replacement_card_name))
         if (!_.includes(game_cards, _.titleize(replacement_card_name)) && (!ways_card || !ways_replacement)) {
           if (_.includes(CardList.aside_cards(this.exclusions, this.edition), _.titleize(replacement_card_name))) {
             if (event_count < 2) {
@@ -88,7 +88,7 @@ CardList = class CardList {
     return ['renaissance']
   }
 
-  static ways_sets(edition = '') {
+  static way_sets(edition = '') {
     return ['menagerie']
   }
 
@@ -114,7 +114,7 @@ CardList = class CardList {
   }
 
   static aside_cards(exclusions = [], edition) {
-    return CardList.event_cards(exclusions, edition).concat(CardList.landmark_cards(exclusions, edition)).concat(CardList.project_cards(exclusions, edition))
+    return CardList.event_cards(exclusions, edition).concat(CardList.landmark_cards(exclusions, edition)).concat(CardList.project_cards(exclusions, edition)).concat(CardList.way_cards(exclusions, edition))
   }
 
   static event_cards(exclusions = [], edition) {
@@ -156,9 +156,9 @@ CardList = class CardList {
     }, [])
   }
 
-  static ways_cards(exclusions = [], edition) {
+  static way_cards(exclusions = [], edition) {
     let exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
-    return _.reduce(CardList.ways_sets(edition), function(card_list, set) {
+    return _.reduce(CardList.way_sets(edition), function(card_list, set) {
       if (!_.includes(exclusions_for_edition, set)) {
         if (_.includes(['base', 'intrigue'], set)) {
           set = set+edition
