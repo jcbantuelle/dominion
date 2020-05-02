@@ -19,7 +19,11 @@ CardList = class CardList {
         return _.includes(CardList.aside_cards(this.exclusions, this.edition), _.titleize(card_name))
       })
       game_cards.push(aside_cards[0])
-      game_cards.push(aside_cards[1])
+      if (_.includes(CardList.ways_cards(this.exclusions, this.edition), _.titleize(aside_cards[0])) && _.includes(CardList.ways_cards(this.exclusions, this.edition), _.titleize(aside_cards[1]))) {
+        aside_card_count += 1
+      } else {
+        game_cards.push(aside_cards[1])
+      }
     }
     if (aside_card_count > 0) {
       game_cards = this.replace_aside_cards(game_cards, aside_card_count)
@@ -48,7 +52,11 @@ CardList = class CardList {
       do {
         invalid_replacement = true
         let replacement_card_name = CardList.pull_one(this.exclusions, this.edition).name
-        if (!_.includes(game_cards, _.titleize(replacement_card_name))) {
+        let ways_card = _.find(game_cards, (card_name) => {
+          return _.includes(CardList.ways_cards(this.exclusions, this.edition), _.titleize(card_name))
+        })
+        let ways_replacement = _.includes(CardList.ways_cards(this.exclusions, this.edition), _.titleize(replacement_card_name))
+        if (!_.includes(game_cards, _.titleize(replacement_card_name)) && (!ways_card || !ways_replacement)) {
           if (_.includes(CardList.aside_cards(this.exclusions, this.edition), _.titleize(replacement_card_name))) {
             if (event_count < 2) {
               game_cards.push(replacement_card_name)
@@ -78,6 +86,10 @@ CardList = class CardList {
 
   static project_sets(edition = '') {
     return ['renaissance']
+  }
+
+  static ways_sets(edition = '') {
+    return ['menagerie']
   }
 
   static pull_one(exclusions = [], edition) {
@@ -139,6 +151,19 @@ CardList = class CardList {
           set = set+edition
         }
         card_list = card_list.concat(CardList[`${set}_projects`]())
+      }
+      return card_list
+    }, [])
+  }
+
+  static ways_cards(exclusions = [], edition) {
+    let exclusions_for_edition = CardList.exclusions_for_edition(exclusions, edition)
+    return _.reduce(CardList.ways_sets(edition), function(card_list, set) {
+      if (!_.includes(exclusions_for_edition, set)) {
+        if (_.includes(['base', 'intrigue'], set)) {
+          set = set+edition
+        }
+        card_list = card_list.concat(CardList[`${set}_ways`]())
       }
       return card_list
     }, [])
@@ -747,6 +772,11 @@ CardList = class CardList {
     ]
   }
 
+  static menagerie_ways() {
+    return [
+    ]
+  }
+
   static promo() {
     return [
       'BlackMarket',
@@ -784,6 +814,11 @@ CardList = class CardList {
   static test_projects() {
     return [
       // 'CityGate'
+    ]
+  }
+
+  static test_ways() {
+    return [
     ]
   }
 
