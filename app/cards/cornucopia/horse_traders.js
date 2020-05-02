@@ -55,7 +55,7 @@ HorseTraders = class HorseTraders extends Card {
   }
 
   start_turn_event(game, player_cards, horse_traders) {
-    let card_drawer = new CardDrawer(game, player_cards, horse_traders)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, horse_traders)
     card_drawer.draw(1)
 
     let card_mover = new CardMover(game, player_cards)
