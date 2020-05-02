@@ -8,7 +8,7 @@ Apprentice = class Apprentice extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
@@ -24,16 +24,16 @@ Apprentice = class Apprentice extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Apprentice.trash_card)
     } else if (_.size(player_cards.hand) === 1) {
-      Apprentice.trash_card(game, player_cards, player_cards.hand)
+      Apprentice.trash_card(game, player_cards, player_cards.hand, card_player)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
   }
 
-  static trash_card(game, player_cards, selected_cards) {
+  static trash_card(game, player_cards, selected_cards, card_player) {
     let cards_to_draw = CostCalculator.calculate(game, selected_cards[0])
     if (selected_cards[0].potion_cost > 0) {
       cards_to_draw += 2
@@ -42,7 +42,7 @@ Apprentice = class Apprentice extends Card {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards[0])
     card_trasher.trash()
 
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(cards_to_draw)
   }
 
