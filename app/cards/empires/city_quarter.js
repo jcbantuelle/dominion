@@ -12,7 +12,7 @@ CityQuarter = class CityQuarter extends Card {
     return 8
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(2)
 
@@ -24,7 +24,7 @@ CityQuarter = class CityQuarter extends Card {
     }))
 
     if (action_count > 0) {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(action_count)
     } else {
       game.log.push(`&nbsp;&nbsp;but has no actions in hand`)
