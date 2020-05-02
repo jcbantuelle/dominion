@@ -26,7 +26,7 @@ GameCreator = class GameCreator {
     this.ways = this.way_cards(ways)
 
     this.cards = _.reject(cards, function(card) {
-      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()).concat(CardList.project_cards()), _.titleize(card.name))
+      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()).concat(CardList.project_cards()).concat(CardList.way_cards()), _.titleize(card.name))
     })
     this.colors = ['red', 'blue', 'yellow', 'green']
   }
