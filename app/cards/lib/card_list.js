@@ -741,7 +741,8 @@ CardList = class CardList {
       'Demand',
       'Stampede',
       'Reap',
-      'Enclave'
+      'Enclave',
+      'Alliance'
     ]
   }
 
