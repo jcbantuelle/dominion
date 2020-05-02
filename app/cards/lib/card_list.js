@@ -774,6 +774,7 @@ CardList = class CardList {
 
   static menagerie_ways() {
     return [
+      'WayOfTheButterfly'
     ]
   }
 
