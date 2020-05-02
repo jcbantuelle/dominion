@@ -328,6 +328,7 @@ GameCreator = class GameCreator {
       {
         card_name: 'Horse',
         trigger_cards: [
+          'Bargain',
           'Cavalry',
           'Groom',
           'Hostelry',
