@@ -1,32 +1,38 @@
 CardDrawer = class CardDrawer {
 
-  constructor(game, player_cards, source) {
+  constructor(game, player_cards, card_player, source) {
     this.game = game
     this.player_cards = player_cards
+    this.card_player = card_player
     this.original_hand_count = _.size(this.player_cards.hand)
     this.source = source
   }
 
   draw(to_draw_count, announce = true) {
-    if (this.player_cards.tokens.minus_card) {
-      to_draw_count -= 1
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards their -1 card token`)
-      delete this.player_cards.tokens.minus_card
+    if (this.card_player && this.card_player.chameleon) {
+      let coin_gainer = new CoinGainer(this.game, this.player_cards)
+      coin_gainer.gain(to_draw_count)
+    } else {
+      if (this.player_cards.tokens.minus_card) {
+        to_draw_count -= 1
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> discards their -1 card token`)
+        delete this.player_cards.tokens.minus_card
+      }
+
+      this.draw_cards(to_draw_count)
+
+      if (this.drawn_card_count() < to_draw_count) {
+        let deck_shuffler = new DeckShuffler(this.game, this.player_cards)
+        deck_shuffler.shuffle()
+        this.draw_cards(to_draw_count - this.drawn_card_count())
+      }
+
+      if (announce) {
+        this.update_log()
+      }
+
+      return this.drawn_card_count()
     }
-
-    this.draw_cards(to_draw_count)
-
-    if (this.drawn_card_count() < to_draw_count) {
-      let deck_shuffler = new DeckShuffler(this.game, this.player_cards)
-      deck_shuffler.shuffle()
-      this.draw_cards(to_draw_count - this.drawn_card_count())
-    }
-
-    if (announce) {
-      this.update_log()
-    }
-
-    return this.drawn_card_count()
   }
 
   draw_until(draw_target) {
