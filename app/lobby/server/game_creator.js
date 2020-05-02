@@ -339,6 +339,7 @@ GameCreator = class GameCreator {
           'Ride',
           'Scrap',
           'Sleigh',
+          'Stampede',
           'Supplies'
         ]
       }

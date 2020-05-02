@@ -738,7 +738,8 @@ CardList = class CardList {
       'Invest',
       'SeizeTheDay',
       'Commerce',
-      'Demand'
+      'Demand',
+      'Stampede'
     ]
   }
 
