@@ -9,7 +9,7 @@ Expedition = class Expedition extends Event {
   }
 
   end_turn_event(game, player_cards, expedition) {
-    let card_drawer = new CardDrawer(game, player_cards, expedition)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, expedition)
     card_drawer.draw(2)
   }
 }
