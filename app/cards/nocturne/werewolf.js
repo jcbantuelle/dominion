@@ -8,7 +8,7 @@ Werewolf = class Werewolf extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     if (game.turn.phase === 'night') {
       if (_.size(game.hexes_deck) === 0) {
         game.hexes_deck = _.shuffle(game.hexes_discard)
@@ -23,7 +23,7 @@ Werewolf = class Werewolf extends Card {
 
       game.hexes_discard.push(hex)
     } else {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(3)
     }
   }

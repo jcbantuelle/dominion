@@ -8,7 +8,7 @@ Shepherd = class Shepherd extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
@@ -28,7 +28,7 @@ Shepherd = class Shepherd extends Card {
         minimum: 0,
         maximum: 0
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Shepherd.discard_cards)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not discard any victory cards`)
@@ -42,7 +42,7 @@ Shepherd = class Shepherd extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(2*_.size(selected_cards))
     }
   }

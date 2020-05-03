@@ -9,7 +9,7 @@ TragicHero = class TragicHero extends Card {
   }
 
   play(game, player_cards, card_player) {
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(3)
 
     let buy_gainer = new BuyGainer(game, player_cards)
