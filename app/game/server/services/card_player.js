@@ -27,7 +27,7 @@ CardPlayer = class CardPlayer {
           this.update_db()
         }
         this.play_card_events()
-        let play_result = this.play_card(announce)
+        let play_result = this.play_card(announce, free_play)
         if (play_result === 'duration') {
           duration = true
         }
@@ -182,14 +182,14 @@ CardPlayer = class CardPlayer {
     }
   }
 
-  play_card(announce) {
+  play_card(announce, free_play) {
     let play_result
     this.token_effects()
     if (_.includes(_.words(this.card.types), 'action') && this.game.turn.player._id === this.player_cards.player_id) {
       this.game.turn.played_actions.push(this.card)
     }
     let play_as_way = 'no'
-    if (_.includes(_.words(this.card.types), 'action') && !_.isEmpty(this.game.ways)) {
+    if (_.includes(_.words(this.card.types), 'action') && (this.game.turn.phase === 'action' || free_play) && !_.isEmpty(this.game.ways)) {
       let turn_event_id = TurnEventModel.insert({
         game_id: this.game._id,
         player_id: this.player_cards.player_id,
