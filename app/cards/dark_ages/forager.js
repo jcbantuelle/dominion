@@ -12,7 +12,7 @@ Forager = class Forager extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
@@ -47,7 +47,7 @@ Forager = class Forager extends Card {
     })
     let unique_treasure_count = _.size(_.uniqBy(trashed_treasures, 'name'))
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(unique_treasure_count)
   }
 

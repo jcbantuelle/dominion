@@ -12,7 +12,7 @@ Count = class Count extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
@@ -27,7 +27,7 @@ Count = class Count extends Card {
         {text: 'Gain a copper', value: 'copper'}
       ]
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(Count.process_response)
 
     GameModel.update(game._id, game)
@@ -47,11 +47,11 @@ Count = class Count extends Card {
         {text: 'Gain a duchy', value: 'duchy'}
       ]
     })
-    turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(Count.process_response)
   }
 
-  static process_response(game, player_cards, response) {
+  static process_response(game, player_cards, response, card_player) {
     if (response[0] === 'discard') {
       if (_.size(player_cards.hand) > 2) {
         let turn_event_id = TurnEventModel.insert({
@@ -96,7 +96,7 @@ Count = class Count extends Card {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Copper')
       card_gainer.gain()
     } else if (response[0] === 'coin') {
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(3)
     } else if (response[0] === 'trash') {
       let card_trasher = new CardTrasher(game, player_cards, 'hand')

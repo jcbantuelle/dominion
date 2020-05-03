@@ -42,7 +42,7 @@ DeathCart = class DeathCart extends Card {
         minimum: 0,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(DeathCart.trash_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not trash a card`)
@@ -50,13 +50,13 @@ DeathCart = class DeathCart extends Card {
 
   }
 
-  static trash_card(game, player_cards, selected_cards) {
+  static trash_card(game, player_cards, selected_cards, card_player) {
     if (!_.isEmpty(selected_cards)) {
       let source = selected_cards[0].source === 'H' ? 'hand' : 'in_play'
       let card_trasher = new CardTrasher(game, player_cards, source, selected_cards)
       let trashed_cards = card_trasher.trash()
       if (!_.isEmpty(trashed_cards)) {
-        let coin_gainer = new CoinGainer(game, player_cards)
+        let coin_gainer = new CoinGainer(game, player_cards, card_player)
         coin_gainer.gain(5)
       }
     } else {

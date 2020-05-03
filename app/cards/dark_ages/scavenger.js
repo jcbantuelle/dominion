@@ -12,8 +12,8 @@ Scavenger = class Scavenger extends Card {
     return 4
   }
 
-  play(game, player_cards) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     if (_.size(player_cards.deck) > 0) {
