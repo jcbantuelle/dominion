@@ -12,8 +12,8 @@ Vassal = class Vassal extends Card {
     return 3
   }
 
-  play(game, player_cards) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {

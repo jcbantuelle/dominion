@@ -18,6 +18,10 @@ Card = class Card {
     return false
   }
 
+  alternate_buy() {
+    return false
+  }
+
   potion_cost() {
     return 0
   }
@@ -89,7 +93,8 @@ Card = class Card {
       potion_cost: this.potion_cost(),
       debt_cost: this.debt_cost(),
       stack_name: this.stack_name(),
-      capitalism: this.capitalism()
+      capitalism: this.capitalism(),
+      alternate_buy: this.alternate_buy()
     }
   }
 

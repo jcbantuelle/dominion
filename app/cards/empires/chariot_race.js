@@ -12,7 +12,7 @@ ChariotRace = class ChariotRace extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
@@ -38,7 +38,7 @@ ChariotRace = class ChariotRace extends Card {
     }
 
     if (current_player_card && (!next_player_card || CardCostComparer.card_less_than(game, current_player_card, next_player_card))) {
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(1)
 
       let victory_token_gainer = new VictoryTokenGainer(game, player_cards)

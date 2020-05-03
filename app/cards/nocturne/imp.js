@@ -9,7 +9,7 @@ Imp = class Imp extends Card {
   }
 
   play(game, player_cards, card_player) {
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(2)
 
     let in_play_card_names = _.map(player_cards.in_play, 'name')

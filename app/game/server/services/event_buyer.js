@@ -62,7 +62,7 @@ EventBuyer = class EventBuyer {
   }
 
   not_forbidden() {
-    return !_.includes(this.game.turn.forbidden_events, this.event.name()) && !(this.event.name() === 'Inheritance' && !_.isEmpty(this.player_cards.inheritance))
+    return !_.includes(this.game.turn.forbidden_events, this.event.name()) && !(this.event.name() === 'Inheritance' && !_.isEmpty(this.player_cards.inheritance)) && !(this.event.name() === 'Seize The Day' && this.player_cards.seize_the_day)
   }
 
   update_log() {

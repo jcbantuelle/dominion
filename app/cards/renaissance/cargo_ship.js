@@ -13,7 +13,7 @@ CargoShip = class CargoShip extends Duration {
   }
 
   play(game, player_cards, card_player) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     game.turn.cargo_ships.push(_.clone(card_player.card))

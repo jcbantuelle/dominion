@@ -12,8 +12,8 @@ Legionary = class Legionary extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(3)
 
     let revealed_gold = false

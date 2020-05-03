@@ -14,7 +14,7 @@ GhostTown = class GhostTown extends Duration {
   }
 
   duration(game, player_cards, ghost_town) {
-    let card_drawer = new CardDrawer(game, player_cards, ghost_town)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, ghost_town)
     let drawn_count = card_drawer.draw(1)
 
     let action_gainer = new ActionGainer(game, player_cards, ghost_town)

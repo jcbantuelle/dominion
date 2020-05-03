@@ -12,7 +12,7 @@ PoorHouse = class PoorHouse extends Card {
     return 1
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let card_revealer = new CardRevealer(game, player_cards)
     card_revealer.reveal('hand')
 
@@ -23,7 +23,7 @@ PoorHouse = class PoorHouse extends Card {
     let coins = 4 - _.size(treasures)
     coins = coins < 0 ? 0 : coins
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(coins)
   }
 

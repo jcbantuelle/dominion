@@ -8,6 +8,7 @@ CardBuyer = class CardBuyer {
         return card.name === card_name
       })
       this.card = this.game_card.top_card
+      this.card_object = ClassCreator.create(this.card.name)
       this.card_gainer = new CardGainer(this.game, this.player_cards, 'discard', card_name, true)
     }
   }
@@ -48,12 +49,38 @@ CardBuyer = class CardBuyer {
     if (!this.black_market) {
       this.game.turn.buys -= 1
     }
-    this.game.turn.coins -= CostCalculator.calculate(this.game, this.card, true)
-    this.game.turn.potions -= this.card.potion_cost
 
-    if (this.card.debt_cost > 0) {
-      let debt_token_gainer = new DebtTokenGainer(this.game, this.player_cards)
-      debt_token_gainer.gain(this.card.debt_cost)
+    let buy_method = 'money'
+    if (this.has_enough_money() && this.valid_alternate_buy()) {
+      let turn_event_id = TurnEventModel.insert({
+        game_id: this.game._id,
+        player_id: this.player_cards.player_id,
+        username: this.player_cards.username,
+        type: 'choose_options',
+        instructions: `Choose Payment Method:`,
+        minimum: 1,
+        maximum: 1,
+        options: [
+          {text: 'Money', value: 'money'},
+          {text: 'Alternate', value: 'alternate'}
+        ]
+      })
+      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+      buy_method = turn_event_processor.process(CardBuyer.buy_method)
+    } else if (this.valid_alternate_buy()) {
+      buy_method = 'alternate'
+    }
+
+    if (buy_method === 'money') {
+      this.game.turn.coins -= CostCalculator.calculate(this.game, this.card, true)
+      this.game.turn.potions -= this.card.potion_cost
+
+      if (this.card.debt_cost > 0) {
+        let debt_token_gainer = new DebtTokenGainer(this.game, this.player_cards)
+        debt_token_gainer.gain(this.card.debt_cost)
+      }
+    } else if (buy_method === 'alternate') {
+      this.card_object.buy(this.game, this.player_cards)
     }
   }
 
@@ -92,7 +119,7 @@ CardBuyer = class CardBuyer {
   }
 
   is_valid_buy() {
-    return this.has_remaining_stock() && this.has_enough_buys() && this.has_enough_money()
+    return this.has_remaining_stock() && this.has_enough_buys() && (this.has_enough_money() || this.valid_alternate_buy())
   }
 
   is_contraband() {
@@ -112,12 +139,22 @@ CardBuyer = class CardBuyer {
     return this.game.turn.coins >= coin_cost && this.game.turn.potions >= this.card.potion_cost
   }
 
+  valid_alternate_buy() {
+    if (this.card.alternate_buy) {
+      return this.card_object.alternate_buyable(this.game, this.player_cards)
+    } 
+  }
+
   update_log() {
     let player_username = this.player_cards.username
     if (this.possessed_player_cards) {
       player_username = this.possessed_player_cards.username
     }
     this.game.log.push(`<strong>${player_username}</strong> buys ${CardView.render(this.card)}`)
+  }
+
+  static buy_method(game, player_cards, response) {
+    return response[0]
   }
 
 }

@@ -22,7 +22,7 @@ SupplyCardExiler = class SupplyCardExiler {
 
   update_log() {
     if (this.can_exile()) {
-      this.game.log.push(`&nbsp;&nbsp;${CardView.render(this.exile_stack.top_card)} is exiled from the supply`)
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> exiles ${CardView.render(this.exile_stack.top_card)} from the supply`)
     } else {
       this.game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(this.card)} to exile`)
     }

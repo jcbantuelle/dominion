@@ -9,7 +9,7 @@ Pixie = class Pixie extends Card {
   }
 
   play(game, player_cards, card_player) {
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(1)
 
     let action_gainer = new ActionGainer(game, player_cards)
@@ -20,7 +20,7 @@ Pixie = class Pixie extends Card {
       game.boons_discard = []
     }
 
-    discarded_boon = game.boons_deck.shift()
+    let discarded_boon = game.boons_deck.shift()
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> discards ${CardView.render(discarded_boon)} from the boon deck`)
 
     let pixie = _.find(player_cards.in_play, (card) => {

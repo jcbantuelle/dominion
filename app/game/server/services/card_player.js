@@ -27,7 +27,7 @@ CardPlayer = class CardPlayer {
           this.update_db()
         }
         this.play_card_events()
-        let play_result = this.play_card(announce)
+        let play_result = this.play_card(announce, free_play)
         if (play_result === 'duration') {
           duration = true
         }
@@ -182,16 +182,39 @@ CardPlayer = class CardPlayer {
     }
   }
 
-  play_card(announce) {
+  play_card(announce, free_play) {
     let play_result
     this.token_effects()
     if (_.includes(_.words(this.card.types), 'action') && this.game.turn.player._id === this.player_cards.player_id) {
       this.game.turn.played_actions.push(this.card)
     }
-    if (this.enchantress_attack()) {
-      this.replace_with_enchantress()
+    let play_as_way = 'no'
+    if (_.includes(_.words(this.card.types), 'action') && (this.game.turn.phase === 'action' || free_play) && !_.isEmpty(this.game.ways)) {
+      if (this.game.ways[0].name !== 'Way Of The Mouse' || this.card.name !== this.game.way_of_the_mouse.name) {
+        let turn_event_id = TurnEventModel.insert({
+          game_id: this.game._id,
+          player_id: this.player_cards.player_id,
+          username: this.player_cards.username,
+          type: 'choose_yes_no',
+          instructions: `Play ${CardView.render(this.card)} as ${CardView.render(this.game.ways)}?`,
+          minimum: 1,
+          maximum: 1
+        })
+        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+        play_as_way = turn_event_processor.process(CardPlayer.play_as_way)
+      }
+    }
+    if (play_as_way == 'yes') {
+      this.game.turn.enchantress_attack = true
+      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> chooses to play ${CardView.render(this.card)} as ${CardView.render(this.game.ways)}`)
+      GameModel.update(this.game._id, this.game)
+      play_result = ClassCreator.create(this.game.ways[0].name).play(this.game, this.player_cards, this)
     } else {
-      play_result = this.card_object().play(this.game, this.player_cards, this)
+      if (this.enchantress_attack()) {
+        this.replace_with_enchantress()
+      } else {
+        play_result = this.card_object().play(this.game, this.player_cards, this)
+      }
     }
     if (announce) {
       this.update_db()
@@ -250,6 +273,10 @@ CardPlayer = class CardPlayer {
 
   static choose_phase(game, player_cards, response, card_player) {
     return response[0]
+  }
+
+  static play_as_way(game, player_cards, response) {
+    return response
   }
 
 }

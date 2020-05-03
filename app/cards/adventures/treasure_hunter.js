@@ -12,11 +12,11 @@ TreasureHunter = class TreasureHunter extends Traveller {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(1)
 
     let previous_player_query = new PreviousPlayerQuery(game, player_cards.player_id)

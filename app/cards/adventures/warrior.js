@@ -8,8 +8,8 @@ Warrior = class Warrior extends Traveller {
     return 4
   }
 
-  play(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(2)
 
     let traveller_count = _.size(_.filter(player_cards.in_play, function(card) {

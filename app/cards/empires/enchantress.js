@@ -23,7 +23,7 @@ Enchantress = class Enchantress extends Duration {
   }
 
   duration(game, player_cards, enchantress) {
-    let card_drawer = new CardDrawer(game, player_cards, enchantress)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, enchantress)
     let drawn_count = card_drawer.draw(2)
   }
 

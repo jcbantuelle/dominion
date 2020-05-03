@@ -22,12 +22,23 @@ PlayCardEventProcessor = class PlayCardEventProcessor {
         }
       }
     })
+
+    if (this.card_player.game.turn.kiln) {
+      let copy = _.find(this.card_player.game.cards, (card) => {
+        return card.count > 0 && card.supply && card.name === this.card_player.card.name
+      })
+      if (copy) {
+        let kiln = ClassCreator.create('Kiln').to_h()
+        kiln.id = this.generate_event_id()
+        this.play_card_events.push(kiln)
+      }
+    }
   }
 
   process() {
     if (!_.isEmpty(this.play_card_events)) {
       let mandatory_play_card_events = _.filter(this.play_card_events, (event) => {
-        return false
+        return event.name === 'Kiln'
       })
       if (_.size(this.play_card_events) === 1 && !_.isEmpty(mandatory_play_card_events)) {
         PlayCardEventProcessor.play_card_event(this.card_player.game, this.card_player.player_cards, this.play_card_events, this)

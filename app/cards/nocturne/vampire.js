@@ -14,7 +14,7 @@ Vampire = class Vampire extends Card {
       game.hexes_discard = []
     }
 
-    hex = game.hexes_deck.shift()
+    let hex = game.hexes_deck.shift()
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> draws ${CardView.render(hex)} from the Hex Deck`)
 
     let player_attacker = new PlayerAttacker(game, this)

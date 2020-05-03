@@ -12,11 +12,11 @@ SacredGrove = class SacredGrove extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let buy_gainer = new BuyGainer(game, player_cards)
     buy_gainer.gain(1)
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(3)
 
     let boon_receiver = new EffectReceiver(game, player_cards, 'boon')

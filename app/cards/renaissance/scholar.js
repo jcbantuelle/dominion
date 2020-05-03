@@ -8,11 +8,11 @@ Scholar = class Scholar extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let card_discarder = new CardDiscarder(game, player_cards, 'hand')
     card_discarder.discard()
 
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(7)
   }
 

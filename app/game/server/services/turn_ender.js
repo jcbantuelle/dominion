@@ -187,6 +187,9 @@ TurnEnder = class TurnEnder {
     if (this.game.turn.mission) {
       queued_turns.push(this.game.turn.mission)
     }
+    if (this.game.turn.seize_the_day) {
+      queued_turns.push(this.game.turn.seize_the_day)
+    }
     if (!_.isEmpty(queued_turns)) {
       if (this.is_possessed_next_turn()) {
         queued_turns.push(ClassCreator.create('Possession').to_h())
@@ -260,6 +263,8 @@ TurnEnder = class TurnEnder {
       this.mission_turn(extra_turn.player)
     } else if (extra_turn.type === 'Possession') {
       this.possession_turn(extra_turn.player)
+    } else if (extra_turn.type === 'Seize The Day') {
+      this.seize_the_day_turn(extra_turn.player)
     }
   }
 
@@ -275,6 +280,12 @@ TurnEnder = class TurnEnder {
     this.new_turn.player = player
     this.new_turn.extra_turn = true
     this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.render(new Outpost())} -</strong>`)
+  }
+
+  seize_the_day_turn(player) {
+    this.new_turn.player = player
+    this.new_turn.extra_turn = true
+    this.game.log.push(`<strong>- ${this.new_turn.player.username} gets an extra turn from ${CardView.render(new SeizeTheDay())} -</strong>`)
   }
 
   mission_turn(player) {

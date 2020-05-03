@@ -6,6 +6,7 @@ $landmark: #00b300;
 $project: pink;
 $victory: lightgreen;
 $reaction: lightblue;
+$way: lightcyan;
 $treasure: gold;
 $curse: violet;
 $duration: orange;
@@ -75,6 +76,10 @@ $player_margin: 25px;
 
 .artifact {
   background-color: $artifact;
+}
+
+.way {
+  background-color: $way;
 }
 
 .duration {

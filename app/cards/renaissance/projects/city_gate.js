@@ -5,7 +5,7 @@ CityGate = class CityGate extends Project {
   }
 
   start_turn_event(game, player_cards, city_gate) {
-    let card_drawer = new CardDrawer(game, player_cards, city_gate)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, city_gate)
     card_drawer.draw(1)
 
     if (_.size(player_cards.hand) > 1) {

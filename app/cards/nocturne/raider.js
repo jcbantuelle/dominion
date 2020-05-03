@@ -53,7 +53,7 @@ Raider = class Raider extends Duration {
   }
 
   duration(game, player_cards, raider) {
-    let coin_gainer = new CoinGainer(game, player_cards, raider)
+    let coin_gainer = new CoinGainer(game, player_cards, undefined, raider)
     coin_gainer.gain(3)
   }
 

@@ -1,7 +1,17 @@
 DiscardEventProcessor = class DiscardEventProcessor {
 
   static event_cards() {
-    return ['Treasury', 'Herbalist', 'Alchemist', 'Hermit', 'Tunnel', 'Capital', 'Faithful Hound', 'Border Guard']
+    return [
+      'Alchemist',
+      'Border Guard',
+      'Capital',
+      'Faithful Hound',
+      'Herbalist',
+      'Hermit',
+      'Treasury',
+      'Tunnel',
+      'Village Green'
+    ]
   }
 
   static traveller_cards() {
@@ -20,13 +30,14 @@ DiscardEventProcessor = class DiscardEventProcessor {
   constructor(discarder, card) {
     this.discarder = discarder
     this.card = card
+    this.event_id = 9000
     this.find_discard_events()
   }
 
   find_discard_events() {
     this.discard_events = []
     if (_.includes(DiscardEventProcessor.event_cards(), this.card.name)) {
-      if (_.includes(['Tunnel', 'Faithful Hound'], this.card.name) && this.discarder.game.turn.phase !== 'cleanup') {
+      if (_.includes(['Tunnel', 'Faithful Hound', 'Village Green'], this.card.name) && this.discarder.game.turn.phase !== 'cleanup') {
         this.discard_events.push(this.card)
       } else if (this.discarder.source === 'in_play') {
         if (this.card.name === 'Treasury') {
@@ -95,6 +106,15 @@ DiscardEventProcessor = class DiscardEventProcessor {
         this.discard_events.push(prince)
       }
     }
+
+    _.each(this.discarder.game.turn.discard_effects, (discard_effect) => {
+      if (discard_effect.name === 'Way Of The Frog') {
+        if (this.card.id === discard_effect.target.id && this.discarder.source === 'in_play') {
+          discard_effect.id = this.generate_event_id()
+          this.discard_events.push(discard_effect)
+        }
+      }
+    })
   }
 
   process() {
@@ -117,6 +137,12 @@ DiscardEventProcessor = class DiscardEventProcessor {
         turn_event_processor.process(DiscardEventProcessor.discard_event)
       }
     }
+  }
+
+  generate_event_id() {
+    let event_id = _.toString(this.event_id)
+    this.event_id += 1
+    return event_id
   }
 
   static discard_event(game, player_cards, selected_cards, discard_event_processor) {

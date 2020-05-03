@@ -8,8 +8,8 @@ Followers = class Followers extends Card {
     return 0
   }
 
-  play(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(2)
 
     let card_gainer = new CardGainer(game, player_cards, 'discard', 'Estate')

@@ -18,7 +18,7 @@ Madman = class Madman extends Card {
     if (return_count === 1) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> returns ${CardView.render(card_player.card)} to the ${CardView.render(card_player.card)} pile`)
 
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(_.size(player_cards.hand))
     }
   }

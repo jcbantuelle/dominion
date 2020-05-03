@@ -12,7 +12,7 @@ Harvest = class Harvest extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
     } else {
@@ -24,7 +24,7 @@ Harvest = class Harvest extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
 
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(_.size(unique_cards))
     }
   }

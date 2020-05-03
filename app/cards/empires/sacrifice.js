@@ -12,7 +12,7 @@ Sacrifice = class Sacrifice extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     if (_.size(player_cards.hand) > 1) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -25,16 +25,16 @@ Sacrifice = class Sacrifice extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Sacrifice.trash_card)
     } else if (_.size(player_cards.hand) === 1) {
-      Sacrifice.trash_card(game, player_cards, player_cards.hand)
+      Sacrifice.trash_card(game, player_cards, player_cards.hand, card_player)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
   }
 
-  static trash_card(game, player_cards, selected_cards) {
+  static trash_card(game, player_cards, selected_cards, card_player) {
     let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
     let trashed_card = card_trasher.trash()[0]
 
@@ -42,7 +42,7 @@ Sacrifice = class Sacrifice extends Card {
       let selected_card_types = _.words(trashed_card.types)
 
       if (_.includes(selected_card_types, 'action')) {
-        let card_drawer = new CardDrawer(game, player_cards)
+        let card_drawer = new CardDrawer(game, player_cards, card_player)
         card_drawer.draw(2)
 
         let action_gainer = new ActionGainer(game, player_cards)
@@ -50,7 +50,7 @@ Sacrifice = class Sacrifice extends Card {
       }
 
       if (_.includes(selected_card_types, 'treasure')) {
-        let coin_gainer = new CoinGainer(game, player_cards)
+        let coin_gainer = new CoinGainer(game, player_cards, card_player)
         coin_gainer.gain(2)
       }
 

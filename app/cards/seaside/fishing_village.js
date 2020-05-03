@@ -16,7 +16,7 @@ FishingVillage = class FishingVillage extends Duration {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(2)
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(1)
 
     player_cards.duration_effects.push(_.clone(card_player.card))
@@ -27,7 +27,7 @@ FishingVillage = class FishingVillage extends Duration {
     let action_gainer = new ActionGainer(game, player_cards, fishing_village)
     action_gainer.gain(1)
 
-    let coin_gainer = new CoinGainer(game, player_cards, fishing_village)
+    let coin_gainer = new CoinGainer(game, player_cards, undefined, fishing_village)
     coin_gainer.gain(1)
   }
 

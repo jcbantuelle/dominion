@@ -7,13 +7,18 @@ ActionGainer = class ActionGainer {
   }
 
   gain(amount, announce = true) {
-    this.game.turn.actions += amount
-    if (announce) {
-      let action_text = amount == 1 ? 'action' : 'actions'
-      let source_text = this.source ? ` from ${CardView.render(this.source)}` : ''
-      this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${amount} ${action_text}${source_text}`)
+    if (this.player_cards.player_id === this.game.turn.player._id) {
+      if (this.game.turn.no_more_actions) {
+        amount = 0
+      }
+      this.game.turn.actions += amount
+      if (announce) {
+        let action_text = amount == 1 ? 'action' : 'actions'
+        let source_text = this.source ? ` from ${CardView.render(this.source)}` : ''
+        this.game.log.push(`&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> gets +${amount} ${action_text}${source_text}`)
+      }
+      return amount
     }
-    return amount
   }
 
 }

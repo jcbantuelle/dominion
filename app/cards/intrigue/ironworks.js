@@ -12,7 +12,7 @@ Ironworks = class Ironworks extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let eligible_cards = _.filter(game.cards, function(card) {
       return card.count > 0 && card.supply && CardCostComparer.coin_less_than(game, card.top_card, 5)
     })
@@ -29,7 +29,7 @@ Ironworks = class Ironworks extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Ironworks.gain_card)
     } else if (_.size(eligible_cards) === 1) {
       Ironworks.gain_card(game, player_cards, eligible_cards)
@@ -38,7 +38,7 @@ Ironworks = class Ironworks extends Card {
     }
   }
 
-  static gain_card(game, player_cards, selected_cards) {
+  static gain_card(game, player_cards, selected_cards, card_player) {
     let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
     let gained_card = card_gainer.gain()
     let types = _.words(gained_card.types)
@@ -48,11 +48,11 @@ Ironworks = class Ironworks extends Card {
       action_gainer.gain(1)
     }
     if (_.includes(types, 'treasure')) {
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(1)
     }
     if (_.includes(types, 'victory')) {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(1)
     }
   }

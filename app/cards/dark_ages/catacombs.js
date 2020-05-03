@@ -8,7 +8,7 @@ Catacombs = class Catacombs extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     if (_.size(player_cards.deck) === 0 && _.size(player_cards.discard) === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
     } else {
@@ -28,12 +28,12 @@ Catacombs = class Catacombs extends Card {
           {text: 'Discard and draw 3 cards', value: 'discard'}
         ]
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Catacombs.process_response)
     }
   }
 
-  static process_response(game, player_cards, response) {
+  static process_response(game, player_cards, response, card_player) {
     if (response[0] === 'keep') {
       let card_mover = new CardMover(game, player_cards)
       card_mover.move_all(player_cards.revealed, player_cards.hand)
@@ -42,7 +42,7 @@ Catacombs = class Catacombs extends Card {
       let card_discarder = new CardDiscarder(game, player_cards, 'revealed')
       card_discarder.discard()
 
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(3)
     }
   }

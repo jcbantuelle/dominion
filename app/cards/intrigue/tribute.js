@@ -12,7 +12,7 @@ Tribute = class Tribute extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let next_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)[1]
 
     let card_revealer = new CardRevealer(game, next_player_cards)
@@ -29,11 +29,11 @@ Tribute = class Tribute extends Card {
         action_gainer.gain(2)
       }
       if (_.includes(_.words(card.types), 'treasure')) {
-        let coin_gainer = new CoinGainer(game, player_cards)
+        let coin_gainer = new CoinGainer(game, player_cards, card_player)
         coin_gainer.gain(2)
       }
       if (_.includes(_.words(card.types), 'victory')) {
-        let card_drawer = new CardDrawer(game, player_cards)
+        let card_drawer = new CardDrawer(game, player_cards, card_player)
         card_drawer.draw(2)
       }
     })

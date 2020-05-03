@@ -10,6 +10,12 @@ CardMover = class CardMover {
     if (card_index !== -1) {
       source.splice(card_index, 1)
       delete card.face_down
+      let investment_index = _.findIndex(this.player_cards.investments, (investment) => {
+        return investment.id === card.id
+      })
+      if (investment_index !== -1) {
+        this.player_cards.investments.splice(investment_index, 1)
+      }
       destination.splice(destination_index, 0, card)
       return true
     } else {
@@ -29,16 +35,18 @@ CardMover = class CardMover {
       return pile.stack_name === supply_name
     })
     let return_count = 0
-    _.each(cards, (card) => {
-      let card_index = this.card_index(source, card)
-      if (card_index !== -1) {
-        source.splice(card_index, 1)
-        supply_pile.count += 1
-        supply_pile.stack.splice(0, 0, card)
-        supply_pile.top_card = card
-        return_count += 1
-      }
-    })
+    if (supply_pile) {
+      _.each(cards, (card) => {
+        let card_index = this.card_index(source, card)
+        if (card_index !== -1) {
+          source.splice(card_index, 1)
+          supply_pile.count += 1
+          supply_pile.stack.splice(0, 0, card)
+          supply_pile.top_card = card
+          return_count += 1
+        }
+      })
+    }
     return return_count
   }
 

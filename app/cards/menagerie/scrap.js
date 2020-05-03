@@ -12,7 +12,7 @@ Scrap = class Scrap extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     if (_.size(player_cards.hand) > 1) {
       GameModel.update(game._id, game)
       PlayerCardsModel.update(game._id, player_cards)
@@ -27,16 +27,16 @@ Scrap = class Scrap extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Scrap.trash_card)
     } else if (_.size(player_cards.hand) === 1) {
-      Scrap.trash_card(player_cards.hand)
+      Scrap.trash_card(game, player_cards, player_cards.hand, card_player)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
   }
 
-  static trash_card(game, player_cards, selected_cards) {
+  static trash_card(game, player_cards, selected_cards, card_player) {
     let number_of_options = CostCalculator.calculate(game, selected_cards[0])
     number_of_options = Math.min(6, number_of_options)
 
@@ -44,7 +44,7 @@ Scrap = class Scrap extends Card {
     card_trasher.trash()
 
     if (number_of_options === 6) {
-      Scrap.process_choices(game, player_cards, ['card', 'action', 'buy', 'coin', 'silver', 'horse'])
+      Scrap.process_choices(game, player_cards, ['card', 'action', 'buy', 'coin', 'silver', 'horse'], card_player)
     } else if (number_of_options > 0) {
       let turn_event_id = TurnEventModel.insert({
         game_id: game._id,
@@ -63,15 +63,15 @@ Scrap = class Scrap extends Card {
           {text: `Gain ${CardView.render(new Horse)}`, value: 'horse'}
         ]
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Scrap.process_choices)
     }
   }
 
-  static process_choices(game, player_cards, choices) {
+  static process_choices(game, player_cards, choices, card_player) {
     _.each(choices, (choice) => {
       if (choice === 'card') {
-        let card_drawer = new CardDrawer(game, player_cards)
+        let card_drawer = new CardDrawer(game, player_cards, card_player)
         card_drawer.draw(1)
       } else if (choice === 'action') {
         let action_gainer = new ActionGainer(game, player_cards)
@@ -80,7 +80,7 @@ Scrap = class Scrap extends Card {
         let buy_gainer = new BuyGainer(game, player_cards)
         buy_gainer.gain(1)
       } else if (choice === 'coin') {
-        let coin_gainer = new CoinGainer(game, player_cards)
+        let coin_gainer = new CoinGainer(game, player_cards, card_player)
         coin_gainer.gain(1)
       } else if (choice === 'silver') {
         let card_gainer = new CardGainer(game, player_cards, 'discard', 'Silver')

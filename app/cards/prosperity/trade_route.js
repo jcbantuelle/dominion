@@ -12,7 +12,7 @@ TradeRoute = class TradeRoute extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let buy_gainer = new BuyGainer(game, player_cards)
     buy_gainer.gain(1)
 
@@ -36,7 +36,7 @@ TradeRoute = class TradeRoute extends Card {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(game.trade_route_tokens)
   }
 

@@ -12,11 +12,11 @@ HorseTraders = class HorseTraders extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let buy_gainer = new BuyGainer(game, player_cards)
     buy_gainer.gain(1)
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(3)
 
     if (_.size(player_cards.hand) > 2) {
@@ -55,7 +55,7 @@ HorseTraders = class HorseTraders extends Card {
   }
 
   start_turn_event(game, player_cards, horse_traders) {
-    let card_drawer = new CardDrawer(game, player_cards, horse_traders)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, horse_traders)
     card_drawer.draw(1)
 
     let card_mover = new CardMover(game, player_cards)

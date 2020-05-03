@@ -19,7 +19,7 @@ Tactician = class Tactician extends Duration {
   }
 
   duration(game, player_cards, tactician) {
-    let card_drawer = new CardDrawer(game, player_cards, tactician)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, tactician)
     let drawn_count = card_drawer.draw(5)
 
     let action_gainer = new ActionGainer(game, player_cards, tactician)

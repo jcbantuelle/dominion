@@ -12,8 +12,8 @@ Vault = class Vault extends Card {
     return 5
   }
 
-  play(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(2)
 
     GameModel.update(game._id, game)
@@ -31,7 +31,7 @@ Vault = class Vault extends Card {
         minimum: 0,
         maximum: 0
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Vault.discard_cards_for_coins)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
@@ -59,14 +59,14 @@ Vault = class Vault extends Card {
     })
   }
 
-  static discard_cards_for_coins(game, player_cards, selected_cards) {
+  static discard_cards_for_coins(game, player_cards, selected_cards, card_player) {
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but does not discard anything`)
     } else {
       let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
       card_discarder.discard()
 
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(_.size(selected_cards))
     }
   }

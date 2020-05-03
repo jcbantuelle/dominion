@@ -12,7 +12,7 @@ TrustySteed = class TrustySteed extends Card {
     return 0
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
@@ -28,20 +28,20 @@ TrustySteed = class TrustySteed extends Card {
         {text: 'Gain 4 Silvers', value: 'silver'}
       ]
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(TrustySteed.process_choices)
   }
 
-  static process_choices(game, player_cards, choices) {
+  static process_choices(game, player_cards, choices, card_player) {
     _.each(choices, (choice) => {
       if (choice === 'card') {
-        let card_drawer = new CardDrawer(game, player_cards)
+        let card_drawer = new CardDrawer(game, player_cards, card_player)
         card_drawer.draw(2)
       } else if (choice === 'action') {
         let action_gainer = new ActionGainer(game, player_cards)
         action_gainer.gain(2)
       } else if (choice === 'coin') {
-        let coin_gainer = new CoinGainer(game, player_cards)
+        let coin_gainer = new CoinGainer(game, player_cards, card_player)
         coin_gainer.gain(2)
       } else if (choice === 'silver') {
         _.times(4, function() {

@@ -14,7 +14,7 @@ DenOfSin = class DenOfSin extends Duration {
   }
 
   duration(game, player_cards, den_of_sin) {
-    let card_drawer = new CardDrawer(game, player_cards, den_of_sin)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, den_of_sin)
     let drawn_count = card_drawer.draw(2)
   }
 

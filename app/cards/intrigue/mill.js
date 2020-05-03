@@ -16,8 +16,8 @@ Mill = class Mill extends Card {
     return 1
   }
 
-  play(game, player_cards) {
-    let card_drawer = new CardDrawer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(1)
 
     let action_gainer = new ActionGainer(game, player_cards)
@@ -35,14 +35,14 @@ Mill = class Mill extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Mill.choose_discard)
     } else {
       game.log.push(`&nbsp;&nbsp;but has no cards in hand`)
     }
   }
 
-  static choose_discard(game, player_cards, response) {
+  static choose_discard(game, player_cards, response, card_player) {
     if (response === 'yes') {
       if (_.size(player_cards.hand) > 2) {
         let turn_event_id = TurnEventModel.insert({
@@ -56,7 +56,7 @@ Mill = class Mill extends Card {
           minimum: 2,
           maximum: 2
         })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
         turn_event_processor.process(Mill.discard_cards)
       } else {
         Mill.discard_cards(game, player_cards, player_cards.hand)
@@ -66,14 +66,14 @@ Mill = class Mill extends Card {
     }
   }
 
-  static discard_cards(game, player_cards, selected_cards) {
+  static discard_cards(game, player_cards, selected_cards, card_player) {
     let discarded_card_count = _.size(selected_cards)
 
     let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
     card_discarder.discard()
 
     if (discarded_card_count === 2) {
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(2)
     }
   }

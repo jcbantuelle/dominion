@@ -20,8 +20,13 @@ GameCreator = class GameCreator {
     })
     this.projects = this.project_cards(projects)
 
+    let ways = _.filter(cards, function(card) {
+      return _.includes(CardList.way_cards(), _.titleize(card.name))
+    })
+    this.ways = this.way_cards(ways)
+
     this.cards = _.reject(cards, function(card) {
-      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()).concat(CardList.project_cards()), _.titleize(card.name))
+      return _.includes(CardList.event_cards().concat(CardList.landmark_cards()).concat(CardList.project_cards()).concat(CardList.way_cards()), _.titleize(card.name))
     })
     this.colors = ['red', 'blue', 'yellow', 'green']
   }
@@ -55,6 +60,7 @@ GameCreator = class GameCreator {
       events: this.events,
       landmarks: this.landmarks,
       projects: this.projects,
+      ways: this.ways,
       duchess: this.game_has_card(cards, 'Duchess'),
       prizes: this.prizes(cards),
       states: this.states(cards),
@@ -80,6 +86,9 @@ GameCreator = class GameCreator {
     }
     if (this.game_has_card(cards, 'Necromancer')) {
       game_attributes.trash = game_attributes.trash.concat(this.zombies())
+    }
+    if (this.game_has_event_or_landmark(this.ways, 'Way Of The Mouse')) {
+      game_attributes.way_of_the_mouse = this.find_card_between_2_and_3(cards, 'action')
     }
     return GameModel.insert(game_attributes)
   }
@@ -163,6 +172,7 @@ GameCreator = class GameCreator {
       states: [],
       projects: [],
       artifacts: [],
+      investments: [],
       start_turn_event_effects: [],
       end_turn_event_effects: [],
       possession_trash: [],
@@ -222,6 +232,10 @@ GameCreator = class GameCreator {
     return _.sortBy(projects, function(project) {
       return -project.coin_cost
     })
+  }
+
+  way_cards(ways) {
+    return this.set_card_ids_for_collection(ways)
   }
 
   landmark_cards(landmarks) {
@@ -300,27 +314,58 @@ GameCreator = class GameCreator {
 
   not_supply_cards() {
     let not_supply_cards = []
-    if (this.game_has_card(this.selected_kingdom_cards, 'Hermit')) {
-      not_supply_cards.push(this.game_card((new Madman()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Urchin')) {
-      not_supply_cards.push(this.game_card((new Mercenary()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Cemetery') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist')) {
-      not_supply_cards.push(this.game_card((new Ghost()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Leprechaun') || this.game_has_card(this.selected_kingdom_cards, 'Secret Cave')) {
-      not_supply_cards.push(this.game_card((new Wish()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Vampire')) {
-      not_supply_cards.push(this.game_card((new Bat()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Devils Workshop') || this.game_has_card(this.selected_kingdom_cards, 'Exorcist') || this.game_has_card(this.selected_kingdom_cards, 'Tormentor')) {
-      not_supply_cards.push(this.game_card((new Imp()).to_h(), 'not_supply'))
-    }
-    if (this.game_has_card(this.selected_kingdom_cards, 'Sleigh') || this.game_has_card(this.selected_kingdom_cards, 'Supplies') || this.game_has_card(this.selected_kingdom_cards, 'Scrap')) {
-      not_supply_cards.push(this.game_card((new Horse()).to_h(), 'not_supply'))
-    }
+    let conditional_cards = [
+      {
+        card_name: 'Madman',
+        trigger_cards: ['Hermit']
+      },
+      {
+        card_name: 'Mercenary',
+        trigger_cards: ['Urchin']
+      },
+      {
+        card_name: 'Ghost',
+        trigger_cards: ['Cemetery', 'Exorcist']
+      },
+      {
+        card_name: 'Wish',
+        trigger_cards: ['Leprechaun', 'Secret Cave']
+      },
+      {
+        card_name: 'Bat',
+        trigger_cards: ['Vampire']
+      },
+      {
+        card_name: 'Imp',
+        trigger_cards: ['Devils Workshop', 'Exorcist', 'Tormentor']
+      },
+      {
+        card_name: 'Horse',
+        trigger_cards: [
+          'Bargain',
+          'Cavalry',
+          'Demand',
+          'Groom',
+          'Hostelry',
+          'Livery',
+          'Paddock',
+          'Ride',
+          'Scrap',
+          'Sleigh',
+          'Stampede',
+          'Supplies'
+        ]
+      }
+    ]
+    _.each(conditional_cards, (card) => {
+      _.each(card.trigger_cards, (trigger_card_name) => {
+        if (this.game_has_card(this.selected_kingdom_cards, trigger_card_name) || this.game_has_event_or_landmark(this.events, trigger_card_name)) {
+          let new_card = ClassCreator.create(card.card_name).to_h()
+          let game_card = this.game_card(new_card, 'not_supply')
+          not_supply_cards.push(game_card)
+        }
+      })
+    })
     if (this.game_has_card(this.selected_kingdom_cards, 'Page')) {
       _.each(['Treasure Hunter', 'Warrior', 'Hero', 'Champion'], (card_name) => {
         let card = ClassCreator.create(card_name)
@@ -766,16 +811,25 @@ GameCreator = class GameCreator {
   }
 
   bane_card(cards) {
+    let card = this.find_card_between_2_and_3(cards)
+    card.bane = true
+    return this.game_card(card, 'kingdom')
+  }
+
+  find_card_between_2_and_3(cards, card_type) {
     let game_card_names = _.map(cards, 'name')
     if (this.black_market_deck) {
       game_card_names = game_card_names.concat(_.map(this.black_market_deck, 'name'))
     }
     var card
+    var card_type_matches = true
     do {
       card = CardList.pull_one(this.exclusions, this.edition)
-    } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.includes(game_card_names, card.name))
-    card.bane = true
-    return this.game_card(card, 'kingdom')
+      if (card_type) {
+        card_type_matches = _.includes(_.words(card.types), card_type)
+      }
+    } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || card.debt_cost !== 0 || !card_type_matches || _.includes(game_card_names, card.name))    
+    return card
   }
 
   prosperity_game() {
@@ -876,11 +930,13 @@ GameCreator = class GameCreator {
       gained_cards: [],
       trashed_cards: [],
       played_actions: [],
+      discard_effects: [],
       forbidden_events: [],
       charms: 0,
       priests: 0,
       schemes: 0,
       improves: 0,
+      liveries: 0,
       merchants: 0,
       possessions: 0,
       coppersmiths: 0,

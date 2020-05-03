@@ -22,23 +22,23 @@ WildHunt = class WildHunt extends Card {
         {text: `Gain ${CardView.render(new Estate(game))}`, value: 'estate'}
       ]
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player.card)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(WildHunt.process_response)
   }
 
-  static process_response(game, player_cards, response, wild_hunt) {
+  static process_response(game, player_cards, response, card_player) {
     let wild_hunt_index = _.findIndex(game.cards, (card) => {
       return card.name === 'Wild Hunt'
     })
 
     if (response[0] === 'cards') {
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(3)
 
       if (wild_hunt_index != -1) {
         game.cards[wild_hunt_index].victory_tokens += 1
       } else {
-        game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(wild_hunt)} pile`)
+        game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(card_player.card)} pile`)
       }
     } else if (response[0] === 'estate') {
       let card_gainer = new CardGainer(game, player_cards, 'discard', 'Estate')
@@ -52,7 +52,7 @@ WildHunt = class WildHunt extends Card {
             victory_token_gainer.gain(victory_tokens)
           }
         } else {
-          game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(wild_hunt)} pile`)
+          game.log.push(`&nbsp;&nbsp;but there is no ${CardView.render(card_player.card)} pile`)
         }
       } else {
         game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> chooses to gain an ${CardView.render(new Estate(game))} but there are none`)

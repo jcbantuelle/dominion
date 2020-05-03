@@ -12,11 +12,11 @@ Patron = class Patron extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let villager_gainer = new VillagerGainer(game, player_cards)
     villager_gainer.gain(1)
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
   }
 

@@ -8,7 +8,7 @@ ZombieApprentice = class ZombieApprentice extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let eligible_cards = _.filter(player_cards.hand, function(card) {
       return _.includes(_.words(card.types), 'action')
     })
@@ -24,19 +24,19 @@ ZombieApprentice = class ZombieApprentice extends Card {
         minimum: 0,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(ZombieApprentice.discard_card)
     } else {
       game.log.push(`&nbsp;&nbsp;but does not trash anything`)
     }
   }
 
-  static discard_card(game, player_cards, selected_cards) {
+  static discard_card(game, player_cards, selected_cards, card_player) {
     if (!_.isEmpty(selected_cards)) {
       let card_trasher = new CardTrasher(game, player_cards, 'hand', selected_cards)
       card_trasher.trash()
 
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(3)
 
       let action_gainer = new ActionGainer(game, player_cards)

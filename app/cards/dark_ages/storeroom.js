@@ -12,7 +12,7 @@ Storeroom = class Storeroom extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let buy_gainer = new BuyGainer(game, player_cards)
     buy_gainer.gain(1)
 
@@ -32,8 +32,23 @@ Storeroom = class Storeroom extends Card {
           minimum: 0,
           maximum: 0
         })
-        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, discard_type)
-        turn_event_processor.process(Storeroom.discard_cards)
+        let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+        let selected_cards = turn_event_processor.process(Storeroom.discard_cards)
+
+        if (_.size(selected_cards) === 0) {
+          game.log.push(`&nbsp;&nbsp;but does not discard anything`)
+        } else {
+          let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
+          card_discarder.discard()
+
+          if (option === 'cards') {
+            let card_drawer = new CardDrawer(game, player_cards)
+            card_drawer.draw(_.size(selected_cards))
+          } else if (option === 'coins') {
+            let coin_gainer = new CoinGainer(game, player_cards, card_player)
+            coin_gainer.gain(_.size(selected_cards))
+          }
+        }
       } else {
         game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
         return false
@@ -41,21 +56,8 @@ Storeroom = class Storeroom extends Card {
     })
   }
 
-  static discard_cards(game, player_cards, selected_cards, option) {
-    if (_.size(selected_cards) === 0) {
-      game.log.push(`&nbsp;&nbsp;but does not discard anything`)
-    } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
-      card_discarder.discard()
-
-      if (option === 'cards') {
-        let card_drawer = new CardDrawer(game, player_cards)
-        card_drawer.draw(_.size(selected_cards))
-      } else if (option === 'coins') {
-        let coin_gainer = new CoinGainer(game, player_cards)
-        coin_gainer.gain(_.size(selected_cards))
-      }
-    }
+  static discard_cards(game, player_cards, selected_cards) {
+    return selected_cards
   }
 
 }

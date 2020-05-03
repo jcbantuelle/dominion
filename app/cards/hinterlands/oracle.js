@@ -8,13 +8,13 @@ Oracle = class Oracle extends Card {
     return 3
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     Oracle.reveal_cards(game, player_cards)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
 
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(2)
   }
 

@@ -12,8 +12,8 @@ Squire = class Squire extends Card {
     return 2
   }
 
-  play(game, player_cards) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(1)
 
     GameModel.update(game._id, game)

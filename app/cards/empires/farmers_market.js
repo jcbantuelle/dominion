@@ -30,7 +30,7 @@ FarmersMarket = class FarmersMarket extends Card {
         card_trasher.trash()
       } else {
         game.cards[farmers_market_index].victory_tokens += 1
-        let coin_gainer = new CoinGainer(game, player_cards)
+        let coin_gainer = new CoinGainer(game, player_cards, card_player)
         coin_gainer.gain(1)
       }
     } else {

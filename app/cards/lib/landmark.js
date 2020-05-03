@@ -12,10 +12,6 @@ Landmark = class Landmark {
     return 'landmark'
   }
 
-  inherited_name() {
-    return this.name()
-  }
-
   victory_points() {
     return 0
   }
@@ -27,7 +23,6 @@ Landmark = class Landmark {
   to_h() {
     return {
       name: this.name(),
-      inherited_name: this.inherited_name(),
       image: this.image(),
       wide: true,
       types: 'landmark',

@@ -8,7 +8,7 @@ MountainVillage = class MountainVillage extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(2)
 
@@ -30,7 +30,7 @@ MountainVillage = class MountainVillage extends Card {
       MountainVillage.put_in_hand(game, player_cards, player_cards.discard)
     } else {
       game.log.push(`&nbsp;&nbsp;but the discard pile is empty`)
-      let card_drawer = new CardDrawer(game, player_cards)
+      let card_drawer = new CardDrawer(game, player_cards, card_player)
       card_drawer.draw(1)
     }
   }

@@ -10,7 +10,7 @@ CamelTrain = class CamelTrain extends Card {
 
   play(game, player_cards) {
     let eligible_cards = _.filter(game.cards, function(card) {
-      return card.count > 0 && card.supply && !_.includes(_.words(card.types), 'victory')
+      return card.count > 0 && card.supply && !_.includes(_.words(card.top_card.types), 'victory')
     })
 
     if (_.size(eligible_cards) > 1) {
@@ -43,7 +43,7 @@ CamelTrain = class CamelTrain extends Card {
   }
 
   static exile_card(game, player_cards, selected_cards) {
-    let supply_card_exiler = new SupplyCardExiler(game, player_cards, selected_cards[0].stack_name, selected_cards[0])
+    let supply_card_exiler = new SupplyCardExiler(game, player_cards, selected_cards[0].stack_name, selected_cards[0].top_card)
     supply_card_exiler.exile()
   }
 

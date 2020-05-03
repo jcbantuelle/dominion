@@ -12,8 +12,8 @@ Duchess = class Duchess extends Card {
     return 2
   }
 
-  play(game, player_cards) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)

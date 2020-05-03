@@ -12,7 +12,7 @@ PirateShip = class PirateShip extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let opponent_text = _.size(game.players) == 2 ? 'Opponent' : 'Opponents'
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
@@ -27,7 +27,7 @@ PirateShip = class PirateShip extends Card {
         {text: `Gain $${player_cards.pirate_ship_coins}`, value: 'coin'}
       ]
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(PirateShip.process_response)
 
     let player_attacker = new PlayerAttacker(game, this)
@@ -41,11 +41,11 @@ PirateShip = class PirateShip extends Card {
     delete game.turn.pirate_ship_attack
   }
 
-  static process_response(game, player_cards, response) {
+  static process_response(game, player_cards, response, card_player) {
     if (response[0] === 'attack') {
       game.turn.pirate_ship_attack = true
     } else if (response[0] === 'coin') {
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(player_cards.pirate_ship_coins)
     }
   }

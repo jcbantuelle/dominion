@@ -16,7 +16,7 @@ Soldier = class Soldier extends Traveller {
     let attack_count = _.size(_.filter(player_cards.in_play, function(card) {
       return _.includes(_.words(card.types), 'attack') && card.id !== card_player.card.id
     }))
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2 + attack_count)
 
     let player_attacker = new PlayerAttacker(game, this)

@@ -13,7 +13,7 @@ BlackMarket = class BlackMarket extends Card {
   }
 
   play(game, player_cards, card_player) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     let black_market_card_buyer = new BlackMarketCardBuyer(game, player_cards)
