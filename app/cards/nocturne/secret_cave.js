@@ -75,7 +75,7 @@ SecretCave = class SecretCave extends Duration {
   }
 
   duration(game, player_cards, secret_cave) {
-    let coin_gainer = new CoinGainer(game, player_cards, secret_cave)
+    let coin_gainer = new CoinGainer(game, player_cards, undefined, secret_cave)
     coin_gainer.gain(3)
   }
 

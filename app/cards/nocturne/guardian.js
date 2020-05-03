@@ -14,7 +14,7 @@ Guardian = class Guardian extends Duration {
   }
 
   duration(game, player_cards, guardian) {
-    let coin_gainer = new CoinGainer(game, player_cards, guardian)
+    let coin_gainer = new CoinGainer(game, player_cards, undefined, guardian)
     coin_gainer.gain(1)
   }
 

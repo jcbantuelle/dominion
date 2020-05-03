@@ -13,7 +13,7 @@ Tormentor = class Tormentor extends Card {
   }
 
   play(game, player_cards, card_player) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     if (_.size(player_cards.in_play) === 1 && player_cards.in_play[0].id === card_player.card.id) {
