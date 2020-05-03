@@ -790,7 +790,8 @@ CardList = class CardList {
       'WayOfThePig',
       'WayOfTheRat',
       'WayOfTheSeal',
-      'WayOfTheSheep'
+      'WayOfTheSheep',
+      'WayOfTheSquirrel'
     ]
   }
 
