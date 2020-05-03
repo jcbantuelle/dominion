@@ -17,7 +17,7 @@ Gladiator = class Gladiator extends Card {
   }
 
   play(game, player_cards, card_player) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     if (_.size(player_cards.hand) > 1) {
@@ -32,7 +32,7 @@ Gladiator = class Gladiator extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player.card)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
       turn_event_processor.process(Gladiator.reveal_card)
     } else if (_.size(player_cards.hand) === 1) {
       Gladiator.reveal_card(game, player_cards, player_cards.hand, card_player.card)
@@ -41,7 +41,7 @@ Gladiator = class Gladiator extends Card {
     }
   }
 
-  static reveal_card(game, player_cards, selected_cards, gladiator) {
+  static reveal_card(game, player_cards, selected_cards, card_player) {
     let card_revealer = new CardRevealer(game, player_cards)
     card_revealer.reveal('hand', selected_cards[0])
 
@@ -73,10 +73,10 @@ Gladiator = class Gladiator extends Card {
     } else {
       game.log.push(`&nbsp;&nbsp;<strong>${next_player_cards.username}</strong> does not reveal a copy`)
 
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(1)
 
-      let supply_card_trasher = new SupplyCardTrasher(game, player_cards, gladiator.stack_name, gladiator)
+      let supply_card_trasher = new SupplyCardTrasher(game, player_cards, card_player.card.stack_name, card_player.card)
       supply_card_trasher.trash()
     }
   }
