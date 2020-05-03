@@ -35,23 +35,25 @@ MiningVillage = class MiningVillage extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, mining_village)
-      turn_event_processor.process(MiningVillage.trash_card)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let response = turn_event_processor.process(MiningVillage.trash_card)
+
+      if (response === 'yes') {
+        let card_trasher = new CardTrasher(game, player_cards, 'in_play', mining_village)
+        card_trasher.trash()
+
+        let coin_gainer = new CoinGainer(game, player_cards, card_player)
+        coin_gainer.gain(2)
+      } else {
+        game.log.push(`&nbsp;&nbsp;but chooses not to trash ${CardView.render(mining_village)}`)
+      }
     } else {
       game.log.push(`&nbsp;&nbsp;but ${CardView.render(this)} is no longer in play`)
     }
   }
 
-  static trash_card(game, player_cards, response, mining_village) {
-    if (response === 'yes') {
-      let card_trasher = new CardTrasher(game, player_cards, 'in_play', mining_village)
-      card_trasher.trash()
-
-      let coin_gainer = new CoinGainer(game, player_cards)
-      coin_gainer.gain(2)
-    } else {
-      game.log.push(`&nbsp;&nbsp;but chooses not to trash ${CardView.render(mining_village)}`)
-    }
+  static trash_card(game, player_cards, response) {
+    return response
   }
 
 }

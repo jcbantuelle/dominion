@@ -41,7 +41,7 @@ Minion = class Minion extends Card {
   static process_response(game, player_cards, response, card_player) {
     response = response[0]
     if (response === 'coins') {
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(2)
     } else if (response === 'discard') {
       game.turn.minion_attack = true
