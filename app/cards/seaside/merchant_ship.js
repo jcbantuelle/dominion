@@ -13,7 +13,7 @@ MerchantShip = class MerchantShip extends Duration {
   }
 
   play(game, player_cards, card_player) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     player_cards.duration_effects.push(_.clone(card_player.card))
@@ -21,7 +21,7 @@ MerchantShip = class MerchantShip extends Duration {
   }
 
   duration(game, player_cards, merchant_ship) {
-    let coin_gainer = new CoinGainer(game, player_cards, merchant_ship)
+    let coin_gainer = new CoinGainer(game, player_cards, undefined, merchant_ship)
     coin_gainer.gain(2)
   }
 

@@ -13,7 +13,7 @@ Embargo = class Embargo extends Card {
   }
 
   play(game, player_cards, card_player) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     let card_trasher = new CardTrasher(game, player_cards, 'in_play', card_player.card)
