@@ -12,8 +12,8 @@ Militia = class Militia extends Card {
     return 4
   }
 
-  play(game, player_cards) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(2)
 
     let player_attacker = new PlayerAttacker(game, this)

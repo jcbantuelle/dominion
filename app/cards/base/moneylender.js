@@ -12,7 +12,7 @@ Moneylender = class Moneylender extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let copper = _.find(player_cards.hand, (card) => {
       return card.name === 'Copper'
     })
@@ -27,23 +27,25 @@ Moneylender = class Moneylender extends Card {
         minimum: 1,
         maximum: 1
       })
-      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, copper)
-      turn_event_processor.process(Moneylender.trash_copper)
+      let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+      let response = turn_event_processor.process(Moneylender.trash_copper)
+
+      if (response === 'yes') {
+        let card_trasher = new CardTrasher(game, player_cards, 'hand', copper)
+        card_trasher.trash()
+
+        let coin_gainer = new CoinGainer(game, player_cards, card_player)
+        coin_gainer.gain(3)
+      } else {
+        game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(copper)}`)
+      }
     } else {
       game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(new Copper())}`)
     }
   }
 
-  static trash_copper(game, player_cards, response, copper) {
-    if (response === 'yes') {
-      let card_trasher = new CardTrasher(game, player_cards, 'hand', copper)
-      card_trasher.trash()
-
-      let coin_gainer = new CoinGainer(game, player_cards)
-      coin_gainer.gain(3)
-    } else {
-      game.log.push(`&nbsp;&nbsp;but does not trash a ${CardView.render(copper)}`)
-    }
+  static trash_copper(game, player_cards, response) {
+    return response
   }
 
 }
