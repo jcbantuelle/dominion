@@ -8,7 +8,7 @@ Governor = class Governor extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let action_gainer = new ActionGainer(game, player_cards)
     action_gainer.gain(1)
 
@@ -27,18 +27,18 @@ Governor = class Governor extends Card {
         {text: 'Trash a Card', value: 'trash'}
       ]
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(Governor.process_response)
   }
 
-  static process_response(game, player_cards, response) {
+  static process_response(game, player_cards, response, card_player) {
     let ordered_player_cards = TurnOrderedPlayerCardsQuery.turn_ordered_player_cards(game, player_cards)
 
     _.each(ordered_player_cards, function(current_player_cards) {
       let is_active_player = current_player_cards.player_id === player_cards.player_id
       if (response[0] === 'draw') {
         let card_number = is_active_player ? 3 : 1
-        let card_drawer = new CardDrawer(game, current_player_cards)
+        let card_drawer = new CardDrawer(game, current_player_cards, card_player)
         card_drawer.draw(card_number)
       } else if (response[0] === 'gold') {
         let treasure = is_active_player ? 'Gold' : 'Silver'
