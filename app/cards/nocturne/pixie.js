@@ -20,7 +20,7 @@ Pixie = class Pixie extends Card {
       game.boons_discard = []
     }
 
-    discarded_boon = game.boons_deck.shift()
+    let discarded_boon = game.boons_deck.shift()
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> discards ${CardView.render(discarded_boon)} from the boon deck`)
 
     let pixie = _.find(player_cards.in_play, (card) => {
