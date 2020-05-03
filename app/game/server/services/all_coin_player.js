@@ -12,7 +12,6 @@ AllCoinPlayer = class AllCoinPlayer {
       'Humble Castle',
       'Masterpiece',
       'Pasture',
-      'Philosophers Stone',
       'Platinum',
       'Plunder',
       'Potion',
