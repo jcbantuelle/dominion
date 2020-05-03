@@ -12,8 +12,8 @@ Bishop = class Bishop extends Card {
     return 4
   }
 
-  play(game, player_cards) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(1)
 
     let victory_token_gainer = new VictoryTokenGainer(game, player_cards)
