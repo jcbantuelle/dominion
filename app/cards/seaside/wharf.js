@@ -9,7 +9,7 @@ Wharf = class Wharf extends Duration {
   }
 
   play(game, player_cards, card_player) {
-    let card_drawer = new CardDrawer(game, player_cards)
+    let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(2)
 
     let buy_gainer = new BuyGainer(game, player_cards)
@@ -20,7 +20,7 @@ Wharf = class Wharf extends Duration {
   }
 
   duration(game, player_cards, wharf) {
-    let card_drawer = new CardDrawer(game, player_cards, wharf)
+    let card_drawer = new CardDrawer(game, player_cards, undefined, wharf)
     let drawn_count = card_drawer.draw(2)
 
     let buy_gainer = new BuyGainer(game, player_cards, wharf)
