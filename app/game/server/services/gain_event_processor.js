@@ -310,6 +310,12 @@ GainEventProcessor = class GainEventProcessor {
       })
     }
 
+    if (this.gainer.player_cards._id === this.player_cards._id && this.gainer.game.turn.player._id === this.gainer.player_cards.player_id && this.gainer.game.turn.way_of_the_seal) {
+      let way_of_the_seal = ClassCreator.create('Way Of The Seal').to_h()
+      way_of_the_seal.id = this.generate_event_id()
+      this.gain_events.push(way_of_the_seal)
+    }
+
     if (this.gainer.player_cards._id === this.player_cards._id && !_.isEmpty(this.player_cards.exile)) {
       let has_exile_cards = _.find(this.player_cards.exile, (card) => {
         return card.name === this.gainer.gained_card.name
