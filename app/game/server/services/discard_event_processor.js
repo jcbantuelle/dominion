@@ -30,6 +30,7 @@ DiscardEventProcessor = class DiscardEventProcessor {
   constructor(discarder, card) {
     this.discarder = discarder
     this.card = card
+    this.event_id = 9000
     this.find_discard_events()
   }
 
@@ -105,6 +106,15 @@ DiscardEventProcessor = class DiscardEventProcessor {
         this.discard_events.push(prince)
       }
     }
+
+    _.each(this.discarder.game.turn.discard_effects, (discard_effect) => {
+      if (discard_effect.name === 'Way Of The Frog') {
+        if (this.card.id === discard_effect.target.id && this.discarder.source === 'in_play') {
+          discard_effect.id = this.generate_event_id()
+          this.discard_events.push(discard_effect)
+        }
+      }
+    })
   }
 
   process() {
@@ -127,6 +137,12 @@ DiscardEventProcessor = class DiscardEventProcessor {
         turn_event_processor.process(DiscardEventProcessor.discard_event)
       }
     }
+  }
+
+  generate_event_id() {
+    let event_id = _.toString(this.event_id)
+    this.event_id += 1
+    return event_id
   }
 
   static discard_event(game, player_cards, selected_cards, discard_event_processor) {

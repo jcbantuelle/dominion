@@ -918,6 +918,7 @@ GameCreator = class GameCreator {
       gained_cards: [],
       trashed_cards: [],
       played_actions: [],
+      discard_effects: [],
       forbidden_events: [],
       charms: 0,
       priests: 0,
