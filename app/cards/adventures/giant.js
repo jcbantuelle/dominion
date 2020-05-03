@@ -12,15 +12,15 @@ Giant = class Giant extends Card {
     return 5
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     player_cards.tokens.journey = player_cards.tokens.journey === 'up' ? 'down' : 'up'
     game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> turns their Journey Token face ${player_cards.tokens.journey}`)
 
     if (player_cards.tokens.journey === 'up') {
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(5)
     } else if (player_cards.tokens.journey === 'down') {
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(1)
     }
 

@@ -12,7 +12,7 @@ Miser = class Miser extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let turn_event_id = TurnEventModel.insert({
       game_id: game._id,
       player_id: player_cards.player_id,
@@ -26,11 +26,11 @@ Miser = class Miser extends Card {
         {text: `+$1 per ${CardView.render(new Copper())} on your Tavern`, value: 'coin'}
       ]
     })
-    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
+    let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
     turn_event_processor.process(Miser.process_response)
   }
 
-  static process_response(game, player_cards, response) {
+  static process_response(game, player_cards, response, card_player) {
     if (response[0] === 'copper') {
       let copper = _.find(player_cards.hand, function(card) {
         return card.name === 'Copper'
@@ -46,7 +46,7 @@ Miser = class Miser extends Card {
       let copper_count = _.size(_.filter(player_cards.tavern, function(card) {
         return card.name === 'Copper'
       }))
-      let coin_gainer = new CoinGainer(game, player_cards)
+      let coin_gainer = new CoinGainer(game, player_cards, card_player)
       coin_gainer.gain(copper_count)
     }
   }

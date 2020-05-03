@@ -27,7 +27,7 @@ SwampHag = class SwampHag extends Duration {
   }
 
   duration(game, player_cards, swamp_hag) {
-    let coin_gainer = new CoinGainer(game, player_cards, swamp_hag)
+    let coin_gainer = new CoinGainer(game, player_cards, undefined, swamp_hag)
     coin_gainer.gain(3)
   }
 

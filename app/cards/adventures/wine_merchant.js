@@ -16,7 +16,7 @@ WineMerchant = class WineMerchant extends Reserve {
     let buy_gainer = new BuyGainer(game, player_cards)
     buy_gainer.gain(1)
 
-    let coin_gainer = new CoinGainer(game, player_cards)
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(4)
 
     Reserve.move_to_tavern(game, player_cards, card_player.card)
