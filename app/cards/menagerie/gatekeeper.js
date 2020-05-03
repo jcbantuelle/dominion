@@ -27,7 +27,7 @@ Gatekeeper = class Gatekeeper extends Duration {
   }
 
   duration(game, player_cards, gatekeeper) {
-    let coin_gainer = new CoinGainer(game, player_cards, gatekeeper)
+    let coin_gainer = new CoinGainer(game, player_cards, undefined, gatekeeper)
     coin_gainer.gain(3)
   }
 

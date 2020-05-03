@@ -16,8 +16,8 @@ AnimalFair = class AnimalFair extends Card {
     return true
   }
 
-  play(game, player_cards) {
-    let coin_gainer = new CoinGainer(game, player_cards)
+  play(game, player_cards, card_player) {
+    let coin_gainer = new CoinGainer(game, player_cards, card_player)
     coin_gainer.gain(4)
 
     let empty_pile_count = _.size(_.filter(game.cards, function(game_card) {
