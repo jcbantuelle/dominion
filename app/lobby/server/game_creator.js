@@ -87,6 +87,9 @@ GameCreator = class GameCreator {
     if (this.game_has_card(cards, 'Necromancer')) {
       game_attributes.trash = game_attributes.trash.concat(this.zombies())
     }
+    if (this.game_has_event_or_landmark(this.ways, 'Way Of The Mouse')) {
+      game_attributes.way_of_the_mouse = this.find_card_between_2_and_3(cards, 'action')
+    }
     return GameModel.insert(game_attributes)
   }
 
@@ -808,16 +811,25 @@ GameCreator = class GameCreator {
   }
 
   bane_card(cards) {
+    let card = this.find_card_between_2_and_3(cards)
+    card.bane = true
+    return this.game_card(card, 'kingdom')
+  }
+
+  find_card_between_2_and_3(cards, card_type) {
     let game_card_names = _.map(cards, 'name')
     if (this.black_market_deck) {
       game_card_names = game_card_names.concat(_.map(this.black_market_deck, 'name'))
     }
     var card
+    var card_type_matches = true
     do {
       card = CardList.pull_one(this.exclusions, this.edition)
-    } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || _.includes(game_card_names, card.name))
-    card.bane = true
-    return this.game_card(card, 'kingdom')
+      if (card_type) {
+        card_type_matches = _.includes(_.words(card.types), card_type)
+      }
+    } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || card.debt_cost !== 0 || !card_type_matches || _.includes(game_card_names, card.name))    
+    return card
   }
 
   prosperity_game() {

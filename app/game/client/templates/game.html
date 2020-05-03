@@ -19,6 +19,11 @@
           {{#each game.ways}}
             {{> way}}
           {{/each}}
+          {{#if game.way_of_the_mouse}}
+            {{#with game.way_of_the_mouse}}
+              {{> way_of_the_mouse_card}}
+            {{/with}}
+          {{/if}}
           {{#each game.druid_boons}}
             {{> druid_boon}}
           {{/each}}

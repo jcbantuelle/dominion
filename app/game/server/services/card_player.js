@@ -190,17 +190,19 @@ CardPlayer = class CardPlayer {
     }
     let play_as_way = 'no'
     if (_.includes(_.words(this.card.types), 'action') && (this.game.turn.phase === 'action' || free_play) && !_.isEmpty(this.game.ways)) {
-      let turn_event_id = TurnEventModel.insert({
-        game_id: this.game._id,
-        player_id: this.player_cards.player_id,
-        username: this.player_cards.username,
-        type: 'choose_yes_no',
-        instructions: `Play ${CardView.render(this.card)} as ${CardView.render(this.game.ways)}?`,
-        minimum: 1,
-        maximum: 1
-      })
-      let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
-      play_as_way = turn_event_processor.process(CardPlayer.play_as_way)
+      if (this.game.ways[0].name !== 'Way Of The Mouse' || this.card.name !== this.game.way_of_the_mouse.name) {
+        let turn_event_id = TurnEventModel.insert({
+          game_id: this.game._id,
+          player_id: this.player_cards.player_id,
+          username: this.player_cards.username,
+          type: 'choose_yes_no',
+          instructions: `Play ${CardView.render(this.card)} as ${CardView.render(this.game.ways)}?`,
+          minimum: 1,
+          maximum: 1
+        })
+        let turn_event_processor = new TurnEventProcessor(this.game, this.player_cards, turn_event_id)
+        play_as_way = turn_event_processor.process(CardPlayer.play_as_way)
+      }
     }
     if (play_as_way == 'yes') {
       this.game.turn.enchantress_attack = true
