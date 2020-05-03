@@ -103,7 +103,10 @@ body {
   white-space: nowrap;
   text-align: right;
   height: $event_height;
-  padding-right: 2px;
+}
+
+.way-name {
+  padding-right: 4px;
 }
 
 .landmark-name span,
