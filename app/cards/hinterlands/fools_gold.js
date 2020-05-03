@@ -14,7 +14,7 @@ FoolsGold = class FoolsGold extends Card {
       game.turn.fools_gold = true
       coin_to_gain = 1
     }
-    let coin_gainer = new CoinGainer(game, player_cards, card_player.card)
+    let coin_gainer = new CoinGainer(game, player_cards)
     coin_gainer.gain(coin_to_gain)
   }
 

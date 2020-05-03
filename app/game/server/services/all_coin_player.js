@@ -6,7 +6,6 @@ AllCoinPlayer = class AllCoinPlayer {
       'Copper',
       'Diadem',
       'Ducat',
-      'Fools Gold',
       'Gold',
       'Harem',
       'Humble Castle',
