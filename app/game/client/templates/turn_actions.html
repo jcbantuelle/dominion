@@ -3,6 +3,9 @@
 
   {{#unless ../pending_players}}
     {{#if my_turn}}
+      {{#if ../game.previous_state}}
+          <button id="undo-action" class="btn btn-xs btn-dark">Undo</button>
+      {{/if}}
       {{#if allow_treasures}}
         <button id="play-all-coin" class="btn btn-xs btn-warning">$</button>
       {{/if}}

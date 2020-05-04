@@ -150,6 +150,7 @@ Template.game.events({
   "click .card-container .card-image": buyCard,
   "click .event-container .card-image": buyEvent,
   "click .project-container .card-image": buyProject,
+  "click #undo-action": undoAction,
   "click #end-turn": endTurn,
   "click #play-all-coin": playAllCoin,
   "click #play-coffer": playCoinToken,
@@ -221,6 +222,12 @@ function playVillager() {
 
 function playDebtToken() {
   Meteor.call('playDebtToken', FlowRouter.getParam('id'))
+}
+
+function undoAction() {
+  if (confirm('Are you sure you want to undo your last action?')) {
+    Meteor.call('undoAction', FlowRouter.getParam('id'))
+  }
 }
 
 function turnEvent(event) {

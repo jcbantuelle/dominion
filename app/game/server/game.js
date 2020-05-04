@@ -13,6 +13,7 @@ Meteor.methods({
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
           let current_player_cards = player_cards(current_game)
+          PlayerActionUndoer.track_action(current_game, current_player_cards)
           let card = _.find(current_player_cards.hand, (card) => {
             return card.id === card_id
           })
@@ -36,6 +37,7 @@ Meteor.methods({
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
           let current_player_cards = player_cards(current_game)
+          PlayerActionUndoer.track_action(current_game, current_player_cards)
           let card_buyer = new CardBuyer(current_game, current_player_cards, card_name)
           card_buyer.buy()
           if (turn_over(current_game, current_player_cards)) {
@@ -54,6 +56,7 @@ Meteor.methods({
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
           let current_player_cards = player_cards(current_game)
+          PlayerActionUndoer.track_action(current_game, current_player_cards)
           let event_buyer = new EventBuyer(current_game, current_player_cards, card_name)
           event_buyer.buy()
           if (turn_over(current_game, current_player_cards)) {
@@ -72,6 +75,7 @@ Meteor.methods({
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
           let current_player_cards = player_cards(current_game)
+          PlayerActionUndoer.track_action(current_game, current_player_cards)
           let project_buyer = new ProjectBuyer(current_game, current_player_cards, card_name)
           project_buyer.buy()
           if (turn_over(current_game, current_player_cards)) {
@@ -102,7 +106,9 @@ Meteor.methods({
         ActionLock[game_id] = true
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
-          let all_coin_player = new AllCoinPlayer(current_game, player_cards(current_game))
+          let current_player_cards = player_cards(current_game)
+          PlayerActionUndoer.track_action(current_game, current_player_cards)
+          let all_coin_player = new AllCoinPlayer(current_game, current_player_cards)
           all_coin_player.play()
         }
         ActionLock[game_id] = false
@@ -115,7 +121,9 @@ Meteor.methods({
         ActionLock[game_id] = true
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
-          let coffer_player = new CofferPlayer(current_game, player_cards(current_game))
+          let current_player_cards = player_cards(current_game)
+          PlayerActionUndoer.track_action(current_game, current_player_cards)
+          let coffer_player = new CofferPlayer(current_game, current_player_cards)
           coffer_player.play()
         }
         ActionLock[game_id] = false
@@ -128,7 +136,9 @@ Meteor.methods({
         ActionLock[game_id] = true
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
-          let villager_player = new VillagerPlayer(current_game, player_cards(current_game))
+          let current_player_cards = player_cards(current_game)
+          PlayerActionUndoer.track_action(current_game, current_player_cards)
+          let villager_player = new VillagerPlayer(current_game, current_player_cards)
           villager_player.play()
         }
         ActionLock[game_id] = false
@@ -141,13 +151,27 @@ Meteor.methods({
         ActionLock[game_id] = true
         let current_game = game(game_id)
         if (allowed_to_play(current_game)) {
-          let debt_token_player = new DebtTokenPlayer(current_game, player_cards(current_game))
-          debt_token_player.play()
           let current_player_cards = player_cards(current_game)
+          PlayerActionUndoer.track_action(current_game, current_player_cards)
+          let debt_token_player = new DebtTokenPlayer(current_game, current_player_cards)
+          debt_token_player.play()
           if (turn_over(current_game, current_player_cards)) {
             let turn_ender = new TurnEnder(current_game, current_player_cards)
             turn_ender.end_turn()
           }
+        }
+        ActionLock[game_id] = false
+      }
+    })).detach()
+  },
+  undoAction: function(game_id) {
+    Future.task(Meteor.bindEnvironment(function() {
+      if (!ActionLock[game_id]) {
+        ActionLock[game_id] = true
+        let current_game = game(game_id)
+        if (allowed_to_play(current_game)) {
+          let current_player_cards = player_cards(current_game)
+          PlayerActionUndoer.undo_action(current_game, current_player_cards)
         }
         ActionLock[game_id] = false
       }

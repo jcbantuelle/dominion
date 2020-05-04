@@ -6,6 +6,7 @@ TurnEnder = class TurnEnder {
   }
 
   end_turn() {
+    this.game.previous_state = false
     if (this.game.turn.phase === 'action') {
       this.start_buy_events()
     }

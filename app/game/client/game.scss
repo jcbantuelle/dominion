@@ -189,11 +189,6 @@ body {
   margin-left: 10px;
 }
 
-#game #play-coffer, #play-debt-token, #play-villager {
-  line-height: 1;
-  padding: 1px;
-}
-
 #sortable-cards>div {
   float: left;
 }
@@ -226,11 +221,6 @@ body {
   cursor: pointer;
 }
 
-.btn-debt {
-  background-color: $debt_color;
-  border-color: $debt_color;
-}
-
 .debt {
   color: $debt_color;
 }
@@ -258,6 +248,16 @@ body {
   #game-chat, #message {
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .btn-debt {
+    background-color: $debt_color;
+    border-color: $debt_color;
+  }
+
+  #play-coffer, #play-debt-token, #play-villager {
+    line-height: 1;
+    padding: 1px;
   }
 }
 
