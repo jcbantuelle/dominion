@@ -40,7 +40,7 @@ Courtier = class Courtier extends Card {
 
     GameModel.update(game._id, game)
 
-    card_types_count = _.size(_.words(selected_cards[0].types))
+    let card_types_count = _.size(_.words(selected_cards[0].types))
 
     if (card_types_count < 4) {
       let turn_event_id = TurnEventModel.insert({
