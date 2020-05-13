@@ -3,7 +3,7 @@
     <ul class="pagination">
       {{#if show_previous_page}}
         <li class="page-item">
-          <a class="page-link" href="/{{page_name}}?page={{previous_page}}" aria-label="Previous">
+          <a class="page-link" href="/{{page_name}}" data-page="{{previous_page}}" data-player-id="{{player_id}}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
           </a>
@@ -11,14 +11,14 @@
       {{/if}}
       {{#each times pages}}
         <li class="page-item {{#if is_current_page this}}active{{/if}}">
-          <a class="page-link" href="/{{../page_name}}?page={{this}}">
+          <a class="page-link" href="/{{../page_name}}" data-page="{{this}}" data-player-id="{{player_id}}">
             <span>{{this}}{{#if is_current_page this}}<span class="sr-only"> (current)</span>{{/if}}</span>
           </a>
         </li>
       {{/each}}
       {{#if show_next_page}}
         <li class="page-item">
-          <a class="page-link" href="/{{page_name}}?page={{next_page}}" aria-label="Next">
+          <a class="page-link" href="/{{page_name}}" data-page="{{next_page}}" data-player-id="{{player_id}}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
           </a>

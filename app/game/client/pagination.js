@@ -15,13 +15,28 @@ Template.pagination.helpers({
   },
   is_current_page: function(page_number) {
     return page_number === current_page()
+  },
+  player_id: function() {
+    return FlowRouter.getParam('id')
   }
 })
 
 Template.pagination.events({
-  'click a': function(event) {
+  'click a.page-link': function(event) {
+    let target = event.currentTarget
+
+    let href = target.getAttribute('href')
+    let player_id = $(target).data('player_id')
+    let page = $(target).data('page')
+
+    let params = {}
+    if (player_id) {
+      params.id = player_id
+    }
+    
     event.preventDefault()
-    FlowRouter.go(event.target.getAttribute('href'))
+    event.stopImmediatePropagation()
+    FlowRouter.go(href, params, { page: page})
   }
 })
 
