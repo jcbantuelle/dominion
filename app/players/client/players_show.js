@@ -21,10 +21,12 @@ Template.playersShow.helpers({
           game.created_at = dateFormat(game.created_at, "yyyy-mm-dd hh:MM:ss TT")
           game.card_list = _.reduce(game.cards, function(cards, card) {
             if (card.source === 'kingdom') {
-              cards.push(card.top_card)
+              let card_object = ClientClassCreator.create(card.stack_name)
+              cards.push(card_object.to_h())
             }
             return cards
           }, [])
+          game.card_list = _.compact(_.concat(game.card_list, game.events, game.landmarks, game.projects, game.ways))
           return game
         }
       }).fetch()

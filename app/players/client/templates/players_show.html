@@ -53,9 +53,13 @@
           <td>
             {{#each card_list}}
               <span class="lobby-card {{types}}">{{name}}</span>
-            {{/each}}
-            {{#each this.events}}
-              <span class="lobby-card event">{{name}}</span>
+              <div class="card-tooltip">
+                {{#if wide}}
+                  <img src="{{static_image image}}" width="341" height="220" />
+                {{else}}
+                  <img src="{{static_image image}}" width="220" height="341" />
+                {{/if}}
+              </div>
             {{/each}}
           </td>
         </tr>
