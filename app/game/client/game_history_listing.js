@@ -16,7 +16,7 @@ Template.gameHistoryListing.helpers({
         }
       }),
       pages: _.ceil(Counts.get('game_history_count') / Pagination.per_page),
-      page_name: 'game_history_listing_page'
+      page_name: 'game_history'
     }
   }
 })

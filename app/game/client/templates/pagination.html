@@ -1,19 +1,27 @@
 <template name="pagination">
-  <nav>
+  <nav aria-label="Page navigation">
     <ul class="pagination">
-      {{#if show_previous_page page_name}}
-        <li>
-          <span data-page="{{previous_page page_name}}" data-page-name="{{page_name}}" aria-label="Previous">
+      {{#if show_previous_page}}
+        <li class="page-item">
+          <a class="page-link" href="/{{page_name}}?page={{previous_page}}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
-          </span>
+            <span class="sr-only">Previous</span>
+          </a>
         </li>
       {{/if}}
       {{#each times pages}}
-        <li class="{{#if current_page ../page_name this}}disabled{{/if}}"><span data-page="{{this}}" data-page-name="{{../page_name}}">{{this}}</span></li>
+        <li class="page-item {{#if is_current_page this}}active{{/if}}">
+          <a class="page-link" href="/{{../page_name}}?page={{this}}">
+            <span>{{this}}{{#if is_current_page this}}<span class="sr-only"> (current)</span>{{/if}}</span>
+          </a>
+        </li>
       {{/each}}
-      {{#if show_next_page page_name}}
-        <li>
-          <span data-page="{{next_page page_name}}" data-page-name="{{page_name}}" aria-label="Next">&raquo;</span>
+      {{#if show_next_page}}
+        <li class="page-item">
+          <a class="page-link" href="/{{page_name}}?page={{next_page}}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
         </li>
       {{/if}}
     </ul>

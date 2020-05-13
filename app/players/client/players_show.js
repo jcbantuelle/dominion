@@ -29,7 +29,7 @@ Template.playersShow.helpers({
         }
       }).fetch()
       player.pages = _.ceil(Counts.get('game_history_count') / Pagination.per_page)
-      player.page_name = 'player_show_page'
+      player.page_name = `players/${player.username}`
     }
     return player
   }
