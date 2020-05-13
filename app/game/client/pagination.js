@@ -18,6 +18,13 @@ Template.pagination.helpers({
   }
 })
 
+Template.pagination.events({
+  'click a': function(event) {
+    event.preventDefault()
+    FlowRouter.go(event.target.getAttribute('href'))
+  }
+})
+
 function current_page() {
   let page_param = FlowRouter.getQueryParam('page')
   return page_param ? parseInt(page_param) : 1
