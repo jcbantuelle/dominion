@@ -16,7 +16,7 @@ Lookout = class Lookout extends Card {
       game.log.push(`&nbsp;&nbsp;but has no cards in deck`)
     } else {
       let card_revealer = new CardRevealer(game, player_cards)
-      card_revealer.reveal_from_deck(3)
+      card_revealer.reveal_from_deck(3, false)
 
       GameModel.update(game._id, game)
 
