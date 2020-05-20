@@ -57,7 +57,7 @@ SecretPassage = class SecretPassage extends Card {
   static insert_in_deck(game, player_cards, location, selected_card) {
     let card_mover = new CardMover(game, player_cards)
     card_mover.move(player_cards.hand, player_cards.deck, selected_card, Number(location) - 1)
-    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(selected_card)} in their deck as card #${location}`)
+    game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts a card from ther hand in their deck as card #${location}`)
   }
 
 }
