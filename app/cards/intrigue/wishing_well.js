@@ -39,7 +39,7 @@ WishingWell = class WishingWell extends Card {
   }
 
   static name_card(game, player_cards, selected_cards) {
-    if (!_isEmpty(selected_cards)) {
+    if (!_.isEmpty(selected_cards)) {
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> names ${CardView.render(selected_cards[0])}`)
 
       let card_revealer = new CardRevealer(game, player_cards)
