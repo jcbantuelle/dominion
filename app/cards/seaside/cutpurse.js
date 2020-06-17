@@ -14,7 +14,7 @@ Cutpurse = class Cutpurse extends Card {
 
   play(game, player_cards, card_player) {
     let coin_gainer = new CoinGainer(game, player_cards, card_player)
-    coin_gainer.gain(1)
+    coin_gainer.gain(2)
 
     let player_attacker = new PlayerAttacker(game, this)
     player_attacker.attack(player_cards)
