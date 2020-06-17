@@ -72,13 +72,13 @@ CardTrasher = class CardTrasher {
     let log_message = `&nbsp;&nbsp;<strong>${this.player_cards.username}</strong> trashes ${CardView.render(cards)}`
     if (this.possessed()) {
       let card_text = _.size(cards) === 1 ? 'card' : 'cards'
-      log_message += ', setting the ${card_text} aside'
+      log_message += `, setting the ${card_text} aside`
     }
     this.game.log.push(log_message)
   }
 
   possessed() {
-    this.game.turn.possessed && this.player_cards.player_id === this.game.turn.player._id
+    return this.game.turn.possessed && this.player_cards.player_id === this.game.turn.player._id
   }
 
   static order_cards(game, player_cards, ordered_cards, card_trasher) {
