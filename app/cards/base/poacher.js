@@ -27,7 +27,7 @@ Poacher = class Poacher extends Card {
     }))
 
     if (number_to_discard > 0) {
-      hand_count = _.size(player_cards.hand)
+      let hand_count = _.size(player_cards.hand)
       if (hand_count <= number_to_discard) {
         let card_discarder = new CardDiscarder(game, player_cards, 'hand')
         card_discarder.discard()
