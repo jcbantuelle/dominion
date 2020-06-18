@@ -14,7 +14,7 @@ Fool = class Fool extends Card {
 
     if (took_lost_in_the_woods) {
 
-      revealed_boons = _.take(game.boons_deck, 3)
+      let revealed_boons = _.take(game.boons_deck, 3)
       game.boons_deck = _.drop(game.boons_deck, 3)
 
       let revealed_boon_count = _.size(revealed_boons)

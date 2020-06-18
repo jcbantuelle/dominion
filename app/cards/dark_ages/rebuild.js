@@ -39,7 +39,7 @@ Rebuild = class Rebuild extends Card {
   }
 
   static reveal_card(game, player_cards, selected_cards) {
-    let revealed_card_name
+    let named_card
     if (!_.isEmpty(selected_cards)) {
       named_card = selected_cards[0].name
       game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> names ${CardView.render(selected_cards)}`)

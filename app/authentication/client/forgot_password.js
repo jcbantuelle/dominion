@@ -2,8 +2,8 @@ Template.ForgotPassword.events({
   'submit #forgotPasswordForm': function(e, t) {
     e.preventDefault()
 
-    var forgotPasswordForm = $(e.currentTarget),
-        email = _.trim(forgotPasswordForm.find('#forgotPasswordEmail').val().toLowerCase())
+    var forgotPasswordForm = $(e.currentTarget)
+    var email = _.trim(forgotPasswordForm.find('#forgotPasswordEmail').val().toLowerCase())
 
     if (!_.isEmpty(email)) {
 

@@ -17,9 +17,9 @@ Template.ResetPassword.events({
   'submit #resetPasswordForm': function(e, t) {
     e.preventDefault()
 
-    var resetPasswordForm = $(e.currentTarget),
-        password = resetPasswordForm.find('#resetPasswordPassword').val(),
-        passwordConfirm = resetPasswordForm.find('#resetPasswordPasswordConfirm').val()
+    var resetPasswordForm = $(e.currentTarget)
+    var password = resetPasswordForm.find('#resetPasswordPassword').val()
+    var passwordConfirm = resetPasswordForm.find('#resetPasswordPasswordConfirm').val()
 
     if (!_.isEmpty(password) && password === passwordConfirm) {
       Accounts.resetPassword(Session.get('resetPassword'), password, function(err) {

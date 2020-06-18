@@ -74,17 +74,17 @@ function sendMessage(event) {
 function proposeGame(event) {
   event.preventDefault()
 
-  player_ids = $('.lobby-player:checked').map(function() {
+  let player_ids = $('.lobby-player:checked').map(function() {
     return $(this).val()
   }).get()
 
-  exclusions = $('.card-set:checked').map(function() {
+  let exclusions = $('.card-set:checked').map(function() {
     return $(this).val()
   }).get()
 
-  kingdom_id = _.trim($('.kingdom-id').val())
+  let kingdom_id = _.trim($('.kingdom-id').val())
 
-  edition = $('.edition:checked').val()
+  let edition = $('.edition:checked').val()
 
   if (player_ids.length > 3) {
     alert('Game can not have more than 4 players.')

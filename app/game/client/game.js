@@ -165,7 +165,7 @@ function scrollGameLog() {
 }
 
 function addSortable() {
-  sort_list = document.getElementById('sortable-cards')
+  let sort_list = document.getElementById('sortable-cards')
   Sortable.create(sort_list, {
     draggable: '.ordered',
     animation: 150

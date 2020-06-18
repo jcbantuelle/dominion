@@ -17,7 +17,7 @@ WalledVillage = class WalledVillage extends Card {
   }
 
   start_cleanup_event(game, player_cards, walled_village) {
-    actions_in_play = _.size(_.filter(player_cards.in_play, (card) => {
+    let actions_in_play = _.size(_.filter(player_cards.in_play, (card) => {
       return _.includes(_.words(card.types), 'action')
     }))
     if (actions_in_play < 3) {

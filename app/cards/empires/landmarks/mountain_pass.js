@@ -29,7 +29,7 @@ MountainPass = class MountainPass extends Landmark {
     })
 
     if (game.mountain_pass.player_cards) {
-      winning_player = game.mountain_pass.player_cards
+      let winning_player = game.mountain_pass.player_cards
 
       let victory_token_gainer = new VictoryTokenGainer(game, player_cards, mountain_pass)
       victory_token_gainer.gain(8)

@@ -55,7 +55,7 @@ TrashEventProcessor = class TrashEventProcessor {
 
     _.times(this.trasher.game.turn.priests, (count) => {
       if (this.trasher.player_cards.player_id === this.trasher.game.turn.player._id) {
-        priest = ClassCreator.create('Priest').to_h()
+        let priest = ClassCreator.create('Priest').to_h()
         priest.id = this.generate_event_id()
         this.trash_events.push(priest)
       }

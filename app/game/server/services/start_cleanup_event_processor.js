@@ -30,7 +30,7 @@ StartCleanupEventProcessor = class StartCleanupEventProcessor {
     _.each(this.player_cards.in_play, (card) => {
       if (_.includes(StartCleanupEventProcessor.in_play_events(), card.name)) {
         if (card.name === 'Walled Village') {
-          actions_in_play = _.size(_.filter(this.player_cards.in_play, (card) => {
+          let actions_in_play = _.size(_.filter(this.player_cards.in_play, (card) => {
             return _.includes(_.words(card.types), 'action')
           }))
           if (actions_in_play < (3 + this.game.turn.improves)) {

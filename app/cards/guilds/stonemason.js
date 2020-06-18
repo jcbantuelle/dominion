@@ -110,7 +110,7 @@ Stonemason = class Stonemason extends Card {
   }
 
   static potion_overpay(game, player_cards, amount, coin_overpay) {
-    potion_overpay = Number(amount)
+    let potion_overpay = Number(amount)
     if (coin_overpay === 0 && potion_overpay === 0) {
       game.log.push(`&nbsp;&nbsp;but does not overpay`)
     } else {
