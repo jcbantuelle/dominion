@@ -25,7 +25,7 @@ Populate = class Populate extends Event {
 
     _.each(ordered_cards, (card) => {
       let card_gainer = new CardGainer(game, player_cards, 'discard', card.name)
-      card_gainer.gain()  
+      card_gainer.gain()
     })
   }
 

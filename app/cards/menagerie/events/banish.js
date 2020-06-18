@@ -6,7 +6,7 @@ Banish = class Banish extends Event {
 
   buy(game, player_cards) {
     let unique_cards = _.uniqBy(player_cards.hand, 'name')
-    
+
     var chosen_card
     if (_.size(unique_cards) > 1) {
       GameModel.update(game._id, game)

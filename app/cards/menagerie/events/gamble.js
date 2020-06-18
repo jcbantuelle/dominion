@@ -30,7 +30,7 @@ Gamble = class Gamble extends Event {
         let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
         choice = turn_event_processor.process(Gamble.play_card)
       }
-      
+
       if (choice === 'yes') {
         let card_player = new CardPlayer(game, player_cards, player_cards.revealed[0])
         card_player.play(true, true, 'revealed')

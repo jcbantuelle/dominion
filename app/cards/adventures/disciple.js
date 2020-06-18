@@ -43,7 +43,7 @@ Disciple = class Disciple extends Traveller {
       let gained_card = false
       if (played_card) {
         let card_gainer = new CardGainer(game, player_cards, 'discard', selected_cards[0].name)
-         gained_card = card_gainer.gain()
+        gained_card = card_gainer.gain()
       }
       if (!played_card || !gained_card) {
         game.log.push(`&nbsp;&nbsp;but can not gain a copy of ${CardView.render(selected_cards)}`)
