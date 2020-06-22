@@ -828,7 +828,7 @@ GameCreator = class GameCreator {
       if (card_type) {
         card_type_matches = _.includes(_.words(card.types), card_type)
       }
-    } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || card.debt_cost !== 0 || !card_type_matches || _.includes(game_card_names, card.name))    
+    } while (card.coin_cost < 2 || card.coin_cost > 3 || card.potion_cost !== 0 || card.debt_cost !== 0 || !card_type_matches || _.includes(game_card_names, card.name))
     return card
   }
 
