@@ -11,15 +11,15 @@ CardList = class CardList {
     let game_cards = _.sampleSize(this.cards, 10)
 
     let aside_cards = _.filter(game_cards, (card_name) => {
-      return _.includes(CardList.aside_cards(this.exclusions, this.edition), _.titleize(card_name))
+      return _.includes(CardList.aside_cards(this.exclusions, this.edition), card_name)
     })
     let aside_card_count = _.size(aside_cards)
     if (aside_card_count > 2) {
       game_cards = _.reject(game_cards, (card_name) => {
-        return _.includes(CardList.aside_cards(this.exclusions, this.edition), _.titleize(card_name))
+        return _.includes(CardList.aside_cards(this.exclusions, this.edition), card_name)
       })
       game_cards.push(aside_cards[0])
-      if (_.includes(CardList.way_cards(this.exclusions, this.edition), _.titleize(aside_cards[0])) && _.includes(CardList.way_cards(this.exclusions, this.edition), _.titleize(aside_cards[1]))) {
+      if (_.includes(CardList.way_cards(this.exclusions, this.edition), aside_cards[0]) && _.includes(CardList.way_cards(this.exclusions, this.edition), aside_cards[1])) {
         aside_card_count += 1
       } else {
         game_cards.push(aside_cards[1])
@@ -51,13 +51,13 @@ CardList = class CardList {
     _.times(replacement_count, () => {
       do {
         invalid_replacement = true
-        let replacement_card_name = CardList.pull_one(this.exclusions, this.edition).name
+        let replacement_card_name = _.titleize(CardList.pull_one(this.exclusions, this.edition).name)
         let ways_card = _.find(game_cards, (card_name) => {
-          return _.includes(CardList.way_cards(this.exclusions, this.edition), _.titleize(card_name))
+          return _.includes(CardList.way_cards(this.exclusions, this.edition), card_name)
         })
         let ways_replacement = _.includes(CardList.way_cards(this.exclusions, this.edition), _.titleize(replacement_card_name))
-        if (!_.includes(game_cards, _.titleize(replacement_card_name)) && (!ways_card || !ways_replacement)) {
-          if (_.includes(CardList.aside_cards(this.exclusions, this.edition), _.titleize(replacement_card_name))) {
+        if (!_.includes(game_cards, replacement_card_name) && (!ways_card || !ways_replacement)) {
+          if (_.includes(CardList.aside_cards(this.exclusions, this.edition), replacement_card_name)) {
             if (event_count < 2) {
               game_cards.push(replacement_card_name)
               event_count += 1
