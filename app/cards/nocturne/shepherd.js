@@ -29,22 +29,24 @@ Shepherd = class Shepherd extends Card {
         maximum: 0
       })
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id, card_player)
-      turn_event_processor.process(Shepherd.discard_cards)
+      let selected_cards = turn_event_processor.process(Shepherd.discard_cards)
+
+      if (_.size(selected_cards) === 0) {
+        game.log.push(`&nbsp;&nbsp;but does not discard any victory cards`)
+      } else {
+        let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
+        card_discarder.discard()
+
+        let card_drawer = new CardDrawer(game, player_cards, card_player)
+        card_drawer.draw(2 * _.size(selected_cards))
+      }
     } else {
       game.log.push(`&nbsp;&nbsp;but does not discard any victory cards`)
     }
   }
 
   static discard_cards(game, player_cards, selected_cards) {
-    if (_.size(selected_cards) === 0) {
-      game.log.push(`&nbsp;&nbsp;but does not discard any victory cards`)
-    } else {
-      let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
-      card_discarder.discard()
-
-      let card_drawer = new CardDrawer(game, player_cards, card_player)
-      card_drawer.draw(2*_.size(selected_cards))
-    }
+    return selected_cards
   }
 
 }
