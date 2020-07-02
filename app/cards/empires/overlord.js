@@ -16,6 +16,9 @@ Overlord = class Overlord extends Card {
     let eligible_cards = _.filter(game.cards, function(card) {
       return card.count > 0 && card.supply && _.includes(_.words(card.top_card.types), 'action') && !_.includes(_.words(card.top_card.types), 'command') && CardCostComparer.coin_less_than(game, card.top_card, 6)
     })
+    eligible_cards = _.map(eligible_cards, (card) => {
+      return _.clone(card.top_card)
+    })
 
     if (_.size(eligible_cards) > 1) {
       let turn_event_id = TurnEventModel.insert({
@@ -23,7 +26,6 @@ Overlord = class Overlord extends Card {
         player_id: player_cards.player_id,
         username: player_cards.username,
         type: 'choose_cards',
-        game_cards: true,
         instructions: `Choose a card to play:`,
         cards: eligible_cards,
         minimum: 1,
