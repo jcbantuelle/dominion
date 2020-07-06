@@ -18,7 +18,7 @@ Spices = class Spices extends Card {
 
   gain_event(gainer, spices) {
     let coffer_gainer = new CofferGainer(gainer.game, gainer.player_cards, spices)
-    coffer_gainer.gain(1)
+    coffer_gainer.gain(2)
   }
 
 }
