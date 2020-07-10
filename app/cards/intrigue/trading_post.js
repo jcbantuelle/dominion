@@ -29,6 +29,7 @@ TradingPost = class TradingPost extends Card {
   }
 
   static trash_cards(game, player_cards, selected_cards) {
+    let trashed_card_count = _.size(selected_cards)
     if (_.size(selected_cards) === 0) {
       game.log.push(`&nbsp;&nbsp;but has no cards in hand to trash`)
     } else {
@@ -36,7 +37,7 @@ TradingPost = class TradingPost extends Card {
       card_trasher.trash()
     }
 
-    if (_.size(selected_cards) === 2) {
+    if (trashed_card_count === 2) {
       let card_gainer = new CardGainer(game, player_cards, 'hand', 'Silver')
       card_gainer.gain()
     }
