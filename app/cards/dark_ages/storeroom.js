@@ -41,10 +41,10 @@ Storeroom = class Storeroom extends Card {
           let card_discarder = new CardDiscarder(game, player_cards, 'hand', selected_cards)
           card_discarder.discard()
 
-          if (option === 'cards') {
+          if (discard_type === 'cards') {
             let card_drawer = new CardDrawer(game, player_cards)
             card_drawer.draw(_.size(selected_cards))
-          } else if (option === 'coins') {
+          } else if (discard_type === 'coins') {
             let coin_gainer = new CoinGainer(game, player_cards, card_player)
             coin_gainer.gain(_.size(selected_cards))
           }
