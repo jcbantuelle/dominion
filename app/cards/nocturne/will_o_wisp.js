@@ -21,7 +21,7 @@ WillOWisp = class WillOWisp extends Card {
 
       let card_mover = new CardMover(game, player_cards)
       if (CardCostComparer.coin_less_than(game, player_cards.revealed[0], 3)) {
-        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} in thier hand`)
+        game.log.push(`&nbsp;&nbsp;<strong>${player_cards.username}</strong> puts ${CardView.render(player_cards.revealed)} in their hand`)
         card_mover.move_all(player_cards.revealed, player_cards.hand)
       } else {
         card_mover.move_all(player_cards.revealed, player_cards.deck)

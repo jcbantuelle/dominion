@@ -27,7 +27,7 @@ CityGate = class CityGate extends Project {
     } else if (_.size(player_cards.hand) === 1) {
       CityGate.return_to_deck(game, player_cards, player_cards.hand)
     } else {
-      game.log.push(`&nbsp;&nbsp;but <strong>${player_cards.username}</strong> has no cards in thier hand`)
+      game.log.push(`&nbsp;&nbsp;but <strong>${player_cards.username}</strong> has no cards in their hand`)
     }
   }
 
