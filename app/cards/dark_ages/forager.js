@@ -37,7 +37,7 @@ Forager = class Forager extends Card {
       let turn_event_processor = new TurnEventProcessor(game, player_cards, turn_event_id)
       turn_event_processor.process(Forager.trash_card)
     } else if (_.size(player_cards.hand) === 1) {
-      Forager.trash_card(player_cards.hand)
+      Forager.trash_card(game, player_cards, player_cards.hand)
     } else {
       game.log.push(`&nbsp;&nbsp;but there are no cards in hand`)
     }
