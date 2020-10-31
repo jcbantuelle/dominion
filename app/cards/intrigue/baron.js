@@ -12,7 +12,7 @@ Baron = class Baron extends Card {
     return 4
   }
 
-  play(game, player_cards) {
+  play(game, player_cards, card_player) {
     let buy_gainer = new BuyGainer(game, player_cards)
     buy_gainer.gain(1)
 
