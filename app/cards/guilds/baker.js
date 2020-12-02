@@ -8,7 +8,7 @@ Baker = class Baker extends Card {
     return 5
   }
 
-  play(game, player_card, card_player) {
+  play(game, player_cards, card_player) {
     let card_drawer = new CardDrawer(game, player_cards, card_player)
     card_drawer.draw(1)
 
